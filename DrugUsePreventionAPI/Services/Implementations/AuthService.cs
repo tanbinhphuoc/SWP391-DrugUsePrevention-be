@@ -66,6 +66,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            // Đặt Role cho người dùng mới
             user.Role = memberRole;
 
             return GenerateJwtToken(user);
