@@ -1,4 +1,7 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿using AutoMapper;
+using DrugUsePreventionAPI.Data;
+using DrugUsePreventionAPI.Mappings;
+using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,11 +12,40 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cấu hình DbContext với connection string trong appsettings.json
+// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Drug Prevention API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        Description = "Enter token as: Bearer {token}"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            new string[] { }
+        }
+    });
+});
+
+// Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Cấu hình JWT
+// Configure AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Configure JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
 
@@ -24,7 +56,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false;  // để dev thì tắt SSL bắt buộc
+    options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -40,36 +72,17 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// Đăng ký service cho Auth
+// Register services
 builder.Services.AddScoped<IAuthService, AuthService>();
-
-// Thêm controllers và swagger
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Drug Prevention API", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        Description = "Nhập token theo dạng: Bearer {token}"
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference{ Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            new string[] { }
-        }
-    });
-});
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    SeedAdmin(context);
+}
 
 if (app.Environment.IsDevelopment())
 {
@@ -78,10 +91,37 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
+
+void SeedAdmin(ApplicationDbContext context)
+{
+    if (!context.Users.Any(u => u.UserName == "admin"))
+    {
+        var adminRole = context.Roles.FirstOrDefault(r => r.RoleName == "Admin");
+        if (adminRole == null)
+        {
+            adminRole = new Role { RoleName = "Admin", Description = "Administrator role" };
+            context.Roles.Add(adminRole);
+            context.SaveChanges();
+        }
+
+        var admin = new User
+        {
+            UserName = "admin",
+            Password = BCrypt.Net.BCrypt.HashPassword("Admin123"), // mật khẩu là Admin123
+            Email = "admin@example.com",
+            FullName = "Administrator",
+            RoleID = adminRole.RoleID,
+            Status = "Active",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        context.Users.Add(admin);
+        context.SaveChanges();
+    }
+}

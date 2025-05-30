@@ -1,5 +1,4 @@
-﻿
-using DrugUsePreventionAPI.Models.Entities;
+﻿using DrugUsePreventionAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DrugUsePreventionAPI.Data
@@ -10,15 +9,31 @@ namespace DrugUsePreventionAPI.Data
             : base(options)
         {
         }
-  
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Consultant> Consultants { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<ConsultantSchedule> ConsultantSchedules { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<CourseRegistration> CourseRegistrations { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<ConsultantAppointmentEvaluation> ConsultantAppointmentEvaluations { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<CourseAssessment> CourseAssessments { get; set; }
+        public DbSet<AssessmentResult> AssessmentResults { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<AnswerOption> AnswerOptions { get; set; }
+        public DbSet<CommunicationProgram> CommunicationPrograms { get; set; }
+        public DbSet<ProgramParticipation> ProgramParticipations { get; set; }
+        public DbSet<SurveyResponse> SurveyResponses { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
+            // Composite keys
             modelBuilder.Entity<CourseRegistration>()
                 .HasKey(cr => new { cr.UserID, cr.CourseID });
 
@@ -28,49 +43,31 @@ namespace DrugUsePreventionAPI.Data
             modelBuilder.Entity<ProgramParticipation>()
                 .HasKey(pp => new { pp.UserID, pp.ProgramID });
 
-            // Configure relationships
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleID);
-
-            modelBuilder.Entity<Blog>()
-                .HasOne(b => b.Author)
-                .WithMany(u => u.Blogs)
-                .HasForeignKey(b => b.AuthorID);
-
-            modelBuilder.Entity<Consultant>()
-                .HasOne(c => c.User)
-                .WithMany()
-                .HasForeignKey(c => c.UserID);
-
             modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.User)
-                .WithMany(u => u.Appointments)
-                .HasForeignKey(a => a.UserID);
-
-            modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.Consultant)
-                .WithMany(c => c.Appointments)
-                .HasForeignKey(a => a.ConsultantID);
-
-            // Configure decimal properties
-            modelBuilder.Entity<Course>()
-                .Property(c => c.Price)
-                .HasColumnType("decimal(10,2)");
+                .Property(a => a.Price)
+                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Consultant>()
                 .Property(c => c.HourlyRate)
-                .HasColumnType("decimal(10,2)");
+                .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Price)
-                .HasColumnType("decimal(10,2)");
+            modelBuilder.Entity<Course>()
+                .Property(c => c.Price)
+                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
-                .HasColumnType("decimal(10,2)");
-        }
+                .HasColumnType("decimal(18,2)");
 
-}
+            // Các cấu hình khóa composite
+            modelBuilder.Entity<CourseRegistration>()
+                .HasKey(cr => new { cr.UserID, cr.CourseID });
+
+            modelBuilder.Entity<CourseAssessment>()
+                .HasKey(ca => new { ca.CourseID, ca.AssessmentID });
+
+            modelBuilder.Entity<ProgramParticipation>()
+                .HasKey(pp => new { pp.UserID, pp.ProgramID });
+        }
+    }
 }
