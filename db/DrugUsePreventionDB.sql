@@ -276,5 +276,18 @@ ALTER TABLE Payments
 ADD CONSTRAINT CHK_Payments_Status CHECK (status IN ('PENDING','SUCCESS','FAILED'));
 GO
 
+-- Seed Roles
+INSERT INTO Roles (roleName, description)
+VALUES 
+    (N'Guest', N'Người dùng chưa đăng nhập'),
+	(N'Member', N'Người dùng đăng kí thành công'),
+    (N'Staff', N'Nhân viên tổ chức'),
+    (N'Consultant', N'Chuyên gia tư vấn'),
+    (N'Manager', N'Quản lý'),
+    (N'Admin', N'Quản trị viên');
+GO
 
+select * from Roles
 select * from Users
+
+
