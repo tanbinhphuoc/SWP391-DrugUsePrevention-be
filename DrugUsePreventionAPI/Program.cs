@@ -42,32 +42,8 @@ builder.Services.AddAuthorization();
 
 // Đăng ký service cho Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
-
-// Thêm controllers và swagger
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Drug Prevention API", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        Description = "Nhập token theo dạng: Bearer {token}"
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference{ Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            new string[] { }
-        }
-    });
-});
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICourseRegistrationService, CourseRegistrationService>();
 
 var app = builder.Build();
 
