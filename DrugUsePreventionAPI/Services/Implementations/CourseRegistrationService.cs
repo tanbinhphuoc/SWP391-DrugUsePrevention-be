@@ -2,6 +2,7 @@
 using DrugUsePreventionAPI.Models.DTOs.CourseRegistration;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -17,6 +18,11 @@ namespace DrugUsePreventionAPI.Services.Implementations
         }
         public async Task CreateCourseRegistrationAsync(CreateCourseRegistrationDto createCourseRegistrationDto)
         {
+            bool existedRegistration = await _context.CourseRegistrations.AnyAsync(a => a.UserID == createCourseRegistrationDto.userID && a.CourseID == createCourseRegistrationDto.courseID);
+            if (existedRegistration)
+            {
+                throw new Exception("Ban da dang ky khoa hoc nay!");
+            }
             CourseRegistration courseRegistration = new CourseRegistration()
             {
                 CourseID = createCourseRegistrationDto.courseID,
