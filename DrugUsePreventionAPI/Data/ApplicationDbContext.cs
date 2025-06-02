@@ -69,7 +69,45 @@ namespace DrugUsePreventionAPI.Data
 
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
-                .HasColumnType("decimal(10,2)");
+                .HasColumnType("decimal(18,2)");
+
+            // Các cấu hình khóa composite
+            modelBuilder.Entity<CourseRegistration>()
+                .HasKey(cr => new { cr.UserID, cr.CourseID });
+
+            modelBuilder.Entity<CourseAssessment>()
+                .HasKey(ca => new { ca.CourseID, ca.AssessmentID });
+
+            modelBuilder.Entity<ProgramParticipation>()
+                .HasKey(pp => new { pp.UserID, pp.ProgramID });
+            modelBuilder.Entity<Appointment>()
+    .HasOne(a => a.User)
+    .WithMany(u => u.Appointments)
+    .HasForeignKey(a => a.UserID)
+    .OnDelete(DeleteBehavior.Restrict); // hoặc DeleteBehavior.NoAction
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Consultant)
+                .WithMany(c => c.Appointments)
+                .HasForeignKey(a => a.ConsultantID)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SurveyResponse>()
+       .HasOne(sr => sr.User)
+       .WithMany(u => u.SurveyResponses)
+       .HasForeignKey(sr => sr.UserID)
+       .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SurveyResponse>()
+                .HasOne(sr => sr.Survey)
+                .WithMany(s => s.SurveyResponses)
+                .HasForeignKey(sr => sr.SurveyID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SurveyResponse>()
+                .HasOne(sr => sr.Program)
+                .WithMany(p => p.SurveyResponses)
+                .HasForeignKey(sr => sr.ProgramID)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 }
