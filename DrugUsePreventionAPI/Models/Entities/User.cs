@@ -43,7 +43,5 @@ namespace DrugUsePreventionAPI.Models.Entities
         public virtual ICollection<CourseRegistration> CourseRegistrations { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
-        public virtual ICollection<SurveyResponse> SurveyResponses { get; set; }
-
     }
 }
