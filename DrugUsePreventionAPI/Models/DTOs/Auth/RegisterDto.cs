@@ -22,6 +22,8 @@ namespace DrugUsePreventionAPI.Models.DTOs.Auth
         public string? Phone { get; set; }         
 
         [StringLength(255)]
-        public string? Address { get; set; }       
+        public string? Address { get; set; }
+
+       
     }
 }
