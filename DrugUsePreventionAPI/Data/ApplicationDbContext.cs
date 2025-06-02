@@ -96,7 +96,6 @@ namespace DrugUsePreventionAPI.Data
                 .WithMany(p => p.SurveyResponses)
                 .HasForeignKey(sr => sr.ProgramID)
                 .OnDelete(DeleteBehavior.Restrict);
-        }
 
             // Các cấu hình khóa composite
             modelBuilder.Entity<CourseRegistration>()
