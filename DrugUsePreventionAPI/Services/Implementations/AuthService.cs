@@ -1,5 +1,6 @@
 ﻿using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.DTOs.Auth;
+using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -24,30 +24,35 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<TokenDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _context.Users.Include(u => u.Role)
+            var user = await _context.Users
+                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.UserName == loginDto.UserName);
+
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             {
-                throw new UnauthorizedAccessException("Tên đăng nhập hoặc mật khẩu không đúng.");
+                throw new UnauthorizedAccessException("Invalid username or password.");
             }
 
             return GenerateJwtToken(user);
         }
 
-        public async Task<TokenDto> RegisterAsync(RegisterDto registerDto)
+        public async Task<TokenDto> RegisterAsync(RegisterDto registerDto, string? callerRole)
         {
+            // Check if username or email already exists
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == registerDto.UserName || u.Email == registerDto.Email);
-
-            if (existingUser != null)
+                .AnyAsync(u => u.UserName == registerDto.UserName || u.Email == registerDto.Email);
+            if (existingUser)
             {
-                throw new InvalidOperationException("Username hoặc email đã tồn tại.");
+                throw new InvalidOperationException("Username or email already exists.");
             }
 
-            var memberRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Member");
-            if (memberRole == null)
+            // Public registration luôn có role là "Member"(Người dùng tự tạo)
+            string assignedRoleName = "Member";
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(r => r.RoleName == assignedRoleName);
+            if (role == null)
             {
-                throw new InvalidOperationException("Default role 'Member' không tồn tại trong database.");
+                throw new InvalidOperationException($"Role '{assignedRoleName}' does not exist.");
             }
 
             var user = new User
@@ -59,43 +64,95 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 DateOfBirth = registerDto.DateOfBirth,
                 Phone = registerDto.Phone,
                 Address = registerDto.Address,
-                RoleID = memberRole.RoleID,
-                Status = "Active"
+                RoleID = role.RoleID,
+                Status = "Active",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            user.Role = role;
+
+            return GenerateJwtToken(user);
+        }
+
+        public async Task<UserDto> CreateUserByAdminAsync(CreateUserByAdminDto dto)
+        {
+            var existingUser = await _context.Users
+                .AnyAsync(u => u.UserName == dto.UserName || u.Email == dto.Email);
+            if (existingUser)
+            {
+                throw new InvalidOperationException("Username or email already exists.");
+            }
+
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(r => r.RoleName == dto.RoleName);
+            if (role == null)
+            {
+                throw new InvalidOperationException($"Role '{dto.RoleName}' does not exist.");
+            }
+
+            var user = new User
+            {
+                UserName = dto.UserName,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                Email = dto.Email,
+                FullName = dto.FullName,
+                DateOfBirth = dto.DateOfBirth,
+                Phone = dto.Phone,
+                Address = dto.Address,
+                RoleID = role.RoleID,
+                Status = "Active",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Đặt Role cho người dùng mới
-            user.Role = memberRole;
+            user.Role = role;
 
-            return GenerateJwtToken(user);
+            // Trả về UserDto 
+            return new UserDto
+            {
+                UserID = user.UserID,
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
+                DateOfBirth = user.DateOfBirth,
+                Phone = user.Phone,
+                Address = user.Address,
+                RoleName = role.RoleName,
+                Status = user.Status,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            };
         }
 
         private TokenDto GenerateJwtToken(User user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
-            var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "Member")
+                new Claim(ClaimTypes.Role, user.Role.RoleName)
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpireMinutes"]!)),
+                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpireMinutes"])),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = jwtSettings["Issuer"],
                 Audience = jwtSettings["Audience"]
             };
 
+            var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return new TokenDto
@@ -103,8 +160,16 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 Token = tokenHandler.WriteToken(token),
                 ExpiresAt = tokenDescriptor.Expires ?? DateTime.UtcNow,
                 UserName = user.UserName,
-                Email = user.Email
+                Email = user.Email,
+                Role = user.Role.RoleName,
+                UserId = user.UserID
             };
         }
+
+        public async Task<TokenDto> RegisterAsync(RegisterDto registerDto)
+        {
+            return await RegisterAsync(registerDto, null);
+        }
+
     }
 }
