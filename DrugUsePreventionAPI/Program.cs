@@ -75,6 +75,11 @@ builder.Services.AddAuthorization();
 // Register services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICourseRegistrationService, CourseRegistrationService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+
+
 
 var app = builder.Build();
 
