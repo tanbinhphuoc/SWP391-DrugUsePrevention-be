@@ -27,7 +27,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var user = await _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.UserName == loginDto.UserName);
-
+            //!BCrypt.Net.BCrypt.Verify ma hoa mat khau
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             {
                 throw new UnauthorizedAccessException("Invalid username or password.");
