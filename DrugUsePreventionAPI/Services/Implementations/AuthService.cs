@@ -46,8 +46,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new InvalidOperationException("Username or email already exists.");
             }
 
-            // Public registration luôn có role là "Member"(Người dùng tự tạo)
-            string assignedRoleName = "Member";
+            // Default to "Member" role if callerRole is null (public registration)
+            string assignedRoleName = callerRole ?? "Member";
             var role = await _context.Roles
                 .FirstOrDefaultAsync(r => r.RoleName == assignedRoleName);
             if (role == null)
@@ -79,6 +79,11 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<UserDto> CreateUserByAdminAsync(CreateUserByAdminDto dto)
         {
+            if (dto.RoleName == "Consultant")
+            {
+                throw new InvalidOperationException("Không tạo account cho Consultant ở đây.");
+            }
+
             var existingUser = await _context.Users
                 .AnyAsync(u => u.UserName == dto.UserName || u.Email == dto.Email);
             if (existingUser)
@@ -113,7 +118,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             user.Role = role;
 
-            // Trả về UserDto 
             return new UserDto
             {
                 UserID = user.UserID,
@@ -132,16 +136,16 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         private TokenDto GenerateJwtToken(User user)
         {
-            var jwtSettings = _configuration.GetSection("Jwt");
-            var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.RoleName)
-            };
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role.RoleName)
+        };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -170,6 +174,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             return await RegisterAsync(registerDto, null);
         }
-
     }
+
 }

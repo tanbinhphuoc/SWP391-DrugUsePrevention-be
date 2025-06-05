@@ -60,6 +60,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return consultants;
         }
 
+
         public async Task<IEnumerable<ConsultantScheduleDto>> GetConsultantSchedulesAsync(int consultantId, DateTime startDate, DateTime endDate)
         {
             var cacheKey = $"schedules_{consultantId}_{startDate:yyyyMMdd}_{endDate:yyyyMMdd}";
@@ -349,9 +350,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 - Note: {appointment.Note ?? "None"}
                 Please join the meeting at the scheduled time.";
 
-                // Send to member
                 await SendEmailAsync(memberEmail, subject, body);
-                // Send to consultant
                 await SendEmailAsync(consultantEmail, subject, body);
 
                 Log.Information("Sent confirmation emails for AppointmentID={AppointmentID}", appointment.AppointmentID);

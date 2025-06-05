@@ -30,14 +30,11 @@
 
 	<ItemGroup>
 		<Folder Include="Mappings\" />
+		<Folder Include="Migrations\" />
 		<Folder Include="Models\Entities\" />
-		<Folder Include="Models\DTOs\" />
 		<Folder Include="Models\DTOs\Appointment\" />
 		<Folder Include="Models\DTOs\Auth\" />
-		<Folder Include="Models\DTOs\User\" />
 		<Folder Include="Repositories\" />
-		<Folder Include="Services\Implementations\" />
-		<Folder Include="Services\Interfaces\" />
 	</ItemGroup>
 
 </Project>
