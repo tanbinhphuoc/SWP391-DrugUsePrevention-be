@@ -1,18 +1,20 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿using DrugPreventionAPI.Services.Implementations;
+using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Data.Extensions;
-using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Mappings;
+using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
-using Serilog;
 using Hangfire;
 using Hangfire.SqlServer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,10 +84,18 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ScheduleGenerator>();
+builder.Services.AddScoped<IConsultantService, ConsultantService>(); 
+
 
 // Configure JWT Authentication
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.ASCII.GetBytes(jwtSettings["Key"] ?? throw new InvalidOperationException("JWT Key is missing in configuration."));
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrEmpty(secretKey))
+{
+    throw new InvalidOperationException("JWT SecretKey is missing in configuration.");
+}
+var key = Encoding.ASCII.GetBytes(secretKey);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -93,21 +103,77 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Log.Error(context.Exception, "JWT Authentication failed: {Message}", context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Log.Warning("JWT Challenge: {Error}, {ErrorDescription}, User Authenticated: {IsAuthenticated}, Roles: {Roles}, Claims: {Claims}",
+                context.Error,
+                context.ErrorDescription,
+                context.HttpContext.User.Identity.IsAuthenticated,
+                context.HttpContext.User.Identity.IsAuthenticated
+                    ? string.Join(", ", context.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value))
+                    : "None",
+                context.HttpContext.User.Identity.IsAuthenticated
+                    ? string.Join(", ", context.HttpContext.User.Claims.Select(c => $"{c.Type}: {c.Value}"))
+                    : "None");
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var user = context.Principal;
+            if (user != null)
+            {
+                Log.Information("JWT Token validated successfully for user: {User}, Roles: {Roles}, Claims: {Claims}",
+                    user.Identity?.Name,
+                    string.Join(", ", user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)),
+                    string.Join(", ", user.Claims.Select(c => $"{c.Type}: {c.Value}")));
+            }
+            return Task.CompletedTask;
+        }
+    };
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["SecretKey"])),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.FromMinutes(5),
+        RoleClaimType = ClaimTypes.Role
     };
 });
 
-builder.Services.AddAuthorization();
+// Configure Authorization
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MemberOrGuest", policy => policy.RequireRole("Member", "Guest"));
+    options.AddPolicy("Consultant", policy => policy.RequireRole("Consultant"));
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireRole("Admin");
+        policy.RequireAssertion(context =>
+        {
+            var roles = context.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            Log.Information("Evaluating Admin policy for user: {User}, Available Roles: {Roles}",
+                context.User.Identity.Name,
+                string.Join(", ", roles));
+            return roles.Contains("Admin", StringComparer.OrdinalIgnoreCase);
+        });
+    });
+    options.AddPolicy("AdminOrManager", policy => policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("DefaultPolicy", policy => policy.RequireAuthenticatedUser());
+    options.DefaultPolicy = options.GetPolicy("DefaultPolicy");
+    options.InvokeHandlersAfterFailure = false;
+});
 
 var app = builder.Build();
 
@@ -134,36 +200,11 @@ else
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHangfireDashboard("/hangfire"); // Access at /hangfire
+app.UseHangfireDashboard("/hangfire");
 app.MapControllers();
-
-// Seed data
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    try
-    {
-        await context.Database.MigrateAsync();
-        await SeedAdminAsync(context); // Your existing admin seeding
-        await context.SeedTestDataAsync(); // Seed test members, consultants, and schedules
-    }
-    catch (Exception ex)
-    {
-        Log.Error(ex, "Error during database seeding");
-        throw;
-    }
-
-    // Schedule daily job for generating consultant schedules
-    var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-    recurringJobManager.AddOrUpdate<ScheduleGenerator>(
-        "generate-daily-schedules",
-        generator => generator.GenerateDailySchedulesAsync(DateTime.UtcNow.AddDays(1)),
-        Cron.Daily(0, 0)); // Run at midnight daily
-}
 
 app.Run();
 
-// Your existing SeedAdmin method, updated to async
 async Task SeedAdminAsync(ApplicationDbContext context)
 {
     try

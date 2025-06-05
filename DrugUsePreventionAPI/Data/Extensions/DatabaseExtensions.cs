@@ -1,4 +1,5 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿// File: DrugUsePreventionAPI/Data/Extensions/DatabaseExtensions.cs
+using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,13 +13,32 @@ namespace DrugUsePreventionAPI.Data.Extensions
         {
             try
             {
+                // Seed roles if they don't exist
+                if (!await context.Roles.AnyAsync(r => r.RoleName == "Admin"))
+                {
+                    context.Roles.Add(new Role { RoleName = "Admin", Description = "Administrator role" });
+                    await context.SaveChangesAsync();
+                    Serilog.Log.Information("Admin role seeded successfully");
+                }
+
+                if (!await context.Roles.AnyAsync(r => r.RoleName == "Member"))
+                {
+                    context.Roles.Add(new Role { RoleName = "Member", Description = "Member role" });
+                    await context.SaveChangesAsync();
+                    Serilog.Log.Information("Member role seeded successfully");
+                }
+
+                if (!await context.Roles.AnyAsync(r => r.RoleName == "Consultant"))
+                {
+                    context.Roles.Add(new Role { RoleName = "Consultant", Description = "Consultant role" });
+                    await context.SaveChangesAsync();
+                    Serilog.Log.Information("Consultant role seeded successfully");
+                }
+
                 // Seed a test member if none exist
                 if (!await context.Users.AnyAsync(u => u.Role.RoleName == "Member"))
                 {
                     var memberRole = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Member");
-                    if (memberRole == null)
-                        throw new InvalidOperationException("Member role not found.");
-
                     var member = new User
                     {
                         UserName = "member1",
@@ -39,9 +59,6 @@ namespace DrugUsePreventionAPI.Data.Extensions
                 if (!await context.Consultants.AnyAsync())
                 {
                     var consultantRole = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Consultant");
-                    if (consultantRole == null)
-                        throw new InvalidOperationException("Consultant role not found.");
-
                     var consultantUser = new User
                     {
                         UserName = "consultant1",
