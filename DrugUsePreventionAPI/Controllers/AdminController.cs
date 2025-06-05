@@ -98,7 +98,7 @@ namespace DrugUsePreventionAPI.Controllers
             {
                 var success = await _consultantService.DeleteConsultantAsync(id);
                 if (!success)
-                    return NotFound(new { message = "Consultant not found." });
+                    return NotFound(new { message = "Consultant không tồn tại." });
                 return NoContent();
             }
             catch (InvalidOperationException ex)
