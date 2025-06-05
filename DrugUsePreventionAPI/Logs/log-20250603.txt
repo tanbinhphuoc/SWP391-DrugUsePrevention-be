@@ -1,0 +1,747 @@
+2025-06-03 10:56:32.570 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 10:56:34.662 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 10:56:36.899 +07:00 [ERR] Failed executing DbCommand (54ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Assessments] (
+    [AssessmentID] int NOT NULL IDENTITY,
+    [AssessmentName] nvarchar(255) NOT NULL,
+    [Description] nvarchar(max) NULL,
+    [AssessmentType] nvarchar(10) NOT NULL,
+    [MinAge] int NULL,
+    [MaxAge] int NULL,
+    CONSTRAINT [PK_Assessments] PRIMARY KEY ([AssessmentID])
+);
+2025-06-03 10:56:36.988 +07:00 [ERR] Error during database seeding
+Microsoft.Data.SqlClient.SqlException (0x80131904): There is already an object named 'Assessments' in the database.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<InternalExecuteNonQueryAsync>b__210_1(IAsyncResult result)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Program.<Main>$(String[] args) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 146
+ClientConnectionId:99f79c0c-b70c-4aad-9494-adfe03469b14
+Error Number:2714,State:6,Class:16
+2025-06-03 11:09:51.233 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 11:09:53.175 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 11:09:57.481 +07:00 [ERR] Failed executing DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Assessments] (
+    [AssessmentID] int NOT NULL IDENTITY,
+    [AssessmentName] nvarchar(255) NOT NULL,
+    [Description] nvarchar(max) NULL,
+    [AssessmentType] nvarchar(10) NOT NULL,
+    [MinAge] int NULL,
+    [MaxAge] int NULL,
+    CONSTRAINT [PK_Assessments] PRIMARY KEY ([AssessmentID])
+);
+2025-06-03 11:09:57.635 +07:00 [ERR] Error during database seeding
+Microsoft.Data.SqlClient.SqlException (0x80131904): There is already an object named 'Assessments' in the database.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<InternalExecuteNonQueryAsync>b__210_1(IAsyncResult result)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Program.<Main>$(String[] args) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 146
+ClientConnectionId:5d8dff2e-76a6-4d30-98b8-249098477c2c
+Error Number:2714,State:6,Class:16
+2025-06-03 11:39:08.351 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 11:39:19.169 +07:00 [WRN] An exception occurred while trying to perform the migration. Retrying...
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot open database "DrugUsePreventionDB_V1" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.CompleteLogin(Boolean enlistOK)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open(SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open()
+   at Hangfire.SqlServer.SqlServerStorage.CreateAndOpenConnection() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 365
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 256
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.SqlServerStorage.Initialize() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 424
+ClientConnectionId:6c159491-6145-4237-969e-9f6021c65e6f
+Error Number:4060,State:1,Class:11
+2025-06-03 11:39:19.508 +07:00 [WRN] An exception occurred while trying to perform the migration. Retrying...
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot open database "DrugUsePreventionDB_V1" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open(SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open()
+   at Hangfire.SqlServer.SqlServerStorage.CreateAndOpenConnection() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 365
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 256
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.SqlServerStorage.Initialize() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 424
+ClientConnectionId:6c159491-6145-4237-969e-9f6021c65e6f
+Error Number:4060,State:1,Class:11
+2025-06-03 11:39:19.513 +07:00 [WRN] An exception occurred while trying to perform the migration.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot open database "DrugUsePreventionDB_V1" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open(SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open()
+   at Hangfire.SqlServer.SqlServerStorage.CreateAndOpenConnection() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 365
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 256
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.SqlServerStorage.Initialize() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 424
+ClientConnectionId:6c159491-6145-4237-969e-9f6021c65e6f
+Error Number:4060,State:1,Class:11
+2025-06-03 11:39:19.519 +07:00 [WRN] Was unable to perform the Hangfire schema migration due to an exception. Ignore this message unless you've just installed or upgraded Hangfire.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot open database "DrugUsePreventionDB_V1" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open(SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open()
+   at Hangfire.SqlServer.SqlServerStorage.CreateAndOpenConnection() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 365
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 256
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.SqlServerStorage.Initialize() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 424
+ClientConnectionId:6c159491-6145-4237-969e-9f6021c65e6f
+Error Number:4060,State:1,Class:11
+2025-06-03 11:39:19.525 +07:00 [ERR] Was unable to use the TryAutoDetectSchemaDependentOptions option due to an exception.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot open database "DrugUsePreventionDB_V1" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open(SqlConnectionOverrides overrides)
+   at Microsoft.Data.SqlClient.SqlConnection.Open()
+   at Hangfire.SqlServer.SqlServerStorage.CreateAndOpenConnection() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 365
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 256
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.SqlServerStorage.Initialize() in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 455
+ClientConnectionId:6c159491-6145-4237-969e-9f6021c65e6f
+Error Number:4060,State:1,Class:11
+2025-06-03 11:39:23.636 +07:00 [INF] Admin user seeded successfully
+2025-06-03 11:39:23.847 +07:00 [ERR] Error seeding test data
+System.InvalidOperationException: Member role not found.
+   at DrugUsePreventionAPI.Data.Extensions.DatabaseExtensions.SeedTestDataAsync(ApplicationDbContext context) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Data\Extensions\DatabaseExtensions.cs:line 20
+2025-06-03 11:39:23.950 +07:00 [ERR] Error during database seeding
+System.InvalidOperationException: Member role not found.
+   at DrugUsePreventionAPI.Data.Extensions.DatabaseExtensions.SeedTestDataAsync(ApplicationDbContext context) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Data\Extensions\DatabaseExtensions.cs:line 20
+   at Program.<Main>$(String[] args) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 148
+2025-06-03 11:44:33.497 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 11:44:34.523 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 11:44:36.253 +07:00 [ERR] Failed executing DbCommand (58ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Assessments] (
+    [AssessmentID] int NOT NULL IDENTITY,
+    [AssessmentName] nvarchar(255) NOT NULL,
+    [Description] nvarchar(max) NULL,
+    [AssessmentType] nvarchar(10) NOT NULL,
+    [MinAge] int NULL,
+    [MaxAge] int NULL,
+    CONSTRAINT [PK_Assessments] PRIMARY KEY ([AssessmentID])
+);
+2025-06-03 11:44:36.334 +07:00 [ERR] Error during database seeding
+Microsoft.Data.SqlClient.SqlException (0x80131904): There is already an object named 'Assessments' in the database.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<InternalExecuteNonQueryAsync>b__210_1(IAsyncResult result)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Program.<Main>$(String[] args) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 146
+ClientConnectionId:e9beb029-a3cc-4dec-9c68-ac1def66ae4a
+Error Number:2714,State:6,Class:16
+2025-06-03 14:28:06.859 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 14:28:14.271 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 14:28:15.895 +07:00 [ERR] Failed executing DbCommand (53ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Assessments] (
+    [AssessmentID] int NOT NULL IDENTITY,
+    [AssessmentName] nvarchar(255) NOT NULL,
+    [Description] nvarchar(max) NULL,
+    [AssessmentType] nvarchar(10) NOT NULL,
+    [MinAge] int NULL,
+    [MaxAge] int NULL,
+    CONSTRAINT [PK_Assessments] PRIMARY KEY ([AssessmentID])
+);
+2025-06-03 14:28:15.979 +07:00 [ERR] Error during database seeding
+Microsoft.Data.SqlClient.SqlException (0x80131904): There is already an object named 'Assessments' in the database.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<InternalExecuteNonQueryAsync>b__210_1(IAsyncResult result)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Program.<Main>$(String[] args) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 146
+ClientConnectionId:9f556f6c-8c5c-486f-a841-6807ea349035
+Error Number:2714,State:6,Class:16
+2025-06-03 14:29:20.525 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 14:29:34.528 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 14:29:37.029 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 14:29:38.480 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 14:29:38.483 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 14:29:38.486 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 14:29:38.539 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 successfully announced in 20.6605 ms
+2025-06-03 14:29:38.575 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 14:29:38.865 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 all the dispatchers started
+2025-06-03 14:29:39.642 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 14:51:40.047 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 14:51:40.079 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 caught stopping signal...
+2025-06-03 14:51:40.104 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 caught stopped signal...
+2025-06-03 14:51:40.153 +07:00 [WRN] Server laptop-qlc4gki0:4772:f9d11434 caught shutdown signal...
+2025-06-03 14:51:40.214 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 All dispatchers stopped
+2025-06-03 14:51:40.336 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 successfully reported itself as stopped in 96.5158 ms
+2025-06-03 14:51:40.340 +07:00 [INF] Server laptop-qlc4gki0:4772:f9d11434 has been stopped in total 239.3333 ms
+2025-06-03 14:52:01.103 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 14:52:03.353 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 14:52:05.897 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 14:52:06.675 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 14:52:06.677 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 14:52:06.677 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 14:52:06.717 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 successfully announced in 17.6992 ms
+2025-06-03 14:52:06.727 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 14:52:06.888 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 all the dispatchers started
+2025-06-03 15:09:58.018 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 15:09:58.041 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 caught stopping signal...
+2025-06-03 15:09:58.071 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 caught stopped signal...
+2025-06-03 15:09:58.076 +07:00 [WRN] Server laptop-qlc4gki0:31904:ad24b2b6 caught shutdown signal...
+2025-06-03 15:09:58.175 +07:00 [WRN] Server laptop-qlc4gki0:31904:ad24b2b6 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-03 15:09:58.211 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 successfully reported itself as stopped in 20.8117 ms
+2025-06-03 15:09:58.212 +07:00 [INF] Server laptop-qlc4gki0:31904:ad24b2b6 has been stopped in total 141.407 ms
+2025-06-03 15:13:10.695 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 15:13:12.157 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 15:13:14.498 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 15:13:15.347 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 15:13:15.350 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 15:13:15.352 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 15:13:15.399 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 successfully announced in 19.5546 ms
+2025-06-03 15:13:15.408 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 15:13:15.546 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 all the dispatchers started
+2025-06-03 15:15:54.730 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoding.ValidateAndGetOutputSize(ReadOnlySpan`1 strSpan, Int32 offset, Int32 length)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-06-03 15:15:54.803 +07:00 [WRN] JWT Challenge: invalid_token, 
+2025-06-03 15:25:50.689 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 15:25:50.711 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 caught stopping signal...
+2025-06-03 15:25:50.732 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 caught stopped signal...
+2025-06-03 15:25:50.734 +07:00 [WRN] Server laptop-qlc4gki0:21060:a1243475 caught shutdown signal...
+2025-06-03 15:25:50.950 +07:00 [WRN] Server laptop-qlc4gki0:21060:a1243475 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-03 15:25:51.066 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 successfully reported itself as stopped in 86.3397 ms
+2025-06-03 15:25:51.070 +07:00 [INF] Server laptop-qlc4gki0:21060:a1243475 has been stopped in total 337.7447 ms
+2025-06-03 15:26:43.605 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 15:26:44.799 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 15:26:49.088 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 15:26:50.002 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 15:26:50.008 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 15:26:50.011 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 15:26:50.073 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 successfully announced in 20.305 ms
+2025-06-03 15:26:50.084 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 15:26:50.218 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 all the dispatchers started
+2025-06-03 15:31:35.102 +07:00 [INF] Evaluating Admin policy for user: null, Available Roles: 
+2025-06-03 15:31:35.154 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-06-03 15:37:29.946 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 15:37:29.979 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 caught stopping signal...
+2025-06-03 15:37:30.143 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 caught stopped signal...
+2025-06-03 15:37:30.165 +07:00 [WRN] Server laptop-qlc4gki0:15628:fc6cc135 caught shutdown signal...
+2025-06-03 15:37:30.192 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 All dispatchers stopped
+2025-06-03 15:37:30.286 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 successfully reported itself as stopped in 41.576 ms
+2025-06-03 15:37:30.293 +07:00 [INF] Server laptop-qlc4gki0:15628:fc6cc135 has been stopped in total 149.7721 ms
+2025-06-03 15:38:14.151 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 15:38:15.782 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 15:38:18.392 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 15:38:19.279 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 15:38:19.281 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 15:38:19.282 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 15:38:19.542 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a successfully announced in 229.6279 ms
+2025-06-03 15:38:19.586 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 15:38:19.704 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a all the dispatchers started
+2025-06-03 15:40:52.597 +07:00 [INF] Evaluating Admin policy for user: null, Available Roles: 
+2025-06-03 15:40:52.611 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-06-03 15:41:36.346 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoding.ValidateAndGetOutputSize(ReadOnlySpan`1 strSpan, Int32 offset, Int32 length)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-06-03 15:41:36.377 +07:00 [INF] Evaluating Admin policy for user: null, Available Roles: 
+2025-06-03 15:41:36.380 +07:00 [WRN] JWT Challenge: invalid_token, , User Authenticated: false, Roles: None, Claims: None
+2025-06-03 15:41:42.145 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoding.ValidateAndGetOutputSize(ReadOnlySpan`1 strSpan, Int32 offset, Int32 length)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-06-03 15:42:01.278 +07:00 [INF] Evaluating Admin policy for user: null, Available Roles: 
+2025-06-03 15:42:01.282 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-06-03 15:42:38.082 +07:00 [INF] Evaluating Admin policy for user: null, Available Roles: 
+2025-06-03 15:42:38.084 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-06-03 15:44:07.005 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 15:44:07.021 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a caught stopping signal...
+2025-06-03 15:44:07.087 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a caught stopped signal...
+2025-06-03 15:44:07.089 +07:00 [WRN] Server laptop-qlc4gki0:19976:f622261a caught shutdown signal...
+2025-06-03 15:44:07.126 +07:00 [WRN] Server laptop-qlc4gki0:19976:f622261a stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-03 15:44:07.204 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a successfully reported itself as stopped in 63.6967 ms
+2025-06-03 15:44:07.205 +07:00 [INF] Server laptop-qlc4gki0:19976:f622261a has been stopped in total 119.0951 ms
+2025-06-03 21:05:52.778 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 21:05:55.319 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 21:05:59.091 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 21:06:00.308 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 21:06:00.310 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 21:06:00.312 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 21:06:00.537 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 successfully announced in 38.8905 ms
+2025-06-03 21:06:00.548 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 21:06:00.716 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 all the dispatchers started
+2025-06-03 21:12:06.308 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748959579, exp: 1749045979, iat: 1748959579, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 21:12:06.459 +07:00 [INF] Evaluating Admin policy for user: null, Available Roles: 
+2025-06-03 21:17:14.920 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 21:17:14.952 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 caught stopping signal...
+2025-06-03 21:17:15.172 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 caught stopped signal...
+2025-06-03 21:17:15.197 +07:00 [WRN] Server laptop-qlc4gki0:19504:1fcde449 caught shutdown signal...
+2025-06-03 21:17:15.197 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 All dispatchers stopped
+2025-06-03 21:17:15.484 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 successfully reported itself as stopped in 262.0341 ms
+2025-06-03 21:17:15.486 +07:00 [INF] Server laptop-qlc4gki0:19504:1fcde449 has been stopped in total 324.0888 ms
+2025-06-03 21:26:58.172 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 21:26:59.867 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 21:27:03.452 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 21:27:05.266 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 21:27:05.269 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 21:27:05.271 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 21:27:05.654 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 successfully announced in 335.8049 ms
+2025-06-03 21:27:05.675 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 21:27:05.869 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 all the dispatchers started
+2025-06-03 21:28:44.149 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748960843, exp: 1749047243, iat: 1748960843, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 21:29:17.967 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 21:29:17.970 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 caught stopping signal...
+2025-06-03 21:29:18.010 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 caught stopped signal...
+2025-06-03 21:29:18.014 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 All dispatchers stopped
+2025-06-03 21:29:18.015 +07:00 [WRN] Server laptop-qlc4gki0:19824:43ba49d2 caught shutdown signal...
+2025-06-03 21:29:18.063 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 successfully reported itself as stopped in 31.9797 ms
+2025-06-03 21:29:18.067 +07:00 [INF] Server laptop-qlc4gki0:19824:43ba49d2 has been stopped in total 58.5934 ms
+2025-06-03 21:50:18.460 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 21:50:50.574 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 21:50:55.913 +07:00 [INF] Generated 8 schedules for date 2025-06-04
+2025-06-03 21:50:57.108 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 21:50:57.113 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 21:50:57.115 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 21:50:57.192 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 successfully announced in 28.7658 ms
+2025-06-03 21:50:57.201 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 21:50:57.477 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 all the dispatchers started
+2025-06-03 21:53:06.261 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748962281, exp: 1749048681, iat: 1748962281, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 21:53:32.628 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 21:53:32.633 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 caught stopping signal...
+2025-06-03 21:53:32.643 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 caught stopped signal...
+2025-06-03 21:53:32.664 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 All dispatchers stopped
+2025-06-03 21:53:32.665 +07:00 [WRN] Server laptop-qlc4gki0:21152:831e5fc9 caught shutdown signal...
+2025-06-03 21:53:32.703 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 successfully reported itself as stopped in 27.8097 ms
+2025-06-03 21:53:32.705 +07:00 [INF] Server laptop-qlc4gki0:21152:831e5fc9 has been stopped in total 62.9213 ms
+2025-06-03 22:06:55.930 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:06:59.266 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:07:00.121 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:07:00.122 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:07:00.122 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:07:00.546 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 successfully announced in 394.1324 ms
+2025-06-03 22:07:00.558 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:07:00.664 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 all the dispatchers started
+2025-06-03 22:09:04.628 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748963265, exp: 1749049665, iat: 1748963265, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 22:17:38.114 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:17:38.145 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 caught stopping signal...
+2025-06-03 22:17:38.224 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 caught stopped signal...
+2025-06-03 22:17:38.231 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 All dispatchers stopped
+2025-06-03 22:17:38.232 +07:00 [WRN] Server laptop-qlc4gki0:26388:43b5e344 caught shutdown signal...
+2025-06-03 22:17:38.304 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 successfully reported itself as stopped in 55.4088 ms
+2025-06-03 22:17:38.305 +07:00 [INF] Server laptop-qlc4gki0:26388:43b5e344 has been stopped in total 81.1286 ms
+2025-06-03 22:21:07.422 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:21:08.864 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:21:09.509 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:21:09.510 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:21:09.511 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:21:09.972 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b successfully announced in 439.8695 ms
+2025-06-03 22:21:09.981 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:21:10.082 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b all the dispatchers started
+2025-06-03 22:21:29.098 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentNullException: Value cannot be null. (Parameter 's')
+   at System.ArgumentNullException.Throw(String paramName)
+   at System.Text.Encoding.GetBytes(String s)
+   at DrugUsePreventionAPI.Services.Implementations.AuthService.GenerateJwtToken(User user) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AuthService.cs:line 136
+   at DrugUsePreventionAPI.Services.Implementations.AuthService.LoginAsync(LoginDto loginDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AuthService.cs:line 36
+   at DrugUsePreventionAPI.Controllers.AuthController.Login(LoginDto loginDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AuthController.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-03 22:27:44.356 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:27:44.368 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b caught stopping signal...
+2025-06-03 22:27:44.397 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b caught stopped signal...
+2025-06-03 22:27:44.447 +07:00 [WRN] Server laptop-qlc4gki0:11876:22d60d5b caught shutdown signal...
+2025-06-03 22:27:44.451 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b All dispatchers stopped
+2025-06-03 22:27:44.479 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b successfully reported itself as stopped in 9.6564 ms
+2025-06-03 22:27:44.480 +07:00 [INF] Server laptop-qlc4gki0:11876:22d60d5b has been stopped in total 84.5376 ms
+2025-06-03 22:28:03.332 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:28:04.757 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:28:05.403 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:28:05.405 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:28:05.406 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:28:05.578 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb successfully announced in 148.4931 ms
+2025-06-03 22:28:05.589 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:28:06.059 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb all the dispatchers started
+2025-06-03 22:28:50.978 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentNullException: Value cannot be null. (Parameter 's')
+   at System.ArgumentNullException.Throw(String paramName)
+   at System.Text.Encoding.GetBytes(String s)
+   at DrugUsePreventionAPI.Services.Implementations.AuthService.GenerateJwtToken(User user) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AuthService.cs:line 136
+   at DrugUsePreventionAPI.Services.Implementations.AuthService.LoginAsync(LoginDto loginDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AuthService.cs:line 36
+   at DrugUsePreventionAPI.Controllers.AuthController.Login(LoginDto loginDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AuthController.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-03 22:30:06.497 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentNullException: Value cannot be null. (Parameter 's')
+   at System.ArgumentNullException.Throw(String paramName)
+   at System.Text.Encoding.GetBytes(String s)
+   at DrugUsePreventionAPI.Services.Implementations.AuthService.GenerateJwtToken(User user) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AuthService.cs:line 136
+   at DrugUsePreventionAPI.Services.Implementations.AuthService.LoginAsync(LoginDto loginDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AuthService.cs:line 36
+   at DrugUsePreventionAPI.Controllers.AuthController.Login(LoginDto loginDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AuthController.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-03 22:32:34.331 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:32:34.336 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb caught stopping signal...
+2025-06-03 22:32:34.343 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb caught stopped signal...
+2025-06-03 22:32:34.345 +07:00 [WRN] Server laptop-qlc4gki0:18768:9ffc7abb caught shutdown signal...
+2025-06-03 22:32:34.368 +07:00 [WRN] Server laptop-qlc4gki0:18768:9ffc7abb stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-03 22:32:34.417 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb successfully reported itself as stopped in 42.3057 ms
+2025-06-03 22:32:34.417 +07:00 [INF] Server laptop-qlc4gki0:18768:9ffc7abb has been stopped in total 75.1475 ms
+2025-06-03 22:33:17.366 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:33:20.457 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:33:21.497 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:33:21.502 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:33:21.507 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:33:21.758 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 successfully announced in 216.8859 ms
+2025-06-03 22:33:21.766 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:33:21.855 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 all the dispatchers started
+2025-06-03 22:34:39.055 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748964821, exp: 1749051221, iat: 1748964821, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 22:37:02.449 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:37:02.453 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 caught stopping signal...
+2025-06-03 22:37:02.496 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 caught stopped signal...
+2025-06-03 22:37:02.497 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 All dispatchers stopped
+2025-06-03 22:37:02.498 +07:00 [WRN] Server laptop-qlc4gki0:30188:a9aa6d30 caught shutdown signal...
+2025-06-03 22:37:02.561 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 successfully reported itself as stopped in 52.4696 ms
+2025-06-03 22:37:02.562 +07:00 [INF] Server laptop-qlc4gki0:30188:a9aa6d30 has been stopped in total 66.2534 ms
+2025-06-03 22:39:28.385 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:39:29.523 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:39:30.265 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:39:30.268 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:39:30.269 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:39:30.460 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 successfully announced in 163.5526 ms
+2025-06-03 22:39:30.467 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:39:30.571 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 all the dispatchers started
+2025-06-03 22:40:31.053 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748965191, exp: 1749051591, iat: 1748965191, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 22:42:00.992 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:42:00.996 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 caught stopping signal...
+2025-06-03 22:42:01.013 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 caught stopped signal...
+2025-06-03 22:42:01.018 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 All dispatchers stopped
+2025-06-03 22:42:01.018 +07:00 [WRN] Server laptop-qlc4gki0:31596:4c9c1c14 caught shutdown signal...
+2025-06-03 22:42:01.049 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 successfully reported itself as stopped in 22.1464 ms
+2025-06-03 22:42:01.050 +07:00 [INF] Server laptop-qlc4gki0:31596:4c9c1c14 has been stopped in total 40.3637 ms
+2025-06-03 22:48:11.167 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:48:13.178 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:48:14.092 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:48:14.096 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:48:14.098 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:48:14.530 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 successfully announced in 399.9368 ms
+2025-06-03 22:48:14.541 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:48:14.700 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 all the dispatchers started
+2025-06-03 22:49:30.118 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:49:30.123 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 caught stopping signal...
+2025-06-03 22:49:30.130 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 caught stopped signal...
+2025-06-03 22:49:30.148 +07:00 [WRN] Server laptop-qlc4gki0:20660:a0f786d8 caught shutdown signal...
+2025-06-03 22:49:30.160 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 All dispatchers stopped
+2025-06-03 22:49:30.249 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 successfully reported itself as stopped in 85.7883 ms
+2025-06-03 22:49:30.252 +07:00 [INF] Server laptop-qlc4gki0:20660:a0f786d8 has been stopped in total 122.8189 ms
+2025-06-03 22:49:44.968 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 22:49:54.483 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 22:49:55.336 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 22:49:55.342 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 22:49:55.347 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 22:49:56.152 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 successfully announced in 751.7407 ms
+2025-06-03 22:49:56.168 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 22:49:56.335 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 all the dispatchers started
+2025-06-03 22:50:49.983 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748965816, exp: 1749052216, iat: 1748965816, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 22:55:40.467 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 22:55:40.498 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 caught stopping signal...
+2025-06-03 22:55:40.682 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 caught stopped signal...
+2025-06-03 22:55:40.691 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 All dispatchers stopped
+2025-06-03 22:55:40.697 +07:00 [WRN] Server laptop-qlc4gki0:14520:95d66cc9 caught shutdown signal...
+2025-06-03 22:55:40.761 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 successfully reported itself as stopped in 34.7857 ms
+2025-06-03 22:55:40.766 +07:00 [INF] Server laptop-qlc4gki0:14520:95d66cc9 has been stopped in total 94.9677 ms
+2025-06-03 23:00:14.285 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 23:00:16.682 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 23:00:17.418 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 23:00:17.420 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 23:00:17.422 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 23:00:17.689 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 successfully announced in 237.3988 ms
+2025-06-03 23:00:17.697 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 23:00:17.811 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 all the dispatchers started
+2025-06-03 23:09:14.466 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 23:09:14.480 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 caught stopping signal...
+2025-06-03 23:09:14.563 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 caught stopped signal...
+2025-06-03 23:09:14.564 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 All dispatchers stopped
+2025-06-03 23:09:14.564 +07:00 [WRN] Server laptop-qlc4gki0:24468:c56e76d4 caught shutdown signal...
+2025-06-03 23:09:14.587 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 successfully reported itself as stopped in 13.4487 ms
+2025-06-03 23:09:14.590 +07:00 [INF] Server laptop-qlc4gki0:24468:c56e76d4 has been stopped in total 26.6746 ms
+2025-06-03 23:10:49.641 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 23:10:50.963 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 23:10:51.827 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 23:10:51.833 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 23:10:51.837 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 23:10:52.248 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 successfully announced in 355.1556 ms
+2025-06-03 23:10:52.255 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 23:10:52.357 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 all the dispatchers started
+2025-06-03 23:12:37.955 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-06-03 23:13:16.158 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748967170, exp: 1749053570, iat: 1748967170, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 23:13:22.375 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748967170, exp: 1749053570, iat: 1748967170, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 23:13:41.530 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoding.ValidateAndGetOutputSize(ReadOnlySpan`1 strSpan, Int32 offset, Int32 length)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-06-03 23:13:41.579 +07:00 [WRN] JWT Challenge: invalid_token, , User Authenticated: false, Roles: None, Claims: None
+2025-06-03 23:14:13.406 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoding.ValidateAndGetOutputSize(ReadOnlySpan`1 strSpan, Int32 offset, Int32 length)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-06-03 23:14:13.416 +07:00 [WRN] JWT Challenge: invalid_token, , User Authenticated: false, Roles: None, Claims: None
+2025-06-03 23:14:17.727 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoding.ValidateAndGetOutputSize(ReadOnlySpan`1 strSpan, Int32 offset, Int32 length)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-06-03 23:14:42.029 +07:00 [INF] JWT Token validated successfully for user: null, Roles: , Claims: nameid: 1, unique_name: admin, email: admin@example.com, role: Admin, nbf: 1748967257, exp: 1749053657, iat: 1748967257, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 23:24:36.999 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 23:24:37.014 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 caught stopping signal...
+2025-06-03 23:24:37.047 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 caught stopped signal...
+2025-06-03 23:24:37.057 +07:00 [WRN] Server laptop-qlc4gki0:31728:871139c4 caught shutdown signal...
+2025-06-03 23:24:37.101 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 All dispatchers stopped
+2025-06-03 23:24:37.170 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 successfully reported itself as stopped in 44.2866 ms
+2025-06-03 23:24:37.171 +07:00 [INF] Server laptop-qlc4gki0:31728:871139c4 has been stopped in total 128.1803 ms
+2025-06-03 23:25:02.194 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-03 23:25:03.344 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-03 23:25:04.088 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-03 23:25:04.095 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-03 23:25:04.101 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-03 23:25:04.511 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b successfully announced in 352.1949 ms
+2025-06-03 23:25:04.524 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-03 23:25:04.650 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b all the dispatchers started
+2025-06-03 23:30:37.488 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1748968182, exp: 1749054582, iat: 1748968182, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-03 23:48:18.286 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-03 23:48:18.325 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b caught stopping signal...
+2025-06-03 23:48:18.363 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b caught stopped signal...
+2025-06-03 23:48:18.427 +07:00 [WRN] Server laptop-qlc4gki0:32260:902d060b caught shutdown signal...
+2025-06-03 23:48:18.523 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b All dispatchers stopped
+2025-06-03 23:48:18.580 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b successfully reported itself as stopped in 33.4788 ms
+2025-06-03 23:48:18.582 +07:00 [INF] Server laptop-qlc4gki0:32260:902d060b has been stopped in total 233.369 ms

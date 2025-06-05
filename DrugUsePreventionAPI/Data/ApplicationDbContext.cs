@@ -106,6 +106,9 @@ namespace DrugUsePreventionAPI.Data
 
             modelBuilder.Entity<ProgramParticipation>()
                 .HasKey(pp => new { pp.UserID, pp.ProgramID });
+
+            modelBuilder.Entity<ConsultantSchedule>()
+                .HasIndex(s => new { s.ConsultantID, s.Date, s.IsAvailable });
         }
     }
 }

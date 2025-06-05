@@ -19,7 +19,7 @@ namespace DrugUsePreventionAPI.Helpers
         public string GenerateJwtToken(int userId, string userName, string roleName)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]!);
+            var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]!); 
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var claims = new[]
@@ -32,7 +32,7 @@ namespace DrugUsePreventionAPI.Helpers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpireMinutes"]!)),
+                Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpireMinutes"]!)), 
                 Issuer = jwtSettings["Issuer"],
                 Audience = jwtSettings["Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
