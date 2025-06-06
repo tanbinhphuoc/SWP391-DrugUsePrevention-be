@@ -11,5 +11,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<Assessment?> GetAssessmentById(int id);
         Task<bool> UpdateAssessment(int id, CreateAssessmentDto assessmentDto);
         Task<bool> DeleteAssessment(int id);
+        Task<List<Assessment>> GetAssessmentByAge(int age);
+        
     }
 }

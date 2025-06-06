@@ -87,6 +87,10 @@ builder.Services.AddScoped<ScheduleGenerator>();
 builder.Services.AddScoped<IConsultantService, ConsultantService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+
 
 
 // Configure JWT Authentication

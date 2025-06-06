@@ -22,6 +22,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
+                if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Craft")
+                {
+                    return false;
+                }
                 var assessment = new Assessment()
                 {
                     AssessmentName = assessmentDto.AssessmentName,
@@ -41,6 +45,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
         }
         public async Task <bool> UpdateAssessment(int id, CreateAssessmentDto assessmentDto)
         {
+            if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Craft")
+            {
+                return false;
+            }
             var assessment = await _context.Assessments.FindAsync(id);
             if (assessment == null)
                 return false;
@@ -70,6 +78,18 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             return await _context.Assessments.FindAsync(id);
         }
+        public async Task<List<Assessment>> GetAssessmentByAge(int age)
+        {
+            var assessment = _context.Assessments;
+            if (age <= 18)
+            {
+                return await assessment.Where(a => a.AssessmentType.Equals("Assist")).ToListAsync();
+            }
+            else
+            {
+                return await assessment.Where(a => a.AssessmentType.Equals("Crafft")).ToListAsync();
+            }
+        }
 
         public async Task<bool> DeleteAssessment(int id)
         {
@@ -89,5 +109,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
+       
     }
 }
