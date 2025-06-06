@@ -38,7 +38,7 @@ namespace DrugUsePreventionAPI.Controllers
             if (result)
             return Ok(new { mesage = "Cập nhật Assessment thành công" });
 
-            return NotFound(new { mesage = "Cập nhật Assessment thất bại" });
+            return BadRequest(new { mesage = "Cập nhật Assessment thất bại" });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -68,7 +68,19 @@ namespace DrugUsePreventionAPI.Controllers
             var result = await _assessmentService.DeleteAssessment(id);
             if (result)
                 return Ok(new { message = "Xóa Assessment Thành Công." });
-            return NotFound(new { message = "Xóa Assessment Thất Bại." });
+            return BadRequest(new { message = "Xóa Assessment Thất Bại." });
+        }
+        /// <summary>
+        /// lấy assm theo độ tuổi
+        /// </summary>
+        /// <param name="age" độ tuổi của user ></param>
+        /// <returns> Nếu user dưới 18 tuổi sẽ đưa ra danh sách những bài Assist, trên 20 tuổi sẽ đưa ra danh sách các bài Craft </returns>
+        //[Authorize(Roles = "Admin,Manager")]
+        [HttpGet("GetAssessmentByAge")]
+        public async Task<IActionResult> GetAssessmentByAge(int age)
+        {
+            var assessment = await _assessmentService.GetAssessmentByAge(age);
+            return Ok(assessment);
         }
     }
 }

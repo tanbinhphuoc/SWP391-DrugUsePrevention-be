@@ -23,6 +23,8 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         // Navigation properties
         public virtual ICollection<CourseAssessment> CourseAssessments { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
+
         public virtual ICollection<AssessmentResult> AssessmentResults { get; set; }
     }
 }
