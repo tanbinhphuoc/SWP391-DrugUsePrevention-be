@@ -1,5 +1,4 @@
-﻿
-CREATE DATABASE DrugUsePreventionDB;
+﻿CREATE DATABASE DrugUsePreventionDB;
 GO
 
 USE DrugUsePreventionDB;
@@ -55,8 +54,8 @@ CREATE TABLE Consultants (
 );
 GO
 
--- 5. Consultant_Schedules
-CREATE TABLE Consultant_Schedules (
+-- 5. ConsultantSchedules
+CREATE TABLE ConsultantSchedules (
   scheduleID INT IDENTITY(1,1) PRIMARY KEY,
   consultantID INT NOT NULL,
   dayOfWeek NVARCHAR(50) NOT NULL,
@@ -105,12 +104,12 @@ ALTER TABLE Blogs
 ADD CONSTRAINT CHK_Blogs_Status CHECK (status IN ('PENDING','APPROVED','REJECTED'));
 GO
 
--- 8. Course_Registrations
-CREATE TABLE Course_Registrations (
+-- 8. CourseRegistrations
+CREATE TABLE CourseRegistrations (
   userID INT NOT NULL,
   courseID INT NOT NULL,
   registerTime DATETIME2 NOT NULL DEFAULT GETDATE(),
-  CONSTRAINT PK_Course_Registrations PRIMARY KEY (userID, courseID),
+  CONSTRAINT PK_CourseRegistrations PRIMARY KEY (userID, courseID),
   CONSTRAINT FK_CourseRegistrations_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_CourseRegistrations_Courses FOREIGN KEY (courseID) REFERENCES Courses(courseID)
 );
@@ -137,8 +136,8 @@ ALTER TABLE Appointments
 ADD CONSTRAINT CHK_Appointments_Status CHECK (status IN ('PENDING_PAYMENT','CONFIRMED','CANCELED'));
 GO
 
--- 10. Consultant_Appointment_Evaluations
-CREATE TABLE Consultant_Appointment_Evaluations (
+-- 10. ConsultantAppointmentEvaluations
+CREATE TABLE ConsultantAppointmentEvaluations (
   evaluationID INT IDENTITY(1,1) PRIMARY KEY,
   appointmentID INT NOT NULL,
   userID INT NOT NULL,
@@ -164,18 +163,18 @@ ALTER TABLE Assessments
 ADD CONSTRAINT CHK_Assessments_Type CHECK (assessmentType IN ('PRE','POST'));
 GO
 
--- 12. Course_Assessments
-CREATE TABLE Course_Assessments (
+-- 12. CourseAssessments
+CREATE TABLE CourseAssessments (
   courseID INT NOT NULL,
   assessmentID INT NOT NULL,
-  CONSTRAINT PK_Course_Assessments PRIMARY KEY (courseID, assessmentID),
+  CONSTRAINT PK_CourseAssessments PRIMARY KEY (courseID, assessmentID),
   CONSTRAINT FK_CourseAssessments_Courses FOREIGN KEY (courseID) REFERENCES Courses(courseID),
   CONSTRAINT FK_CourseAssessments_Assessments FOREIGN KEY (assessmentID) REFERENCES Assessments(assessmentID)
 );
 GO
 
--- 13. Assessment_Results
-CREATE TABLE Assessment_Results (
+-- 13. AssessmentResults
+CREATE TABLE AssessmentResults (
   resultID INT IDENTITY(1,1) PRIMARY KEY,
   userID INT NOT NULL,
   assessmentID INT NOT NULL,
@@ -220,8 +219,8 @@ CREATE TABLE AnswerOptions (
 );
 GO
 
--- 17. Communication_Programs
-CREATE TABLE Communication_Programs (
+-- 17. CommunicationPrograms
+CREATE TABLE CommunicationPrograms (
   programID INT IDENTITY(1,1) PRIMARY KEY,
   name NVARCHAR(255) NOT NULL,
   description NVARCHAR(MAX) NULL,
@@ -231,19 +230,19 @@ CREATE TABLE Communication_Programs (
 );
 GO
 
--- 18. Program_Participations
-CREATE TABLE Program_Participations (
+-- 18. ProgramParticipations
+CREATE TABLE ProgramParticipations (
   userID INT NOT NULL,
   programID INT NOT NULL,
   joinTime DATETIME2 NOT NULL DEFAULT GETDATE(),
-  CONSTRAINT PK_Program_Participations PRIMARY KEY (userID, programID),
-  CONSTRAINT FK_ProgramParticipations_Users FOREIGN KEY (userID) REFERENCES Users(userID),
-  CONSTRAINT FK_ProgramParticipations_Programs FOREIGN KEY (programID) REFERENCES Communication_Programs(programID)
+  CONSTRAINT PK_ProgramParticipations PRIMARY KEY (userID, programID),
+  CONSTRAINT FK_ProgramParticipations_Users FOREIGN KEY (userID) REFERENCES Users(userID),  
+  CONSTRAINT FK_ProgramParticipations_Programs FOREIGN KEY (programID) REFERENCES CommunicationPrograms(programID)
 );
 GO
 
--- 19. Survey_Responses
-CREATE TABLE Survey_Responses (
+-- 19. SurveyResponses
+CREATE TABLE SurveyResponses (
   responseID INT IDENTITY(1,1) PRIMARY KEY,
   userID INT NOT NULL,
   surveyID INT NOT NULL,
@@ -252,7 +251,7 @@ CREATE TABLE Survey_Responses (
   submitTime DATETIME2 NOT NULL DEFAULT GETDATE(),
   CONSTRAINT FK_SurveyResponses_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_SurveyResponses_Surveys FOREIGN KEY (surveyID) REFERENCES Surveys(surveyID),
-  CONSTRAINT FK_SurveyResponses_Programs FOREIGN KEY (programID) REFERENCES Communication_Programs(programID)
+  CONSTRAINT FK_SurveyResponses_Programs FOREIGN KEY (programID) REFERENCES CommunicationPrograms(programID)
 );
 GO
 
@@ -280,7 +279,7 @@ GO
 INSERT INTO Roles (roleName, description)
 VALUES 
     (N'Guest', N'Người dùng chưa đăng nhập'),
-	(N'Member', N'Người dùng đăng kí thành công'),
+    (N'Member', N'Người dùng đăng kí thành công'),
     (N'Staff', N'Nhân viên tổ chức'),
     (N'Consultant', N'Chuyên gia tư vấn'),
     (N'Manager', N'Quản lý'),
@@ -289,5 +288,3 @@ GO
 
 select * from Roles
 select * from Users
-
-
