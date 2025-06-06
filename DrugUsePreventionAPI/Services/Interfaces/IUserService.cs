@@ -1,4 +1,7 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.User;
+﻿using DrugPreventionAPI.Models.DTOs.User;
+using DrugUsePreventionAPI.Models.DTOs.Appointment;
+using DrugUsePreventionAPI.Models.DTOs.User;
+using DrugUsePreventionAPI.Models.Entities;
 
 namespace DrugUsePreventionAPI.Services.Interfaces
 {
@@ -10,5 +13,6 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
         Task<bool> DeleteUserAsync(int id);
         Task<UserDto> UpdateUserRoleAsync(int id, string roleName, string callerRole);
+        
     }
 }
