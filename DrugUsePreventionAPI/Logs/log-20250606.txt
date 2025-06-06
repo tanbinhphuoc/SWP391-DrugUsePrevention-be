@@ -1,0 +1,14 @@
+2025-06-06 00:54:06.117 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-06 00:54:07.779 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-06 00:54:08.683 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-06 00:54:08.690 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-06 00:54:08.695 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-06 00:54:08.945 +07:00 [INF] Server laptop-qlc4gki0:27348:8951a90a successfully announced in 208.3366 ms
+2025-06-06 00:54:08.958 +07:00 [INF] Server laptop-qlc4gki0:27348:8951a90a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-06 00:54:09.263 +07:00 [INF] 1 servers were removed due to timeout
+2025-06-06 00:54:09.364 +07:00 [INF] Server laptop-qlc4gki0:27348:8951a90a all the dispatchers started
+2025-06-06 00:56:34.090 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749146106, exp: 1749232506, iat: 1749146106, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
