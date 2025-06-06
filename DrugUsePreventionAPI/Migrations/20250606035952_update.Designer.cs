@@ -4,6 +4,7 @@ using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606035952_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -523,9 +526,6 @@ namespace DrugUsePreventionAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionID"));
 
-                    b.Property<int?>("AssessmentID")
-                        .HasColumnType("int");
-
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -534,12 +534,10 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("SurveyID")
+                    b.Property<int>("SurveyID")
                         .HasColumnType("int");
 
                     b.HasKey("QuestionID");
-
-                    b.HasIndex("AssessmentID");
 
                     b.HasIndex("SurveyID");
 
@@ -884,15 +882,11 @@ namespace DrugUsePreventionAPI.Migrations
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Question", b =>
                 {
-                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Assessment", "Assessment")
-                        .WithMany("Questions")
-                        .HasForeignKey("AssessmentID");
-
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Survey", "Survey")
                         .WithMany("Questions")
-                        .HasForeignKey("SurveyID");
-
-                    b.Navigation("Assessment");
+                        .HasForeignKey("SurveyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Survey");
                 });
@@ -957,8 +951,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("AssessmentResults");
 
                     b.Navigation("CourseAssessments");
-
-                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>
