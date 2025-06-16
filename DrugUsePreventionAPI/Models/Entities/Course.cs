@@ -20,7 +20,7 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         [Required]
         public DateTime EndDate { get; set; }
-
+        public required string Type { get; set; } = "COBAN";//"NANGCAO";
         [Required]
         [MaxLength(10)]
         public string Status { get; set; } = "OPEN";
