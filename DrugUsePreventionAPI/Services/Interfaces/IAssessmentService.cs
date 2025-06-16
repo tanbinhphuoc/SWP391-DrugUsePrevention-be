@@ -1,5 +1,4 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
-using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Models.Entities;
 
 namespace DrugUsePreventionAPI.Services.Interfaces
@@ -8,10 +7,10 @@ namespace DrugUsePreventionAPI.Services.Interfaces
     {
         Task<bool> CreateAssessment(CreateAssessmentDto assessmentDto);
         Task<List<Assessment>> GetAllAssessment();
-        Task<Assessment?> GetAssessmentById(int id);
         Task<bool> UpdateAssessment(int id, CreateAssessmentDto assessmentDto);
         Task<bool> DeleteAssessment(int id);
         Task<List<Assessment>> GetAssessmentByAge(int age);
-        
+        Task<GetAssessmentDto?> GetAssessmentById(int id);
+
     }
 }
