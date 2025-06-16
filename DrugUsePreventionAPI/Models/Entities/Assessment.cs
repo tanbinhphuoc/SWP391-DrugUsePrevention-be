@@ -18,6 +18,8 @@ namespace DrugUsePreventionAPI.Models.Entities
         [MaxLength(10)]
         public string AssessmentType { get; set; }
 
+
+
         public int? MinAge { get; set; }
         public int? MaxAge { get; set; }
 

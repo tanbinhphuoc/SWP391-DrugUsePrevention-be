@@ -11,6 +11,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<Course?> GetCourseById(int id);
         Task<bool> UpdateCourse(int id, CreateCourseDto courseDto);
         Task<bool> DeleteCourse(int id);
+        Task<List<Course>> GetCoursesByTypeAsync(string type);
 
     }
 }
