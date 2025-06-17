@@ -82,5 +82,19 @@ namespace DrugUsePreventionAPI.Controllers
             var assessment = await _assessmentService.GetAssessmentByAge(age);
             return Ok(assessment);
         }
+
+
+        [HttpGet("GetAssessmentFormById")]
+        public async Task<IActionResult> GetAssessmentFormById(int id)
+        {
+            var result = await _assessmentService.GetAssessmentById(id);
+            if (result == null)
+                return NotFound("Không tìm thấy bài đánh giá."); 
+
+            return Ok(result);
+        }
+
+
+
     }
 }

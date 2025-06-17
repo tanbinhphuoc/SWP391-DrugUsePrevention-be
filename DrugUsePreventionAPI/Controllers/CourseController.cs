@@ -68,5 +68,16 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Xóa Khóa Học Thất Bại." });
         }
 
+        [HttpGet("recommend")]
+        public async Task<IActionResult> RecommendCourses([FromQuery] double score)
+        {
+            string courseType = score <= 4 ? "COBAN" : "NANGCAO";
+
+            var courses = await _courseService.GetCoursesByTypeAsync(courseType);
+
+            return Ok(courses);
+        }
+
+
     }
 }

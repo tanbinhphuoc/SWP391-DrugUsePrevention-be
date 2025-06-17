@@ -1,10 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using DrugUsePreventionAPI.Data;
+﻿using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -22,7 +20,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
-                if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Craft")
+                if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Crafft")
                 {
                     return false;
                 }
@@ -45,7 +43,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         }
         public async Task <bool> UpdateAssessment(int id, CreateAssessmentDto assessmentDto)
         {
-            if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Craft")
+            if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Crafft")
             {
                 return false;
             }
@@ -74,14 +72,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return await _context.Assessments.ToListAsync();
         } 
 
-        public async Task<Assessment?> GetAssessmentById(int id)
-        {
-            return await _context.Assessments.FindAsync(id);
-        }
         public async Task<List<Assessment>> GetAssessmentByAge(int age)
         {
             var assessment = _context.Assessments;
-            if (age <= 18)
+            if (age >= 18)
             {
                 return await assessment.Where(a => a.AssessmentType.Equals("Assist")).ToListAsync();
             }
@@ -110,6 +104,35 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-       
+        public async Task<GetAssessmentDto?> GetAssessmentById(int id)
+        {
+            var assessment = await _context.Assessments
+                .Include(a => a.Questions)
+                    .ThenInclude(q => q.AnswerOptions)
+                .FirstOrDefaultAsync(a => a.AssessmentID == id);
+
+            if (assessment == null)
+                return null;
+
+            var dto = new GetAssessmentDto
+            {
+                AssessmentName = assessment.AssessmentName,
+                Questions = assessment.Questions.Select(q => new QuestionDto
+                {
+                    QuestionId = q.QuestionID,
+                    QuestionText = q.QuestionText,
+                    Answers = q.AnswerOptions.Select(ans => new AnswerDto
+                    {
+                        AnswerId = ans.OptionID,
+                        OptionText = ans.OptionText,
+                        IsCorrect = ans.ScoreValue > 0 // Ví dụ: scoreValue > 0 là đáp án đúng
+                    }).ToList()
+                }).ToList()
+            };
+
+            return dto;
+        }
+
+
     }
 }
