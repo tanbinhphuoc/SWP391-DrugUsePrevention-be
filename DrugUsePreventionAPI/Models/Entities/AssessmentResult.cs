@@ -17,6 +17,7 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         [MaxLength(255)]
         public string? ResultName { get; set; }
+        public required string AssessmentStage { get; set; } = "Input"; //"Output";
 
         [Required]
         public double Score { get; set; }

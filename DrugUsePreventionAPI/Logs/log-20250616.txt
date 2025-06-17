@@ -1,3 +1,8 @@
+2025-06-16 00:37:26.845 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 00:37:27.724 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 00:37:28.116 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 00:37:28.116 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 00:37:28.117 +07:00 [INF] Using the following options for Hangfire Server:
 2025-06-16 12:54:33.110 +07:00 [INF] Start installing Hangfire SQL objects...
 2025-06-16 12:54:36.232 +07:00 [INF] Hangfire SQL objects installed.
 2025-06-16 12:54:39.062 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
@@ -7,6 +12,345 @@
     Listening queues: 'default'
     Shutdown timeout: 00:00:15
     Schedule polling interval: 00:00:15
+2025-06-16 00:37:28.279 +07:00 [INF] Server desktop-nggl106:9392:0f394cac successfully announced in 148.4431 ms
+2025-06-16 00:37:28.282 +07:00 [INF] Server desktop-nggl106:9392:0f394cac is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 00:37:28.359 +07:00 [INF] Server desktop-nggl106:9392:0f394cac all the dispatchers started
+2025-06-16 00:40:03.681 +07:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-06-16 00:45:01.914 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-06-16 00:47:50.158 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 00:48:08.134 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 00:50:13.075 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 00:50:17.565 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 00:51:28.266 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 00:51:40.407 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 00:51:46.831 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750009603, exp: 1750096003, iat: 1750009603, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 12:52:46.580 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 12:52:46.581 +07:00 [INF] Server desktop-nggl106:9392:0f394cac caught stopping signal...
+2025-06-16 12:52:46.592 +07:00 [INF] Server desktop-nggl106:9392:0f394cac caught stopped signal...
+2025-06-16 12:52:46.593 +07:00 [INF] Server desktop-nggl106:9392:0f394cac All dispatchers stopped
+2025-06-16 12:52:46.593 +07:00 [WRN] Server desktop-nggl106:9392:0f394cac caught shutdown signal...
+2025-06-16 12:52:46.613 +07:00 [INF] Server desktop-nggl106:9392:0f394cac successfully reported itself as stopped in 18.0127 ms
+2025-06-16 12:52:46.613 +07:00 [INF] Server desktop-nggl106:9392:0f394cac has been stopped in total 21.6806 ms
+2025-06-16 12:55:01.253 +07:00 [ERR] Failed executing DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [Type] nvarchar(max) NOT NULL DEFAULT N'';
+2025-06-16 13:50:27.896 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 13:50:28.514 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 13:50:28.832 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 13:50:28.834 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 13:50:28.835 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 13:50:28.997 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc successfully announced in 146.0744 ms
+2025-06-16 13:50:29.002 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 13:50:29.124 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc all the dispatchers started
+2025-06-16 13:54:51.006 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 13:54:51.178 +07:00 [ERR] Failed executing DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[AssessmentID], [a].[AssessmentName], [a].[AssessmentStage], [a].[AssessmentType], [a].[Description], [a].[MaxAge], [a].[MinAge]
+FROM [Assessments] AS [a]
+WHERE [a].[AssessmentType] = N'Crafft'
+2025-06-16 13:54:51.209 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'DrugUsePreventionAPI.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'AssessmentStage'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:9cad1884-2484-4a4e-9807-b3b5ccf9a579
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'AssessmentStage'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:9cad1884-2484-4a4e-9807-b3b5ccf9a579
+Error Number:207,State:1,Class:16
+2025-06-16 13:54:51.365 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'AssessmentStage'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at DrugUsePreventionAPI.Services.Implementations.AssessmentService.GetAssessmentByAge(Int32 age) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\AssessmentService.cs:line 85
+   at DrugUsePreventionAPI.Controllers.AssessmentController.GetAssessmentByAge(Int32 age) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\AssessmentController.cs:line 82
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+ClientConnectionId:9cad1884-2484-4a4e-9807-b3b5ccf9a579
+Error Number:207,State:1,Class:16
+2025-06-16 14:01:01.068 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 14:01:01.070 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc caught stopping signal...
+2025-06-16 14:01:01.072 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc caught stopped signal...
+2025-06-16 14:01:01.074 +07:00 [WRN] Server desktop-nggl106:8792:1d40dabc caught shutdown signal...
+2025-06-16 14:01:01.077 +07:00 [WRN] Server desktop-nggl106:8792:1d40dabc stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-16 14:01:01.098 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc successfully reported itself as stopped in 10.3 ms
+2025-06-16 14:01:01.100 +07:00 [INF] Server desktop-nggl106:8792:1d40dabc has been stopped in total 28.1834 ms
+2025-06-16 14:02:34.724 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 14:02:35.388 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 14:02:35.654 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 14:02:35.655 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 14:02:35.655 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 14:02:35.740 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 successfully announced in 70.6496 ms
+2025-06-16 14:02:35.744 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 14:02:35.811 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 all the dispatchers started
+2025-06-16 14:02:57.941 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:03:25.749 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:03:25.814 +07:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-06-16 14:04:10.592 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:04:23.812 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:05:59.229 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 14:05:59.230 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 caught stopping signal...
+2025-06-16 14:05:59.237 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 caught stopped signal...
+2025-06-16 14:05:59.241 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 All dispatchers stopped
+2025-06-16 14:05:59.243 +07:00 [WRN] Server desktop-nggl106:3144:8d70f478 caught shutdown signal...
+2025-06-16 14:05:59.253 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 successfully reported itself as stopped in 7.7393 ms
+2025-06-16 14:05:59.253 +07:00 [INF] Server desktop-nggl106:3144:8d70f478 has been stopped in total 16.75 ms
+2025-06-16 14:08:32.713 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 14:08:33.262 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 14:08:33.526 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 14:08:33.527 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 14:08:33.528 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 14:08:33.628 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 successfully announced in 85.1738 ms
+2025-06-16 14:08:33.631 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 14:08:33.706 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 all the dispatchers started
+2025-06-16 14:09:06.579 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:10:49.052 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:11:30.915 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:12:20.897 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:12:40.636 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:12:58.465 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:13:03.883 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:13:09.692 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:22:31.891 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:22:31.908 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'DrugUsePreventionAPI.Services.Interfaces.ICourseRegistrationService' while attempting to activate 'DrugUsePreventionAPI.Controllers.CourseRegistrationsController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method379(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-16 14:25:25.931 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 14:25:25.932 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 caught stopping signal...
+2025-06-16 14:25:25.933 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 caught stopped signal...
+2025-06-16 14:25:25.937 +07:00 [WRN] Server desktop-nggl106:29088:46dc6c51 caught shutdown signal...
+2025-06-16 14:25:25.946 +07:00 [WRN] Server desktop-nggl106:29088:46dc6c51 stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-16 14:25:25.963 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 successfully reported itself as stopped in 15.3919 ms
+2025-06-16 14:25:25.964 +07:00 [INF] Server desktop-nggl106:29088:46dc6c51 has been stopped in total 30.394 ms
+2025-06-16 14:25:41.568 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 14:25:42.172 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 14:25:42.418 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 14:25:42.419 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 14:25:42.420 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 14:25:42.508 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b successfully announced in 75.0148 ms
+2025-06-16 14:25:42.512 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 14:25:42.579 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b all the dispatchers started
+2025-06-16 14:26:06.754 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:26:21.286 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 14:31:15.041 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 14:31:15.041 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b caught stopping signal...
+2025-06-16 14:31:15.051 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b caught stopped signal...
+2025-06-16 14:31:15.057 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b All dispatchers stopped
+2025-06-16 14:31:15.058 +07:00 [WRN] Server desktop-nggl106:18776:d91d2b6b caught shutdown signal...
+2025-06-16 14:31:15.074 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b successfully reported itself as stopped in 13.8655 ms
+2025-06-16 14:31:15.075 +07:00 [INF] Server desktop-nggl106:18776:d91d2b6b has been stopped in total 27.7481 ms
+2025-06-16 15:02:02.935 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 15:02:03.579 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 15:02:03.880 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 15:02:03.881 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 15:02:03.881 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 15:02:03.967 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b successfully announced in 73.2898 ms
+2025-06-16 15:02:03.972 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 15:02:04.042 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b all the dispatchers started
+2025-06-16 15:05:52.242 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 15:05:52.245 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b caught stopping signal...
+2025-06-16 15:05:52.261 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b caught stopped signal...
+2025-06-16 15:05:52.272 +07:00 [WRN] Server desktop-nggl106:19116:7c60a67b caught shutdown signal...
+2025-06-16 15:05:52.277 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b All dispatchers stopped
+2025-06-16 15:05:52.307 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b successfully reported itself as stopped in 14.8454 ms
+2025-06-16 15:05:52.309 +07:00 [INF] Server desktop-nggl106:19116:7c60a67b has been stopped in total 51.4956 ms
+2025-06-16 15:14:01.316 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 15:14:01.943 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 15:14:02.213 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 15:14:02.213 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 15:14:02.214 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 15:14:02.332 +07:00 [INF] Server desktop-nggl106:8584:2da3175e successfully announced in 80.0998 ms
+2025-06-16 15:14:02.337 +07:00 [INF] Server desktop-nggl106:8584:2da3175e is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 15:14:02.412 +07:00 [INF] Server desktop-nggl106:8584:2da3175e all the dispatchers started
+2025-06-16 15:14:43.738 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Answer option khong ton tai
+   at DrugUsePreventionAPI.Services.Implementations.AssessmentResultService.CreateAssessmentResult(CreateAssessmentResultDto dto) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\AssessmentResultService.cs:line 27
+   at DrugUsePreventionAPI.Controllers.AssessmentResultsController.CreateAssessmentResult(CreateAssessmentResultDto dto) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\AssessmentResultsController.cs:line 20
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-16 15:23:42.285 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 15:23:42.286 +07:00 [INF] Server desktop-nggl106:8584:2da3175e caught stopping signal...
+2025-06-16 15:23:42.295 +07:00 [INF] Server desktop-nggl106:8584:2da3175e caught stopped signal...
+2025-06-16 15:23:42.296 +07:00 [INF] Server desktop-nggl106:8584:2da3175e All dispatchers stopped
+2025-06-16 15:23:42.301 +07:00 [WRN] Server desktop-nggl106:8584:2da3175e caught shutdown signal...
+2025-06-16 15:23:42.320 +07:00 [INF] Server desktop-nggl106:8584:2da3175e successfully reported itself as stopped in 17.572 ms
+2025-06-16 15:23:42.321 +07:00 [INF] Server desktop-nggl106:8584:2da3175e has been stopped in total 26.1349 ms
+2025-06-16 15:25:26.136 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 15:25:27.495 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 15:25:27.845 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 15:25:27.848 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 15:25:27.850 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 15:25:28.169 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a successfully announced in 251.4757 ms
+2025-06-16 15:25:28.176 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 15:25:28.363 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a all the dispatchers started
+2025-06-16 15:31:58.374 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 15:31:58.376 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a caught stopping signal...
+2025-06-16 15:31:58.378 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a caught stopped signal...
+2025-06-16 15:31:58.380 +07:00 [WRN] Server desktop-nggl106:20320:7c7a8c1a caught shutdown signal...
+2025-06-16 15:31:58.394 +07:00 [WRN] Server desktop-nggl106:20320:7c7a8c1a stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-16 15:31:58.416 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a successfully reported itself as stopped in 15.9366 ms
+2025-06-16 15:31:58.417 +07:00 [INF] Server desktop-nggl106:20320:7c7a8c1a has been stopped in total 39.5843 ms
+2025-06-16 15:33:33.741 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 15:33:34.352 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 15:33:34.613 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 15:33:34.615 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 15:33:34.615 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 15:33:34.701 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 successfully announced in 71.8555 ms
+2025-06-16 15:33:34.706 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 15:33:34.776 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 all the dispatchers started
+2025-06-16 15:38:09.004 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:38:31.388 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:38:31.596 +07:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-06-16 15:40:07.659 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:40:07.908 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Answer option khong ton tai
+   at DrugUsePreventionAPI.Services.Implementations.AssessmentResultService.CreateAssessmentResult(CreateAssessmentResultDto dto) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\AssessmentResultService.cs:line 27
+   at DrugUsePreventionAPI.Controllers.AssessmentResultsController.CreateAssessmentResult(CreateAssessmentResultDto dto) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\AssessmentResultsController.cs:line 20
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-16 15:40:23.464 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:40:51.981 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:41:03.310 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:43:07.878 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:43:17.986 +07:00 [INF] JWT Token validated successfully for user: hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 3, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750056801, exp: 1750143201, iat: 1750056801, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:45:22.501 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:51:11.327 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 15:54:15.061 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-16 15:54:15.064 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 caught stopping signal...
+2025-06-16 15:54:15.068 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 caught stopped signal...
+2025-06-16 15:54:15.069 +07:00 [WRN] Server desktop-nggl106:27744:a2fca949 caught shutdown signal...
+2025-06-16 15:54:15.081 +07:00 [WRN] Server desktop-nggl106:27744:a2fca949 stopped non-gracefully due to ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-16 15:54:15.108 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 successfully reported itself as stopped in 14.8581 ms
+2025-06-16 15:54:15.110 +07:00 [INF] Server desktop-nggl106:27744:a2fca949 has been stopped in total 42.2865 ms
+2025-06-16 15:54:25.818 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 15:54:26.508 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 15:54:26.754 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-16 15:54:26.756 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 15:54:26.756 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 15:54:26.837 +07:00 [INF] Server desktop-nggl106:22548:0777b622 successfully announced in 67.8226 ms
+2025-06-16 15:54:26.840 +07:00 [INF] Server desktop-nggl106:22548:0777b622 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 15:54:26.907 +07:00 [INF] Server desktop-nggl106:22548:0777b622 all the dispatchers started
+2025-06-16 16:10:18.732 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 16:10:32.350 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 16:10:43.175 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 16:10:48.325 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-16 16:10:56.369 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750057747, exp: 1750144147, iat: 1750057747, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
 2025-06-16 12:54:39.365 +07:00 [INF] Server laptop-qlc4gki0:21168:b9c296bd successfully announced in 102.0027 ms
 2025-06-16 12:54:39.391 +07:00 [INF] Server laptop-qlc4gki0:21168:b9c296bd is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
 2025-06-16 12:54:39.500 +07:00 [INF] 1 servers were removed due to timeout
