@@ -1,0 +1,59 @@
+2025-06-12 23:36:39.826 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-12 23:36:42.838 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-12 23:36:43.910 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-12 23:36:43.912 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-12 23:36:43.916 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-12 23:36:44.118 +07:00 [INF] Server laptop-qlc4gki0:2960:af9992e0 successfully announced in 173.5692 ms
+2025-06-12 23:36:44.124 +07:00 [INF] Server laptop-qlc4gki0:2960:af9992e0 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-12 23:36:44.210 +07:00 [INF] 1 servers were removed due to timeout
+2025-06-12 23:36:44.251 +07:00 [INF] Server laptop-qlc4gki0:2960:af9992e0 all the dispatchers started
+2025-06-12 23:36:47.048 +07:00 [INF] Generated 16 schedules for date 2025-06-04
+2025-06-12 23:39:31.014 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-12 23:39:32.225 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-12 23:39:33.142 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-12 23:39:33.144 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-12 23:39:33.146 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-12 23:39:33.386 +07:00 [INF] Server laptop-qlc4gki0:6544:808308d5 successfully announced in 206.3495 ms
+2025-06-12 23:39:33.407 +07:00 [INF] Server laptop-qlc4gki0:6544:808308d5 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-12 23:39:33.637 +07:00 [INF] Server laptop-qlc4gki0:6544:808308d5 all the dispatchers started
+2025-06-12 23:42:22.846 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749746414, exp: 1749832814, iat: 1749746414, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-12 23:44:33.520 +07:00 [INF] 1 servers were removed due to timeout
+2025-06-12 23:45:55.740 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749746414, exp: 1749832814, iat: 1749746414, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-12 23:46:11.246 +07:00 [ERR] Error retrieving schedules for ConsultantID=1
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: It was not possible to connect to the redis server(s). ConnectTimeout, command=HMGET, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: CheckingForTimeout, rs: NotStarted, ws: Idle, in: 0, last-in: 0, cur-in: 0, sync-ops: 0, async-ops: 1, serverEndpoint: localhost:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: LAPTOP-QLC4GKI0(SE.Redis-v2.7.27.49176), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=0,Free=32767,Min=12,Max=32767), POOL: (Threads=7,QueuedItems=0,CompletedItems=687,Timers=7), v: 2.7.27.49176 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). ConnectTimeout
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.GetConsultantSchedulesAsync(Int32 consultantId, DateTime startDate, DateTime endDate) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 67
+   at DrugUsePreventionAPI.Controllers.AppointmentsController.GetConsultantSchedules(Int32 consultantId, DateTime startDate, DateTime endDate) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AppointmentsController.cs:line 48
+2025-06-12 23:46:39.472 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749746414, exp: 1749832814, iat: 1749746414, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-12 23:46:44.769 +07:00 [ERR] Error retrieving schedules for ConsultantID=1
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: It was not possible to connect to the redis server(s). ConnectTimeout, command=HMGET, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: CheckingForTimeout, last-in: 0, cur-in: 0, sync-ops: 0, async-ops: 2, serverEndpoint: localhost:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: LAPTOP-QLC4GKI0(SE.Redis-v2.7.27.49176), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=12,Max=32767), POOL: (Threads=7,QueuedItems=0,CompletedItems=871,Timers=5), v: 2.7.27.49176 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). ConnectTimeout
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.GetConsultantSchedulesAsync(Int32 consultantId, DateTime startDate, DateTime endDate) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 67
+   at DrugUsePreventionAPI.Controllers.AppointmentsController.GetConsultantSchedules(Int32 consultantId, DateTime startDate, DateTime endDate) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AppointmentsController.cs:line 48
+2025-06-12 23:47:17.381 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749746414, exp: 1749832814, iat: 1749746414, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-12 23:47:22.774 +07:00 [ERR] Error retrieving schedules for ConsultantID=1
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: It was not possible to connect to the redis server(s). ConnectTimeout, command=HMGET, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: CheckingForTimeout, last-in: 0, cur-in: 0, sync-ops: 0, async-ops: 3, serverEndpoint: localhost:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: LAPTOP-QLC4GKI0(SE.Redis-v2.7.27.49176), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=12,Max=32767), POOL: (Threads=7,QueuedItems=0,CompletedItems=1064,Timers=5), v: 2.7.27.49176 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). ConnectTimeout
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.GetConsultantSchedulesAsync(Int32 consultantId, DateTime startDate, DateTime endDate) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 67
+   at DrugUsePreventionAPI.Controllers.AppointmentsController.GetConsultantSchedules(Int32 consultantId, DateTime startDate, DateTime endDate) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AppointmentsController.cs:line 48
+2025-06-12 23:58:55.082 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749746414, exp: 1749832814, iat: 1749746414, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient

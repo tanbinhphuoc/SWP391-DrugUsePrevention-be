@@ -12,45 +12,35 @@ namespace DrugUsePreventionAPI.Data
             _context = context;
         }
 
-        public async Task GenerateDailySchedulesAsync(DateTime date)
+        public async Task GenerateDailySchedulesAsync(DateTime startDate)
         {
-            try
+            var consultants = await _context.Consultants.ToListAsync();
+            var endDate = startDate.AddDays(7); // Tạo lịch cho 7 ngày
+
+            foreach (var consultant in consultants)
             {
-                var consultants = await _context.Consultants.ToListAsync();
-                var schedulesToAdd = new List<ConsultantSchedule>();
-
-                foreach (var consultant in consultants)
+                var currentDate = startDate;
+                while (currentDate <= endDate)
                 {
-                    // Skip if schedules already exist for the date
-                    if (await _context.ConsultantSchedules.AnyAsync(s => s.ConsultantID == consultant.ConsultantID && s.Date == date))
-                        continue;
-
-                    // Generate slots from 10:00 to 18:00
-                    for (int hour = 10; hour < 18; hour++)
+                    for (var hour = 7; hour < 19; hour++) // Từ 7:00 AM đến 7:00 PM
                     {
-                        schedulesToAdd.Add(new ConsultantSchedule
+                        var schedule = new ConsultantSchedule
                         {
                             ConsultantID = consultant.ConsultantID,
-                            DayOfWeek = date.ToString("dddd"),
-                            Date = date,
+                            DayOfWeek = currentDate.DayOfWeek.ToString(),
+                            Date = currentDate,
                             StartTime = TimeSpan.FromHours(hour),
                             EndTime = TimeSpan.FromHours(hour + 1),
                             IsAvailable = true,
                             Notes = null
-                        });
+                        };
+                        _context.ConsultantSchedules.Add(schedule);
                     }
+                    currentDate = currentDate.AddDays(1);
                 }
-
-                _context.ConsultantSchedules.AddRange(schedulesToAdd);
-                await _context.SaveChangesAsync();
-
-                Log.Information("Generated {Count} schedules for date {Date}", schedulesToAdd.Count, date.ToString("yyyy-MM-dd"));
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error generating schedules for date {Date}", date.ToString("yyyy-MM-dd"));
-                throw;
-            }
+            await _context.SaveChangesAsync();
+            Log.Information("Generated schedules from {StartDate} to {EndDate} for all consultants", startDate, endDate);
         }
     }
 }

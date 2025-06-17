@@ -1,15 +1,13 @@
-﻿using DrugPreventionAPI.Services.Implementations;
+﻿using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Data.Extensions;
 using DrugUsePreventionAPI.Mappings;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -63,20 +61,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configure AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-// Configure Redis Cache
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379";
-    options.InstanceName = "DrugUsePreventionAPI_";
-});
-
-// Configure Hangfire for background jobs
-builder.Services.AddHangfire(configuration => configuration
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+// Configure Hangfire for background jobs (tự động tạo lịch hàng ngày)
+builder.Services.AddHangfire(configuration =>
+    configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
 
 // Register services
@@ -90,8 +81,6 @@ builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
-
-
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -182,6 +171,16 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+// Cấu hình lịch lặp lại bằng IRecurringJobManager để tạo lịch hàng ngày
+using (var scope = app.Services.CreateScope())
+{
+    var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+    recurringJobManager.AddOrUpdate<ScheduleGenerator>(
+        "generate-daily-schedules",
+        generator => generator.GenerateDailySchedulesAsync(DateTime.Now.Date),
+        Cron.Daily());
+}
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())

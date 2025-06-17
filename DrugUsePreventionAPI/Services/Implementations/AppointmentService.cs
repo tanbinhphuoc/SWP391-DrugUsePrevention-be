@@ -3,38 +3,28 @@ using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using Serilog;
-using System.Text.Json;
+using System.Net.Mail;
+using System.Net;
+using Hangfire;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class AppointmentService : IAppointmentService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration; 
-        private readonly IDistributedCache _cache;
+        private readonly IConfiguration _configuration;
+        private readonly VNPayHelper _vnpayHelper;
 
-        public AppointmentService(ApplicationDbContext context, IConfiguration configuration, IDistributedCache cache)
+        public AppointmentService(ApplicationDbContext context, IConfiguration configuration, VNPayHelper vnpayHelper)
         {
             _context = context;
             _configuration = configuration;
-            _cache = cache;
+            _vnpayHelper = vnpayHelper;
         }
 
         public async Task<IEnumerable<ConsultantDto>> GetAvailableConsultantsAsync()
         {
-            var cacheKey = "consultants_active";
-            var cachedData = await _cache.GetStringAsync(cacheKey);
-
-            if (!string.IsNullOrEmpty(cachedData))
-            {
-                Log.Information("Returning cached consultants list");
-                return JsonSerializer.Deserialize<IEnumerable<ConsultantDto>>(cachedData);
-            }
-
             var consultants = await _context.Consultants
                 .Include(c => c.User)
                 .Include(c => c.Certificate)
@@ -51,101 +41,120 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 })
                 .ToListAsync();
 
-            await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(consultants), new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
-            });
-
-            Log.Information("Cached consultants list for 30 minutes");
+            Log.Information("Retrieved {Count} consultants from database", consultants.Count);
             return consultants;
         }
 
-
         public async Task<IEnumerable<ConsultantScheduleDto>> GetConsultantSchedulesAsync(int consultantId, DateTime startDate, DateTime endDate)
-        {
-            var cacheKey = $"schedules_{consultantId}_{startDate:yyyyMMdd}_{endDate:yyyyMMdd}";
-            var cachedData = await _cache.GetStringAsync(cacheKey);
-
-            if (!string.IsNullOrEmpty(cachedData))
-            {
-                Log.Information("Returning cached schedules for consultant {ConsultantId}", consultantId);
-                return JsonSerializer.Deserialize<IEnumerable<ConsultantScheduleDto>>(cachedData);
-            }
-
-            var schedules = await _context.ConsultantSchedules
-                .Where(s => s.ConsultantID == consultantId
-                    && s.Date >= startDate
-                    && s.Date <= endDate
-                    && s.IsAvailable)
-                .Select(s => new ConsultantScheduleDto
-                {
-                    ScheduleID = s.ScheduleID,
-                    DayOfWeek = s.DayOfWeek,
-                    Date = s.Date,
-                    StartTime = s.StartTime,
-                    EndTime = s.EndTime,
-                    Notes = s.Notes
-                })
-                .OrderBy(s => s.Date)
-                .ThenBy(s => s.StartTime)
-                .ToListAsync();
-
-            await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(schedules), new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15)
-            });
-
-            Log.Information("Cached schedules for consultant {ConsultantId} for 15 minutes", consultantId);
-            return schedules;
-        }
-
-        public async Task<AppointmentDto> BookAppointmentAsync(BookAppointmentDto bookDto, int userId)
         {
             try
             {
-                // Validate consultant
+                var consultant = await _context.Consultants.FirstOrDefaultAsync(c => c.ConsultantID == consultantId);
+                if (consultant == null)
+                {
+                    throw new InvalidOperationException("Consultant not found.");
+                }
+
+                var schedules = await _context.ConsultantSchedules
+                    .Where(s => s.ConsultantID == consultantId && s.Date >= startDate && s.Date <= endDate)
+                    .Select(s => new ConsultantScheduleDto
+                    {
+                        ScheduleID = s.ScheduleID,
+                        DayOfWeek = s.DayOfWeek,
+                        Date = s.Date,
+                        StartTime = s.StartTime,
+                        EndTime = s.EndTime,
+                        Notes = s.Notes
+                    })
+                    .ToListAsync();
+
+                if (schedules.Count == 0)
+                {
+                    throw new InvalidOperationException("No available schedules for the specified dates.");
+                }
+
+                return schedules;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving schedules for ConsultantID={ConsultantId}", consultantId);
+                throw;
+            }
+        }
+
+        public async Task<(AppointmentDto appointment, string paymentUrl)> BookAppointmentAsync(BookAppointmentDto bookDto, int userId)
+        {
+            try
+            {
+                Log.Information("Booking appointment: ConsultantID={ConsultantID}, ScheduleIDs={ScheduleIDs}, UserID={UserID}",
+                    bookDto.ConsultantID, string.Join(",", bookDto.ScheduleIDs), userId);
+
                 var consultant = await _context.Consultants
                     .Include(c => c.User)
                     .FirstOrDefaultAsync(c => c.ConsultantID == bookDto.ConsultantID);
                 if (consultant == null)
+                {
+                    Log.Error("Consultant not found for ConsultantID={ConsultantID}", bookDto.ConsultantID);
                     throw new InvalidOperationException("Consultant not found.");
+                }
+                Log.Information("Consultant found: {ConsultantID}", consultant.ConsultantID);
 
-                // Validate schedules
                 var schedules = await _context.ConsultantSchedules
                     .Where(s => bookDto.ScheduleIDs.Contains(s.ScheduleID) && s.IsAvailable)
                     .OrderBy(s => s.Date)
                     .ThenBy(s => s.StartTime)
                     .ToListAsync();
-                if (schedules.Count != bookDto.ScheduleIDs.Count)
-                    throw new InvalidOperationException("One or more selected time slots are unavailable.");
-                if (!AreSchedulesConsecutive(schedules))
-                    throw new InvalidOperationException("Selected time slots must be consecutive.");
+                Log.Information("Found schedules: {Schedules}", string.Join(",", schedules.Select(s => s.ScheduleID)));
 
-                // Validate 1-hour slots
+                if (schedules.Count != bookDto.ScheduleIDs.Count)
+                {
+                    throw new InvalidOperationException("One or more selected time slots are unavailable.");
+                }
+
+                if (!AreSchedulesConsecutive(schedules))
+                {
+                    throw new InvalidOperationException("Selected time slots must be consecutive.");
+                }
+
                 foreach (var schedule in schedules)
                 {
                     var duration = schedule.EndTime - schedule.StartTime;
                     if (duration != TimeSpan.FromHours(1))
+                    {
                         throw new InvalidOperationException("Each time slot must be exactly 1 hour.");
+                    }
+
+                    var currentDateTime = DateTime.Now;
+                    var scheduleStartTime = schedule.Date.Add(schedule.StartTime);
+                    var todayMorning = currentDateTime.Date.AddHours(7);
+                    var maxFutureDate = currentDateTime.Date.AddDays(30);
+
+                    if (scheduleStartTime < currentDateTime && schedule.Date == currentDateTime.Date)
+                    {
+                        throw new InvalidOperationException("Cannot book a past time slot for today.");
+                    }
+                    if (schedule.Date == currentDateTime.Date && scheduleStartTime < todayMorning)
+                    {
+                        throw new InvalidOperationException("Appointments can only be booked from 7:00 AM today.");
+                    }
+                    if (schedule.Date > maxFutureDate)
+                    {
+                        throw new InvalidOperationException("Cannot book more than 30 days in the future.");
+                    }
                 }
 
-                // Calculate appointment details
                 var startDateTime = schedules.First().Date.Add(schedules.First().StartTime);
                 var endDateTime = schedules.Last().Date.Add(schedules.Last().EndTime);
                 var durationHours = schedules.Count;
                 var price = (decimal)durationHours * consultant.HourlyRate;
 
-                // Generate placeholder Google Meet link
-                var googleMeetLink = $"https://meet.google.com/xxx-yyyy-zzz?appointmentId={Guid.NewGuid()}";
-
-                // Create appointment
                 var appointment = new Appointment
                 {
                     UserID = userId,
                     ConsultantID = consultant.ConsultantID,
                     StartDateTime = startDateTime,
                     EndDateTime = endDateTime,
-                    GoogleMeetLink = googleMeetLink,
+                    GoogleMeetLink = null,
                     Price = price,
                     Status = "PENDING_PAYMENT",
                     Note = bookDto.Note,
@@ -154,44 +163,45 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 };
 
                 _context.Appointments.Add(appointment);
+                await _context.SaveChangesAsync();
 
-                // Mark schedules as unavailable
                 foreach (var schedule in schedules)
                     schedule.IsAvailable = false;
 
-                // Create payment record
                 var payment = new Payment
                 {
                     UserID = userId,
                     AppointmentID = appointment.AppointmentID,
                     Amount = price,
-                    PaymentDate = DateTime.UtcNow,
+                    PaymentDate = null,
                     PaymentMethod = bookDto.PaymentMethod,
                     Status = "PENDING",
-                    TransactionID = Guid.NewGuid().ToString()
+                    TransactionID = $"{appointment.AppointmentID}-{Guid.NewGuid().ToString()}"
                 };
 
                 _context.Payments.Add(payment);
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                await _cache.RemoveAsync($"schedules_{consultant.ConsultantID}_{startDateTime:yyyyMMdd}_{endDateTime:yyyyMMdd}");
+                var paymentUrl = _vnpayHelper.CreatePaymentUrl(payment, $"Thanh toan cuoc hen ID {appointment.AppointmentID}");
 
                 Log.Information("Appointment booked: AppointmentID={AppointmentID}, UserID={UserID}, ConsultantID={ConsultantID}",
                     appointment.AppointmentID, userId, consultant.ConsultantID);
 
-                return new AppointmentDto
-                {
-                    AppointmentID = appointment.AppointmentID,
-                    ConsultantName = consultant.User.FullName,
-                    MemberName = (await _context.Users.FindAsync(userId)).FullName,
-                    StartDateTime = appointment.StartDateTime,
-                    EndDateTime = appointment.EndDateTime,
-                    GoogleMeetLink = null, // Hidden until confirmed
-                    Price = appointment.Price,
-                    Status = appointment.Status,
-                    Note = appointment.Note
-                };
+                return (
+                    new AppointmentDto
+                    {
+                        AppointmentID = appointment.AppointmentID,
+                        ConsultantName = consultant.User.FullName,
+                        MemberName = (await _context.Users.FindAsync(userId)).FullName,
+                        StartDateTime = appointment.StartDateTime,
+                        EndDateTime = appointment.EndDateTime,
+                        GoogleMeetLink = null,
+                        Price = appointment.Price,
+                        Status = appointment.Status,
+                        Note = appointment.Note
+                    },
+                    paymentUrl
+                );
             }
             catch (Exception ex)
             {
@@ -200,40 +210,64 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-        public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId)
+        public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId, string vnpayResponseCode)
         {
             try
             {
+                Log.Information("Confirming payment: AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
+
                 var appointment = await _context.Appointments
-                    .Include(a => a.Consultant)
-                    .ThenInclude(c => c.User)
+                    .Include(a => a.Consultant).ThenInclude(c => c.User)
                     .Include(a => a.User)
                     .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
-                if (appointment == null)
-                    throw new InvalidOperationException("Appointment not found.");
+                if (appointment == null || appointment.Status != "PENDING_PAYMENT")
+                {
+                    Log.Error("Invalid appointment status for payment confirmation: AppointmentID={AppointmentID}", appointmentId);
+                    throw new InvalidOperationException("Invalid appointment status for payment confirmation.");
+                }
 
                 var payment = await _context.Payments
                     .FirstOrDefaultAsync(p => p.AppointmentID == appointmentId && p.TransactionID == transactionId);
-                if (payment == null)
-                    throw new InvalidOperationException("Payment not found.");
+                if (payment == null || payment.Status != "PENDING")
+                {
+                    Log.Error("Invalid payment details for AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
+                    throw new InvalidOperationException("Invalid payment details.");
+                }
 
-                if (appointment.Status != "PENDING_PAYMENT" || payment.Status != "PENDING")
-                    throw new InvalidOperationException("Invalid appointment or payment status.");
-
-                // Update statuses
-                appointment.Status = "CONFIRMED";
-                appointment.UpdatedAt = DateTime.UtcNow;
-                payment.Status = "SUCCESS";
-                payment.PaymentDate = DateTime.UtcNow;
+                // Xử lý trạng thái từ VNPay
+                switch (vnpayResponseCode)
+                {
+                    case "00": // Thanh toán thành công
+                        payment.Status = "SUCCESS";
+                        payment.PaymentDate = DateTime.UtcNow;
+                        appointment.Status = "CONFIRMED";
+                        appointment.GoogleMeetLink = $"https://meet.google.com/new?appointmentId={Guid.NewGuid()}";
+                        break;
+                    case "24": // Khách hàng hủy giao dịch
+                        payment.Status = "CANCELED";
+                        appointment.Status = "CANCELED";
+                        await CancelAppointmentSchedules(appointmentId);
+                        await SendPaymentErrorEmail(appointment, "Payment was canceled by user.");
+                        break;
+                    case "11": // Giao dịch bị tạm hoãn
+                        payment.Status = "SUSPENDED";
+                        await SendPaymentErrorEmail(appointment, "Payment is suspended. Please contact support.");
+                        break;
+                    default: // Lỗi khác
+                        payment.Status = "ERROR";
+                        await SendPaymentErrorEmail(appointment, $"Payment failed with error code {vnpayResponseCode}.");
+                        break;
+                }
 
                 await _context.SaveChangesAsync();
 
-                // Send email notifications
-                await SendAppointmentConfirmationEmail(appointment);
+                if (payment.Status == "SUCCESS")
+                {
+                    await SendAppointmentConfirmationGmail(appointment);
+                    ScheduleReminder(appointment);
+                }
 
-                Log.Information("Payment confirmed: AppointmentID={AppointmentID}, TransactionID={TransactionID}",
-                    appointment.AppointmentID, transactionId);
-
+                Log.Information("Payment confirmed: AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
                 return new AppointmentDto
                 {
                     AppointmentID = appointment.AppointmentID,
@@ -259,8 +293,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             try
             {
                 var appointments = await _context.Appointments
-                    .Include(a => a.Consultant)
-                    .ThenInclude(c => c.User)
+                    .Include(a => a.Consultant).ThenInclude(c => c.User)
                     .Include(a => a.User)
                     .Where(a => a.UserID == userId)
                     .Select(a => new AppointmentDto
@@ -291,11 +324,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
+                var currentDateTime = DateTime.Now;
                 var appointments = await _context.Appointments
                     .Include(a => a.User)
-                    .Include(a => a.Consultant)
-                    .ThenInclude(c => c.User)
-                    .Where(a => a.ConsultantID == consultantId && a.Status == "CONFIRMED")
+                    .Include(a => a.Consultant).ThenInclude(c => c.User)
+                    .Where(a => a.ConsultantID == consultantId && a.Status == "CONFIRMED" && a.StartDateTime > currentDateTime)
+                    .OrderBy(a => a.StartDateTime)
                     .Select(a => new AppointmentDto
                     {
                         AppointmentID = a.AppointmentID,
@@ -310,7 +344,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                Log.Information("Retrieved {Count} appointments for ConsultantID={ConsultantID}", appointments.Count, consultantId);
+                Log.Information("Retrieved {Count} upcoming appointments for ConsultantID={ConsultantID}", appointments.Count, consultantId);
                 return appointments;
             }
             catch (Exception ex)
@@ -334,7 +368,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return true;
         }
 
-        private async Task SendAppointmentConfirmationEmail(Appointment appointment)
+        private async Task SendAppointmentConfirmationGmail(Appointment appointment)
         {
             try
             {
@@ -342,16 +376,16 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 var consultantEmail = appointment.Consultant.User.Email;
                 var subject = "Appointment Confirmation - Drug Prevention System";
                 var body = $@"Your appointment has been successfully confirmed!
-                Details:
-                - Consultant: {appointment.Consultant.User.FullName}
-                - Member: {appointment.User.FullName}
-                - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-                - Google Meet Link: {appointment.GoogleMeetLink}
-                - Note: {appointment.Note ?? "None"}
-                Please join the meeting at the scheduled time.";
+            Details:
+            - Consultant: {appointment.Consultant.User.FullName}
+            - Member: {appointment.User.FullName}
+            - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+            - Google Meet Link: {appointment.GoogleMeetLink}
+            - Note: {appointment.Note ?? "None"}
+            Please join the meeting at the scheduled time.";
 
-                await SendEmailAsync(memberEmail, subject, body);
-                await SendEmailAsync(consultantEmail, subject, body);
+                await SendGmailAsync(memberEmail, subject, body);
+                await SendGmailAsync(consultantEmail, subject, body);
 
                 Log.Information("Sent confirmation emails for AppointmentID={AppointmentID}", appointment.AppointmentID);
             }
@@ -362,20 +396,125 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-        private async Task SendEmailAsync(string toEmail, string subject, string body)
+        private async Task SendPaymentErrorEmail(Appointment appointment, string errorMessage)
         {
-            var client = new SendGridClient(_configuration["SendGrid:ApiKey"]);
-            var from = new EmailAddress("no-reply@drugprevention.org", "Drug Prevention System");
-            var to = new EmailAddress(toEmail);
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, body, body);
-            var response = await client.SendEmailAsync(msg);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
+            try
             {
-                Log.Error("SendGrid failed to send email to {ToEmail}. Status: {StatusCode}", toEmail, response.StatusCode);
-                throw new InvalidOperationException("Failed to send email.");
+                var memberEmail = appointment.User.Email;
+                var subject = "Payment Issue - Drug Prevention System";
+                var body = $@"There was an issue with your payment for the appointment.
+            Details:
+            - Consultant: {appointment.Consultant.User.FullName}
+            - Member: {appointment.User.FullName}
+            - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+            - Error: {errorMessage}
+            Please try again or contact support.";
+
+                await SendGmailAsync(memberEmail, subject, body);
+                Log.Information("Sent payment error email for AppointmentID={AppointmentID}", appointment.AppointmentID);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error sending payment error email for AppointmentID={AppointmentID}", appointment.AppointmentID);
+                throw new InvalidOperationException("Failed to send payment error email.", ex);
             }
         }
-    }
-}
 
+        private async Task SendGmailAsync(string toEmail, string subject, string body)
+        {
+            var gmailConfig = _configuration.GetSection("Gmail");
+            var email = gmailConfig["Email"];
+            var password = gmailConfig["Password"];
+            var host = gmailConfig["Host"];
+            var port = int.Parse(gmailConfig["Port"]);
+            var enableSsl = bool.Parse(gmailConfig["EnableSsl"]);
+
+            using (var client = new SmtpClient(host, port))
+            {
+                client.Credentials = new NetworkCredential(email, password);
+                client.EnableSsl = enableSsl;
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(email, "Drug Prevention System"),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = false
+                };
+                mailMessage.To.Add(toEmail);
+
+                try
+                {
+                    await client.SendMailAsync(mailMessage);
+                    Log.Information("Email sent successfully to {ToEmail}", toEmail);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to send email to {ToEmail}. Error: {Error}", toEmail, ex.Message);
+                    throw new InvalidOperationException("Failed to send email.", ex);
+                }
+            }
+        }
+
+        private async Task CancelAppointmentSchedules(int appointmentId)
+        {
+            var appointment = await _context.Appointments.FindAsync(appointmentId);
+            if (appointment != null)
+            {
+                var schedules = await _context.ConsultantSchedules
+                    .Where(s => s.ConsultantID == appointment.ConsultantID &&
+                                s.Date >= appointment.StartDateTime.Date &&
+                                s.Date <= appointment.EndDateTime.Date &&
+                                s.StartTime >= appointment.StartDateTime.TimeOfDay &&
+                                s.EndTime <= appointment.EndDateTime.TimeOfDay)
+                    .ToListAsync();
+                foreach (var schedule in schedules)
+                    schedule.IsAvailable = true;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private void ScheduleReminder(Appointment appointment)
+        {
+            var reminderTime = appointment.StartDateTime.AddHours(-1);
+            if (reminderTime > DateTime.UtcNow)
+            {
+                BackgroundJob.Schedule(() => SendReminderEmail(appointment.AppointmentID), reminderTime.ToUniversalTime());
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0)]
+        public async Task SendReminderEmail(int appointmentId)
+        {
+            var appointment = await _context.Appointments
+                .Include(a => a.Consultant).ThenInclude(c => c.User)
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
+
+            if (appointment == null)
+            {
+                Log.Error("Appointment not found for reminder: AppointmentID={AppointmentID}", appointmentId);
+                return;
+            }
+
+            var memberEmail = appointment.User.Email;
+            var consultantEmail = appointment.Consultant.User.Email;
+            var subject = "Appointment Reminder - Drug Prevention System";
+            var body = $@"This is a reminder for your upcoming appointment!
+        Details:
+        - Consultant: {appointment.Consultant.User.FullName}
+        - Member: {appointment.User.FullName}
+        - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+        - Google Meet Link: {appointment.GoogleMeetLink}
+        - Note: {appointment.Note ?? "None"}
+        Please join the meeting 1 hour from now.";
+
+            await SendGmailAsync(memberEmail, subject, body);
+            await SendGmailAsync(consultantEmail, subject, body);
+
+            Log.Information("Sent reminder emails for AppointmentID={AppointmentID}", appointmentId);
+        }
+    }
+
+}

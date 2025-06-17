@@ -16,7 +16,7 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         public decimal Amount { get; set; } = 0;
 
-        public DateTime PaymentDate { get; set; } = DateTime.Now;
+        public DateTime? PaymentDate { get; set; } = DateTime.Now;
 
         [MaxLength(50)]
         public string? PaymentMethod { get; set; }

@@ -1,6 +1,5 @@
 ﻿using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
-using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +14,9 @@ namespace DrugUsePreventionAPI.Controllers
     [Authorize]
     public class AppointmentsController : ControllerBase
     {
-        private readonly IAppointmentService _appointmentService; private readonly ApplicationDbContext _context;
+        private readonly IAppointmentService _appointmentService; 
+        private readonly ApplicationDbContext _context;
+
         public AppointmentsController(IAppointmentService appointmentService, ApplicationDbContext context)
         {
             _appointmentService = appointmentService;
@@ -23,6 +24,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAvailableConsultants()
         {
             try
@@ -38,6 +40,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants/{consultantId}/schedules")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetConsultantSchedules(int consultantId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             try
@@ -61,14 +64,17 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-               var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                if(userIdClaim == null)
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                Log.Information("UserIdClaim from token: {UserIdClaim}", userIdClaim?.Value);
+                if (userIdClaim == null)
                 {
                     return Unauthorized();
                 }
                 var userId = int.Parse(userIdClaim.Value);
-                var appointment = await _appointmentService.BookAppointmentAsync(dto, userId);
-                return Ok(appointment);
+                Log.Information("Parsed UserID: {UserID}", userId);
+
+                var (appointment, paymentUrl) = await _appointmentService.BookAppointmentAsync(dto, userId);
+                return Ok(new { Appointment = appointment, PaymentUrl = paymentUrl });
             }
             catch (InvalidOperationException ex)
             {
@@ -88,7 +94,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-                var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, confirmDto.TransactionID);
+                var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, confirmDto.TransactionID, confirmDto.VNPayResponseCode);
                 return Ok(appointment);
             }
             catch (InvalidOperationException ex)
@@ -156,4 +162,5 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
     }
+
 }

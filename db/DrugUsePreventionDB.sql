@@ -54,7 +54,7 @@ CREATE TABLE Consultants (
 );
 GO
 
--- 5. ConsultantSchedules
+-- 5. Consultant Schedules
 CREATE TABLE ConsultantSchedules (
   scheduleID INT IDENTITY(1,1) PRIMARY KEY,
   consultantID INT NOT NULL,
@@ -104,7 +104,7 @@ ALTER TABLE Blogs
 ADD CONSTRAINT CHK_Blogs_Status CHECK (status IN ('PENDING','APPROVED','REJECTED'));
 GO
 
--- 8. CourseRegistrations
+-- 8. Course Registrations
 CREATE TABLE CourseRegistrations (
   userID INT NOT NULL,
   courseID INT NOT NULL,
@@ -136,7 +136,7 @@ ALTER TABLE Appointments
 ADD CONSTRAINT CHK_Appointments_Status CHECK (status IN ('PENDING_PAYMENT','CONFIRMED','CANCELED'));
 GO
 
--- 10. ConsultantAppointmentEvaluations
+-- 10. Consultant Appointment Evaluations
 CREATE TABLE ConsultantAppointmentEvaluations (
   evaluationID INT IDENTITY(1,1) PRIMARY KEY,
   appointmentID INT NOT NULL,
@@ -163,7 +163,7 @@ ALTER TABLE Assessments
 ADD CONSTRAINT CHK_Assessments_Type CHECK (assessmentType IN ('PRE','POST'));
 GO
 
--- 12. CourseAssessments
+-- 12. Course Assessments
 CREATE TABLE CourseAssessments (
   courseID INT NOT NULL,
   assessmentID INT NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE CourseAssessments (
 );
 GO
 
--- 13. AssessmentResults
+-- 13. Assessment Results
 CREATE TABLE AssessmentResults (
   resultID INT IDENTITY(1,1) PRIMARY KEY,
   userID INT NOT NULL,
@@ -209,7 +209,7 @@ CREATE TABLE Questions (
 );
 GO
 
--- 16. AnswerOptions
+-- 16. Answer Options
 CREATE TABLE AnswerOptions (
   optionID INT IDENTITY(1,1) PRIMARY KEY,
   questionID INT NOT NULL,
@@ -219,7 +219,7 @@ CREATE TABLE AnswerOptions (
 );
 GO
 
--- 17. CommunicationPrograms
+-- 17. Communication Programs
 CREATE TABLE CommunicationPrograms (
   programID INT IDENTITY(1,1) PRIMARY KEY,
   name NVARCHAR(255) NOT NULL,
@@ -230,18 +230,18 @@ CREATE TABLE CommunicationPrograms (
 );
 GO
 
--- 18. ProgramParticipations
+-- 18. Program Participations
 CREATE TABLE ProgramParticipations (
   userID INT NOT NULL,
   programID INT NOT NULL,
   joinTime DATETIME2 NOT NULL DEFAULT GETDATE(),
   CONSTRAINT PK_ProgramParticipations PRIMARY KEY (userID, programID),
-  CONSTRAINT FK_ProgramParticipations_Users FOREIGN KEY (userID) REFERENCES Users(userID),  
+  CONSTRAINT FK_ProgramParticipations_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_ProgramParticipations_Programs FOREIGN KEY (programID) REFERENCES CommunicationPrograms(programID)
 );
 GO
 
--- 19. SurveyResponses
+-- 19. Survey Responses
 CREATE TABLE SurveyResponses (
   responseID INT IDENTITY(1,1) PRIMARY KEY,
   userID INT NOT NULL,
@@ -286,5 +286,16 @@ VALUES
     (N'Admin', N'Quản trị viên');
 GO
 
+INSERT INTO ConsultantSchedules (ConsultantID, DayOfWeek, Date, StartTime, EndTime, IsAvailable, Notes)
+VALUES (1, 'Saturday', '2025-06-14', '07:00:00', '08:00:00', 1, NULL);
+
 select * from Roles
 select * from Users
+select * from Consultants
+select * from ConsultantSchedules
+select * from Appointments 
+select * from Payments
+
+update ConsultantSchedules
+set isAvailable = '1'
+where scheduleID = 165

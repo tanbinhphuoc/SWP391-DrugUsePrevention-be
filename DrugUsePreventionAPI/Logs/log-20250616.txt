@@ -1,0 +1,14 @@
+2025-06-16 12:54:33.110 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-16 12:54:36.232 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-16 12:54:39.062 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-16 12:54:39.070 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-16 12:54:39.078 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-16 12:54:39.365 +07:00 [INF] Server laptop-qlc4gki0:21168:b9c296bd successfully announced in 102.0027 ms
+2025-06-16 12:54:39.391 +07:00 [INF] Server laptop-qlc4gki0:21168:b9c296bd is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-16 12:54:39.500 +07:00 [INF] 1 servers were removed due to timeout
+2025-06-16 12:54:39.910 +07:00 [INF] Server laptop-qlc4gki0:21168:b9c296bd all the dispatchers started
+2025-06-16 12:54:48.350 +07:00 [INF] Generated schedules from "2025-06-16T00:00:00.0000000+07:00" to "2025-06-23T00:00:00.0000000+07:00" for all consultants
