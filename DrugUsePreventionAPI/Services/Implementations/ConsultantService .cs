@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DrugPreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.DTOs.User;
@@ -7,7 +6,7 @@ using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace DrugPreventionAPI.Services.Implementations
+namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class ConsultantService : IConsultantService
     {
@@ -44,7 +43,6 @@ namespace DrugPreventionAPI.Services.Implementations
             _context.Users.Add(user);
             await _context.SaveChangesAsync(); // Save the user entity to get the generated userId
 
-            // Step 2: Create consultant-specific details
             var consultant = new Consultant
             {
                 UserID = user.UserID, // Link consultant to the created user
