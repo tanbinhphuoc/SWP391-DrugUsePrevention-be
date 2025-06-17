@@ -1,0 +1,53 @@
+2025-06-08 11:11:17.596 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-08 11:11:18.731 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-08 11:11:19.058 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-08 11:11:19.059 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-08 11:11:19.059 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-08 11:11:19.274 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 successfully announced in 191.4016 ms
+2025-06-08 11:11:19.282 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-08 11:11:19.392 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 all the dispatchers started
+2025-06-08 11:11:42.801 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentNullException: Value cannot be null. (Parameter 's')
+   at System.ArgumentNullException.Throw(String paramName)
+   at System.Text.Encoding.GetBytes(String s)
+   at Program.<>c__DisplayClass0_0.<<Main>$>b__5(JwtBearerOptions options) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 148
+   at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Microsoft.Extensions.Options.OptionsCache`1.GetOrAdd[TArg](String name, Func`3 createOptions, TArg factoryArgument)
+   at Microsoft.Extensions.Options.OptionsMonitor`1.Get(String name)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(AuthenticationScheme scheme, HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandlerProvider.GetHandlerAsync(HttpContext context, String authenticationScheme)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.AuthenticateAsync(HttpContext context, String scheme)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-08 11:15:22.654 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-08 11:15:22.655 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 caught stopping signal...
+2025-06-08 11:15:22.669 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 caught stopped signal...
+2025-06-08 11:15:22.683 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 All dispatchers stopped
+2025-06-08 11:15:22.687 +07:00 [WRN] Server desktop-nggl106:33568:4dc8f0c3 caught shutdown signal...
+2025-06-08 11:15:22.702 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 successfully reported itself as stopped in 12.9818 ms
+2025-06-08 11:15:22.703 +07:00 [INF] Server desktop-nggl106:33568:4dc8f0c3 has been stopped in total 43.1043 ms
+2025-06-08 11:16:12.426 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-08 11:16:13.115 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-08 11:16:13.489 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-08 11:16:13.490 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-08 11:16:13.490 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-08 11:16:13.623 +07:00 [INF] Server desktop-nggl106:11372:9e231217 successfully announced in 109.2116 ms
+2025-06-08 11:16:13.629 +07:00 [INF] Server desktop-nggl106:11372:9e231217 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-08 11:16:13.713 +07:00 [INF] Server desktop-nggl106:11372:9e231217 all the dispatchers started
+2025-06-08 11:21:23.143 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749356343, exp: 1749442743, iat: 1749356343, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-08 11:21:50.684 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749356343, exp: 1749442743, iat: 1749356343, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-08 11:21:59.631 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749356343, exp: 1749442743, iat: 1749356343, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-08 11:24:11.474 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1749356343, exp: 1749442743, iat: 1749356343, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient

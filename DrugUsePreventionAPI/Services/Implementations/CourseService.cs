@@ -20,10 +20,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
+                if (courseDto.Type != "COBAN" && courseDto.Type != "NANGCAO")
+                {
+                    return false;
+                }
                 var course = new Course
                 {
                     Title = courseDto.Title,
                     Description = courseDto.Description,
+                    Type = courseDto.Type,
                     StartDate = courseDto.StartDate,
                     EndDate = courseDto.EndDate,
                     Status = courseDto.Status,
@@ -99,6 +104,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
             {
                 return false;
             }
+        }
+        public async Task<List<Course>> GetCoursesByTypeAsync(string type)
+        {
+            return await _context.Courses
+                .Where(c => c.Type == type && c.Status == "OPEN")
+                .ToListAsync();
         }
     }
 }
