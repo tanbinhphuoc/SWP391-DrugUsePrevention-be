@@ -1,6 +1,4 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Answer;
-using DrugUsePreventionAPI.Models.DTOs.Question;
-using DrugUsePreventionAPI.Models.DTOs.Survey;
+﻿using DrugUsePreventionAPI.Models.DTOs.Question;
 using DrugUsePreventionAPI.Models.Entities;
 
 namespace DrugUsePreventionAPI.Services.Interfaces
@@ -18,5 +16,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<Question?> GetQuestionForAssessmentById(int id);
         Task<bool> UpdateQuestionForAssessment(int id, CreateQuestionForAssessmentDto createQuestionForAssessmentDto);
         Task<bool> DeleteQuestionForAssessment(int id);
+
+
     }
 }
