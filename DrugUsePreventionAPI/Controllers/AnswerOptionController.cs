@@ -1,9 +1,7 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.Answer;
-using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
@@ -67,4 +65,5 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Xóa AnswerOption Thất Bại." });
         }
     }
+
 }
