@@ -1,38 +1,38 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.AssessmentResultDto;
+﻿using DrugUsePreventionAPI.Models.DTOs.AssessmentResultDto;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class AssessmentResultService : IAssessmentResultService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AssessmentResultService(ApplicationDbContext context)
+        public AssessmentResultService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
+
         public async Task<string> CreateAssessmentResult(CreateAssessmentResultDto dto)
         {
             int score = 0;
-            if(dto.AnswerOptionId.Count > 0)
+            if (dto.AnswerOptionId.Count > 0)
             {
                 foreach (var item in dto.AnswerOptionId)
                 {
-                    AnswerOption? answer = await _context.AnswerOptions.FindAsync(item);
+                    var answer = await _unitOfWork.AnswerOptions.GetByIdAsync(item);
                     if (answer == null)
                     {
                         throw new Exception("Answer option khong ton tai");
                     }
-                    if(answer.ScoreValue != null)
+                    if (answer.ScoreValue != null)
                     {
                         score += (int)answer.ScoreValue;
                     }
                 }
             }
-            AssessmentResult assessmentResult = new()
+            var assessmentResult = new AssessmentResult
             {
                 AssessmentID = dto.AssessmentId,
                 UserID = dto.UserId,
@@ -42,18 +42,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 Score = score,
                 ResultName = $"Bạn đã hoàn thành bài đánh gia với {score} điểm!"
             };
-            _context.AssessmentResults.Add(assessmentResult);
-            _context.SaveChanges();
+            await _unitOfWork.AssessmentResults.AddAsync(assessmentResult);
+            await _unitOfWork.SaveChangesAsync();
             return assessmentResult.ResultName;
         }
 
         public async Task<CompareAssessmentResultDto?> CompareAssessmentResults(int userId, int courseId)
         {
-            var inputResult = await _context.AssessmentResults
-                .FirstOrDefaultAsync(x => x.UserID == userId && x.CourseID == courseId && x.AssessmentStage == "Input");
-
-            var outputResult = await _context.AssessmentResults
-                .FirstOrDefaultAsync(x => x.UserID == userId && x.CourseID == courseId && x.AssessmentStage == "Output");
+            var inputResult = await _unitOfWork.AssessmentResults.GetByUserAndCourseAsync(userId, courseId, "Input");
+            var outputResult = await _unitOfWork.AssessmentResults.GetByUserAndCourseAsync(userId, courseId, "Output");
 
             if (inputResult == null && outputResult == null)
                 return null;
@@ -82,6 +79,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             return comparison;
         }
-
     }
+
 }

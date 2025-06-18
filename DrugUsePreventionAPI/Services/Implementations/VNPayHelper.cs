@@ -22,24 +22,24 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var vnpayConfig = _configuration.GetSection("VNPay");
             var tmnCode = vnpayConfig["TmnCode"] ?? throw new InvalidOperationException("TmnCode is not configured.");
             var hashSecret = vnpayConfig["HashSecret"] ?? throw new InvalidOperationException("HashSecret is not configured.");
-            var vnpUrl = vnpayConfig["BaseUrl"] + "/paymentv2/vpcpay.html"; // Sử dụng BaseUrl
+            var vnpUrl = vnpayConfig["BaseUrl"] + "/paymentv2/vpcpay.html";
             var returnUrl = vnpayConfig["ReturnUrl"] ?? throw new InvalidOperationException("ReturnUrl is not configured.");
 
             var vnpParams = new Dictionary<string, string>
-    {
-        { "vnp_Version", "2.1.0" },
-        { "vnp_Command", "pay" },
-        { "vnp_TmnCode", tmnCode },
-        { "vnp_Amount", ((int)(payment.Amount * 100)).ToString() }, // Amount in VND * 100
-        { "vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss") },
-        { "vnp_CurrCode", "VND" },
-        { "vnp_IpAddr", "127.0.0.1" }, // Nên lấy IP thực tế của client
-        { "vnp_Locale", "vn" },
-        { "vnp_OrderInfo", orderInfo },
-        { "vnp_OrderType", "appointment_payment" },
-        { "vnp_ReturnUrl", returnUrl },
-        { "vnp_TxnRef", payment.TransactionID }
-    };
+        {
+            { "vnp_Version", "2.1.0" },
+            { "vnp_Command", "pay" },
+            { "vnp_TmnCode", tmnCode },
+            { "vnp_Amount", ((int)(payment.Amount * 100)).ToString() },
+            { "vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss") },
+            { "vnp_CurrCode", "VND" },
+            { "vnp_IpAddr", "127.0.0.1" },
+            { "vnp_Locale", "vn" },
+            { "vnp_OrderInfo", orderInfo },
+            { "vnp_OrderType", "appointment_payment" },
+            { "vnp_ReturnUrl", returnUrl },
+            { "vnp_TxnRef", payment.TransactionID }
+        };
 
             var sortedParams = vnpParams.OrderBy(kvp => kvp.Key);
             var queryString = string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));

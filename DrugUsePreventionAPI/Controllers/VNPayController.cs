@@ -12,7 +12,7 @@ namespace DrugUsePreventionAPI.Controllers
     [ApiController]
     public class VNPayController : ControllerBase
     {
-        private readonly IAppointmentService _appointmentService;
+        private readonly IAppointmentService _appointmentService; 
         private readonly VNPayHelper _vnpayHelper;
 
         public VNPayController(IAppointmentService appointmentService, VNPayHelper vnpayHelper)
@@ -41,7 +41,7 @@ namespace DrugUsePreventionAPI.Controllers
                     return BadRequest(new { message = "Invalid transaction reference format." });
                 }
                 var appointmentId = int.Parse(parts[0]);
-                var transactionId = vnpTxnRef; // Sử dụng toàn bộ vnp_TxnRef
+                var transactionId = vnpTxnRef;
                 var vnpayResponseCode = queryParams["vnp_ResponseCode"];
 
                 var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, transactionId, vnpayResponseCode);

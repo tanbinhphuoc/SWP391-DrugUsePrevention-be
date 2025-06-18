@@ -5,10 +5,7 @@ namespace DrugUsePreventionAPI.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -68,22 +65,24 @@ namespace DrugUsePreventionAPI.Data
 
             modelBuilder.Entity<ProgramParticipation>()
                 .HasKey(pp => new { pp.UserID, pp.ProgramID });
+
             modelBuilder.Entity<Appointment>()
-    .HasOne(a => a.User)
-    .WithMany(u => u.Appointments)
-    .HasForeignKey(a => a.UserID)
-    .OnDelete(DeleteBehavior.Restrict); // hoặc DeleteBehavior.NoAction
+                .HasOne(a => a.User)
+                .WithMany(u => u.Appointments)
+                .HasForeignKey(a => a.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Consultant)
                 .WithMany(c => c.Appointments)
                 .HasForeignKey(a => a.ConsultantID)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<SurveyResponse>()
-       .HasOne(sr => sr.User)
-       .WithMany(u => u.SurveyResponses)
-       .HasForeignKey(sr => sr.UserID)
-       .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(sr => sr.User)
+                .WithMany(u => u.SurveyResponses)
+                .HasForeignKey(sr => sr.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<SurveyResponse>()
                 .HasOne(sr => sr.Survey)
@@ -111,4 +110,5 @@ namespace DrugUsePreventionAPI.Data
                 .HasIndex(s => new { s.ConsultantID, s.Date, s.IsAvailable });
         }
     }
+
 }

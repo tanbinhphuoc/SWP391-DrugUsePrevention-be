@@ -1,28 +1,32 @@
 ﻿using DrugUsePreventionAPI.Models.Entities;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
+using DrugUsePreventionAPI.Repositories.Interfaces;
 using Serilog;
+using System;
+using System.Threading.Tasks;
 
-namespace DrugUsePreventionAPI.Data
+namespace DrugUsePreventionAPI.Data.Extensions
 {
     public class ScheduleGenerator
     {
-        private readonly ApplicationDbContext _context;
-        public ScheduleGenerator(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ScheduleGenerator(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task GenerateDailySchedulesAsync(DateTime startDate)
         {
-            var consultants = await _context.Consultants.ToListAsync();
-            var endDate = startDate.AddDays(7); // Tạo lịch cho 7 ngày
+            var consultants = await _unitOfWork.Consultants.GetAllAsync(); 
+            var endDate = startDate.AddDays(7);
 
             foreach (var consultant in consultants)
             {
                 var currentDate = startDate;
                 while (currentDate <= endDate)
                 {
-                    for (var hour = 7; hour < 19; hour++) // Từ 7:00 AM đến 7:00 PM
+                    for (var hour = 7; hour < 19; hour++)
                     {
                         var schedule = new ConsultantSchedule
                         {
@@ -34,12 +38,12 @@ namespace DrugUsePreventionAPI.Data
                             IsAvailable = true,
                             Notes = null
                         };
-                        _context.ConsultantSchedules.Add(schedule);
+                        await _unitOfWork.ConsultantSchedules.AddAsync(schedule); // Thêm lịch sử dụng UnitOfWork
                     }
                     currentDate = currentDate.AddDays(1);
                 }
             }
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(); // Lưu tất cả các thay đổi
             Log.Information("Generated schedules from {StartDate} to {EndDate} for all consultants", startDate, endDate);
         }
     }

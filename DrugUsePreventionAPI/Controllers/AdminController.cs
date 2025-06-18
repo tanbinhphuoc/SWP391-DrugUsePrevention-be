@@ -1,14 +1,12 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.User;
+﻿using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
+using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -20,18 +18,18 @@ namespace DrugUsePreventionAPI.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
-        private readonly IUserService _userService; 
+        private readonly IUserService _userService;
         private readonly IConsultantService _consultantService; 
-        private readonly IAuthService _authService;
-        private readonly ApplicationDbContext _context;
+        private readonly IAuthService _authService; 
+        private readonly IUnitOfWork _unitOfWork; 
         private readonly IConfiguration _configuration;
 
-        public AdminController(IUserService userService, IConsultantService consultantService, IAuthService authService, ApplicationDbContext context, IConfiguration configuration)
+        public AdminController(IUserService userService, IConsultantService consultantService, IAuthService authService, IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _userService = userService;
             _consultantService = consultantService;
             _authService = authService;
-            _context = context;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
 
@@ -133,16 +131,9 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-                var query = _context.Payments.AsQueryable();
+                var payments = await _unitOfWork.Payments.GetPaymentsByDateAndStatusAsync(startDate, endDate, status);
 
-                if (startDate.HasValue)
-                    query = query.Where(p => p.PaymentDate >= startDate.Value);
-                if (endDate.HasValue)
-                    query = query.Where(p => p.PaymentDate <= endDate.Value);
-                if (!string.IsNullOrEmpty(status))
-                    query = query.Where(p => p.Status == status);
-
-                var stats = await query
+                var stats = payments
                     .GroupBy(p => p.Status)
                     .Select(g => new
                     {
@@ -150,10 +141,10 @@ namespace DrugUsePreventionAPI.Controllers
                         Count = g.Count(),
                         TotalAmount = g.Sum(p => p.Amount)
                     })
-                    .ToListAsync();
+                    .ToList();
 
-                var totalRevenue = await query.SumAsync(p => p.Amount);
-                var totalTransactions = await query.CountAsync();
+                var totalRevenue = payments.Sum(p => p.Amount);
+                var totalTransactions = payments.Count();
 
                 return Ok(new
                 {
@@ -174,14 +165,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-                var payment = await _context.Payments
-                    .Include(p => p.Appointment)
-                    .ThenInclude(a => a.User)
-                    .Include(p => p.Appointment)
-                    .ThenInclude(a => a.Consultant)
-                    .ThenInclude(c => c.User)
-                    .FirstOrDefaultAsync(p => p.AppointmentID == appointmentId);
-
+                var payment = await _unitOfWork.Payments.GetPaymentByAppointmentIdAsync(appointmentId);
                 if (payment == null)
                     return NotFound(new { message = "Payment not found for the specified appointment." });
 
@@ -217,19 +201,16 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-                var payment = await _context.Payments
-                    .Include(p => p.Appointment)
-                    .FirstOrDefaultAsync(p => p.PaymentID == paymentId);
-
+                var payment = await _unitOfWork.Payments.GetPaymentWithAppointmentDetailsAsync(paymentId);
                 if (payment == null || payment.Status != "SUCCESS")
                     return BadRequest(new { message = "Payment is not eligible for refund." });
 
                 payment.Status = "REFUNDED";
                 payment.Appointment.Status = "CANCELED";
 
-                await _context.SaveChangesAsync();
+                _unitOfWork.Payments.Update(payment);
+                await _unitOfWork.SaveChangesAsync();
 
-                // Gửi email thông báo hoàn tiền
                 await SendRefundEmail(payment);
 
                 return Ok(new { message = "Payment refunded successfully." });
@@ -255,11 +236,11 @@ namespace DrugUsePreventionAPI.Controllers
                 var userEmail = payment.Appointment.User.Email;
                 var subject = "Refund Confirmation - Drug Prevention System";
                 var body = $@"Your payment for appointment ID {payment.AppointmentID} has been refunded.
-          Details:
-          - Amount: {payment.Amount} VND
-          - Transaction ID: {payment.TransactionID}
-          - Refund Date: {DateTime.UtcNow:yyyy-MM-dd HH:mm}
-          Please contact support for any questions.";
+      Details:
+      - Amount: {payment.Amount} VND
+      - Transaction ID: {payment.TransactionID}
+      - Refund Date: {DateTime.UtcNow:yyyy-MM-dd HH:mm}
+      Please contact support for any questions.";
 
                 using (var client = new SmtpClient(host, port))
                 {

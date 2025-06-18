@@ -1,79 +1,54 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.Appointment;
+﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using System.Net.Mail;
 using System.Net;
 using Hangfire;
+using AutoMapper;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class AppointmentService : IAppointmentService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
-        private readonly VNPayHelper _vnpayHelper;
+        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration; private readonly VNPayHelper _vnpayHelper; private readonly IMapper _mapper;
 
-        public AppointmentService(ApplicationDbContext context, IConfiguration configuration, VNPayHelper vnpayHelper)
+        public AppointmentService(IUnitOfWork unitOfWork, IConfiguration configuration, VNPayHelper vnpayHelper, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
             _vnpayHelper = vnpayHelper;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ConsultantDto>> GetAvailableConsultantsAsync()
         {
-            var consultants = await _context.Consultants
-                .Include(c => c.User)
-                .Include(c => c.Certificate)
-                .Where(c => c.User.Status == "Active")
-                .Select(c => new ConsultantDto
-                {
-                    ConsultantID = c.ConsultantID,
-                    FullName = c.User.FullName,
-                    Email = c.User.Email,
-                    Specialty = c.Specialty,
-                    Degree = c.Degree,
-                    HourlyRate = c.HourlyRate,
-                    CertificateName = c.Certificate != null ? c.Certificate.CertificateName : null
-                })
-                .ToListAsync();
+            var consultants = await _unitOfWork.Consultants.GetActiveConsultantsAsync();
+            var consultantDtos = consultants.Select(c => _mapper.Map<ConsultantDto>(c)).ToList();
 
-            Log.Information("Retrieved {Count} consultants from database", consultants.Count);
-            return consultants;
+            Log.Information("Retrieved {Count} consultants from database", consultantDtos.Count);
+            return consultantDtos;
         }
 
         public async Task<IEnumerable<ConsultantScheduleDto>> GetConsultantSchedulesAsync(int consultantId, DateTime startDate, DateTime endDate)
         {
             try
             {
-                var consultant = await _context.Consultants.FirstOrDefaultAsync(c => c.ConsultantID == consultantId);
+                var consultant = await _unitOfWork.Consultants.GetByIdAsync(consultantId);
                 if (consultant == null)
                 {
                     throw new InvalidOperationException("Consultant not found.");
                 }
 
-                var schedules = await _context.ConsultantSchedules
-                    .Where(s => s.ConsultantID == consultantId && s.Date >= startDate && s.Date <= endDate)
-                    .Select(s => new ConsultantScheduleDto
-                    {
-                        ScheduleID = s.ScheduleID,
-                        DayOfWeek = s.DayOfWeek,
-                        Date = s.Date,
-                        StartTime = s.StartTime,
-                        EndTime = s.EndTime,
-                        Notes = s.Notes
-                    })
-                    .ToListAsync();
-
-                if (schedules.Count == 0)
+                var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByConsultantAndDateRangeAsync(consultantId, startDate, endDate);
+                if (!schedules.Any())
                 {
                     throw new InvalidOperationException("No available schedules for the specified dates.");
                 }
 
-                return schedules;
+                return schedules.Select(s => _mapper.Map<ConsultantScheduleDto>(s)).ToList();
             }
             catch (Exception ex)
             {
@@ -89,9 +64,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 Log.Information("Booking appointment: ConsultantID={ConsultantID}, ScheduleIDs={ScheduleIDs}, UserID={UserID}",
                     bookDto.ConsultantID, string.Join(",", bookDto.ScheduleIDs), userId);
 
-                var consultant = await _context.Consultants
-                    .Include(c => c.User)
-                    .FirstOrDefaultAsync(c => c.ConsultantID == bookDto.ConsultantID);
+                var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(bookDto.ConsultantID);
                 if (consultant == null)
                 {
                     Log.Error("Consultant not found for ConsultantID={ConsultantID}", bookDto.ConsultantID);
@@ -99,19 +72,16 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 }
                 Log.Information("Consultant found: {ConsultantID}", consultant.ConsultantID);
 
-                var schedules = await _context.ConsultantSchedules
-                    .Where(s => bookDto.ScheduleIDs.Contains(s.ScheduleID) && s.IsAvailable)
-                    .OrderBy(s => s.Date)
-                    .ThenBy(s => s.StartTime)
-                    .ToListAsync();
+                var schedules = await _unitOfWork.ConsultantSchedules.FindAsync(s => bookDto.ScheduleIDs.Contains(s.ScheduleID) && s.IsAvailable);
+                schedules = schedules.OrderBy(s => s.Date).ThenBy(s => s.StartTime).ToList();
                 Log.Information("Found schedules: {Schedules}", string.Join(",", schedules.Select(s => s.ScheduleID)));
 
-                if (schedules.Count != bookDto.ScheduleIDs.Count)
+                if (schedules.Count() != bookDto.ScheduleIDs.Count)
                 {
                     throw new InvalidOperationException("One or more selected time slots are unavailable.");
                 }
 
-                if (!AreSchedulesConsecutive(schedules))
+                if (!AreSchedulesConsecutive(schedules.ToList()))
                 {
                     throw new InvalidOperationException("Selected time slots must be consecutive.");
                 }
@@ -145,7 +115,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                 var startDateTime = schedules.First().Date.Add(schedules.First().StartTime);
                 var endDateTime = schedules.Last().Date.Add(schedules.Last().EndTime);
-                var durationHours = schedules.Count;
+                var durationHours = schedules.Count();
                 var price = (decimal)durationHours * consultant.HourlyRate;
 
                 var appointment = new Appointment
@@ -162,11 +132,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     UpdatedAt = DateTime.UtcNow
                 };
 
-                _context.Appointments.Add(appointment);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Appointments.AddAsync(appointment);
+                await _unitOfWork.SaveChangesAsync();
 
                 foreach (var schedule in schedules)
                     schedule.IsAvailable = false;
+
+                _unitOfWork.ConsultantSchedules.UpdateRange(schedules);
 
                 var payment = new Payment
                 {
@@ -178,21 +150,28 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     Status = "PENDING",
                     TransactionID = $"{appointment.AppointmentID}-{Guid.NewGuid().ToString()}"
                 };
+                // kiểm tra payment date nếu trạng thái là PENDING
+                if (payment.PaymentDate == null && payment.Status == "PENDING")
+                {
+                    // nếu trạng thái là PENDING thì đặt payment date là thời gian hiện tại
+                    payment.PaymentDate = DateTime.UtcNow; // Set payment date to now if it's pending
+                }
 
-                _context.Payments.Add(payment);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Payments.AddAsync(payment);
+                await _unitOfWork.SaveChangesAsync();
 
                 var paymentUrl = _vnpayHelper.CreatePaymentUrl(payment, $"Thanh toan cuoc hen ID {appointment.AppointmentID}");
 
                 Log.Information("Appointment booked: AppointmentID={AppointmentID}, UserID={UserID}, ConsultantID={ConsultantID}",
                     appointment.AppointmentID, userId, consultant.ConsultantID);
 
+                var user = await _unitOfWork.Users.GetByIdAsync(userId);
                 return (
                     new AppointmentDto
                     {
                         AppointmentID = appointment.AppointmentID,
                         ConsultantName = consultant.User.FullName,
-                        MemberName = (await _context.Users.FindAsync(userId)).FullName,
+                        MemberName = user.FullName,
                         StartDateTime = appointment.StartDateTime,
                         EndDateTime = appointment.EndDateTime,
                         GoogleMeetLink = null,
@@ -216,50 +195,47 @@ namespace DrugUsePreventionAPI.Services.Implementations
             {
                 Log.Information("Confirming payment: AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
 
-                var appointment = await _context.Appointments
-                    .Include(a => a.Consultant).ThenInclude(c => c.User)
-                    .Include(a => a.User)
-                    .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
+                var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
                 if (appointment == null || appointment.Status != "PENDING_PAYMENT")
                 {
                     Log.Error("Invalid appointment status for payment confirmation: AppointmentID={AppointmentID}", appointmentId);
                     throw new InvalidOperationException("Invalid appointment status for payment confirmation.");
                 }
 
-                var payment = await _context.Payments
-                    .FirstOrDefaultAsync(p => p.AppointmentID == appointmentId && p.TransactionID == transactionId);
+                var payment = await _unitOfWork.Payments.GetByAppointmentAndTransactionAsync(appointmentId, transactionId);
                 if (payment == null || payment.Status != "PENDING")
                 {
                     Log.Error("Invalid payment details for AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
                     throw new InvalidOperationException("Invalid payment details.");
                 }
 
-                // Xử lý trạng thái từ VNPay
                 switch (vnpayResponseCode)
                 {
-                    case "00": // Thanh toán thành công
+                    case "00":
                         payment.Status = "SUCCESS";
                         payment.PaymentDate = DateTime.UtcNow;
                         appointment.Status = "CONFIRMED";
                         appointment.GoogleMeetLink = $"https://meet.google.com/new?appointmentId={Guid.NewGuid()}";
                         break;
-                    case "24": // Khách hàng hủy giao dịch
+                    case "24":
                         payment.Status = "CANCELED";
                         appointment.Status = "CANCELED";
                         await CancelAppointmentSchedules(appointmentId);
                         await SendPaymentErrorEmail(appointment, "Payment was canceled by user.");
                         break;
-                    case "11": // Giao dịch bị tạm hoãn
+                    case "11":
                         payment.Status = "SUSPENDED";
                         await SendPaymentErrorEmail(appointment, "Payment is suspended. Please contact support.");
                         break;
-                    default: // Lỗi khác
+                    default:
                         payment.Status = "ERROR";
                         await SendPaymentErrorEmail(appointment, $"Payment failed with error code {vnpayResponseCode}.");
                         break;
                 }
 
-                await _context.SaveChangesAsync();
+                _unitOfWork.Payments.Update(payment);
+                _unitOfWork.Appointments.Update(appointment);
+                await _unitOfWork.SaveChangesAsync();
 
                 if (payment.Status == "SUCCESS")
                 {
@@ -268,18 +244,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 }
 
                 Log.Information("Payment confirmed: AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
-                return new AppointmentDto
-                {
-                    AppointmentID = appointment.AppointmentID,
-                    ConsultantName = appointment.Consultant.User.FullName,
-                    MemberName = appointment.User.FullName,
-                    StartDateTime = appointment.StartDateTime,
-                    EndDateTime = appointment.EndDateTime,
-                    GoogleMeetLink = appointment.GoogleMeetLink,
-                    Price = appointment.Price,
-                    Status = appointment.Status,
-                    Note = appointment.Note
-                };
+                return _mapper.Map<AppointmentDto>(appointment);
             }
             catch (Exception ex)
             {
@@ -292,26 +257,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
-                var appointments = await _context.Appointments
-                    .Include(a => a.Consultant).ThenInclude(c => c.User)
-                    .Include(a => a.User)
-                    .Where(a => a.UserID == userId)
-                    .Select(a => new AppointmentDto
-                    {
-                        AppointmentID = a.AppointmentID,
-                        ConsultantName = a.Consultant.User.FullName,
-                        MemberName = a.User.FullName,
-                        StartDateTime = a.StartDateTime,
-                        EndDateTime = a.EndDateTime,
-                        GoogleMeetLink = a.Status == "CONFIRMED" ? a.GoogleMeetLink : null,
-                        Price = a.Price,
-                        Status = a.Status,
-                        Note = a.Note
-                    })
-                    .ToListAsync();
+                var appointments = await _unitOfWork.Appointments.GetAppointmentsByUserAsync(userId);
+                var appointmentDtos = appointments.Select(a => new AppointmentDto
+                {
+                    AppointmentID = a.AppointmentID,
+                    ConsultantName = a.Consultant.User.FullName,
+                    MemberName = a.User.FullName,
+                    StartDateTime = a.StartDateTime,
+                    EndDateTime = a.EndDateTime,
+                    GoogleMeetLink = a.Status == "CONFIRMED" ? a.GoogleMeetLink : null,
+                    Price = a.Price,
+                    Status = a.Status,
+                    Note = a.Note
+                }).ToList();
 
-                Log.Information("Retrieved {Count} appointments for UserID={UserID}", appointments.Count, userId);
-                return appointments;
+                Log.Information("Retrieved {Count} appointments for UserID={UserID}", appointmentDtos.Count, userId);
+                return appointmentDtos;
             }
             catch (Exception ex)
             {
@@ -324,28 +285,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
-                var currentDateTime = DateTime.Now;
-                var appointments = await _context.Appointments
-                    .Include(a => a.User)
-                    .Include(a => a.Consultant).ThenInclude(c => c.User)
-                    .Where(a => a.ConsultantID == consultantId && a.Status == "CONFIRMED" && a.StartDateTime > currentDateTime)
-                    .OrderBy(a => a.StartDateTime)
-                    .Select(a => new AppointmentDto
-                    {
-                        AppointmentID = a.AppointmentID,
-                        MemberName = a.User.FullName,
-                        ConsultantName = a.Consultant.User.FullName,
-                        StartDateTime = a.StartDateTime,
-                        EndDateTime = a.EndDateTime,
-                        GoogleMeetLink = a.GoogleMeetLink,
-                        Price = a.Price,
-                        Status = a.Status,
-                        Note = a.Note
-                    })
-                    .ToListAsync();
+                var appointments = await _unitOfWork.Appointments.GetAppointmentsByConsultantAsync(consultantId);
+                var appointmentDtos = appointments.Select(a => new AppointmentDto
+                {
+                    AppointmentID = a.AppointmentID,
+                    MemberName = a.User.FullName,
+                    ConsultantName = a.Consultant.User.FullName,
+                    StartDateTime = a.StartDateTime,
+                    EndDateTime = a.EndDateTime,
+                    GoogleMeetLink = a.GoogleMeetLink,
+                    Price = a.Price,
+                    Status = a.Status,
+                    Note = a.Note
+                }).ToList();
 
-                Log.Information("Retrieved {Count} upcoming appointments for ConsultantID={ConsultantID}", appointments.Count, consultantId);
-                return appointments;
+                Log.Information("Retrieved {Count} upcoming appointments for ConsultantID={ConsultantID}", appointmentDtos.Count, consultantId);
+                return appointmentDtos;
             }
             catch (Exception ex)
             {
@@ -376,13 +331,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 var consultantEmail = appointment.Consultant.User.Email;
                 var subject = "Appointment Confirmation - Drug Prevention System";
                 var body = $@"Your appointment has been successfully confirmed!
-            Details:
-            - Consultant: {appointment.Consultant.User.FullName}
-            - Member: {appointment.User.FullName}
-            - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-            - Google Meet Link: {appointment.GoogleMeetLink}
-            - Note: {appointment.Note ?? "None"}
-            Please join the meeting at the scheduled time.";
+        Details:
+        - Consultant: {appointment.Consultant.User.FullName}
+        - Member: {appointment.User.FullName}
+        - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+        - Google Meet Link: {appointment.GoogleMeetLink}
+        - Note: {appointment.Note ?? "None"}
+        Please join the meeting at the scheduled time.";
 
                 await SendGmailAsync(memberEmail, subject, body);
                 await SendGmailAsync(consultantEmail, subject, body);
@@ -403,12 +358,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 var memberEmail = appointment.User.Email;
                 var subject = "Payment Issue - Drug Prevention System";
                 var body = $@"There was an issue with your payment for the appointment.
-            Details:
-            - Consultant: {appointment.Consultant.User.FullName}
-            - Member: {appointment.User.FullName}
-            - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-            - Error: {errorMessage}
-            Please try again or contact support.";
+        Details:
+        - Consultant: {appointment.Consultant.User.FullName}
+        - Member: {appointment.User.FullName}
+        - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+        - Error: {errorMessage}
+        Please try again or contact support.";
 
                 await SendGmailAsync(memberEmail, subject, body);
                 Log.Information("Sent payment error email for AppointmentID={AppointmentID}", appointment.AppointmentID);
@@ -458,20 +413,19 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         private async Task CancelAppointmentSchedules(int appointmentId)
         {
-            var appointment = await _context.Appointments.FindAsync(appointmentId);
+            var appointment = await _unitOfWork.Appointments.GetByIdAsync(appointmentId);
             if (appointment != null)
             {
-                var schedules = await _context.ConsultantSchedules
-                    .Where(s => s.ConsultantID == appointment.ConsultantID &&
-                                s.Date >= appointment.StartDateTime.Date &&
-                                s.Date <= appointment.EndDateTime.Date &&
-                                s.StartTime >= appointment.StartDateTime.TimeOfDay &&
-                                s.EndTime <= appointment.EndDateTime.TimeOfDay)
-                    .ToListAsync();
+                var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByAppointmentAsync(
+                    appointment.ConsultantID,
+                    appointment.StartDateTime,
+                    appointment.EndDateTime);
+
                 foreach (var schedule in schedules)
                     schedule.IsAvailable = true;
 
-                await _context.SaveChangesAsync();
+                _unitOfWork.ConsultantSchedules.UpdateRange(schedules);
+                await _unitOfWork.SaveChangesAsync();
             }
         }
 
@@ -487,11 +441,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         [AutomaticRetry(Attempts = 0)]
         public async Task SendReminderEmail(int appointmentId)
         {
-            var appointment = await _context.Appointments
-                .Include(a => a.Consultant).ThenInclude(c => c.User)
-                .Include(a => a.User)
-                .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
-
+            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
             if (appointment == null)
             {
                 Log.Error("Appointment not found for reminder: AppointmentID={AppointmentID}", appointmentId);
@@ -502,13 +452,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var consultantEmail = appointment.Consultant.User.Email;
             var subject = "Appointment Reminder - Drug Prevention System";
             var body = $@"This is a reminder for your upcoming appointment!
-        Details:
-        - Consultant: {appointment.Consultant.User.FullName}
-        - Member: {appointment.User.FullName}
-        - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-        - Google Meet Link: {appointment.GoogleMeetLink}
-        - Note: {appointment.Note ?? "None"}
-        Please join the meeting 1 hour from now.";
+    Details:
+    - Consultant: {appointment.Consultant.User.FullName}
+    - Member: {appointment.User.FullName}
+    - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+    - Google Meet Link: {appointment.GoogleMeetLink}
+    - Note: {appointment.Note ?? "None"}
+    Please join the meeting 1 hour from now.";
 
             await SendGmailAsync(memberEmail, subject, body);
             await SendGmailAsync(consultantEmail, subject, body);
