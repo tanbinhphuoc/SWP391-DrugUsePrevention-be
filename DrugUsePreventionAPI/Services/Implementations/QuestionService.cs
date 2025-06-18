@@ -1,33 +1,33 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.Question;
+﻿using DrugUsePreventionAPI.Models.DTOs.Question;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class QuestionService : IQuestionService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
 
-        public QuestionService(ApplicationDbContext context, IConfiguration configuration)
+        public QuestionService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
+
         public async Task<bool> CreateQuestionForSurvey(CreateQuestionForSurveyDto createQuestionForSurveyDto)
         {
             try
             {
-                var questionForSurvey = new Question()
+                var questionForSurvey = new Question
                 {
                     SurveyID = createQuestionForSurveyDto.surveyID,
                     QuestionText = createQuestionForSurveyDto.questionText,
-                    QuestionType = createQuestionForSurveyDto.questionType,
+                    QuestionType = createQuestionForSurveyDto.questionType
                 };
-                _context.Questions.Add(questionForSurvey);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Questions.AddAsync(questionForSurvey);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -35,9 +35,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<bool> UpdateQuestionForSurvey(int id, CreateQuestionForSurveyDto createQuestionForSurveyDto)
         {
-            var questionForSurvey = await _context.Questions.FindAsync(id);
+            var questionForSurvey = await _unitOfWork.Questions.GetByIdAsync(id);
             if (questionForSurvey == null)
                 return false;
 
@@ -45,11 +46,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
             questionForSurvey.QuestionText = createQuestionForSurveyDto.questionText;
             questionForSurvey.QuestionType = createQuestionForSurveyDto.questionType;
 
-
             try
             {
-                _context.Questions.Update(questionForSurvey);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Questions.Update(questionForSurvey);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -57,27 +57,29 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<List<Question>> GetAllQuestionForSurvey()
         {
-            return await _context.Questions.ToListAsync();
+            return (await _unitOfWork.Questions.FindAsync(q => q.SurveyID != null)).ToList();
         }
 
         public async Task<Question?> GetQuestionForSurveyById(int id)
         {
-            return await _context.Questions.FindAsync(id);
+            var question = await _unitOfWork.Questions.GetByIdAsync(id);
+            return question?.SurveyID != null ? question : null;
         }
 
         public async Task<bool> DeleteQuestionForSurvey(int id)
         {
-            var questionForSurvey = await _context.Questions.FindAsync(id);
-            if (questionForSurvey == null)
+            var questionForSurvey = await _unitOfWork.Questions.GetByIdAsync(id);
+            if (questionForSurvey == null || questionForSurvey.SurveyID == null)
             {
                 return false;
             }
             try
             {
-                _context.Questions.Remove(questionForSurvey);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Questions.Remove(questionForSurvey);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -85,22 +87,19 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
-
-
-
 
         public async Task<bool> CreateQuestionForAssessment(CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
         {
             try
             {
-                var questionForAssessment = new Question()
+                var questionForAssessment = new Question
                 {
                     AssessmentID = createQuestionForAssessmentDto.assessmentID,
                     QuestionText = createQuestionForAssessmentDto.questionText,
-                    QuestionType = createQuestionForAssessmentDto.questionType,
+                    QuestionType = createQuestionForAssessmentDto.questionType
                 };
-                _context.Questions.Add(questionForAssessment);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Questions.AddAsync(questionForAssessment);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -108,21 +107,21 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<bool> UpdateQuestionForAssessment(int id, CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
         {
-            var questionForAssessment = await _context.Questions.FindAsync(id);
-            if (questionForAssessment == null)
+            var questionForAssessment = await _unitOfWork.Questions.GetByIdAsync(id);
+            if (questionForAssessment == null || questionForAssessment.AssessmentID == null)
                 return false;
 
             questionForAssessment.AssessmentID = createQuestionForAssessmentDto.assessmentID;
             questionForAssessment.QuestionText = createQuestionForAssessmentDto.questionText;
             questionForAssessment.QuestionType = createQuestionForAssessmentDto.questionType;
 
-
             try
             {
-                _context.Questions.Update(questionForAssessment);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Questions.Update(questionForAssessment);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -130,27 +129,29 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<List<Question>> GetAllQuestionForAssessment()
         {
-            return await _context.Questions.ToListAsync();
+            return (await _unitOfWork.Questions.FindAsync(q => q.AssessmentID != null)).ToList();
         }
 
         public async Task<Question?> GetQuestionForAssessmentById(int id)
         {
-            return await _context.Questions.FindAsync(id);
+            var question = await _unitOfWork.Questions.GetByIdAsync(id);
+            return question?.AssessmentID != null ? question : null;
         }
 
         public async Task<bool> DeleteQuestionForAssessment(int id)
         {
-            var questionForAssessment = await _context.Questions.FindAsync(id);
-            if (questionForAssessment == null)
+            var questionForAssessment = await _unitOfWork.Questions.GetByIdAsync(id);
+            if (questionForAssessment == null || questionForAssessment.AssessmentID == null)
             {
                 return false;
             }
             try
             {
-                _context.Questions.Remove(questionForAssessment);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Questions.Remove(questionForAssessment);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -158,7 +159,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
-      
-
     }
+
 }

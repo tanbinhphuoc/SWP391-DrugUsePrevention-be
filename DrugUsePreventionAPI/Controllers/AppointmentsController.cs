@@ -1,9 +1,8 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.Appointment;
+﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Services.Interfaces;
+using DrugUsePreventionAPI.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Security.Claims;
 
@@ -14,13 +13,13 @@ namespace DrugUsePreventionAPI.Controllers
     [Authorize]
     public class AppointmentsController : ControllerBase
     {
-        private readonly IAppointmentService _appointmentService; 
-        private readonly ApplicationDbContext _context;
+        private readonly IAppointmentService _appointmentService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AppointmentsController(IAppointmentService appointmentService, ApplicationDbContext context)
+        public AppointmentsController(IAppointmentService appointmentService, IUnitOfWork unitOfWork)
         {
             _appointmentService = appointmentService;
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("consultants")]
@@ -144,8 +143,7 @@ namespace DrugUsePreventionAPI.Controllers
                 }
                 var userId = int.Parse(userIdClaim.Value);
 
-                var consultant = await _context.Consultants
-                    .FirstOrDefaultAsync(c => c.UserID == userId);
+                var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
                 if (consultant == null)
                 {
                     Log.Warning("UserID={UserID} is not a consultant", userId);

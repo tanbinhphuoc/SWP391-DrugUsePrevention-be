@@ -22,10 +22,14 @@ namespace DrugUsePreventionAPI.Mappings
             CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dest => dest.ConsultantName, opt => opt.MapFrom(src => src.Consultant != null && src.Consultant.User != null ? src.Consultant.User.FullName : string.Empty))
                 .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : string.Empty));
+
+            // Consultant mappings
             CreateMap<Consultant, ConsultantDto>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : string.Empty))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User != null ? src.User.Email : string.Empty))
                 .ForMember(dest => dest.CertificateName, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.CertificateName : string.Empty));
+
+            // ConsultantSchedule mappings
             CreateMap<ConsultantSchedule, ConsultantScheduleDto>();
         }
     }

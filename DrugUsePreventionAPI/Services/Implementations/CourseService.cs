@@ -1,21 +1,21 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.Course;
+﻿using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class CourseService : ICourseService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
 
-        public CourseService(ApplicationDbContext context, IConfiguration configuration)
+        public CourseService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
+
         public async Task<bool> CreateCourse(CreateCourseDto courseDto)
         {
             try
@@ -28,7 +28,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 {
                     Title = courseDto.Title,
                     Description = courseDto.Description,
-                    Type = courseDto.Type,
                     StartDate = courseDto.StartDate,
                     EndDate = courseDto.EndDate,
                     Status = courseDto.Status,
@@ -36,12 +35,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     AgeMax = courseDto.AgeMax,
                     Capacity = courseDto.Capacity,
                     Price = courseDto.Price,
+                    Type = courseDto.Type,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
-
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Courses.AddAsync(course);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -49,19 +48,14 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
-        public async Task<List<Course>> GetAllCourses()
-        {
-            return await _context.Courses.ToListAsync();
-        }
-
-        public async Task<Course?> GetCourseById(int id)
-        {
-            return await _context.Courses.FindAsync(id);
-        }
 
         public async Task<bool> UpdateCourse(int id, CreateCourseDto courseDto)
         {
-            var course = await _context.Courses.FindAsync(id);
+            if (courseDto.Type != "COBAN" && courseDto.Type != "NANGCAO")
+            {
+                return false;
+            }
+            var course = await _unitOfWork.Courses.GetByIdAsync(id);
             if (course == null)
                 return false;
 
@@ -74,30 +68,42 @@ namespace DrugUsePreventionAPI.Services.Implementations
             course.AgeMax = courseDto.AgeMax;
             course.Capacity = courseDto.Capacity;
             course.Price = courseDto.Price;
+            course.Type = courseDto.Type;
             course.UpdatedAt = DateTime.UtcNow;
 
             try
             {
-                _context.Courses.Update(course);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Courses.Update(course);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
             {
                 return false;
             }
+        }
+
+        public async Task<List<Course>> GetAllCourses()
+        {
+            return (await _unitOfWork.Courses.GetAllAsync()).ToList();
+        }
+
+        public async Task<Course?> GetCourseById(int id)
+        {
+            return await _unitOfWork.Courses.GetByIdAsync(id);
         }
 
         public async Task<bool> DeleteCourse(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _unitOfWork.Courses.GetByIdAsync(id);
             if (course == null)
+            {
                 return false;
-
+            }
             try
             {
-                _context.Courses.Remove(course);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Courses.Remove(course);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -105,11 +111,11 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<List<Course>> GetCoursesByTypeAsync(string type)
         {
-            return await _context.Courses
-                .Where(c => c.Type == type && c.Status == "OPEN")
-                .ToListAsync();
+            return await _unitOfWork.Courses.GetCoursesByTypeAsync(type);
         }
     }
+
 }
