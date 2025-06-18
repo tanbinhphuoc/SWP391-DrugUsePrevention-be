@@ -1,10 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
+﻿using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
@@ -34,9 +31,9 @@ namespace DrugUsePreventionAPI.Controllers
         [HttpPut("UpdateAssessment")]
         public async Task<IActionResult> UpdateAsessment(int id, [FromBody] CreateAssessmentDto assessmentDto)
         {
-            var result = await _assessmentService.UpdateAssessment(id,assessmentDto);
+            var result = await _assessmentService.UpdateAssessment(id, assessmentDto);
             if (result)
-            return Ok(new { mesage = "Cập nhật Assessment thành công" });
+                return Ok(new { mesage = "Cập nhật Assessment thành công" });
 
             return BadRequest(new { mesage = "Cập nhật Assessment thất bại" });
         }
@@ -63,26 +60,20 @@ namespace DrugUsePreventionAPI.Controllers
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpDelete("DeleteAssessment")]
-        public async Task<IActionResult> DeleteCourse( int id)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
             var result = await _assessmentService.DeleteAssessment(id);
             if (result)
                 return Ok(new { message = "Xóa Assessment Thành Công." });
             return BadRequest(new { message = "Xóa Assessment Thất Bại." });
         }
-        /// <summary>
-        /// lấy assm theo độ tuổi
-        /// </summary>
-        /// <param name="age" độ tuổi của user ></param>
-        /// <returns> Nếu user dưới 18 tuổi sẽ đưa ra danh sách những bài Assist, trên 20 tuổi sẽ đưa ra danh sách các bài Craft </returns>
-        //[Authorize(Roles = "Admin,Manager")]
+
         [HttpGet("GetAssessmentByAge")]
         public async Task<IActionResult> GetAssessmentByAge(int age)
         {
             var assessment = await _assessmentService.GetAssessmentByAge(age);
             return Ok(assessment);
         }
-
 
         [HttpGet("GetAssessmentFormById")]
         public async Task<IActionResult> GetAssessmentFormById(int id)
@@ -93,8 +84,6 @@ namespace DrugUsePreventionAPI.Controllers
 
             return Ok(result);
         }
-
-
-
     }
+
 }

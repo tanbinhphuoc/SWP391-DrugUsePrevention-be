@@ -1,63 +1,64 @@
-﻿    using DrugUsePreventionAPI.Models.DTOs.Auth;
-    using DrugUsePreventionAPI.Models.DTOs.User;
-    using DrugUsePreventionAPI.Services.Interfaces;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+﻿using DrugUsePreventionAPI.Models.DTOs.Auth;
+using DrugUsePreventionAPI.Models.DTOs.User;
+using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-    namespace DrugUsePreventionAPI.Controllers
+namespace DrugUsePreventionAPI.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
-        [ApiController]
-        [Route("api/[controller]")]
-        public class AuthController : ControllerBase
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            private readonly IAuthService _authService;
+            _authService = authService;
+        }
 
-            public AuthController(IAuthService authService)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            try
             {
-                _authService = authService;
+                var token = await _authService.LoginAsync(loginDto);
+                return Ok(token);
             }
-
-            [HttpPost("login")]
-            public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+            catch (UnauthorizedAccessException ex)
             {
-                try
-                {
-                    var token = await _authService.LoginAsync(loginDto);
-                    return Ok(token);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    return Unauthorized(new { message = ex.Message });
-                }
+                return Unauthorized(new { message = ex.Message });
             }
+        }
 
-            [HttpPost("register")]
-            public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        {
+            try
             {
-                try
-                {
-                    var token = await _authService.RegisterAsync(registerDto);
-                    return Ok(token);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    return BadRequest(new { message = ex.Message });
-                }
+                var token = await _authService.RegisterAsync(registerDto);
+                return Ok(token);
             }
-
-            [HttpPost("admin/create-user")]
-            [Authorize(Roles = "Admin")]
-            public async Task<IActionResult> CreateUserByAdmin([FromBody] CreateUserByAdminDto dto)
+            catch (InvalidOperationException ex)
             {
-                try
-                {
-                    var user = await _authService.CreateUserByAdminAsync(dto);
-                    return Ok(user);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    return BadRequest(new { message = ex.Message });
-                }
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("admin/create-user")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateUserByAdmin([FromBody] CreateUserByAdminDto dto)
+        {
+            try
+            {
+                var user = await _authService.CreateUserByAdminAsync(dto);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
+
+}

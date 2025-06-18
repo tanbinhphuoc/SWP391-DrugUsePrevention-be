@@ -1,6 +1,5 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.AssessmentResultDto;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
@@ -10,10 +9,8 @@ namespace DrugUsePreventionAPI.Controllers
     public class AssessmentResultsController : ControllerBase
     {
         private readonly IAssessmentResultService _assessmentResultService;
-        public AssessmentResultsController(IAssessmentResultService assessmentResultService)
-        {
-            _assessmentResultService = assessmentResultService;
-        }
+        public AssessmentResultsController(IAssessmentResultService assessmentResultService) { _assessmentResultService = assessmentResultService; }
+
         [HttpPost]
         public async Task<IActionResult> CreateAssessmentResult(CreateAssessmentResultDto dto)
         {
@@ -30,6 +27,6 @@ namespace DrugUsePreventionAPI.Controllers
 
             return Ok(result);
         }
-
     }
+
 }

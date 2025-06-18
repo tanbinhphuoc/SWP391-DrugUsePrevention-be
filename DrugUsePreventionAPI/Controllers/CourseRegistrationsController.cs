@@ -1,6 +1,5 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.CourseRegistration;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
@@ -30,4 +29,5 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
     }
+
 }

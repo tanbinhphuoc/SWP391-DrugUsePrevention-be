@@ -34,11 +34,13 @@ namespace DrugUsePreventionAPI.Models.Entities
         public string? Status { get; set; }
 
         public int RoleID { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         public virtual  Role Role { get; set; }
+        public Consultant? Consultant { get; set; }
         public virtual ICollection<Blog> Blogs { get; set; }
         public virtual ICollection<CourseRegistration> CourseRegistrations { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }

@@ -3,7 +3,6 @@ using DrugUsePreventionAPI.Models.DTOs.Question;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
@@ -17,10 +16,8 @@ namespace DrugUsePreventionAPI.Controllers
         public QuestionController(IQuestionService questionForSurveyService)
         {
             _questionService = questionForSurveyService;
-
         }
 
-        //CRUD Question for Survey
         [Authorize(Roles = "Admin,Manager")]
         [HttpPost("CreateQuestionForSurvey")]
         public async Task<IActionResult> CreateQuestionForSurvey([FromBody] CreateQuestionForSurveyDto createQuestionForSurveyDto)
@@ -69,8 +66,6 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Xóa Question Thất Bại." });
         }
 
-
-        //CRUD Question for Assessment
         [Authorize(Roles = "Admin,Manager")]
         [HttpPost("CreateQuestionForAssessment")]
         public async Task<IActionResult> CreateQuestionForAssessment([FromBody] CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
@@ -119,4 +114,5 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Xóa Question Thất Bại." });
         }
     }
+
 }

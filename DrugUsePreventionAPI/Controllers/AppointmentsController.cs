@@ -1,10 +1,8 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.Appointment;
-using DrugUsePreventionAPI.Models.Entities;
+﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Services.Interfaces;
+using DrugUsePreventionAPI.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Security.Claims;
 
@@ -15,14 +13,17 @@ namespace DrugUsePreventionAPI.Controllers
     [Authorize]
     public class AppointmentsController : ControllerBase
     {
-        private readonly IAppointmentService _appointmentService; private readonly ApplicationDbContext _context;
-        public AppointmentsController(IAppointmentService appointmentService, ApplicationDbContext context)
+        private readonly IAppointmentService _appointmentService;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public AppointmentsController(IAppointmentService appointmentService, IUnitOfWork unitOfWork)
         {
             _appointmentService = appointmentService;
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("consultants")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAvailableConsultants()
         {
             try
@@ -38,6 +39,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants/{consultantId}/schedules")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetConsultantSchedules(int consultantId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             try
@@ -61,14 +63,17 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-               var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                if(userIdClaim == null)
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                Log.Information("UserIdClaim from token: {UserIdClaim}", userIdClaim?.Value);
+                if (userIdClaim == null)
                 {
                     return Unauthorized();
                 }
                 var userId = int.Parse(userIdClaim.Value);
-                var appointment = await _appointmentService.BookAppointmentAsync(dto, userId);
-                return Ok(appointment);
+                Log.Information("Parsed UserID: {UserID}", userId);
+
+                var (appointment, paymentUrl) = await _appointmentService.BookAppointmentAsync(dto, userId);
+                return Ok(new { Appointment = appointment, PaymentUrl = paymentUrl });
             }
             catch (InvalidOperationException ex)
             {
@@ -88,7 +93,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-                var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, confirmDto.TransactionID);
+                var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, confirmDto.TransactionID, confirmDto.VNPayResponseCode);
                 return Ok(appointment);
             }
             catch (InvalidOperationException ex)
@@ -138,8 +143,7 @@ namespace DrugUsePreventionAPI.Controllers
                 }
                 var userId = int.Parse(userIdClaim.Value);
 
-                var consultant = await _context.Consultants
-                    .FirstOrDefaultAsync(c => c.UserID == userId);
+                var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
                 if (consultant == null)
                 {
                     Log.Warning("UserID={UserID} is not a consultant", userId);
@@ -156,4 +160,5 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
     }
+
 }

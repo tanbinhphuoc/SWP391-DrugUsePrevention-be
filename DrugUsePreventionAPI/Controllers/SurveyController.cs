@@ -1,10 +1,7 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Question;
-using DrugUsePreventionAPI.Models.DTOs.Survey;
+﻿using DrugUsePreventionAPI.Models.DTOs.Survey;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
@@ -68,4 +65,5 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Xóa Survey Thất Bại." });
         }
     }
+
 }

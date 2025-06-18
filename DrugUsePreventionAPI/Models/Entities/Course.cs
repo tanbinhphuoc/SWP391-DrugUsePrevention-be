@@ -23,7 +23,7 @@ namespace DrugUsePreventionAPI.Models.Entities
         public required string Type { get; set; } = "COBAN";//"NANGCAO";
         [Required]
         [MaxLength(10)]
-        public string Status { get; set; } = "OPEN";
+        public string Status { get; set; } = "OPEN";    
 
         [Required]
         public int AgeMin { get; set; }
