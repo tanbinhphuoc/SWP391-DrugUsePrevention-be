@@ -27,8 +27,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _questionService.CreateQuestionForSurvey(createQuestionForSurveyDto);
             if (result)
-                return Ok("Tạo Question For Survey Thành Công.");
-            return BadRequest("Tạo Question For Survey Thất Bại.");
+                return Ok(new { message = "Tạo Question For Survey Thành Công." });
+            return BadRequest(new { message = "Tạo Question For Survey Thất Bại." });
         }
 
         [AllowAnonymous]
@@ -77,8 +77,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _questionService.CreateQuestionForAssessment(createQuestionForAssessmentDto);
             if (result)
-                return Ok("Tạo Question Thành Công.");
-            return BadRequest("Tạo Question Thất Bại.");
+                return Ok(new { message = "Tạo Question Thành Công." });
+            return BadRequest(new { message = "Tạo Question Thất Bại." });
         }
 
         [AllowAnonymous]

@@ -28,6 +28,19 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+
+// cấu hình cho fe 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")  // Địa chỉ của frontend React
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -207,8 +220,10 @@ else
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseCors("AllowFrontend"); 
 app.UseAuthorization();
 app.UseHangfireDashboard("/hangfire");
+app.UseCors("AllowFrontend");
 app.MapControllers();
 
 app.Run();

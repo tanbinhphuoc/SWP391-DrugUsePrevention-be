@@ -26,8 +26,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _surveyService.CreateSurvey(createSurveyDto);
             if (result)
-                return Ok("Tạo Survey Thành Công.");
-            return BadRequest("Tạo Survey Thất Bại.");
+                return Ok(new { message = "Tạo Survey Thành Công." });
+            return BadRequest(new { message = "Tạo Survey Thất Bại." });
         }
 
         [AllowAnonymous]
