@@ -1,35 +1,34 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
-using DrugUsePreventionAPI.Models.DTOs.Survey;
+﻿using DrugUsePreventionAPI.Models.DTOs.Survey;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class SurveyService : ISurveyService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
 
-        public SurveyService(ApplicationDbContext context, IConfiguration configuration)
+        public SurveyService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
+
         public async Task<bool> CreateSurvey(CreateSurveyDto createSurveyDto)
         {
             try
             {
-                var survey = new Survey()
+                var survey = new Survey
                 {
                     Title = createSurveyDto.title,
                     Type = createSurveyDto.type,
                     AuthorID = createSurveyDto.authorID,
                     Description = createSurveyDto.description
                 };
-                _context.Surveys.Add(survey);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Surveys.AddAsync(survey);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -37,21 +36,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<bool> UpdateSurvey(int id, CreateSurveyDto createSurveyDto)
         {
-            var survey = await _context.Surveys.FindAsync(id);
+            var survey = await _unitOfWork.Surveys.GetByIdAsync(id);
             if (survey == null)
                 return false;
 
-                survey.Title = createSurveyDto.title;
-                survey.Type = createSurveyDto.type;
-                survey.AuthorID = createSurveyDto.authorID;
-                survey.Description = createSurveyDto.description;
+            survey.Title = createSurveyDto.title;
+            survey.Type = createSurveyDto.type;
+            survey.AuthorID = createSurveyDto.authorID;
+            survey.Description = createSurveyDto.description;
 
             try
             {
-                _context.Surveys.Update(survey);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Surveys.Update(survey);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -59,27 +59,28 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<List<Survey>> GetAllSurvey()
         {
-            return await _context.Surveys.ToListAsync();
+            return (await _unitOfWork.Surveys.GetAllAsync()).ToList();
         }
 
         public async Task<Survey?> GetSurveyById(int id)
         {
-            return await _context.Surveys.FindAsync(id);
+            return await _unitOfWork.Surveys.GetByIdAsync(id);
         }
 
         public async Task<bool> DeleteSurvey(int id)
         {
-            var survey = await _context.Surveys.FindAsync(id);
+            var survey = await _unitOfWork.Surveys.GetByIdAsync(id);
             if (survey == null)
             {
                 return false;
             }
             try
             {
-                _context.Surveys.Remove(survey);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Surveys.Remove(survey);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             catch
@@ -88,4 +89,5 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
     }
+
 }

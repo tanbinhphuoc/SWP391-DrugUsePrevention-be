@@ -1,36 +1,30 @@
 ﻿using AutoMapper;
-using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork; private readonly IMapper _mapper;
 
-        public UserService(ApplicationDbContext context, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            var users = await _context.Users
-                .Include(u => u.Role)
-                .ToListAsync();
+            var users = await _unitOfWork.Users.GetAllWithRolesAsync();
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.UserID == id);
+            var user = await _unitOfWork.Users.GetUserWithRoleAsync(id);
             return user != null ? _mapper.Map<UserDto>(user) : null;
         }
 
@@ -41,33 +35,34 @@ namespace DrugUsePreventionAPI.Services.Implementations
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
                 return null;
 
             _mapper.Map(updateUserDto, user);
             user.UpdatedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<UserDto>(user);
         }
 
         public async Task<bool> DeleteUserAsync(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
                 return false;
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Users.Remove(user);
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
 
@@ -78,16 +73,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new UnauthorizedAccessException("Managers cannot assign Admin role.");
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(r => r.RoleName == roleName);
+            var role = await _unitOfWork.Roles.GetByNameAsync(roleName);
             if (role == null)
             {
                 throw new InvalidOperationException($"Role '{roleName}' does not exist.");
             }
 
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.UserID == id);
+            var user = await _unitOfWork.Users.GetUserWithRoleAsync(id);
             if (user == null)
             {
                 throw new InvalidOperationException("User not found.");
@@ -95,10 +87,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             user.RoleID = role.RoleID;
             user.UpdatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
 
             user.Role = role;
             return _mapper.Map<UserDto>(user);
         }
     }
+
 }

@@ -1,6 +1,6 @@
-﻿// File: DrugUsePreventionAPI/Data/Extensions/DatabaseExtensions.cs
-using DrugUsePreventionAPI.Data;
+﻿using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.Entities;
+using DrugUsePreventionAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -13,6 +13,25 @@ namespace DrugUsePreventionAPI.Data.Extensions
         {
             try
             {
+                // Khởi tạo UnitOfWork với tất cả các repository cần thiết
+                var unitOfWork = new UnitOfWork(
+                    context,
+                    new UserRepository(context),
+                    new RoleRepository(context),
+                    new ConsultantRepository(context),
+                    new CertificateRepository(context),
+                    new ConsultantScheduleRepository(context),
+                    new PaymentRepository(context),
+                    new AppointmentRepository(context),
+                    new AssessmentRepository(context),
+                    new AssessmentResultRepository(context),
+                    new CourseRepository(context),
+                    new CourseRegistrationRepository(context),
+                    new SurveyRepository(context),
+                    new QuestionRepository(context),
+                    new AnswerOptionRepository(context)
+                );
+
                 // Seed roles if they don't exist
                 if (!await context.Roles.AnyAsync(r => r.RoleName == "Admin"))
                 {
@@ -97,8 +116,8 @@ namespace DrugUsePreventionAPI.Data.Extensions
                     Serilog.Log.Information("Test consultant seeded successfully");
                 }
 
-                // Generate schedules for the next day
-                var generator = new ScheduleGenerator(context);
+                // Generate schedules for the next day using UnitOfWork
+                var generator = new ScheduleGenerator(unitOfWork); // Sử dụng UnitOfWork thay vì ApplicationDbContext trực tiếp
                 await generator.GenerateDailySchedulesAsync(DateTime.UtcNow.AddDays(1));
             }
             catch (Exception ex)
@@ -107,5 +126,6 @@ namespace DrugUsePreventionAPI.Data.Extensions
                 throw;
             }
         }
+
     }
 }

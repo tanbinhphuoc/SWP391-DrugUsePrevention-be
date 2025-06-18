@@ -1,5 +1,4 @@
-﻿using DrugPreventionAPI.Models.DTOs.User;
-using DrugUsePreventionAPI.Models.DTOs.Appointment;
+﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.DTOs.User;
 
 namespace DrugUsePreventionAPI.Services.Interfaces

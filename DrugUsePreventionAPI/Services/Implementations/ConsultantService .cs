@@ -1,29 +1,25 @@
 ﻿using AutoMapper;
-using DrugPreventionAPI.Models.DTOs.User;
-using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
 
-namespace DrugPreventionAPI.Services.Implementations
+namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class ConsultantService : IConsultantService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork; private readonly IMapper _mapper;
 
-        public ConsultantService(ApplicationDbContext context, IMapper mapper)
+        public ConsultantService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-
         public async Task<ConsultantDto> CreateConsultantAsync(CreateConsultantDto createConsultantDto)
         {
-            var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Consultant");
+            var role = await _unitOfWork.Roles.GetByNameAsync("Consultant");
             if (role == null)
             {
                 throw new InvalidOperationException("Consultant role does not exist.");
@@ -35,19 +31,18 @@ namespace DrugPreventionAPI.Services.Implementations
                 Password = BCrypt.Net.BCrypt.HashPassword(createConsultantDto.Password),
                 Email = createConsultantDto.Email,
                 FullName = createConsultantDto.FullName,
-                RoleID = role.RoleID, // Assign Consultant role
+                RoleID = role.RoleID,
                 Status = "Active",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync(); // Save the user entity to get the generated userId
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
-            // Step 2: Create consultant-specific details
             var consultant = new Consultant
             {
-                UserID = user.UserID, // Link consultant to the created user
+                UserID = user.UserID,
                 Degree = createConsultantDto.Degree,
                 HourlyRate = createConsultantDto.HourlyRate,
                 Specialty = createConsultantDto.Specialty,
@@ -57,35 +52,24 @@ namespace DrugPreventionAPI.Services.Implementations
                 UpdatedAt = DateTime.UtcNow
             };
 
-            _context.Consultants.Add(consultant);
-            await _context.SaveChangesAsync(); // Save the consultant entity
+            await _unitOfWork.Consultants.AddAsync(consultant);
+            await _unitOfWork.SaveChangesAsync();
 
-            // Return the created consultant DTO
             return _mapper.Map<ConsultantDto>(consultant);
         }
 
         public async Task<ConsultantDto> GetConsultantByIdAsync(int id)
         {
-            var consultant = await _context.Consultants
-                .Include(c => c.User)
-                .Include(c => c.Certificate)
-                .FirstOrDefaultAsync(c => c.ConsultantID == id);
-
-            if (consultant == null)
-                return null;
-
-            return _mapper.Map<ConsultantDto>(consultant);  
+            var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(id);
+            return consultant != null ? _mapper.Map<ConsultantDto>(consultant) : null;
         }
 
         public async Task<ConsultantDto> UpdateConsultantAsync(int id, UpdateConsultantDto updateConsultantDto)
         {
-            var consultant = await _context.Consultants
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(c => c.ConsultantID == id);
+            var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(id);
             if (consultant == null)
                 return null;
 
-            // Update consultant fields if provided
             if (!string.IsNullOrEmpty(updateConsultantDto.Degree))
                 consultant.Degree = updateConsultantDto.Degree;
             if (updateConsultantDto.HourlyRate.HasValue)
@@ -98,7 +82,6 @@ namespace DrugPreventionAPI.Services.Implementations
                 consultant.CertificateID = updateConsultantDto.CertificateID.Value;
             consultant.UpdatedAt = DateTime.UtcNow;
 
-            // Update associated user fields if provided
             if (consultant.User != null)
             {
                 if (!string.IsNullOrEmpty(updateConsultantDto.UserName))
@@ -110,40 +93,34 @@ namespace DrugPreventionAPI.Services.Implementations
                 if (!string.IsNullOrEmpty(updateConsultantDto.FullName))
                     consultant.User.FullName = updateConsultantDto.FullName;
                 consultant.User.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Users.Update(consultant.User);
             }
 
-            await _context.SaveChangesAsync();
+            _unitOfWork.Consultants.Update(consultant);
+            await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<ConsultantDto>(consultant);
         }
 
         public async Task<bool> DeleteConsultantAsync(int id)
         {
-            var consultant = await _context.Consultants
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(c => c.ConsultantID == id);
+            var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(id);
             if (consultant == null)
                 return false;
 
-            // Check for existing appointments
-            var hasAppointments = await _context.Appointments
-                .AnyAsync(a => a.ConsultantID == id && a.Status == "CONFIRMED");
-            if (hasAppointments)
+            if (await _unitOfWork.Consultants.HasConfirmedAppointmentsAsync(id))
                 throw new InvalidOperationException("Cannot delete consultant with confirmed appointments.");
 
-            // Remove associated schedules
-            var schedules = await _context.ConsultantSchedules
-                .Where(s => s.ConsultantID == id)
-                .ToListAsync();
+            var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByConsultantAsync(id);
             if (schedules.Any())
-                _context.ConsultantSchedules.RemoveRange(schedules);
+                _unitOfWork.ConsultantSchedules.RemoveRange(schedules);
 
-            // Remove consultant and associated user
-            _context.Consultants.Remove(consultant);
+            _unitOfWork.Consultants.Remove(consultant);
             if (consultant.User != null)
-                _context.Users.Remove(consultant.User);
+                _unitOfWork.Users.Remove(consultant.User);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
     }
+
 }

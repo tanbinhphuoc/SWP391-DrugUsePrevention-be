@@ -10,13 +10,13 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         [Required]
         [MaxLength(255)]
-        public string AssessmentName { get; set; }
+        public required string AssessmentName { get; set; }
 
         public string? Description { get; set; }
 
         [Required]
         [MaxLength(10)]
-        public string AssessmentType { get; set; }
+        public required string AssessmentType { get; set; }
 
 
 

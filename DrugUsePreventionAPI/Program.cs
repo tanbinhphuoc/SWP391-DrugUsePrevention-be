@@ -1,15 +1,16 @@
-﻿using DrugPreventionAPI.Services.Implementations;
+﻿// Program.cs
+using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Data.Extensions;
 using DrugUsePreventionAPI.Mappings;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
+using DrugUsePreventionAPI.Repositories;
+using DrugUsePreventionAPI.Repositories.Interfaces;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -28,12 +29,25 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+// cấu hình cho fe 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")  // Địa chỉ của frontend React
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Configure Swagger with Bearer token support
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(c => 
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Drug Prevention API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -63,21 +77,32 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configure AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-// Configure Redis Cache
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379";
-    options.InstanceName = "DrugUsePreventionAPI_";
-});
-
 // Configure Hangfire for background jobs
-builder.Services.AddHangfire(configuration => configuration
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddHangfire(configuration =>
+    configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
+
+// Register repositories
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IConsultantRepository, ConsultantRepository>();
+builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+builder.Services.AddScoped<IConsultantScheduleRepository, ConsultantScheduleRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentResultRepository, AssessmentResultRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepository>();
+builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register services
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -92,8 +117,7 @@ builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
-
-
+builder.Services.AddScoped<VNPayHelper>();
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -185,6 +209,16 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
+// Configure recurring job for daily schedules
+using (var scope = app.Services.CreateScope())
+{
+    var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+    recurringJobManager.AddOrUpdate<ScheduleGenerator>(
+        "generate-daily-schedules",
+        generator => generator.GenerateDailySchedulesAsync(DateTime.Now.Date),
+        Cron.Daily());
+}
+
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
@@ -207,24 +241,25 @@ else
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.UseHangfireDashboard("/hangfire");
 app.MapControllers();
 
 app.Run();
 
-async Task SeedAdminAsync(ApplicationDbContext context)
+async Task SeedAdminAsync(IUnitOfWork unitOfWork)
 {
     try
     {
-        if (!await context.Users.AnyAsync(u => u.UserName == "admin"))
+        if (!await unitOfWork.Users.ExistsAsync(u => u.UserName == "admin"))
         {
-            var adminRole = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Admin");
+            var adminRole = await unitOfWork.Roles.GetByNameAsync("Admin");
             if (adminRole == null)
             {
                 adminRole = new Role { RoleName = "Admin", Description = "Administrator role" };
-                context.Roles.Add(adminRole);
-                await context.SaveChangesAsync();
+                await unitOfWork.Roles.AddAsync(adminRole);
+                await unitOfWork.SaveChangesAsync();
             }
 
             var admin = new User
@@ -239,8 +274,8 @@ async Task SeedAdminAsync(ApplicationDbContext context)
                 UpdatedAt = DateTime.UtcNow
             };
 
-            context.Users.Add(admin);
-            await context.SaveChangesAsync();
+            await unitOfWork.Users.AddAsync(admin);
+            await unitOfWork.SaveChangesAsync();
             Log.Information("Admin user seeded successfully");
         }
     }

@@ -34,7 +34,6 @@
 		<Folder Include="Models\Entities\" />
 		<Folder Include="Models\DTOs\Appointment\" />
 		<Folder Include="Models\DTOs\Auth\" />
-		<Folder Include="Repositories\" />
 	</ItemGroup>
 
 </Project>

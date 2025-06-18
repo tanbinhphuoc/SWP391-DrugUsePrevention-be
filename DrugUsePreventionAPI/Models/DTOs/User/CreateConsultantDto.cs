@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DrugPreventionAPI.Models.DTOs.User
+namespace DrugUsePreventionAPI.Models.DTOs.User
 {
     public class CreateConsultantDto
     {

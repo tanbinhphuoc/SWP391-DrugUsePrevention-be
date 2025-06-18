@@ -1,33 +1,29 @@
-﻿using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Models.DTOs.Auth;
+﻿using DrugUsePreventionAPI.Models.DTOs.Auth;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class AuthService : IAuthService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
 
-        public AuthService(ApplicationDbContext context, IConfiguration configuration)
+        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
 
         public async Task<TokenDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.UserName == loginDto.UserName);
-            //!BCrypt.Net.BCrypt.Verify ma hoa mat khau
+            var user = await _unitOfWork.Users.GetUserByUsernameAsync(loginDto.UserName);
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             {
                 throw new UnauthorizedAccessException("Invalid username or password.");
@@ -38,18 +34,14 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<TokenDto> RegisterAsync(RegisterDto registerDto, string? callerRole)
         {
-            // Check if username or email already exists
-            var existingUser = await _context.Users
-                .AnyAsync(u => u.UserName == registerDto.UserName || u.Email == registerDto.Email);
-            if (existingUser)
+            if (await _unitOfWork.Users.UsernameExistsAsync(registerDto.UserName) ||
+                await _unitOfWork.Users.EmailExistsAsync(registerDto.Email))
             {
                 throw new InvalidOperationException("Username or email already exists.");
             }
 
-            // Default to "Member" role if callerRole is null (public registration)
             string assignedRoleName = callerRole ?? "Member";
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(r => r.RoleName == assignedRoleName);
+            var role = await _unitOfWork.Roles.GetByNameAsync(assignedRoleName);
             if (role == null)
             {
                 throw new InvalidOperationException($"Role '{assignedRoleName}' does not exist.");
@@ -70,8 +62,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 UpdatedAt = DateTime.UtcNow
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
             user.Role = role;
 
             return GenerateJwtToken(user);
@@ -84,15 +76,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new InvalidOperationException("Không tạo account cho Consultant ở đây.");
             }
 
-            var existingUser = await _context.Users
-                .AnyAsync(u => u.UserName == dto.UserName || u.Email == dto.Email);
-            if (existingUser)
+            if (await _unitOfWork.Users.UsernameExistsAsync(dto.UserName) ||
+                await _unitOfWork.Users.EmailExistsAsync(dto.Email))
             {
                 throw new InvalidOperationException("Username or email already exists.");
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(r => r.RoleName == dto.RoleName);
+            var role = await _unitOfWork.Roles.GetByNameAsync(dto.RoleName);
             if (role == null)
             {
                 throw new InvalidOperationException($"Role '{dto.RoleName}' does not exist.");
@@ -113,9 +103,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 UpdatedAt = DateTime.UtcNow
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
             user.Role = role;
 
             return new UserDto
