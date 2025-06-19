@@ -1,4 +1,5 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
+﻿using DrugUsePreventionAPI.Configurations;
+using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
@@ -8,6 +9,9 @@ using System.Net.Mail;
 using System.Net;
 using Hangfire;
 using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -17,10 +21,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public AppointmentService(IUnitOfWork unitOfWork, IConfiguration configuration, VNPayHelper vnpayHelper, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _configuration = configuration;
-            _vnpayHelper = vnpayHelper;
-            _mapper = mapper;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _vnpayHelper = vnpayHelper ?? throw new ArgumentNullException(nameof(vnpayHelper));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<IEnumerable<ConsultantDto>> GetAvailableConsultantsAsync()
@@ -150,10 +154,9 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     Status = "PENDING",
                     TransactionID = $"{appointment.AppointmentID}-{Guid.NewGuid().ToString()}"
                 };
-                // kiểm tra payment date nếu trạng thái là PENDING
+                // Kiểm tra payment date nếu trạng thái là PENDING
                 if (payment.PaymentDate == null && payment.Status == "PENDING")
                 {
-                    // nếu trạng thái là PENDING thì đặt payment date là thời gian hiện tại
                     payment.PaymentDate = DateTime.UtcNow; // Set payment date to now if it's pending
                 }
 
@@ -331,13 +334,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 var consultantEmail = appointment.Consultant.User.Email;
                 var subject = "Appointment Confirmation - Drug Prevention System";
                 var body = $@"Your appointment has been successfully confirmed!
-        Details:
-        - Consultant: {appointment.Consultant.User.FullName}
-        - Member: {appointment.User.FullName}
-        - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-        - Google Meet Link: {appointment.GoogleMeetLink}
-        - Note: {appointment.Note ?? "None"}
-        Please join the meeting at the scheduled time.";
+    Details:
+    - Consultant: {appointment.Consultant.User.FullName}
+    - Member: {appointment.User.FullName}
+    - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+    - Google Meet Link: {appointment.GoogleMeetLink}
+    - Note: {appointment.Note ?? "None"}
+    Please join the meeting at the scheduled time.";
 
                 await SendGmailAsync(memberEmail, subject, body);
                 await SendGmailAsync(consultantEmail, subject, body);
@@ -358,12 +361,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 var memberEmail = appointment.User.Email;
                 var subject = "Payment Issue - Drug Prevention System";
                 var body = $@"There was an issue with your payment for the appointment.
-        Details:
-        - Consultant: {appointment.Consultant.User.FullName}
-        - Member: {appointment.User.FullName}
-        - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-        - Error: {errorMessage}
-        Please try again or contact support.";
+    Details:
+    - Consultant: {appointment.Consultant.User.FullName}
+    - Member: {appointment.User.FullName}
+    - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+    - Error: {errorMessage}
+    Please try again or contact support.";
 
                 await SendGmailAsync(memberEmail, subject, body);
                 Log.Information("Sent payment error email for AppointmentID={AppointmentID}", appointment.AppointmentID);
@@ -381,8 +384,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var email = gmailConfig["Email"];
             var password = gmailConfig["Password"];
             var host = gmailConfig["Host"];
-            var port = int.Parse(gmailConfig["Port"]);
-            var enableSsl = bool.Parse(gmailConfig["EnableSsl"]);
+            var port = int.Parse(gmailConfig["Port"] ?? "587"); // Default to 587 if not set
+            var enableSsl = bool.Parse(gmailConfig["EnableSsl"] ?? "true"); // Default to true if not set
 
             using (var client = new SmtpClient(host, port))
             {
@@ -452,13 +455,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var consultantEmail = appointment.Consultant.User.Email;
             var subject = "Appointment Reminder - Drug Prevention System";
             var body = $@"This is a reminder for your upcoming appointment!
-    Details:
-    - Consultant: {appointment.Consultant.User.FullName}
-    - Member: {appointment.User.FullName}
-    - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-    - Google Meet Link: {appointment.GoogleMeetLink}
-    - Note: {appointment.Note ?? "None"}
-    Please join the meeting 1 hour from now.";
+Details:
+- Consultant: {appointment.Consultant.User.FullName}
+- Member: {appointment.User.FullName}
+- Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
+- Google Meet Link: {appointment.GoogleMeetLink}
+- Note: {appointment.Note ?? "None"}
+Please join the meeting 1 hour from now.";
 
             await SendGmailAsync(memberEmail, subject, body);
             await SendGmailAsync(consultantEmail, subject, body);

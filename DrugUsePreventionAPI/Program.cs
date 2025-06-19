@@ -1,5 +1,4 @@
-﻿// Program.cs
-using DrugUsePreventionAPI.Services.Implementations;
+﻿using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Data.Extensions;
 using DrugUsePreventionAPI.Mappings;
@@ -7,6 +6,7 @@ using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Repositories.Interfaces;
+using DrugUsePreventionAPI.Configurations;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,6 +16,11 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Security.Claims;
 using System.Text;
+using DrugUsePreventionAPI.Exceptions;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,25 +34,23 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// cấu hình cho fe 
+// Cấu hình CORS cho frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")  // Địa chỉ của frontend React
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins("http://localhost:5173") // Địa chỉ của frontend React
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
-
-
 
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Configure Swagger with Bearer token support
-builder.Services.AddSwaggerGen(c => 
+builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Drug Prevention API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -74,17 +77,24 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configure AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+// Configure AutoMapper with separate profiles
+builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(CourseMappingProfile), typeof(AppointmentMappingProfile), typeof(SurveyMappingProfile));
 
 // Configure Hangfire for background jobs
-builder.Services.AddHangfire(configuration =>
-    configuration
-        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-        .UseSimpleAssemblyNameTypeSerializer()
-        .UseRecommendedSerializerSettings()
-        .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
+
+// Register configurations
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<VNPaySettings>(builder.Configuration.GetSection("VNPay"));
+builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("Gmail"));
+
+// Register IConfiguration for services that might need it
+builder.Services.AddScoped(sp => builder.Configuration);
 
 // Register repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -108,7 +118,6 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
-builder.Services.AddScoped<ScheduleGenerator>();
 builder.Services.AddScoped<IConsultantService, ConsultantService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICourseRegistrationService, CourseRegistrationService>();
@@ -117,7 +126,12 @@ builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
-builder.Services.AddScoped<VNPayHelper>();
+
+// Register ScheduleGenerator
+builder.Services.AddScoped<ScheduleGenerator>();
+
+// Register VNPayHelper with IOptions
+builder.Services.AddScoped(sp => new VNPayHelper(sp.GetRequiredService<IOptions<VNPaySettings>>()));
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -145,15 +159,9 @@ builder.Services.AddAuthentication(options =>
         OnChallenge = context =>
         {
             Log.Warning("JWT Challenge: {Error}, {ErrorDescription}, User Authenticated: {IsAuthenticated}, Roles: {Roles}, Claims: {Claims}",
-                context.Error,
-                context.ErrorDescription,
-                context.HttpContext.User.Identity.IsAuthenticated,
-                context.HttpContext.User.Identity.IsAuthenticated
-                    ? string.Join(", ", context.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value))
-                    : "None",
-                context.HttpContext.User.Identity.IsAuthenticated
-                    ? string.Join(", ", context.HttpContext.User.Claims.Select(c => $"{c.Type}: {c.Value}"))
-                    : "None");
+                context.Error, context.ErrorDescription, context.HttpContext.User.Identity.IsAuthenticated,
+                context.HttpContext.User.Identity.IsAuthenticated ? string.Join(", ", context.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)) : "None",
+                context.HttpContext.User.Identity.IsAuthenticated ? string.Join(", ", context.HttpContext.User.Claims.Select(c => $"{c.Type}: {c.Value}")) : "None");
             return Task.CompletedTask;
         },
         OnTokenValidated = context =>
@@ -162,8 +170,7 @@ builder.Services.AddAuthentication(options =>
             if (user != null)
             {
                 Log.Information("JWT Token validated successfully for user: {User}, Roles: {Roles}, Claims: {Claims}",
-                    user.Identity?.Name,
-                    string.Join(", ", user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)),
+                    user.Identity?.Name, string.Join(", ", user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)),
                     string.Join(", ", user.Claims.Select(c => $"{c.Type}: {c.Value}")));
             }
             return Task.CompletedTask;
@@ -195,9 +202,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAssertion(context =>
         {
             var roles = context.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-            Log.Information("Evaluating Admin policy for user: {User}, Available Roles: {Roles}",
-                context.User.Identity.Name,
-                string.Join(", ", roles));
+            Log.Information("Evaluating Admin policy for user: {User}, Available Roles: {Roles}", context.User.Identity.Name, string.Join(", ", roles));
             return roles.Contains("Admin", StringComparer.OrdinalIgnoreCase);
         });
     });
@@ -221,13 +226,44 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Configure exception handling middleware
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var errorFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        if (errorFeature != null)
+        {
+            var exception = errorFeature.Error;
+            var response = new { Message = exception.Message, StatusCode = 500 };
+
+            switch (exception)
+            {
+                case EntityNotFoundException _:
+                    response = new { Message = exception.Message, StatusCode = 404 };
+                    break;
+                case DuplicateEntityException _:
+                case BusinessRuleViolationException _:
+                    response = new { Message = exception.Message, StatusCode = 400 };
+                    break;
+            }
+
+            context.Response.StatusCode = response.StatusCode;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            Log.Error(exception, "Error occurred: {Message}", exception.Message);
+        }
+    });
+});
+
 // Configure recurring job for daily schedules
 using (var scope = app.Services.CreateScope())
 {
     var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-    recurringJobManager.AddOrUpdate<ScheduleGenerator>(
+    var scheduleGenerator = scope.ServiceProvider.GetRequiredService<ScheduleGenerator>();
+    recurringJobManager.AddOrUpdate(
         "generate-daily-schedules",
-        generator => generator.GenerateDailySchedulesAsync(DateTime.Now.Date),
+        () => scheduleGenerator.GenerateDailySchedulesAsync(DateTime.Now.Date),
         Cron.Daily());
 }
 
