@@ -54,7 +54,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
             {
                 Log.Warning("Invalid course type {Type}", courseDto.Type);
-                throw new BusinessRuleViolationException("Course type must be COBAN or NANGCAO.");
+                throw new BusinessRuleViolationException("Course type must be HocSinh or SinhVien or PhuHuynh.");
             }
 
             var course = await _unitOfWork.Courses.GetByIdAsync(id);
