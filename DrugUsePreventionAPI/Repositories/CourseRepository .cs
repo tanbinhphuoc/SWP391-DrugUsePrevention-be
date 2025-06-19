@@ -9,6 +9,11 @@ namespace DrugUsePreventionAPI.Repositories
     {
         public CourseRepository(ApplicationDbContext context) : base(context) { }
 
+        public async Task<List<Course>> GetAllCourses()
+        {
+            return await _context.Courses.ToListAsync();
+        }
+
         public async Task<List<Course>> GetCoursesByTypeAsync(string type)
         {
             return await _context.Courses

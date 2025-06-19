@@ -43,7 +43,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<ActionResult<List<Assessment>>> GetAllAssessment()
         {
             var assessment = await _assessmentService.GetAllAssessment();
-            return Ok(assessment);
+            return Ok(new { message = assessment });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -55,7 +55,7 @@ namespace DrugUsePreventionAPI.Controllers
             {
                 return BadRequest(new { message = "Không tìm thấy Assessment " });
             }
-            return Ok(assessment);
+            return Ok(new { message = assessment });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -72,7 +72,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<IActionResult> GetAssessmentByAge(int age)
         {
             var assessment = await _assessmentService.GetAssessmentByAge(age);
-            return Ok(assessment);
+            return Ok(new { message = assessment });
         }
 
         [HttpGet("GetAssessmentFormById")]
@@ -82,7 +82,7 @@ namespace DrugUsePreventionAPI.Controllers
             if (result == null)
                 return NotFound(new { message = "Không tìm thấy bài đánh giá."}); 
 
-            return Ok(result);
+            return Ok(new { message = result });
         }
     }
 

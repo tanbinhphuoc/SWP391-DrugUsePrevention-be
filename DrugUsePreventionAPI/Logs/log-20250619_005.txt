@@ -1,0 +1,19 @@
+2025-06-19 14:38:03.745 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-19 14:38:04.285 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-19 14:38:04.680 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-19 14:38:04.681 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-19 14:38:04.682 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-19 14:38:04.708 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 successfully announced in 11.3853 ms
+2025-06-19 14:38:04.711 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-19 14:38:04.786 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 all the dispatchers started
+2025-06-19 14:57:54.744 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-19 14:57:54.745 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 caught stopping signal...
+2025-06-19 14:57:54.748 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 caught stopped signal...
+2025-06-19 14:57:54.757 +07:00 [WRN] Server desktop-nggl106:28796:eb17a8a1 caught shutdown signal...
+2025-06-19 14:57:54.760 +07:00 [WRN] Server desktop-nggl106:28796:eb17a8a1 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-19 14:57:54.782 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 successfully reported itself as stopped in 8.0594 ms
+2025-06-19 14:57:54.783 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 has been stopped in total 35.869 ms

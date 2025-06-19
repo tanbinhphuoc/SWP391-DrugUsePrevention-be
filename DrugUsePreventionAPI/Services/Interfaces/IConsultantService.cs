@@ -1,6 +1,7 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.DTOs.User;
 
+
 namespace DrugUsePreventionAPI.Services.Interfaces
 {
     public interface IConsultantService

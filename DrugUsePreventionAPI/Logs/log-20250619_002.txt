@@ -1,0 +1,54 @@
+2025-06-19 00:59:51.293 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-19 00:59:51.891 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-19 00:59:52.477 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-19 00:59:52.478 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-19 00:59:52.479 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-19 00:59:52.508 +07:00 [INF] Server desktop-nggl106:8916:85988789 successfully announced in 14.5545 ms
+2025-06-19 00:59:52.513 +07:00 [INF] Server desktop-nggl106:8916:85988789 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-19 00:59:52.595 +07:00 [INF] Server desktop-nggl106:8916:85988789 all the dispatchers started
+2025-06-19 01:19:44.967 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750269633, exp: 1750356033, iat: 1750269633, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 01:20:38.810 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750269633, exp: 1750356033, iat: 1750269633, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 01:21:35.043 +07:00 [INF] JWT Token validated successfully for user: dohoang, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 12, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: dohoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: dohoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750270839, exp: 1750357239, iat: 1750270839, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 01:21:47.670 +07:00 [INF] JWT Token validated successfully for user: dohoang, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 12, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: dohoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: dohoang@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750270839, exp: 1750357239, iat: 1750270839, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 01:21:47.760 +07:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-06-19 13:29:42.185 +07:00 [INF] Generated schedules from "2025-06-19T00:00:00.0000000+07:00" to "2025-06-26T00:00:00.0000000+07:00" for all consultants
+2025-06-19 13:31:56.124 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-19 13:31:56.128 +07:00 [INF] Server desktop-nggl106:8916:85988789 caught stopping signal...
+2025-06-19 13:31:56.131 +07:00 [INF] Server desktop-nggl106:8916:85988789 caught stopped signal...
+2025-06-19 13:31:56.154 +07:00 [WRN] Server desktop-nggl106:8916:85988789 caught shutdown signal...
+2025-06-19 13:31:56.156 +07:00 [INF] Server desktop-nggl106:8916:85988789 All dispatchers stopped
+2025-06-19 13:31:56.211 +07:00 [INF] Server desktop-nggl106:8916:85988789 successfully reported itself as stopped in 43.2442 ms
+2025-06-19 13:31:56.214 +07:00 [INF] Server desktop-nggl106:8916:85988789 has been stopped in total 83.0844 ms
+2025-06-19 14:16:05.929 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-19 14:16:06.468 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-19 14:16:06.910 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-19 14:16:06.912 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-19 14:16:06.913 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-19 14:16:06.948 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc successfully announced in 9.827 ms
+2025-06-19 14:16:06.953 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-19 14:16:07.064 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc all the dispatchers started
+2025-06-19 14:16:08.763 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Ambiguous HTTP method for action - DrugUsePreventionAPI.Controllers.CourseController.GetCoursesByAge (DrugUsePreventionAPI). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.PrepareGenerateOperation(IGrouping`2 group)
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationsAsync(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository, Func`3 operationsGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-19 14:16:33.607 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-19 14:16:33.609 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc caught stopping signal...
+2025-06-19 14:16:33.612 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc caught stopped signal...
+2025-06-19 14:16:33.614 +07:00 [WRN] Server desktop-nggl106:22092:8bc053cc caught shutdown signal...
+2025-06-19 14:16:33.618 +07:00 [WRN] Server desktop-nggl106:22092:8bc053cc stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-19 14:16:33.640 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc successfully reported itself as stopped in 8.549 ms
+2025-06-19 14:16:33.641 +07:00 [INF] Server desktop-nggl106:22092:8bc053cc has been stopped in total 29.1385 ms

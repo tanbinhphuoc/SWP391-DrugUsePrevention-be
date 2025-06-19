@@ -20,7 +20,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             try
             {
-                if (courseDto.Type != "COBAN" && courseDto.Type != "NANGCAO")
+                if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
                 {
                     return false;
                 }
@@ -51,7 +51,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<bool> UpdateCourse(int id, CreateCourseDto courseDto)
         {
-            if (courseDto.Type != "COBAN" && courseDto.Type != "NANGCAO")
+            if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
             {
                 return false;
             }
@@ -112,9 +112,18 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-        public async Task<List<Course>> GetCoursesByTypeAsync(string type)
+        public async Task<bool> IsGetCourse(double score)
         {
-            return await _unitOfWork.Courses.GetCoursesByTypeAsync(type);
+           return score <= 4 ? true : false; //dưới 4 sẽ dựa vào tuổi của người dùng để đưa ra khóa học, trên 4 điều hướng qua gặp consultan
+        }
+
+        public async Task<List<Course>> GetCoursesByAge(int age)
+        {
+            //du lieu tho tra ve toan bo course
+            var allCourses = await _unitOfWork.Courses.GetAllCourses();
+            //xu ly logic lay course theo do tuoi
+            var courses = allCourses.Where(c => c.AgeMin <= age && c.AgeMax >= age).ToList();
+            return courses;
         }
     }
 

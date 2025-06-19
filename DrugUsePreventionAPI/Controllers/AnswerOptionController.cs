@@ -32,7 +32,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<ActionResult<List<AnswerOption>>> GetAllAnswerOption()
         {
             var answerOption = await _answerOptionService.GetAllAnswerOption();
-            return Ok(answerOption);
+            return Ok(new { message = answerOption });
         }
 
         [AllowAnonymous]

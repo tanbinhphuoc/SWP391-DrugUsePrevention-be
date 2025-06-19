@@ -15,7 +15,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<IActionResult> CreateAssessmentResult(CreateAssessmentResultDto dto)
         {
             var result = await _assessmentResultService.CreateAssessmentResult(dto);
-            return Ok(result);
+            return Ok(new { message = result });
         }
 
         [HttpGet("compare-assessments")]
@@ -25,7 +25,7 @@ namespace DrugUsePreventionAPI.Controllers
             if (result == null)
                 return NotFound(new { message = "Không tìm thấy kết quả đánh giá nào." });
 
-            return Ok(result);
+            return Ok(new { message = result });
         }
     }
 

@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Security.Claims;
 using System.Text;
+using DrugUsePreventionAPI.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 

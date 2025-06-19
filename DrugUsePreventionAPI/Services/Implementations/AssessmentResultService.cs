@@ -36,7 +36,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             {
                 AssessmentID = dto.AssessmentId,
                 UserID = dto.UserId,
-                CourseID = dto.CourseId,
+                CourseID = dto.CourseId,//đang xem xét cần phải bỏ để phù hợp với luồng mới
                 AssessmentStage = dto.AssessmentStage,
                 TakeTime = DateTime.Now,
                 Score = score,

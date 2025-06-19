@@ -1,0 +1,43 @@
+2025-06-19 14:16:38.497 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-19 14:16:38.830 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-19 14:16:39.300 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-19 14:16:39.302 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-19 14:16:39.305 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-19 14:16:39.327 +07:00 [INF] Server desktop-nggl106:21360:cba8520e successfully announced in 9.2024 ms
+2025-06-19 14:16:39.331 +07:00 [INF] Server desktop-nggl106:21360:cba8520e is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-19 14:16:39.406 +07:00 [INF] Server desktop-nggl106:21360:cba8520e all the dispatchers started
+2025-06-19 14:17:20.613 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750317419, exp: 1750403819, iat: 1750317419, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 14:17:28.278 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750317419, exp: 1750403819, iat: 1750317419, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 14:17:37.076 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750317419, exp: 1750403819, iat: 1750317419, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 14:23:02.631 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750317781, exp: 1750404181, iat: 1750317781, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 14:23:02.639 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1750317781, exp: 1750404181, iat: 1750317781, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-19 14:37:34.459 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-19 14:37:34.461 +07:00 [INF] Server desktop-nggl106:21360:cba8520e caught stopping signal...
+2025-06-19 14:37:34.473 +07:00 [INF] Server desktop-nggl106:21360:cba8520e caught stopped signal...
+2025-06-19 14:37:34.480 +07:00 [INF] Server desktop-nggl106:21360:cba8520e All dispatchers stopped
+2025-06-19 14:37:34.485 +07:00 [WRN] Server desktop-nggl106:21360:cba8520e caught shutdown signal...
+2025-06-19 14:37:34.496 +07:00 [INF] Server desktop-nggl106:21360:cba8520e successfully reported itself as stopped in 8.0204 ms
+2025-06-19 14:37:34.497 +07:00 [INF] Server desktop-nggl106:21360:cba8520e has been stopped in total 27.4041 ms
+2025-06-19 14:38:03.745 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-19 14:38:04.285 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-19 14:38:04.680 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-06-19 14:38:04.681 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-19 14:38:04.682 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-19 14:38:04.708 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 successfully announced in 11.3853 ms
+2025-06-19 14:38:04.711 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-19 14:38:04.786 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 all the dispatchers started
+2025-06-19 14:57:54.744 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-19 14:57:54.745 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 caught stopping signal...
+2025-06-19 14:57:54.748 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 caught stopped signal...
+2025-06-19 14:57:54.757 +07:00 [WRN] Server desktop-nggl106:28796:eb17a8a1 caught shutdown signal...
+2025-06-19 14:57:54.760 +07:00 [WRN] Server desktop-nggl106:28796:eb17a8a1 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-19 14:57:54.782 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 successfully reported itself as stopped in 8.0594 ms
+2025-06-19 14:57:54.783 +07:00 [INF] Server desktop-nggl106:28796:eb17a8a1 has been stopped in total 35.869 ms
