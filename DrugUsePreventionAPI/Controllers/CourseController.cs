@@ -23,8 +23,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _courseService.CreateCourse(createCourseDto);
             if (result)
-                return Ok("Tạo Khóa Học Thành Công.");
-            return BadRequest("Tạo Khóa Học Thất Bại.");
+            return Ok(new { message = "Tạo Khóa Học Thành Công." });
+            return BadRequest(new { message = "Tạo Khóa Học Thất Bại." });
         }
 
         [AllowAnonymous]

@@ -207,6 +207,18 @@ builder.Services.AddAuthorization(options =>
     options.InvokeHandlersAfterFailure = false;
 });
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+    });
+});
+
 var app = builder.Build();
 
 // Configure recurring job for daily schedules
@@ -238,6 +250,23 @@ else
         });
     });
 }
+
+// Apply CORS policy
+app.UseCors("AllowFrontend");
+
+// Custom middleware for OPTIONS preflight
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:5173");
+        context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        context.Response.StatusCode = 204;
+        return;
+    }
+    await next();
+});
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

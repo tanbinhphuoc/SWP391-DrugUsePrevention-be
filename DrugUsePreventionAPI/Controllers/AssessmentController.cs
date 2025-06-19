@@ -23,8 +23,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentService.CreateAssessment(assessmentDto);
             if (result)
-                return Ok("Tạo Assessment thành công");
-            return BadRequest("Tạo Assessment thất bại");
+                return Ok(new { message = "Tạo Assessment thành công" });
+            return BadRequest(new { message = "Tạo Assessment thất bại" });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -53,7 +53,7 @@ namespace DrugUsePreventionAPI.Controllers
             var assessment = await _assessmentService.GetAssessmentById(id);
             if (assessment == null)
             {
-                return BadRequest("Không tìm thấy Assessment ");
+                return BadRequest(new { message = "Không tìm thấy Assessment " });
             }
             return Ok(assessment);
         }
@@ -80,7 +80,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentService.GetAssessmentById(id);
             if (result == null)
-                return NotFound("Không tìm thấy bài đánh giá.");
+                return NotFound(new { message = "Không tìm thấy bài đánh giá." }); 
 
             return Ok(result);
         }

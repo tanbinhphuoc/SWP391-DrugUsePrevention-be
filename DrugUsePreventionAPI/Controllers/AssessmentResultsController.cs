@@ -23,7 +23,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentResultService.CompareAssessmentResults(userId, courseId);
             if (result == null)
-                return NotFound("Không tìm thấy kết quả đánh giá nào.");
+                return NotFound(new { message = "Không tìm thấy kết quả đánh giá nào." });
 
             return Ok(result);
         }
