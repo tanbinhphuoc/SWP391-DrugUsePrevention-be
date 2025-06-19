@@ -1,24 +1,25 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Auth;
+﻿using DrugUsePreventionAPI.Configurations;
+using DrugUsePreventionAPI.Models.DTOs.Auth;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class AuthService : IAuthService
     {
-        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork; private readonly JwtSettings _jwtSettings;
 
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration)
+        public AuthService(IUnitOfWork unitOfWork, IOptions<JwtSettings> jwtSettings)
         {
             _unitOfWork = unitOfWork;
-            _configuration = configuration;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<TokenDto> LoginAsync(LoginDto loginDto)
@@ -125,8 +126,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         private TokenDto GenerateJwtToken(User user)
         {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+            var key = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
 
             var claims = new List<Claim>
         {
@@ -139,10 +139,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpireMinutes"])),
+                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = jwtSettings["Issuer"],
-                Audience = jwtSettings["Audience"]
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

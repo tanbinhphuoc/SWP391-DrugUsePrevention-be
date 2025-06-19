@@ -1,5 +1,6 @@
-﻿using DrugUsePreventionAPI.Models.Entities;
-using Microsoft.Extensions.Configuration;
+﻿using DrugUsePreventionAPI.Configurations;
+using DrugUsePreventionAPI.Models.Entities;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,19 @@ namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class VNPayHelper
     {
-        private readonly IConfiguration _configuration;
+        private readonly VNPaySettings _vnpaySettings;
 
-        public VNPayHelper(IConfiguration configuration)
+        public VNPayHelper(IOptions<VNPaySettings> vnpaySettings)
         {
-            _configuration = configuration;
+            _vnpaySettings = vnpaySettings.Value;
         }
 
         public string CreatePaymentUrl(Payment payment, string orderInfo)
         {
-            var vnpayConfig = _configuration.GetSection("VNPay");
-            var tmnCode = vnpayConfig["TmnCode"] ?? throw new InvalidOperationException("TmnCode is not configured.");
-            var hashSecret = vnpayConfig["HashSecret"] ?? throw new InvalidOperationException("HashSecret is not configured.");
-            var vnpUrl = vnpayConfig["BaseUrl"] + "/paymentv2/vpcpay.html";
-            var returnUrl = vnpayConfig["ReturnUrl"] ?? throw new InvalidOperationException("ReturnUrl is not configured.");
+            var tmnCode = _vnpaySettings.TmnCode ?? throw new InvalidOperationException("TmnCode is not configured.");
+            var hashSecret = _vnpaySettings.HashSecret ?? throw new InvalidOperationException("HashSecret is not configured.");
+            var vnpUrl = _vnpaySettings.BaseUrl + "/paymentv2/vpcpay.html";
+            var returnUrl = _vnpaySettings.ReturnUrl ?? throw new InvalidOperationException("ReturnUrl is not configured.");
 
             var vnpParams = new Dictionary<string, string>
         {
@@ -52,8 +52,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public bool VerifyCallback(Dictionary<string, string> queryParams)
         {
-            var vnpayConfig = _configuration.GetSection("VNPay");
-            var hashSecret = vnpayConfig["HashSecret"];
+            var hashSecret = _vnpaySettings.HashSecret;
 
             var secureHash = queryParams["vnp_SecureHash"];
             queryParams.Remove("vnp_SecureHash");
