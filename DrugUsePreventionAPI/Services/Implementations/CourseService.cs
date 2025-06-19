@@ -2,18 +2,18 @@
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
-using Microsoft.Extensions.Configuration;
+using DrugUsePreventionAPI.Exceptions;
+using Serilog;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class CourseService : ICourseService
     {
-        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CourseService(IUnitOfWork unitOfWork, IConfiguration configuration)
+        public CourseService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _configuration = configuration;
         }
 
         public async Task<bool> CreateCourse(CreateCourseDto courseDto)
@@ -53,11 +53,16 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
             {
-                return false;
+                Log.Warning("Invalid course type {Type}", courseDto.Type);
+                throw new BusinessRuleViolationException("Course type must be COBAN or NANGCAO.");
             }
+
             var course = await _unitOfWork.Courses.GetByIdAsync(id);
             if (course == null)
-                return false;
+            {
+                Log.Warning("Course with ID {CourseId} not found", id);
+                throw new EntityNotFoundException("Course", id);
+            }
 
             course.Title = courseDto.Title;
             course.Description = courseDto.Description;
@@ -71,33 +76,40 @@ namespace DrugUsePreventionAPI.Services.Implementations
             course.Type = courseDto.Type;
             course.UpdatedAt = DateTime.UtcNow;
 
-            try
-            {
-                _unitOfWork.Courses.Update(course);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            _unitOfWork.Courses.Update(course);
+            await _unitOfWork.SaveChangesAsync();
+            Log.Information("Updated course {Title}", course.Title);
+            return true;
         }
 
         public async Task<List<Course>> GetAllCourses()
         {
-            return (await _unitOfWork.Courses.GetAllAsync()).ToList();
+            Log.Information("Retrieving all courses");
+            var courses = (await _unitOfWork.Courses.GetAllAsync()).ToList();
+            Log.Information("Retrieved {Count} courses", courses.Count);
+            return courses;
         }
 
         public async Task<Course?> GetCourseById(int id)
         {
-            return await _unitOfWork.Courses.GetByIdAsync(id);
+            Log.Information("Retrieving course with ID {CourseId}", id);
+            var course = await _unitOfWork.Courses.GetByIdAsync(id);
+            if (course == null)
+            {
+                Log.Warning("Course with ID {CourseId} not found", id);
+                throw new EntityNotFoundException("Course", id);
+            }
+            Log.Information("Retrieved course {Title}", course.Title);
+            return course;
         }
 
         public async Task<bool> DeleteCourse(int id)
         {
+            Log.Information("Deleting course with ID {CourseId}", id);
             var course = await _unitOfWork.Courses.GetByIdAsync(id);
             if (course == null)
             {
+                Log.Warning("Course with ID {CourseId} not found", id);
                 return false;
             }
             try
