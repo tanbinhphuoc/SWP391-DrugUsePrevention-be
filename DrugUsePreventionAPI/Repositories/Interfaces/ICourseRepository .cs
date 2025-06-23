@@ -6,5 +6,7 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces {
         Task<Course?> GetCourseByTypeAsync(string type);
 
         Task<List<Course>> GetAllCourses();
+        //Lấy các Course chưa bị xóa (IsDeleted = false)
+        Task<List<Course>> GetAllActiveCourses();
     }
 }

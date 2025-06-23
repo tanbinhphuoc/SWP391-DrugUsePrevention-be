@@ -22,17 +22,34 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 createCourseRegistrationDto.userID, createCourseRegistrationDto.courseID);
             if (existedRegistration)
             {
-                throw new Exception("Ban da dang ky khoa hoc nay!");
+                throw new Exception("Bạn đã đăng ký khóa học này!");
             }
+
+            var course = await _unitOfWork.Courses.GetByIdAsync(createCourseRegistrationDto.courseID);
+            if (course == null)
+            {
+                throw new Exception("Không tìm thấy khóa học.");
+            }
+
+            // Nếu khóa học đang ở trạng thái PENDING thì chuyển sang OPEN
+            if (course.Status.ToUpper() == "PENDING")
+            {
+                course.Status = "OPEN";
+                course.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Courses.Update(course);
+            }
+
             var courseRegistration = new CourseRegistration
             {
                 CourseID = createCourseRegistrationDto.courseID,
                 UserID = createCourseRegistrationDto.userID,
                 RegisterTime = DateTime.Now
             };
+
             await _unitOfWork.CourseRegistrations.AddAsync(courseRegistration);
             await _unitOfWork.SaveChangesAsync();
         }
+
     }
 
 }

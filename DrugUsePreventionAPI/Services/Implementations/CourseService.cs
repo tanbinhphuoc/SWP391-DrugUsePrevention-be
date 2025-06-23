@@ -25,6 +25,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     return false;
                 }
 
+                var validStatuses = new[] { "OPEN", "CLOSED", "PENDING" };
+                if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
+                {
+                    throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
+                }
+
                 // Kiểm tra đã tồn tại 1 khóa học cùng loại
                 var existingCourse = await _unitOfWork.Courses.GetCourseByTypeAsync(courseDto.Type);
                 if (existingCourse != null)
@@ -72,6 +78,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new BusinessRuleViolationException("Course type must be HocSinh or SinhVien or PhuHuynh.");
             }
 
+            var validStatuses = new[] { "OPEN", "CLOSED", "PENDING" };
+            if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
+            {
+                throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
+            }
+
+
             var course = await _unitOfWork.Courses.GetByIdAsync(id);
             if (course == null)
             {
@@ -100,7 +113,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<List<Course>> GetAllCourses()
         {
             Log.Information("Retrieving all courses");
-            var courses = (await _unitOfWork.Courses.GetAllAsync()).ToList();
+            var courses = await _unitOfWork.Courses.GetAllActiveCourses();
             Log.Information("Retrieved {Count} courses", courses.Count);
             return courses;
         }
@@ -129,7 +142,9 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
             try
             {
-                _unitOfWork.Courses.Remove(course);
+                course.IsDeleted = true;
+                _unitOfWork.Courses.Update(course);
+
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -147,7 +162,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<List<Course>> GetCoursesByAge(int age)
         {
             //du lieu tho tra ve toan bo course
-            var allCourses = await _unitOfWork.Courses.GetAllCourses();
+            var allCourses = await _unitOfWork.Courses.GetAllActiveCourses();
             //xu ly logic lay course theo do tuoi
             var courses = allCourses.Where(c => c.AgeMin <= age && c.AgeMax >= age).ToList();
             return courses;
