@@ -6,6 +6,8 @@ namespace DrugUsePreventionAPI.Services.Interfaces
     {
         Task<string> CreateAssessmentResult(CreateAssessmentResultDto dto);
         Task<CompareAssessmentResultDto?> CompareAssessmentResults(int userId, int courseId);
+        Task<bool> IsEligibleForCourseAsync(int userId);
+
 
     }
 }

@@ -14,6 +14,15 @@ namespace DrugUsePreventionAPI.Repositories
             return await _context.AssessmentResults
                 .FirstOrDefaultAsync(x => x.UserID == userId && x.CourseID == courseId && x.AssessmentStage == stage);
         }
+        public async Task<AssessmentResult?> GetLatestResultByUserAsync(int userId)
+        {
+            return await _context.AssessmentResults
+                .Where(r => r.UserID == userId)
+                .OrderByDescending(r => r.TakeTime)
+                .FirstOrDefaultAsync();
+        }
+
+
     }
 
 }
