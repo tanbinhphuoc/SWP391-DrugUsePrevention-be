@@ -60,13 +60,15 @@ namespace DrugUsePreventionAPI.Controllers
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpDelete("DeleteAssessment")]
-        public async Task<IActionResult> DeleteCourse(int id)
+        public async Task<IActionResult> DeleteAssessment(int id)
         {
             var result = await _assessmentService.DeleteAssessment(id);
             if (result)
-                return Ok(new { message = "Xóa Assessment Thành Công." });
-            return BadRequest(new { message = "Xóa Assessment Thất Bại." });
+                return Ok(new { message = "Xóa Assessment thành công." });
+
+            return BadRequest(new { message = "Xóa Assessment thất bại hoặc không tồn tại." });
         }
+
 
         [HttpGet("GetAssessmentByAge")]
         public async Task<IActionResult> GetAssessmentByAge(int age)

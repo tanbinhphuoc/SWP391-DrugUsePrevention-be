@@ -32,6 +32,13 @@ namespace DrugUsePreventionAPI.Repositories
                     .ThenInclude(q => q.AnswerOptions)
                 .FirstOrDefaultAsync(a => a.AssessmentID == id);
         }
+        // lấy tất cả assessment chưa bị xóa
+        public async Task<List<Assessment>> GetAllActiveAssessmentsAsync()
+        {
+            return await _context.Assessments
+                .Where(a => !a.IsDeleted)
+                .ToListAsync();
+        }
     }
 
 }

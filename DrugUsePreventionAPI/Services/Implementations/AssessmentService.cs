@@ -72,7 +72,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<List<Assessment>> GetAllAssessment()
         {
-            return (await _unitOfWork.Assessments.GetAllAsync()).ToList();
+            return await _unitOfWork.Assessments.GetAllActiveAssessmentsAsync();
+
         }
 
         public async Task<List<Assessment>> GetAssessmentByAge(int age)
@@ -89,7 +90,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
             try
             {
-                _unitOfWork.Assessments.Remove(assessment);
+                assessment.IsDeleted = true;
+                _unitOfWork.Assessments.Update(assessment);
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -98,6 +100,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
 
         public async Task<GetAssessmentDto?> GetAssessmentById(int id)
         {

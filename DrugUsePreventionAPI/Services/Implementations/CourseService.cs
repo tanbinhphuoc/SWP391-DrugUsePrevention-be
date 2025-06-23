@@ -24,6 +24,14 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 {
                     return false;
                 }
+
+                // Kiểm tra đã tồn tại 1 khóa học cùng loại
+                var existingCourse = await _unitOfWork.Courses.GetCourseByTypeAsync(courseDto.Type);
+                if (existingCourse != null)
+                {
+                    throw new BusinessRuleViolationException($"A course for type '{courseDto.Type}' already exists. Please delete it before adding a new one.");
+                }
+
                 var course = new Course
                 {
                     Title = courseDto.Title,
@@ -39,15 +47,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
+
                 await _unitOfWork.Courses.AddAsync(course);
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (BusinessRuleViolationException)
             {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error occurred while creating course");
                 return false;
             }
         }
+
 
         public async Task<bool> UpdateCourse(int id, CreateCourseDto courseDto)
         {
@@ -136,7 +151,9 @@ namespace DrugUsePreventionAPI.Services.Implementations
             //xu ly logic lay course theo do tuoi
             var courses = allCourses.Where(c => c.AgeMin <= age && c.AgeMax >= age).ToList();
             return courses;
-        }
+        }  
+        
+
     }
 
 }

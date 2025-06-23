@@ -14,12 +14,14 @@ namespace DrugUsePreventionAPI.Repositories
             return await _context.Courses.ToListAsync();
         }
 
-        public async Task<List<Course>> GetCoursesByTypeAsync(string type)
+        public async Task<Course?> GetCourseByTypeAsync(string type)
         {
             return await _context.Courses
                 .Where(c => c.Type == type && c.Status == "OPEN")
-                .ToListAsync();
+                .FirstOrDefaultAsync();
         }
+
+
     }
 
 }
