@@ -66,6 +66,11 @@ namespace DrugUsePreventionAPI.Repositories
         {
             return await _dbSet.AnyAsync(predicate);
         }
+        public IQueryable<TEntity> Find()
+        {
+            return _dbSet.AsQueryable();
+        }
+
     }
 
 }

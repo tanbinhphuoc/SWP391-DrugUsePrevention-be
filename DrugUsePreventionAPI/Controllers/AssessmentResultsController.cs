@@ -27,6 +27,13 @@ namespace DrugUsePreventionAPI.Controllers
 
             return Ok(new { message = result });
         }
+        [HttpGet("is-eligible")]
+        public async Task<IActionResult> IsEligibleForCourse([FromQuery] int userId)
+        {
+            var isEligible = await _assessmentResultService.IsEligibleForCourseAsync(userId);
+            return Ok(new { isEligible });
+        }
+
     }
 
 }
