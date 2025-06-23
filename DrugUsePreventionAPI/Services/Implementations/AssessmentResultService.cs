@@ -2,6 +2,7 @@
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -17,22 +18,30 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<string> CreateAssessmentResult(CreateAssessmentResultDto dto)
         {
             int score = 0;
-            if (dto.AnswerOptionId.Count > 0)
+
+            foreach (var item in dto.AnswerOptionId)
             {
-                foreach (var item in dto.AnswerOptionId)
-                {
-                    var answer = await _unitOfWork.AnswerOptions.GetByIdAsync(item);
-                    if (answer == null)
+                var answer = await _unitOfWork.AnswerOptions.GetByIdAsync(item);
+                if (answer == null)
+                    throw new Exception("Answer option không tồn tại");
+
+                if (answer.ScoreValue != null)
                     {
-                        throw new Exception("Answer option khong ton tai");
-                    }
-                    if (answer.ScoreValue != null)
-                    {
-                        score += (int)answer.ScoreValue;
-                    }
-                }
+                    score += (int)answer.ScoreValue;
             }
-            var assessmentResult = new AssessmentResult
+
+            // 🔁 Xóa kết quả cũ cùng AssessmentID + User + Stage
+            var existingResult = await _unitOfWork.AssessmentResults.FindAsync(
+                r => r.UserID == dto.UserId &&
+                     r.AssessmentID == dto.AssessmentId &&
+                     r.AssessmentStage == dto.AssessmentStage);
+
+            if (existingResult.Any())
+            {
+                _unitOfWork.AssessmentResults.RemoveRange(existingResult);
+            }
+
+            var newResult = new AssessmentResult
             {
                 AssessmentID = dto.AssessmentId,
                 UserID = dto.UserId,
@@ -40,11 +49,14 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 AssessmentStage = dto.AssessmentStage,
                 TakeTime = DateTime.Now,
                 Score = score,
-                ResultName = $"Bạn đã hoàn thành bài đánh gia với {score} điểm!"
+                ResultName = $"Bạn đã hoàn thành bài đánh giá với {score} điểm!",
+                TakeTime = DateTime.Now
             };
-            await _unitOfWork.AssessmentResults.AddAsync(assessmentResult);
+
+            await _unitOfWork.AssessmentResults.AddAsync(newResult);
             await _unitOfWork.SaveChangesAsync();
-            return assessmentResult.ResultName;
+
+            return newResult.ResultName;
         }
 
         public async Task<CompareAssessmentResultDto?> CompareAssessmentResults(int userId, int courseId)
@@ -65,7 +77,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             if (inputResult != null && outputResult != null)
             {
-                if (outputResult.Score > inputResult.Score)
+                if (outputResult.Score < inputResult.Score)
                     comparison.ComparisonResult = "Kết quả cải thiện sau khóa học.";
                 else if (outputResult.Score == inputResult.Score)
                     comparison.ComparisonResult = "Không có sự thay đổi.";
@@ -81,4 +93,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
         }
     }
 
+        public async Task<bool> IsEligibleForCourseAsync(int userId)
+        {
+            // Lấy kết quả gần nhất (mọi assessment) để kiểm tra điều kiện
+            var latestResult = await _unitOfWork.AssessmentResults.FindAsync(r => r.UserID == userId);
+            var result = latestResult.OrderByDescending(r => r.TakeTime).FirstOrDefault();
+
+            return result != null && result.Score < 4;
+        }
+    }
 }

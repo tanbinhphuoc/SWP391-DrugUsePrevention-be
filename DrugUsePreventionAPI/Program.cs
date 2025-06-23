@@ -142,6 +142,60 @@ if (string.IsNullOrEmpty(secretKey))
 }
 var key = Encoding.ASCII.GetBytes(secretKey);
 
+// Register configurations
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<VNPaySettings>(builder.Configuration.GetSection("VNPay"));
+builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("Gmail"));
+
+// Register IConfiguration for services that might need it
+builder.Services.AddScoped(sp => builder.Configuration);
+
+// Register repositories
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IConsultantRepository, ConsultantRepository>();
+builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+builder.Services.AddScoped<IConsultantScheduleRepository, ConsultantScheduleRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentResultRepository, AssessmentResultRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepository>();
+builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Register services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IConsultantService, ConsultantService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ICourseRegistrationService, CourseRegistrationService>();
+builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
+
+// Register ScheduleGenerator
+builder.Services.AddScoped<ScheduleGenerator>();
+
+// Register VNPayHelper with IOptions
+builder.Services.AddScoped(sp => new VNPayHelper(sp.GetRequiredService<IOptions<VNPaySettings>>()));
+
+// Configure JWT Authentication
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrEmpty(secretKey))
+{
+    throw new InvalidOperationException("JWT SecretKey is missing in configuration.");
+}
+var key = Encoding.ASCII.GetBytes(secretKey);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

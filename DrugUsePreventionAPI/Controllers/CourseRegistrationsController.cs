@@ -21,11 +21,11 @@ namespace DrugUsePreventionAPI.Controllers
             try
             {
                 await _courseRegistrationService.CreateCourseRegistrationAsync(createCourseRegistrationDto);
-                return Ok("Đăng kí khóa học thành công");
+                return Ok(new { message = "Đăng kí khóa học thành công" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

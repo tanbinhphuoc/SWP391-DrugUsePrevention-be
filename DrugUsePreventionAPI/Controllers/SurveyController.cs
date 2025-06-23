@@ -23,8 +23,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _surveyService.CreateSurvey(createSurveyDto);
             if (result)
-                return Ok("Tạo Survey Thành Công.");
-            return BadRequest("Tạo Survey Thất Bại.");
+                return Ok(new { message = "Tạo Survey Thành Công." });
+            return BadRequest(new { message = "Tạo Survey Thất Bại." });
         }
 
         [AllowAnonymous]
@@ -32,7 +32,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<ActionResult<List<Survey>>> GetAllSurvey()
         {
             var survey = await _surveyService.GetAllSurvey();
-            return Ok(survey);
+            return Ok(new { message = survey });
         }
 
         [AllowAnonymous]
@@ -42,7 +42,7 @@ namespace DrugUsePreventionAPI.Controllers
             var survey = await _surveyService.GetSurveyById(id);
             if (survey == null)
                 return NotFound(new { message = "Survey Không Tồn Tại." });
-            return Ok(survey);
+            return Ok(new { message = survey });
         }
 
         [Authorize(Roles = "Admin,Manager")]

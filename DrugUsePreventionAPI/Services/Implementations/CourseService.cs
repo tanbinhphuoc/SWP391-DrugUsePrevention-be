@@ -18,43 +18,73 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<bool> CreateCourse(CreateCourseDto courseDto)
         {
-            Log.Information("Creating course with title {Title}", courseDto.Title);
-            if (courseDto.Type != "COBAN" && courseDto.Type != "NANGCAO")
+            try
             {
-                Log.Warning("Invalid course type {Type}", courseDto.Type);
-                throw new BusinessRuleViolationException("Course type must be COBAN or NANGCAO.");
-            }
+                if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
+                {
+                    return false;
+                }
 
-            var course = new Course
-            {
-                Title = courseDto.Title,
-                Description = courseDto.Description,
-                StartDate = courseDto.StartDate,
-                EndDate = courseDto.EndDate,
-                Status = courseDto.Status,
-                AgeMin = courseDto.AgeMin,
-                AgeMax = courseDto.AgeMax,
-                Capacity = courseDto.Capacity,
-                Price = courseDto.Price,
-                Type = courseDto.Type,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+                var validStatuses = new[] { "OPEN", "CLOSED", "PENDING" };
+                if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
+                {
+                    throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
+                }
 
-            await _unitOfWork.Courses.AddAsync(course);
-            await _unitOfWork.SaveChangesAsync();
+                // Kiểm tra đã tồn tại 1 khóa học cùng loại
+                var existingCourse = await _unitOfWork.Courses.GetCourseByTypeAsync(courseDto.Type);
+                if (existingCourse != null)
+                {
+                    throw new BusinessRuleViolationException($"A course for type '{courseDto.Type}' already exists. Please delete it before adding a new one.");
+                }
+
+                var course = new Course
+                {
+                    Title = courseDto.Title,
+                    Description = courseDto.Description,
+                    StartDate = courseDto.StartDate,
+                    EndDate = courseDto.EndDate,
+                    Status = courseDto.Status,
+                    AgeMin = courseDto.AgeMin,
+                    AgeMax = courseDto.AgeMax,
+                    Capacity = courseDto.Capacity,
+                    Price = courseDto.Price,
+                    Type = courseDto.Type,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await _unitOfWork.Courses.AddAsync(course);
+                await _unitOfWork.SaveChangesAsync();
             Log.Information("Created course {Title} with ID {CourseId}", course.Title, course.CourseID);
-            return true;
+                return true;
+            }
+            catch (BusinessRuleViolationException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error occurred while creating course");
+                return false;
+            }
         }
+
 
         public async Task<bool> UpdateCourse(int id, CreateCourseDto courseDto)
         {
-            Log.Information("Updating course with ID {CourseId}", id);
-            if (courseDto.Type != "COBAN" && courseDto.Type != "NANGCAO")
+            if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
             {
                 Log.Warning("Invalid course type {Type}", courseDto.Type);
-                throw new BusinessRuleViolationException("Course type must be COBAN or NANGCAO.");
+                throw new BusinessRuleViolationException("Course type must be HocSinh or SinhVien or PhuHuynh.");
             }
+
+            var validStatuses = new[] { "OPEN", "CLOSED", "PENDING" };
+            if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
+            {
+                throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
+            }
+
 
             var course = await _unitOfWork.Courses.GetByIdAsync(id);
             if (course == null)
@@ -84,7 +114,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<List<Course>> GetAllCourses()
         {
             Log.Information("Retrieving all courses");
-            var courses = (await _unitOfWork.Courses.GetAllAsync()).ToList();
+            var courses = await _unitOfWork.Courses.GetAllActiveCourses();
             Log.Information("Retrieved {Count} courses", courses.Count);
             return courses;
         }
@@ -111,20 +141,37 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 Log.Warning("Course with ID {CourseId} not found", id);
                 return false;
             }
+            try
+            {
+                course.IsDeleted = true;
+                _unitOfWork.Courses.Update(course);
 
             _unitOfWork.Courses.Remove(course);
-            await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
             Log.Information("Deleted course {Title}", course.Title);
-            return true;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public async Task<List<Course>> GetCoursesByTypeAsync(string type)
+        public async Task<bool> IsGetCourse(double score)
         {
-            Log.Information("Retrieving courses with type {Type}", type);
-            var courses = await _unitOfWork.Courses.GetCoursesByTypeAsync(type);
-            Log.Information("Retrieved {Count} courses with type {Type}", courses.Count, type);
-            return courses;
+           return score <= 4 ? true : false; //dưới 4 sẽ dựa vào tuổi của người dùng để đưa ra khóa học, trên 4 điều hướng qua gặp consultan
         }
+
+        public async Task<List<Course>> GetCoursesByAge(int age)
+        {
+            //du lieu tho tra ve toan bo course
+            var allCourses = await _unitOfWork.Courses.GetAllActiveCourses();
+            //xu ly logic lay course theo do tuoi
+            var courses = allCourses.Where(c => c.AgeMin <= age && c.AgeMax >= age).ToList();
+            return courses;
+        }  
+        
+
     }
 
 }

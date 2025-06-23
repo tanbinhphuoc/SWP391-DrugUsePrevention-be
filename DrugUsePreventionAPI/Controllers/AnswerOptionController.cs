@@ -23,8 +23,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _answerOptionService.CreateAnswerOption(createAnswerOptionDto);
             if (result)
-                return Ok("Tạo AnswerOption Thành Công.");
-            return BadRequest("Tạo AnswerOption Thất Bại.");
+                return Ok(new { message = "Tạo AnswerOption Thành Công." });
+            return BadRequest(new { message = "Tạo AnswerOption Thất Bại." });
         }
 
         [AllowAnonymous]
@@ -32,7 +32,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<ActionResult<List<AnswerOption>>> GetAllAnswerOption()
         {
             var answerOption = await _answerOptionService.GetAllAnswerOption();
-            return Ok(answerOption);
+            return Ok(new { message = answerOption });
         }
 
         [AllowAnonymous]

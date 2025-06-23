@@ -23,8 +23,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentService.CreateAssessment(assessmentDto);
             if (result)
-                return Ok("Tạo Assessment thành công");
-            return BadRequest("Tạo Assessment thất bại");
+                return Ok(new { message = "Tạo Assessment thành công" });
+            return BadRequest(new { message = "Tạo Assessment thất bại" });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -43,7 +43,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<ActionResult<List<Assessment>>> GetAllAssessment()
         {
             var assessment = await _assessmentService.GetAllAssessment();
-            return Ok(assessment);
+            return Ok(new { message = assessment });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -53,26 +53,28 @@ namespace DrugUsePreventionAPI.Controllers
             var assessment = await _assessmentService.GetAssessmentById(id);
             if (assessment == null)
             {
-                return BadRequest("Không tìm thấy Assessment ");
+                return BadRequest(new { message = "Không tìm thấy Assessment " });
             }
-            return Ok(assessment);
+            return Ok(new { message = assessment });
         }
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpDelete("DeleteAssessment")]
-        public async Task<IActionResult> DeleteCourse(int id)
+        public async Task<IActionResult> DeleteAssessment(int id)
         {
             var result = await _assessmentService.DeleteAssessment(id);
             if (result)
-                return Ok(new { message = "Xóa Assessment Thành Công." });
-            return BadRequest(new { message = "Xóa Assessment Thất Bại." });
+                return Ok(new { message = "Xóa Assessment thành công." });
+
+            return BadRequest(new { message = "Xóa Assessment thất bại hoặc không tồn tại." });
         }
+
 
         [HttpGet("GetAssessmentByAge")]
         public async Task<IActionResult> GetAssessmentByAge(int age)
         {
             var assessment = await _assessmentService.GetAssessmentByAge(age);
-            return Ok(assessment);
+            return Ok(new { message = assessment });
         }
 
         [HttpGet("GetAssessmentFormById")]
@@ -80,9 +82,9 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentService.GetAssessmentById(id);
             if (result == null)
-                return NotFound("Không tìm thấy bài đánh giá.");
+                return NotFound(new { message = "Không tìm thấy bài đánh giá."}); 
 
-            return Ok(result);
+            return Ok(new { message = result });
         }
     }
 

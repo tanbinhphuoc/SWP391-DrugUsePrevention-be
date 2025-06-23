@@ -1,5 +1,6 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Models.Entities;
+using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +24,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _courseService.CreateCourse(createCourseDto);
             if (result)
-                return Ok("Tạo Khóa Học Thành Công.");
-            return BadRequest("Tạo Khóa Học Thất Bại.");
+                return Ok(new { message = "Tạo Khóa Học Thành Công." });
+            return BadRequest(new { message = "Tạo Khóa Học Thất Bại." });
         }
 
         [AllowAnonymous]
@@ -32,7 +33,7 @@ namespace DrugUsePreventionAPI.Controllers
         public async Task<ActionResult<List<Course>>> GetAllCourses()
         {
             var courses = await _courseService.GetAllCourses();
-            return Ok(courses);
+            return Ok(new { message = courses });
         }
 
         [AllowAnonymous]
@@ -42,7 +43,7 @@ namespace DrugUsePreventionAPI.Controllers
             var course = await _courseService.GetCourseById(id);
             if (course == null)
                 return NotFound(new { message = "Khóa Học Không Tồn Tại." });
-            return Ok(course);
+            return Ok(new { message = course });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -65,14 +66,19 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Xóa Khóa Học Thất Bại." });
         }
 
-        [HttpGet("recommend")]
-        public async Task<IActionResult> RecommendCourses([FromQuery] double score)
+        [HttpGet("isGetCourse")]
+        public async Task<IActionResult> IsGetCourse([FromQuery] double score)
         {
-            string courseType = score <= 4 ? "COBAN" : "NANGCAO";
+            var courses = await _courseService.IsGetCourse(score);
 
-            var courses = await _courseService.GetCoursesByTypeAsync(courseType);
+            return Ok(new { message = courses });
+        }
+        [HttpGet("getCoursesByAge")]
 
-            return Ok(courses);
+        public async Task<IActionResult> GetCoursesByAge(int age)
+        {
+            var courses = await _courseService.GetCoursesByAge(age);
+            return Ok(new { message = courses });
         }
     }
 
