@@ -25,6 +25,7 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public string? GoogleMeetLink { get; set; }
 
         // Navigation properties
         public virtual User User { get; set; }

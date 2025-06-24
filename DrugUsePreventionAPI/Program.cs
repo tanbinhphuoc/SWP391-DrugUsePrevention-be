@@ -1,26 +1,27 @@
-﻿using DrugUsePreventionAPI.Services.Implementations;
+﻿using DrugUsePreventionAPI.Configurations;
 using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Data.Extensions;
+using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Mappings;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Repositories.Interfaces;
-using DrugUsePreventionAPI.Configurations;
+using DrugUsePreventionAPI.Services.Implementations;
+using DrugUsePreventionAPI.Services.Interfaces;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Security.Claims;
 using System.Text;
-using DrugUsePreventionAPI.Exceptions;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,18 +35,44 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+// Validate configurations
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var vnPaySettings = builder.Configuration.GetSection("VNPay");
+var gmailSettings = builder.Configuration.GetSection("Gmail");
+var googleSettings = builder.Configuration.GetSection("GoogleCalendar");
+
+if (string.IsNullOrEmpty(jwtSettings["SecretKey"]))
+    throw new InvalidOperationException("JWT SecretKey is missing in configuration.");
+if (string.IsNullOrEmpty(vnPaySettings["TmnCode"]) || string.IsNullOrEmpty(vnPaySettings["HashSecret"]))
+    throw new InvalidOperationException("VNPay TmnCode or HashSecret is missing in configuration.");
+if (string.IsNullOrEmpty(gmailSettings["Email"]) || string.IsNullOrEmpty(gmailSettings["Password"]))
+    throw new InvalidOperationException("Gmail configuration is missing in configuration.");
+
+builder.Services.AddHttpContextAccessor();
+
+// Lấy URL ngrok động và cập nhật ReturnUrl
+string ngrokUrl = GetNgrokUrl();
+if (!string.IsNullOrEmpty(ngrokUrl))
+{
+    builder.Configuration["VNPay:ReturnUrl"] = $"{ngrokUrl}/api/vnpay/return";
+    Log.Information("Updated ReturnUrl to: {ReturnUrl}", builder.Configuration["VNPay:ReturnUrl"]);
+}
+else
+{
+    Log.Warning("Failed to get ngrok URL. Using default ReturnUrl: {ReturnUrl}", vnPaySettings["ReturnUrl"]);
+}
+
 // Cấu hình CORS cho frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Địa chỉ của frontend React
+        policy.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
 
-// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -68,7 +95,7 @@ builder.Services.AddSwaggerGen(c =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
-            new string[] { }
+            Array.Empty<string>()
         }
     });
 });
@@ -89,12 +116,9 @@ builder.Services.AddHangfire(configuration => configuration
 builder.Services.AddHangfireServer();
 
 // Register configurations
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.Configure<VNPaySettings>(builder.Configuration.GetSection("VNPay"));
-builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("Gmail"));
-
-// Register IConfiguration for services that might need it
-builder.Services.AddScoped(sp => builder.Configuration);
+builder.Services.Configure<JwtSettings>(jwtSettings);
+builder.Services.Configure<VNPaySettings>(vnPaySettings);
+builder.Services.Configure<GmailSettings>(gmailSettings);
 
 // Register repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -126,21 +150,13 @@ builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
-
-// Register ScheduleGenerator
 builder.Services.AddScoped<ScheduleGenerator>();
 
-// Register VNPayHelper with IOptions
-builder.Services.AddScoped(sp => new VNPayHelper(sp.GetRequiredService<IOptions<VNPaySettings>>()));
+// Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)
+builder.Services.AddScoped<VNPayHelper>();
 
 // Configure JWT Authentication
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["SecretKey"];
-if (string.IsNullOrEmpty(secretKey))
-{
-    throw new InvalidOperationException("JWT SecretKey is missing in configuration.");
-}
-var key = Encoding.ASCII.GetBytes(secretKey);
+var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -159,9 +175,9 @@ builder.Services.AddAuthentication(options =>
         OnChallenge = context =>
         {
             Log.Warning("JWT Challenge: {Error}, {ErrorDescription}, User Authenticated: {IsAuthenticated}, Roles: {Roles}, Claims: {Claims}",
-                context.Error, context.ErrorDescription, context.HttpContext.User.Identity.IsAuthenticated,
-                context.HttpContext.User.Identity.IsAuthenticated ? string.Join(", ", context.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)) : "None",
-                context.HttpContext.User.Identity.IsAuthenticated ? string.Join(", ", context.HttpContext.User.Claims.Select(c => $"{c.Type}: {c.Value}")) : "None");
+                context.Error, context.ErrorDescription, context.HttpContext.User.Identity?.IsAuthenticated ?? false,
+                context.HttpContext.User.Identity?.IsAuthenticated == true ? string.Join(", ", context.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)) : "None",
+                context.HttpContext.User.Identity?.IsAuthenticated == true ? string.Join(", ", context.HttpContext.User.Claims.Select(c => $"{c.Type}: {c.Value}")) : "None");
             return Task.CompletedTask;
         },
         OnTokenValidated = context =>
@@ -181,7 +197,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["SecretKey"])),
+        IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidIssuer = jwtSettings["Issuer"],
@@ -202,7 +218,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAssertion(context =>
         {
             var roles = context.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-            Log.Information("Evaluating Admin policy for user: {User}, Available Roles: {Roles}", context.User.Identity.Name, string.Join(", ", roles));
+            Log.Information("Evaluating Admin policy for user: {User}, Available Roles: {Roles}", context.User.Identity?.Name, string.Join(", ", roles));
             return roles.Contains("Admin", StringComparer.OrdinalIgnoreCase);
         });
     });
@@ -212,21 +228,9 @@ builder.Services.AddAuthorization(options =>
     options.InvokeHandlersAfterFailure = false;
 });
 
-// Configure CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
-    });
-});
-
 var app = builder.Build();
 
-// Configure exception handling middleware
+// Configure exception handling middleware with detailed logging
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
@@ -235,23 +239,23 @@ app.UseExceptionHandler(errorApp =>
         if (errorFeature != null)
         {
             var exception = errorFeature.Error;
-            var response = new { Message = exception.Message, StatusCode = 500 };
+            var response = new { Message = exception.Message, StatusCode = 500, StackTrace = exception.StackTrace };
 
             switch (exception)
             {
                 case EntityNotFoundException _:
-                    response = new { Message = exception.Message, StatusCode = 404 };
+                    response = new { Message = exception.Message, StatusCode = 404, StackTrace = exception.StackTrace };
                     break;
                 case DuplicateEntityException _:
                 case BusinessRuleViolationException _:
-                    response = new { Message = exception.Message, StatusCode = 400 };
+                    response = new { Message = exception.Message, StatusCode = 400, StackTrace = exception.StackTrace };
                     break;
             }
 
             context.Response.StatusCode = response.StatusCode;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-            Log.Error(exception, "Error occurred: {Message}", exception.Message);
+            Log.Error(exception, "Error occurred: {Message}, StackTrace: {StackTrace}", exception.Message, exception.StackTrace);
         }
     });
 });
@@ -263,7 +267,7 @@ using (var scope = app.Services.CreateScope())
     var scheduleGenerator = scope.ServiceProvider.GetRequiredService<ScheduleGenerator>();
     recurringJobManager.AddOrUpdate(
         "generate-daily-schedules",
-        () => scheduleGenerator.GenerateDailySchedulesAsync(DateTime.Now.Date),
+        () => scheduleGenerator.GenerateDailySchedulesAsync(DateTime.UtcNow.Date),
         Cron.Daily());
 }
 
@@ -287,29 +291,11 @@ else
     });
 }
 
-// Apply CORS policy
-app.UseCors("AllowFrontend");
-
-// Custom middleware for OPTIONS preflight
-app.Use(async (context, next) =>
-{
-    if (context.Request.Method == "OPTIONS")
-    {
-        context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:5173");
-        context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        context.Response.StatusCode = 204;
-        return;
-    }
-    await next();
-});
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.UseHangfireDashboard("/hangfire");
-app.UseCors("AllowFrontend");
 app.MapControllers();
 
 app.Run();
@@ -350,4 +336,25 @@ async Task SeedAdminAsync(IUnitOfWork unitOfWork)
         Log.Error(ex, "Error seeding admin user");
         throw;
     }
+}
+static string GetNgrokUrl()
+{
+    try
+    {
+        using var client = new HttpClient();
+        var response = client.GetStringAsync("http://localhost:4040/api/tunnels").Result;
+        var tunnels = JsonSerializer.Deserialize<JsonElement>(response);
+        foreach (var tunnel in tunnels.GetProperty("tunnels").EnumerateArray())
+        {
+            if (tunnel.GetProperty("proto").GetString() == "https")
+            {
+                return tunnel.GetProperty("public_url").GetString();
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "Failed to get ngrok URL");
+    }
+    return null;
 }

@@ -56,6 +56,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                 await _unitOfWork.Courses.AddAsync(course);
                 await _unitOfWork.SaveChangesAsync();
+            Log.Information("Created course {Title} with ID {CourseId}", course.Title, course.CourseID);
                 return true;
             }
             catch (BusinessRuleViolationException)
@@ -145,7 +146,9 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 course.IsDeleted = true;
                 _unitOfWork.Courses.Update(course);
 
+            _unitOfWork.Courses.Remove(course);
                 await _unitOfWork.SaveChangesAsync();
+            Log.Information("Deleted course {Title}", course.Title);
                 return true;
             }
             catch

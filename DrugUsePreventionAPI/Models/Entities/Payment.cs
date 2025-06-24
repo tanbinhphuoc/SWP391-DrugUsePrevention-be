@@ -28,6 +28,7 @@ namespace DrugUsePreventionAPI.Models.Entities
         [MaxLength(100)]
         public string? TransactionID { get; set; }
 
+        public int? RetryCount { get; set; }
         // Navigation properties
         public virtual User User { get; set; }
         public virtual Course? Course { get; set; }
