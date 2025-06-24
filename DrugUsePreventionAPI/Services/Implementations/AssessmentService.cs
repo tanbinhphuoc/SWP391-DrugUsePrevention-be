@@ -83,15 +83,32 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<bool> DeleteAssessment(int id)
         {
-            var assessment = await _unitOfWork.Assessments.GetByIdAsync(id);
+            var assessment = await _unitOfWork.Assessments.GetAssessmentWithQuestionsAsync(id);
             if (assessment == null)
             {
                 return false;
             }
+
             try
             {
+                // xóa bài đánh giá
                 assessment.IsDeleted = true;
                 _unitOfWork.Assessments.Update(assessment);
+
+                // Xóa tất cả các câu hỏi liên quan
+                foreach (var question in assessment.Questions)
+                {
+                    question.IsDeleted = true;
+                    _unitOfWork.Questions.Update(question);
+
+                    // Xóa tất cả các AnswerOptions liên quan
+                    foreach (var answer in question.AnswerOptions)
+                    {
+                        answer.IsDeleted = true;
+                        _unitOfWork.AnswerOptions.Update(answer);
+                    }
+                }
+
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -100,6 +117,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
 
 
         public async Task<GetAssessmentDto?> GetAssessmentById(int id)

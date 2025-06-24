@@ -10,11 +10,15 @@ namespace DrugUsePreventionAPI.Models.Entities
         [Required]
         public int  QuestionID { get; set; }
 
-       
-        public required string OptionText { get; set; }
+
+        [Required]
+        public string OptionText { get; set; }
 
         public int? ScoreValue { get; set; }
+        public bool IsDeleted { get; set; } = false; 
 
+        // Navigation property
         public virtual  Question Question { get; set; }
+
     }
 }
