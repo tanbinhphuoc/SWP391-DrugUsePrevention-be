@@ -1,8 +1,8 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Answer;
-using DrugUsePreventionAPI.Models.Entities;
+﻿using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using Microsoft.Extensions.Configuration;
+using DrugUsePreventionAPI.Models.DTOs.Answer;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {

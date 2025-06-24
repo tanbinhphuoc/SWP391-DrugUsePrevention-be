@@ -29,7 +29,25 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     score += (int)answer.ScoreValue;
             }
 
-            // 🔁 Xóa kết quả cũ cùng AssessmentID + User + Stage
+            // Tính điểm tối đa dựa trên các câu hỏi liên quan đến các answer đã chọn
+            int maxPossibleScore = 0;
+
+            var questionIds = dto.AnswerOptionId
+                .Select(async id => (await _unitOfWork.AnswerOptions.GetByIdAsync(id))?.QuestionID)
+                .Select(t => t.Result)
+                .Where(qId => qId != null)
+                .Distinct();
+
+            foreach (var questionId in questionIds!)
+            {
+                var answers = await _unitOfWork.AnswerOptions.FindAsync(a => a.QuestionID == questionId && !a.IsDeleted);
+                maxPossibleScore += answers.Max(a => a.ScoreValue ?? 0);
+            }
+
+            // Chuyển điểm về thang điểm 10
+            int finalScore = maxPossibleScore == 0 ? 0 : (int)Math.Round((double)score / maxPossibleScore * 10);
+
+            //  Xóa kết quả cũ cùng AssessmentID + User + Stage
             var existingResult = await _unitOfWork.AssessmentResults.FindAsync(
                 r => r.UserID == dto.UserId &&
                      r.AssessmentID == dto.AssessmentId &&
@@ -46,8 +64,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 UserID = dto.UserId,
                 CourseID = dto.CourseId,
                 AssessmentStage = dto.AssessmentStage,
-                Score = score,
-                ResultName = $"Bạn đã hoàn thành bài đánh giá với {score} điểm!",
+                Score = finalScore,
+                ResultName = $"Bạn đã hoàn thành bài đánh giá với {finalScore} điểm!",
                 TakeTime = DateTime.Now
             };
 

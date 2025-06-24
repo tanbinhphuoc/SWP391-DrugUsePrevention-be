@@ -159,6 +159,44 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+        public async Task<bool> CreateMultipleQuestionsWithAnswers(List<CreateQuestionWithAnswersDto> questionsWithAnswers)
+        {
+            try
+            {
+                foreach (var questionDto in questionsWithAnswers)
+                {
+                    var question = new Question
+                    {
+                        AssessmentID = questionDto.AssessmentID,
+                        QuestionText = questionDto.QuestionText,
+                        QuestionType = questionDto.QuestionType
+                    };
+
+                    await _unitOfWork.Questions.AddAsync(question);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    foreach (var answer in questionDto.Answers)
+                    {
+                        var answerOption = new AnswerOption
+                        {
+                            QuestionID = question.QuestionID,
+                            OptionText = answer.OptionText,
+                            ScoreValue = answer.ScoreValue
+                        };
+
+                        await _unitOfWork.AnswerOptions.AddAsync(answerOption);
+                    }
+                }
+
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 
 }
