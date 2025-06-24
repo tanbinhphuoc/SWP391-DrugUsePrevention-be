@@ -18,23 +18,25 @@ using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
-    public class AppointmentService : IAppointmentService
+    public class AppointmentService : IAppointmentService 
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly VNPayHelper _vnPayHelper;
         private readonly GmailSettings _gmailSettings;
-
+        private readonly IEmailService _emailService;
         public AppointmentService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             VNPayHelper vnPayHelper,
-            IOptions<GmailSettings> gmailSettings)
+            IOptions<GmailSettings> gmailSettings,
+            IEmailService emailService)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _vnPayHelper = vnPayHelper ?? throw new ArgumentNullException(nameof(vnPayHelper));
             _gmailSettings = gmailSettings.Value ?? throw new ArgumentNullException(nameof(gmailSettings));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         public async Task<IEnumerable<ConsultantDto>> GetAvailableConsultantsAsync()
@@ -273,51 +275,21 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
 
             var meetLink = consultant.GoogleMeetLink;
+
+            // Build Email Content
             var subjectMember = $"Appointment Confirmation - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
-            var bodyMember = $@"Dear {member.FullName},
-Your appointment with {consultant.User.FullName} has been confirmed.
-Details:
-- Date: {appointment.StartDateTime:dd/MM/yyyy}
-- Time: {appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}
-- Google Meet: {meetLink}
-- Price: {appointment.Price} VND
-Thank you for using our service!";
-            SendEmail(member.Email, subjectMember, bodyMember);
+            var bodyMember = BuildMemberEmailBody(appointment, consultant.User, meetLink);
+            await _emailService.SendEmailAsync(member.Email, subjectMember, bodyMember, true);
 
             var subjectConsultant = $"New Appointment Notification - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
-            var bodyConsultant = $@"Dear {consultant.User.FullName},
-You have a new confirmed appointment.
-Details:
-- Client: {member.FullName}
-- Date: {appointment.StartDateTime:dd/MM/yyyy}
-- Time: {appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}
-- Google Meet: {meetLink}
-Please prepare for the session.";
-            SendEmail(consultant.User.Email, subjectConsultant, bodyConsultant);
+            var bodyConsultant = BuildConsultantEmailBody(appointment, member, meetLink);
+            await _emailService.SendEmailAsync(consultant.User.Email, subjectConsultant, bodyConsultant, true);
 
             var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
             Log.Information("Payment confirmed for appointment {AppointmentId}", appointmentId);
             return appointmentDto;
-
-            void SendEmail(string toEmail, string subject, string body)
-            {
-                try
-                {
-                    using var smtpClient = new SmtpClient(_gmailSettings.Host, _gmailSettings.Port)
-                    {
-                        Credentials = new NetworkCredential(_gmailSettings.Email, _gmailSettings.Password),
-                        EnableSsl = _gmailSettings.EnableSsl
-                    };
-                    var mail = new MailMessage(_gmailSettings.Email, toEmail, subject, body) { IsBodyHtml = false };
-                    smtpClient.Send(mail);
-                    Log.Information("Email sent to {ToEmail} for appointment {AppointmentId}", toEmail, appointmentId);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Failed to send email to {ToEmail} for appointment {AppointmentId}", toEmail, appointmentId);
-                }
-            }
         }
+
 
 
         public async Task HandleIPNAsync(Dictionary<string, string> queryParams)
@@ -373,5 +345,39 @@ Please prepare for the session.";
             Log.Information("Retrieved {Count} appointments for consultant {ConsultantId}", result.Count(), consultantId);
             return result;
         }
+        private string BuildMemberEmailBody(Appointment appointment, User consultant, string meetLink)
+        {
+            return $@"
+    <div style='font-family:Arial,sans-serif;'>
+        <h2 style='color:#0066cc;'>Appointment Confirmation</h2>
+        <p>Dear <b>{appointment.User.FullName}</b>,</p>
+        <p>Your appointment with <b>{consultant.FullName}</b> has been <span style='color:green;'>confirmed</span>.</p>
+        <table style='border-collapse:collapse;'>
+            <tr><td><b>Date:</b></td><td>{appointment.StartDateTime:dd/MM/yyyy}</td></tr>
+            <tr><td><b>Time:</b></td><td>{appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}</td></tr>
+            <tr><td><b>Google Meet:</b></td><td><a href='{meetLink}' style='color:#2a9d8f;'>{meetLink}</a></td></tr>
+            <tr><td><b>Price:</b></td><td>{appointment.Price:N0} VND</td></tr>
+        </table>
+        <p style='margin-top:20px;'>Thank you for using our service!<br/>--<br/>DrugUsePrevention Team</p>
+    </div>";
+        }
+
+        private string BuildConsultantEmailBody(Appointment appointment, User member, string meetLink)
+        {
+            return $@"
+    <div style='font-family:Arial,sans-serif;'>
+        <h2 style='color:#e76f51;'>New Appointment Notification</h2>
+        <p>Dear <b>{appointment.Consultant.User.FullName}</b>,</p>
+        <p>You have a <span style='color:green;'>new confirmed appointment</span>!</p>
+        <table style='border-collapse:collapse;'>
+            <tr><td><b>Client:</b></td><td>{member.FullName}</td></tr>
+            <tr><td><b>Date:</b></td><td>{appointment.StartDateTime:dd/MM/yyyy}</td></tr>
+            <tr><td><b>Time:</b></td><td>{appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}</td></tr>
+            <tr><td><b>Google Meet:</b></td><td><a href='{meetLink}' style='color:#2a9d8f;'>{meetLink}</a></td></tr>
+        </table>
+        <p style='margin-top:20px;'>Please prepare for your session.<br/>--<br/>DrugUsePrevention Team</p>
+    </div>";
+        }
+
     }
 }

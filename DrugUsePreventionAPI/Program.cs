@@ -151,6 +151,8 @@ builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
 builder.Services.AddScoped<ScheduleGenerator>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 // Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)
 builder.Services.AddScoped<VNPayHelper>();
