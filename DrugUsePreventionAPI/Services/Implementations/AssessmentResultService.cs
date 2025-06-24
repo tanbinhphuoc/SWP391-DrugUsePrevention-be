@@ -26,37 +26,37 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     throw new Exception("Answer option không tồn tại");
 
                 if (answer.ScoreValue != null)
-                    {
+                {
                     score += (int)answer.ScoreValue;
+                }
+
+                // 🔁 Xóa kết quả cũ cùng AssessmentID + User + Stage
+                var existingResult = await _unitOfWork.AssessmentResults.FindAsync(
+                    r => r.UserID == dto.UserId &&
+                         r.AssessmentID == dto.AssessmentId &&
+                         r.AssessmentStage == dto.AssessmentStage);
+
+                if (existingResult.Any())
+                
+                    _unitOfWork.AssessmentResults.RemoveRange(existingResult);
             }
 
-            // 🔁 Xóa kết quả cũ cùng AssessmentID + User + Stage
-            var existingResult = await _unitOfWork.AssessmentResults.FindAsync(
-                r => r.UserID == dto.UserId &&
-                     r.AssessmentID == dto.AssessmentId &&
-                     r.AssessmentStage == dto.AssessmentStage);
+                var newResult = new AssessmentResult
+                {
+                    AssessmentID = dto.AssessmentId,
+                    UserID = dto.UserId,
+                    CourseID = dto.CourseId,
+                    AssessmentStage = dto.AssessmentStage,
+                    Score = score,
+                    ResultName = $"Bạn đã hoàn thành bài đánh giá với {score} điểm!",
+                    TakeTime = DateTime.Now
+                };
 
-            if (existingResult.Any())
-            {
-                _unitOfWork.AssessmentResults.RemoveRange(existingResult);
-            }
+                await _unitOfWork.AssessmentResults.AddAsync(newResult);
+                await _unitOfWork.SaveChangesAsync();
 
-            var newResult = new AssessmentResult
-            {
-                AssessmentID = dto.AssessmentId,
-                UserID = dto.UserId,
-                CourseID = dto.CourseId,
-                AssessmentStage = dto.AssessmentStage,
-                TakeTime = DateTime.Now,
-                Score = score,
-                ResultName = $"Bạn đã hoàn thành bài đánh giá với {score} điểm!",
-                TakeTime = DateTime.Now
-            };
-
-            await _unitOfWork.AssessmentResults.AddAsync(newResult);
-            await _unitOfWork.SaveChangesAsync();
-
-            return newResult.ResultName;
+                return newResult.ResultName;
+            
         }
 
         public async Task<CompareAssessmentResultDto?> CompareAssessmentResults(int userId, int courseId)
@@ -91,7 +91,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             return comparison;
         }
-    }
+    
 
         public async Task<bool> IsEligibleForCourseAsync(int userId)
         {

@@ -1,473 +1,377 @@
-﻿using DrugUsePreventionAPI.Configurations;
+﻿using AutoMapper;
+using DrugUsePreventionAPI.Configurations;
+using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
-using Microsoft.Extensions.Configuration;
+using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Serilog;
-using System.Net.Mail;
-using System.Net;
-using Hangfire;
-using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class AppointmentService : IAppointmentService
     {
-        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration; private readonly VNPayHelper _vnpayHelper; private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly VNPayHelper _vnPayHelper;
+        private readonly GmailSettings _gmailSettings;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IConfiguration configuration, VNPayHelper vnpayHelper, IMapper mapper)
+        public AppointmentService(
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            VNPayHelper vnPayHelper,
+            IOptions<GmailSettings> gmailSettings)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _vnpayHelper = vnpayHelper ?? throw new ArgumentNullException(nameof(vnpayHelper));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _vnPayHelper = vnPayHelper ?? throw new ArgumentNullException(nameof(vnPayHelper));
+            _gmailSettings = gmailSettings.Value ?? throw new ArgumentNullException(nameof(gmailSettings));
         }
 
         public async Task<IEnumerable<ConsultantDto>> GetAvailableConsultantsAsync()
         {
-            var consultants = await _unitOfWork.Consultants.GetActiveConsultantsAsync();
-            var consultantDtos = consultants.Select(c => _mapper.Map<ConsultantDto>(c)).ToList();
-
-            Log.Information("Retrieved {Count} consultants from database", consultantDtos.Count);
-            return consultantDtos;
+            Log.Information("Retrieving available consultants");
+            var consultants = await _unitOfWork.Consultants.GetAvailableConsultantsAsync();
+            var result = _mapper.Map<IEnumerable<ConsultantDto>>(consultants);
+            Log.Information("Retrieved {Count} available consultants", result.Count());
+            return result;
         }
 
         public async Task<IEnumerable<ConsultantScheduleDto>> GetConsultantSchedulesAsync(int consultantId, DateTime startDate, DateTime endDate)
         {
-            try
-            {
-                var consultant = await _unitOfWork.Consultants.GetByIdAsync(consultantId);
-                if (consultant == null)
-                {
-                    throw new InvalidOperationException("Consultant not found.");
-                }
-
-                var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByConsultantAndDateRangeAsync(consultantId, startDate, endDate);
-                if (!schedules.Any())
-                {
-                    throw new InvalidOperationException("No available schedules for the specified dates.");
-                }
-
-                return schedules.Select(s => _mapper.Map<ConsultantScheduleDto>(s)).ToList();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error retrieving schedules for ConsultantID={ConsultantId}", consultantId);
-                throw;
-            }
+            Log.Information("Retrieving schedules for consultant {ConsultantId} from {StartDate} to {EndDate}", consultantId, startDate, endDate);
+            var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByConsultantAndDateRangeAsync(consultantId, startDate, endDate);
+            var filteredSchedules = schedules.Where(s => s.IsAvailable).OrderBy(s => s.ScheduleID);
+            var result = _mapper.Map<IEnumerable<ConsultantScheduleDto>>(filteredSchedules);
+            Log.Information("Retrieved {Count} schedules", result.Count());
+            return result;
         }
 
-        public async Task<(AppointmentDto appointment, string paymentUrl)> BookAppointmentAsync(BookAppointmentDto bookDto, int userId)
+        public async Task<(AppointmentDto appointment, string paymentUrl)> BookAppointmentAsync(BookAppointmentDto bookDto, int userId, HttpContext context = null)
         {
-            try
+            Log.Information("Booking appointment for user {UserId} with consultant {ConsultantId}", userId, bookDto.ConsultantId);
+
+            if (bookDto.ScheduleIds == null || !bookDto.ScheduleIds.Any())
             {
-                Log.Information("Booking appointment: ConsultantID={ConsultantID}, ScheduleIDs={ScheduleIDs}, UserID={UserID}",
-                    bookDto.ConsultantID, string.Join(",", bookDto.ScheduleIDs), userId);
+                Log.Warning("No schedule IDs provided");
+                throw new BusinessRuleViolationException("At least one schedule ID is required.");
+            }
+            int durationHours = bookDto.ScheduleIds.Count;
+            if (durationHours < 1 || durationHours > 3)
+            {
+                Log.Warning("Invalid duration {DurationHours} hours", durationHours);
+                throw new BusinessRuleViolationException("Duration must be between 1 and 3 hours.");
+            }
 
-                var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(bookDto.ConsultantID);
-                if (consultant == null)
+            var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAsync(bookDto.ConsultantId);
+            if (consultant == null || consultant.User?.Status != "Active")
+            {
+                Log.Warning("Consultant {ConsultantId} not found or inactive", bookDto.ConsultantId);
+                throw new EntityNotFoundException("Consultant", bookDto.ConsultantId);
+            }
+
+            var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(bookDto.ScheduleIds);
+            if (schedules.Count != durationHours || schedules.Any(s => s.ConsultantID != bookDto.ConsultantId || !s.IsAvailable))
+            {
+                Log.Warning("Invalid or non-consecutive schedules for consultant {ConsultantId}", bookDto.ConsultantId);
+                throw new BusinessRuleViolationException("Selected schedules are invalid or not consecutive.");
+            }
+            var orderedSchedules = schedules.OrderBy(s => s.ScheduleID).ToList();
+            for (int i = 0; i < orderedSchedules.Count - 1; i++)
+            {
+                var current = orderedSchedules[i];
+                var next = orderedSchedules[i + 1];
+                if (current.Date != next.Date || current.EndTime != next.StartTime)
                 {
-                    Log.Error("Consultant not found for ConsultantID={ConsultantID}", bookDto.ConsultantID);
-                    throw new InvalidOperationException("Consultant not found.");
+                    Log.Warning("Schedules are not consecutive for consultant {ConsultantId}", bookDto.ConsultantId);
+                    throw new BusinessRuleViolationException("Schedules must be consecutive.");
                 }
-                Log.Information("Consultant found: {ConsultantID}", consultant.ConsultantID);
+            }
 
-                var schedules = await _unitOfWork.ConsultantSchedules.FindAsync(s => bookDto.ScheduleIDs.Contains(s.ScheduleID) && s.IsAvailable);
-                schedules = schedules.OrderBy(s => s.Date).ThenBy(s => s.StartTime).ToList();
-                Log.Information("Found schedules: {Schedules}", string.Join(",", schedules.Select(s => s.ScheduleID)));
+            var startDateTime = new DateTime(orderedSchedules[0].Date.Year, orderedSchedules[0].Date.Month, orderedSchedules[0].Date.Day,
+                                           orderedSchedules[0].StartTime.Hours, orderedSchedules[0].StartTime.Minutes, 0);
+            var endDateTime = new DateTime(orderedSchedules[durationHours - 1].Date.Year, orderedSchedules[durationHours - 1].Date.Month,
+                                          orderedSchedules[durationHours - 1].Date.Day, orderedSchedules[durationHours - 1].EndTime.Hours,
+                                          orderedSchedules[durationHours - 1].EndTime.Minutes, 0);
 
-                if (schedules.Count() != bookDto.ScheduleIDs.Count)
-                {
-                    throw new InvalidOperationException("One or more selected time slots are unavailable.");
-                }
+            var isOverlapping = await _unitOfWork.Appointments.IsTimeSlotBookedAsync(bookDto.ConsultantId, startDateTime, endDateTime);
+            if (isOverlapping)
+            {
+                Log.Warning("Time slot is already booked for consultant {ConsultantId}", bookDto.ConsultantId);
+                throw new BusinessRuleViolationException("Selected time slot is already booked.");
+            }
 
-                if (!AreSchedulesConsecutive(schedules.ToList()))
-                {
-                    throw new InvalidOperationException("Selected time slots must be consecutive.");
-                }
+            var appointment = new Appointment
+            {
+                UserID = userId,
+                ConsultantID = bookDto.ConsultantId,
+                StartDateTime = startDateTime,
+                EndDateTime = endDateTime,
+                Price = consultant.HourlyRate * durationHours,
+                Status = "PENDING_PAYMENT",
+                Note = bookDto.Note,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-                foreach (var schedule in schedules)
-                {
-                    var duration = schedule.EndTime - schedule.StartTime;
-                    if (duration != TimeSpan.FromHours(1))
-                    {
-                        throw new InvalidOperationException("Each time slot must be exactly 1 hour.");
-                    }
+            await _unitOfWork.Appointments.AddAsync(appointment);
+            await _unitOfWork.SaveChangesAsync();
 
-                    var currentDateTime = DateTime.Now;
-                    var scheduleStartTime = schedule.Date.Add(schedule.StartTime);
-                    var todayMorning = currentDateTime.Date.AddHours(7);
-                    var maxFutureDate = currentDateTime.Date.AddDays(30);
+            var payment = new Payment
+            {
+                UserID = userId,
+                AppointmentID = appointment.AppointmentID,
+                Amount = appointment.Price,
+                PaymentMethod = "VNPAY",
+                Status = "PENDING",
+                TransactionID = $"{Guid.NewGuid()}-{appointment.AppointmentID}",
+                PaymentDate = DateTime.UtcNow,
+                RetryCount = 0
+            };
 
-                    if (scheduleStartTime < currentDateTime && schedule.Date == currentDateTime.Date)
-                    {
-                        throw new InvalidOperationException("Cannot book a past time slot for today.");
-                    }
-                    if (schedule.Date == currentDateTime.Date && scheduleStartTime < todayMorning)
-                    {
-                        throw new InvalidOperationException("Appointments can only be booked from 7:00 AM today.");
-                    }
-                    if (schedule.Date > maxFutureDate)
-                    {
-                        throw new InvalidOperationException("Cannot book more than 30 days in the future.");
-                    }
-                }
+            await _unitOfWork.Payments.AddAsync(payment);
+            await _unitOfWork.SaveChangesAsync();
 
-                var startDateTime = schedules.First().Date.Add(schedules.First().StartTime);
-                var endDateTime = schedules.Last().Date.Add(schedules.Last().EndTime);
-                var durationHours = schedules.Count();
-                var price = (decimal)durationHours * consultant.HourlyRate;
+            await _unitOfWork.Appointments.UpdateAppointmentSchedulesAsync(appointment.AppointmentID, bookDto.ScheduleIds);
 
-                var appointment = new Appointment
-                {
-                    UserID = userId,
-                    ConsultantID = consultant.ConsultantID,
-                    StartDateTime = startDateTime,
-                    EndDateTime = endDateTime,
-                    GoogleMeetLink = null,
-                    Price = price,
-                    Status = "PENDING_PAYMENT",
-                    Note = bookDto.Note,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                };
+            var paymentUrl = _vnPayHelper.CreatePaymentUrl(payment, $"Appointment {appointment.AppointmentID} for {durationHours} hours", null, context);
+            var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
 
-                await _unitOfWork.Appointments.AddAsync(appointment);
+            Log.Information("Appointment {AppointmentId} created with payment URL", appointment.AppointmentID);
+            return (appointmentDto, paymentUrl);
+        }
+
+        public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId, string vnpayResponseCode, HttpContext context)
+        {
+            Log.Information("Confirming payment for appointment {AppointmentId}, transaction {TransactionId}", appointmentId, transactionId);
+
+            if (context == null)
+            {
+                Log.Error("HttpContext is null for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Invalid request context.");
+            }
+
+            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
+            if (appointment == null)
+            {
+                Log.Warning("Appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Appointment", appointmentId);
+            }
+
+            var payment = await _unitOfWork.Payments.GetByAppointmentAndTransactionAsync(appointmentId, transactionId);
+            if (payment == null)
+            {
+                Log.Warning("Payment for appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Payment", appointmentId);
+            }
+
+            if (payment.Amount == null)
+            {
+                Log.Error("Payment amount is null for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Payment amount is invalid.");
+            }
+
+            int retryCount = payment.RetryCount ?? 0;
+            if (retryCount >= _vnPayHelper.MaxRetryAttempts)
+            {
+                Log.Warning("Max retry attempts reached for appointment {AppointmentId}", appointmentId);
+                appointment.Status = "CANCELED";
+                payment.Status = "FAILED";
                 await _unitOfWork.SaveChangesAsync();
+                throw new BusinessRuleViolationException("Maximum retry attempts reached. Appointment canceled.");
+            }
 
+            var queryParams = context.Request.HasFormContentType
+                ? context.Request.Form.ToDictionary(k => k.Key, v => v.Value.ToString())
+                : context.Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString());
+
+            if (queryParams.Count == 0)
+            {
+                Log.Warning("No query parameters found in callback for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Invalid callback data.");
+            }
+
+            Log.Information("Request Query: {Query}", JsonSerializer.Serialize(queryParams));
+
+            queryParams["vnp_TxnRef"] = transactionId;
+            queryParams["vnp_ResponseCode"] = vnpayResponseCode;
+
+            if (!_vnPayHelper.VerifyCallback(queryParams))
+            {
+                Log.Warning("Invalid VNPay callback signature for appointment {AppointmentId}", appointmentId);
+                payment.RetryCount = retryCount + 1;
+                await _unitOfWork.SaveChangesAsync();
+                throw new BusinessRuleViolationException("Invalid payment callback signature. Please try again.");
+            }
+
+            if (queryParams.TryGetValue("vnp_Amount", out var vnpAmountStr) && !string.IsNullOrEmpty(vnpAmountStr))
+            {
+                if (decimal.TryParse(vnpAmountStr, out var vnpAmount) && vnpAmount / 100 != payment.Amount)
+                {
+                    Log.Warning("Amount mismatch: VNPay={VnpAmount}, Expected={ExpectedAmount}", vnpAmount / 100, payment.Amount);
+                    throw new BusinessRuleViolationException("Payment amount mismatch.");
+                }
+            }
+            else
+            {
+                Log.Warning("vnp_Amount is missing in callback for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Payment amount is missing.");
+            }
+
+            if (vnpayResponseCode != "00")
+            {
+                Log.Warning("Payment failed for appointment {AppointmentId} with code {VnpayResponseCode}", appointmentId, vnpayResponseCode);
+                payment.RetryCount = retryCount + 1;
+                if (payment.RetryCount >= _vnPayHelper.MaxRetryAttempts)
+                {
+                    appointment.Status = "CANCELED";
+                    payment.Status = "FAILED";
+                }
+                await _unitOfWork.SaveChangesAsync();
+                throw new BusinessRuleViolationException($"Payment failed with code {vnpayResponseCode}. Please try again.");
+            }
+
+            payment.Status = "SUCCESS";
+            payment.RetryCount = 0;
+            appointment.Status = "CONFIRMED";
+
+            var consultant = appointment.Consultant;
+            if (consultant == null || string.IsNullOrEmpty(consultant.GoogleMeetLink))
+            {
+                Log.Warning("Consultant {ConsultantId} not found or no Google Meet link", appointment.ConsultantID);
+                throw new BusinessRuleViolationException("Consultant has no Google Meet link configured.");
+            }
+
+            var scheduleIds = appointment.ScheduleIds?.Split(',').Select(int.Parse).ToList() ?? new List<int>();
+            if (scheduleIds.Any())
+            {
+                var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(scheduleIds);
                 foreach (var schedule in schedules)
+                {
                     schedule.IsAvailable = false;
-
-                _unitOfWork.ConsultantSchedules.UpdateRange(schedules);
-
-                var payment = new Payment
-                {
-                    UserID = userId,
-                    AppointmentID = appointment.AppointmentID,
-                    Amount = price,
-                    PaymentDate = null,
-                    PaymentMethod = bookDto.PaymentMethod,
-                    Status = "PENDING",
-                    TransactionID = $"{appointment.AppointmentID}-{Guid.NewGuid().ToString()}"
-                };
-                // Kiểm tra payment date nếu trạng thái là PENDING
-                if (payment.PaymentDate == null && payment.Status == "PENDING")
-                {
-                    payment.PaymentDate = DateTime.UtcNow; // Set payment date to now if it's pending
+                    _unitOfWork.ConsultantSchedules.Update(schedule);
                 }
-
-                await _unitOfWork.Payments.AddAsync(payment);
                 await _unitOfWork.SaveChangesAsync();
-
-                var paymentUrl = _vnpayHelper.CreatePaymentUrl(payment, $"Thanh toan cuoc hen ID {appointment.AppointmentID}");
-
-                Log.Information("Appointment booked: AppointmentID={AppointmentID}, UserID={UserID}, ConsultantID={ConsultantID}",
-                    appointment.AppointmentID, userId, consultant.ConsultantID);
-
-                var user = await _unitOfWork.Users.GetByIdAsync(userId);
-                return (
-                    new AppointmentDto
-                    {
-                        AppointmentID = appointment.AppointmentID,
-                        ConsultantName = consultant.User.FullName,
-                        MemberName = user.FullName,
-                        StartDateTime = appointment.StartDateTime,
-                        EndDateTime = appointment.EndDateTime,
-                        GoogleMeetLink = null,
-                        Price = appointment.Price,
-                        Status = appointment.Status,
-                        Note = appointment.Note
-                    },
-                    paymentUrl
-                );
             }
-            catch (Exception ex)
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var member = appointment.User;
+            if (member == null)
             {
-                Log.Error(ex, "Error booking appointment for UserID={UserID}, ConsultantID={ConsultantID}", userId, bookDto.ConsultantID);
-                throw;
+                Log.Warning("Member not found for appointment {AppointmentId}", appointmentId);
+                throw new EntityNotFoundException("User", appointment.UserID);
+            }
+
+            var meetLink = consultant.GoogleMeetLink;
+            var subjectMember = $"Appointment Confirmation - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+            var bodyMember = $@"Dear {member.FullName},
+Your appointment with {consultant.User.FullName} has been confirmed.
+Details:
+- Date: {appointment.StartDateTime:dd/MM/yyyy}
+- Time: {appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}
+- Google Meet: {meetLink}
+- Price: {appointment.Price} VND
+Thank you for using our service!";
+            SendEmail(member.Email, subjectMember, bodyMember);
+
+            var subjectConsultant = $"New Appointment Notification - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+            var bodyConsultant = $@"Dear {consultant.User.FullName},
+You have a new confirmed appointment.
+Details:
+- Client: {member.FullName}
+- Date: {appointment.StartDateTime:dd/MM/yyyy}
+- Time: {appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}
+- Google Meet: {meetLink}
+Please prepare for the session.";
+            SendEmail(consultant.User.Email, subjectConsultant, bodyConsultant);
+
+            var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
+            Log.Information("Payment confirmed for appointment {AppointmentId}", appointmentId);
+            return appointmentDto;
+
+            void SendEmail(string toEmail, string subject, string body)
+            {
+                try
+                {
+                    using var smtpClient = new SmtpClient(_gmailSettings.Host, _gmailSettings.Port)
+                    {
+                        Credentials = new NetworkCredential(_gmailSettings.Email, _gmailSettings.Password),
+                        EnableSsl = _gmailSettings.EnableSsl
+                    };
+                    var mail = new MailMessage(_gmailSettings.Email, toEmail, subject, body) { IsBodyHtml = false };
+                    smtpClient.Send(mail);
+                    Log.Information("Email sent to {ToEmail} for appointment {AppointmentId}", toEmail, appointmentId);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to send email to {ToEmail} for appointment {AppointmentId}", toEmail, appointmentId);
+                }
             }
         }
 
-        public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId, string vnpayResponseCode)
+
+        public async Task HandleIPNAsync(Dictionary<string, string> queryParams)
         {
-            try
+            Log.Information("Processing IPN for transaction {TransactionId}", queryParams.GetValueOrDefault("vnp_TxnRef"));
+
+            if (!_vnPayHelper.VerifyCallback(queryParams))
             {
-                Log.Information("Confirming payment: AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
-
-                var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
-                if (appointment == null || appointment.Status != "PENDING_PAYMENT")
-                {
-                    Log.Error("Invalid appointment status for payment confirmation: AppointmentID={AppointmentID}", appointmentId);
-                    throw new InvalidOperationException("Invalid appointment status for payment confirmation.");
-                }
-
-                var payment = await _unitOfWork.Payments.GetByAppointmentAndTransactionAsync(appointmentId, transactionId);
-                if (payment == null || payment.Status != "PENDING")
-                {
-                    Log.Error("Invalid payment details for AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
-                    throw new InvalidOperationException("Invalid payment details.");
-                }
-
-                switch (vnpayResponseCode)
-                {
-                    case "00":
-                        payment.Status = "SUCCESS";
-                        payment.PaymentDate = DateTime.UtcNow;
-                        appointment.Status = "CONFIRMED";
-                        appointment.GoogleMeetLink = $"https://meet.google.com/new?appointmentId={Guid.NewGuid()}";
-                        break;
-                    case "24":
-                        payment.Status = "CANCELED";
-                        appointment.Status = "CANCELED";
-                        await CancelAppointmentSchedules(appointmentId);
-                        await SendPaymentErrorEmail(appointment, "Payment was canceled by user.");
-                        break;
-                    case "11":
-                        payment.Status = "SUSPENDED";
-                        await SendPaymentErrorEmail(appointment, "Payment is suspended. Please contact support.");
-                        break;
-                    default:
-                        payment.Status = "ERROR";
-                        await SendPaymentErrorEmail(appointment, $"Payment failed with error code {vnpayResponseCode}.");
-                        break;
-                }
-
-                _unitOfWork.Payments.Update(payment);
-                _unitOfWork.Appointments.Update(appointment);
-                await _unitOfWork.SaveChangesAsync();
-
-                if (payment.Status == "SUCCESS")
-                {
-                    await SendAppointmentConfirmationGmail(appointment);
-                    ScheduleReminder(appointment);
-                }
-
-                Log.Information("Payment confirmed: AppointmentID={AppointmentID}, TransactionID={TransactionID}", appointmentId, transactionId);
-                return _mapper.Map<AppointmentDto>(appointment);
+                Log.Warning("Invalid IPN signature for transaction {TransactionId}", queryParams.GetValueOrDefault("vnp_TxnRef"));
+                return;
             }
-            catch (Exception ex)
+
+            var transactionId = queryParams["vnp_TxnRef"];
+            var responseCode = queryParams["vnp_ResponseCode"];
+            var appointmentId = int.Parse(transactionId.Split('-')[1]);
+
+            var appointment = await _unitOfWork.Appointments.GetByIdAsync(appointmentId);
+            if (appointment == null) return;
+
+            var payment = await _unitOfWork.Payments.GetByAppointmentAndTransactionAsync(appointmentId, transactionId);
+            if (payment == null) return;
+
+            if (responseCode == "00")
             {
-                Log.Error(ex, "Error confirming payment for AppointmentID={AppointmentID}", appointmentId);
-                throw;
+                appointment.Status = "CONFIRMED";
+                payment.Status = "SUCCESS";
+                Log.Information("IPN confirmed payment for appointment {AppointmentId}", appointmentId);
             }
+            else
+            {
+                appointment.Status = "CANCELED";
+                payment.Status = "FAILED";
+                Log.Warning("IPN reported payment failure for appointment {AppointmentId} with code {ResponseCode}", appointmentId, responseCode);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<AppointmentDto>> GetUserAppointmentsAsync(int userId)
         {
-            try
-            {
-                var appointments = await _unitOfWork.Appointments.GetAppointmentsByUserAsync(userId);
-                var appointmentDtos = appointments.Select(a => new AppointmentDto
-                {
-                    AppointmentID = a.AppointmentID,
-                    ConsultantName = a.Consultant.User.FullName,
-                    MemberName = a.User.FullName,
-                    StartDateTime = a.StartDateTime,
-                    EndDateTime = a.EndDateTime,
-                    GoogleMeetLink = a.Status == "CONFIRMED" ? a.GoogleMeetLink : null,
-                    Price = a.Price,
-                    Status = a.Status,
-                    Note = a.Note
-                }).ToList();
-
-                Log.Information("Retrieved {Count} appointments for UserID={UserID}", appointmentDtos.Count, userId);
-                return appointmentDtos;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error retrieving appointments for UserID={UserID}", userId);
-                throw;
-            }
+            Log.Information("Retrieving appointments for user {UserId}", userId);
+            var appointments = await _unitOfWork.Appointments.GetByUserIdAsync(userId);
+            var result = _mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+            Log.Information("Retrieved {Count} appointments for user {UserId}", result.Count(), userId);
+            return result;
         }
 
         public async Task<IEnumerable<AppointmentDto>> GetConsultantAppointmentsAsync(int consultantId)
         {
-            try
-            {
-                var appointments = await _unitOfWork.Appointments.GetAppointmentsByConsultantAsync(consultantId);
-                var appointmentDtos = appointments.Select(a => new AppointmentDto
-                {
-                    AppointmentID = a.AppointmentID,
-                    MemberName = a.User.FullName,
-                    ConsultantName = a.Consultant.User.FullName,
-                    StartDateTime = a.StartDateTime,
-                    EndDateTime = a.EndDateTime,
-                    GoogleMeetLink = a.GoogleMeetLink,
-                    Price = a.Price,
-                    Status = a.Status,
-                    Note = a.Note
-                }).ToList();
-
-                Log.Information("Retrieved {Count} upcoming appointments for ConsultantID={ConsultantID}", appointmentDtos.Count, consultantId);
-                return appointmentDtos;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error retrieving appointments for ConsultantID={ConsultantID}", consultantId);
-                throw;
-            }
-        }
-
-        private bool AreSchedulesConsecutive(List<ConsultantSchedule> schedules)
-        {
-            if (schedules.Count <= 1) return true;
-            schedules = schedules.OrderBy(s => s.Date).ThenBy(s => s.StartTime).ToList();
-            for (int i = 1; i < schedules.Count; i++)
-            {
-                var prevEnd = schedules[i - 1].Date.Add(schedules[i - 1].EndTime);
-                var currStart = schedules[i].Date.Add(schedules[i].StartTime);
-                if (prevEnd != currStart)
-                    return false;
-            }
-            return true;
-        }
-
-        private async Task SendAppointmentConfirmationGmail(Appointment appointment)
-        {
-            try
-            {
-                var memberEmail = appointment.User.Email;
-                var consultantEmail = appointment.Consultant.User.Email;
-                var subject = "Appointment Confirmation - Drug Prevention System";
-                var body = $@"Your appointment has been successfully confirmed!
-    Details:
-    - Consultant: {appointment.Consultant.User.FullName}
-    - Member: {appointment.User.FullName}
-    - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-    - Google Meet Link: {appointment.GoogleMeetLink}
-    - Note: {appointment.Note ?? "None"}
-    Please join the meeting at the scheduled time.";
-
-                await SendGmailAsync(memberEmail, subject, body);
-                await SendGmailAsync(consultantEmail, subject, body);
-
-                Log.Information("Sent confirmation emails for AppointmentID={AppointmentID}", appointment.AppointmentID);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error sending confirmation email for AppointmentID={AppointmentID}", appointment.AppointmentID);
-                throw new InvalidOperationException("Failed to send confirmation email.", ex);
-            }
-        }
-
-        private async Task SendPaymentErrorEmail(Appointment appointment, string errorMessage)
-        {
-            try
-            {
-                var memberEmail = appointment.User.Email;
-                var subject = "Payment Issue - Drug Prevention System";
-                var body = $@"There was an issue with your payment for the appointment.
-    Details:
-    - Consultant: {appointment.Consultant.User.FullName}
-    - Member: {appointment.User.FullName}
-    - Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-    - Error: {errorMessage}
-    Please try again or contact support.";
-
-                await SendGmailAsync(memberEmail, subject, body);
-                Log.Information("Sent payment error email for AppointmentID={AppointmentID}", appointment.AppointmentID);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error sending payment error email for AppointmentID={AppointmentID}", appointment.AppointmentID);
-                throw new InvalidOperationException("Failed to send payment error email.", ex);
-            }
-        }
-
-        private async Task SendGmailAsync(string toEmail, string subject, string body)
-        {
-            var gmailConfig = _configuration.GetSection("Gmail");
-            var email = gmailConfig["Email"];
-            var password = gmailConfig["Password"];
-            var host = gmailConfig["Host"];
-            var port = int.Parse(gmailConfig["Port"] ?? "587"); // Default to 587 if not set
-            var enableSsl = bool.Parse(gmailConfig["EnableSsl"] ?? "true"); // Default to true if not set
-
-            using (var client = new SmtpClient(host, port))
-            {
-                client.Credentials = new NetworkCredential(email, password);
-                client.EnableSsl = enableSsl;
-
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(email, "Drug Prevention System"),
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = false
-                };
-                mailMessage.To.Add(toEmail);
-
-                try
-                {
-                    await client.SendMailAsync(mailMessage);
-                    Log.Information("Email sent successfully to {ToEmail}", toEmail);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Failed to send email to {ToEmail}. Error: {Error}", toEmail, ex.Message);
-                    throw new InvalidOperationException("Failed to send email.", ex);
-                }
-            }
-        }
-
-        private async Task CancelAppointmentSchedules(int appointmentId)
-        {
-            var appointment = await _unitOfWork.Appointments.GetByIdAsync(appointmentId);
-            if (appointment != null)
-            {
-                var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByAppointmentAsync(
-                    appointment.ConsultantID,
-                    appointment.StartDateTime,
-                    appointment.EndDateTime);
-
-                foreach (var schedule in schedules)
-                    schedule.IsAvailable = true;
-
-                _unitOfWork.ConsultantSchedules.UpdateRange(schedules);
-                await _unitOfWork.SaveChangesAsync();
-            }
-        }
-
-        private void ScheduleReminder(Appointment appointment)
-        {
-            var reminderTime = appointment.StartDateTime.AddHours(-1);
-            if (reminderTime > DateTime.UtcNow)
-            {
-                BackgroundJob.Schedule(() => SendReminderEmail(appointment.AppointmentID), reminderTime.ToUniversalTime());
-            }
-        }
-
-        [AutomaticRetry(Attempts = 0)]
-        public async Task SendReminderEmail(int appointmentId)
-        {
-            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
-            if (appointment == null)
-            {
-                Log.Error("Appointment not found for reminder: AppointmentID={AppointmentID}", appointmentId);
-                return;
-            }
-
-            var memberEmail = appointment.User.Email;
-            var consultantEmail = appointment.Consultant.User.Email;
-            var subject = "Appointment Reminder - Drug Prevention System";
-            var body = $@"This is a reminder for your upcoming appointment!
-Details:
-- Consultant: {appointment.Consultant.User.FullName}
-- Member: {appointment.User.FullName}
-- Date/Time: {appointment.StartDateTime:yyyy-MM-dd HH:mm} to {appointment.EndDateTime:HH:mm}
-- Google Meet Link: {appointment.GoogleMeetLink}
-- Note: {appointment.Note ?? "None"}
-Please join the meeting 1 hour from now.";
-
-            await SendGmailAsync(memberEmail, subject, body);
-            await SendGmailAsync(consultantEmail, subject, body);
-
-            Log.Information("Sent reminder emails for AppointmentID={AppointmentID}", appointmentId);
+            Log.Information("Retrieving appointments for consultant {ConsultantId}", consultantId);
+            var appointments = await _unitOfWork.Appointments.GetByConsultantIdAsync(consultantId);
+            var result = _mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+            Log.Information("Retrieved {Count} appointments for consultant {ConsultantId}", result.Count(), consultantId);
+            return result;
         }
     }
-
 }

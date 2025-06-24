@@ -11,5 +11,6 @@
         public string? Version { get; set; }
         public string? Command { get; set; }
         public string? CurrCode { get; set; }
+        public int? MaxRetryAttempts { get; set; }
     }
 }
