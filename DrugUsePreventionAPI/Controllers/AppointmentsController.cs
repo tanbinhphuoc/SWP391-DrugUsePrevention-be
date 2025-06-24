@@ -64,7 +64,7 @@ namespace DrugUsePreventionAPI.Controllers
 
         [HttpPost("book")]
         [Authorize(Roles = "Member,Guest")]
-        public async Task<IActionResult> BookAppointment([FromBody] BookAppointmentDto dto, [FromHeader(Name = "X-Forwarded-For")] string clientIp = null)
+        public async Task<IActionResult> BookAppointment([FromBody] BookAppointmentDto dto, [FromHeader(Name = "X-Forwarded-For")] string? clientIp = null)
         {
             try
             {
