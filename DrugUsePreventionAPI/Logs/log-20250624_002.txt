@@ -1,0 +1,77 @@
+2025-06-24 01:05:52.652 +07:00 [INF] Updated ReturnUrl to: https://56f0-2402-800-6327-d359-e050-f8e9-d731-c3a4.ngrok-free.app/api/vnpay/return
+2025-06-24 01:05:52.885 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-24 01:05:54.790 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-24 01:05:56.341 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-24 01:05:56.343 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-24 01:05:56.345 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-24 01:05:56.457 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e successfully announced in 97.0987 ms
+2025-06-24 01:05:56.461 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-24 01:05:56.469 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e all the dispatchers started
+2025-06-24 01:07:29.580 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-24 01:08:12.578 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750702050, exp: 1750788450, iat: 1750702050, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-24 01:08:12.691 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-24 01:08:12.750 +07:00 [INF] Retrieved 10 schedules
+2025-06-24 01:08:56.428 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750702050, exp: 1750788450, iat: 1750702050, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-24 01:08:56.457 +07:00 [INF] Booking appointment for UserID=22 with ConsultantID=5
+2025-06-24 01:08:56.461 +07:00 [INF] Using client IP from header: 203.0.113.5
+2025-06-24 01:08:56.466 +07:00 [INF] Booking appointment for user 22 with consultant 5
+2025-06-24 01:08:56.950 +07:00 [INF] Appointment 94 created with payment URL
+2025-06-24 01:09:37.349 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15033964","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 94 for 1 hours","vnp_PayDate":"20250624011016","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15033964","vnp_TransactionStatus":"00","vnp_TxnRef":"7baba45b-67c1-4840-8b8f-0900a8d73cf3-94","vnp_SecureHash":"c0e50662303e7da0d34707836c0914edb766ccbd21229524650188478f81cc03f939dd4f004daf879a4c9efe7a68d706201b8e6784790dc416636e7a377d317c"}
+2025-06-24 01:09:37.355 +07:00 [INF] Callback signature verified successfully for transaction 7baba45b-67c1-4840-8b8f-0900a8d73cf3-94
+2025-06-24 01:09:37.361 +07:00 [INF] Confirming payment for appointment 94, transaction 7baba45b-67c1-4840-8b8f-0900a8d73cf3-94
+2025-06-24 01:09:37.407 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15033964","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 94 for 1 hours","vnp_PayDate":"20250624011016","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15033964","vnp_TransactionStatus":"00","vnp_TxnRef":"7baba45b-67c1-4840-8b8f-0900a8d73cf3-94","vnp_SecureHash":"c0e50662303e7da0d34707836c0914edb766ccbd21229524650188478f81cc03f939dd4f004daf879a4c9efe7a68d706201b8e6784790dc416636e7a377d317c"}
+2025-06-24 01:09:37.409 +07:00 [INF] Callback signature verified successfully for transaction 7baba45b-67c1-4840-8b8f-0900a8d73cf3-94
+2025-06-24 01:09:41.343 +07:00 [INF] Email sent to tanphse180176@fpt.edu.vn for appointment 94
+2025-06-24 01:09:44.323 +07:00 [INF] Email sent to CR7@KingOfEurope.com for appointment 94
+2025-06-24 01:09:44.327 +07:00 [INF] Payment confirmed for appointment 94
+2025-06-24 01:09:44.329 +07:00 [INF] Payment processed successfully for appointment 94
+2025-06-24 01:14:51.111 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-24 01:14:51.114 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e caught stopping signal...
+2025-06-24 01:14:51.143 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e caught stopped signal...
+2025-06-24 01:14:51.144 +07:00 [WRN] Server laptop-qlc4gki0:10880:b6c8538e caught shutdown signal...
+2025-06-24 01:14:51.148 +07:00 [WRN] Server laptop-qlc4gki0:10880:b6c8538e stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-24 01:14:51.215 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e successfully reported itself as stopped in 58.1885 ms
+2025-06-24 01:14:51.217 +07:00 [INF] Server laptop-qlc4gki0:10880:b6c8538e has been stopped in total 73.9337 ms
+2025-06-24 11:34:21.005 +07:00 [INF] Updated ReturnUrl to: https://1b2e-118-69-183-149.ngrok-free.app/api/vnpay/return
+2025-06-24 11:34:21.274 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-24 11:34:23.193 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-24 11:34:24.489 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-24 11:34:24.491 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-24 11:34:24.493 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-24 11:34:24.541 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 successfully announced in 36.7599 ms
+2025-06-24 11:34:24.545 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-24 11:34:24.549 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 all the dispatchers started
+2025-06-24 11:34:25.569 +07:00 [INF] Generated schedules from "2025-06-24T00:00:00.0000000Z" to "2025-07-01T00:00:00.0000000Z" for all consultants
+2025-06-24 11:34:41.997 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-24 11:35:11.736 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750739682, exp: 1750826082, iat: 1750739682, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-24 11:35:11.821 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-30T00:00:00.0000000" to "2025-06-30T00:00:00.0000000"
+2025-06-24 11:35:11.851 +07:00 [INF] Retrieved 12 schedules
+2025-06-24 11:35:53.017 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1750739682, exp: 1750826082, iat: 1750739682, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-24 11:35:53.049 +07:00 [INF] Booking appointment for UserID=22 with ConsultantID=5
+2025-06-24 11:35:53.053 +07:00 [INF] Using client IP from header: 203.0.113.5
+2025-06-24 11:35:53.060 +07:00 [INF] Booking appointment for user 22 with consultant 5
+2025-06-24 11:35:53.324 +07:00 [INF] Appointment 95 created with payment URL
+2025-06-24 11:36:40.359 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15034580","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 95 for 1 hours","vnp_PayDate":"20250624113719","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15034580","vnp_TransactionStatus":"00","vnp_TxnRef":"78883164-8920-49ed-a309-80236c315696-95","vnp_SecureHash":"f765c12606b43709158e92105213daa520afdc1eccd92780b9e5f309bd23c360584792f978d3f9d99c06c63d55d7adcf7c659468ec7b301c2eca6c9f7866caf3"}
+2025-06-24 11:36:40.363 +07:00 [INF] Callback signature verified successfully for transaction 78883164-8920-49ed-a309-80236c315696-95
+2025-06-24 11:36:40.369 +07:00 [INF] Confirming payment for appointment 95, transaction 78883164-8920-49ed-a309-80236c315696-95
+2025-06-24 11:36:40.405 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15034580","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 95 for 1 hours","vnp_PayDate":"20250624113719","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15034580","vnp_TransactionStatus":"00","vnp_TxnRef":"78883164-8920-49ed-a309-80236c315696-95","vnp_SecureHash":"f765c12606b43709158e92105213daa520afdc1eccd92780b9e5f309bd23c360584792f978d3f9d99c06c63d55d7adcf7c659468ec7b301c2eca6c9f7866caf3"}
+2025-06-24 11:36:40.408 +07:00 [INF] Callback signature verified successfully for transaction 78883164-8920-49ed-a309-80236c315696-95
+2025-06-24 11:36:43.724 +07:00 [INF] Email sent to tanphse180176@fpt.edu.vn
+2025-06-24 11:36:46.998 +07:00 [INF] Email sent to CR7@KingOfEurope.com
+2025-06-24 11:36:47.000 +07:00 [INF] Payment confirmed for appointment 95
+2025-06-24 11:36:47.002 +07:00 [INF] Payment processed successfully for appointment 95
+2025-06-24 11:37:39.984 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-24 11:37:39.985 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 caught stopping signal...
+2025-06-24 11:37:40.005 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 caught stopped signal...
+2025-06-24 11:37:40.006 +07:00 [WRN] Server laptop-qlc4gki0:24548:f742de00 caught shutdown signal...
+2025-06-24 11:37:40.008 +07:00 [WRN] Server laptop-qlc4gki0:24548:f742de00 stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-24 11:37:40.021 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 successfully reported itself as stopped in 11.312 ms
+2025-06-24 11:37:40.022 +07:00 [INF] Server laptop-qlc4gki0:24548:f742de00 has been stopped in total 16.9821 ms

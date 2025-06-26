@@ -28,7 +28,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                 if (answer.ScoreValue.HasValue)
                     score += answer.ScoreValue.Value;
-            }
+                }
 
             //  Tính tổng điểm tối đa của toàn bộ bài đánh giá
             var questions = await _unitOfWork.Questions.FindAsync(q =>

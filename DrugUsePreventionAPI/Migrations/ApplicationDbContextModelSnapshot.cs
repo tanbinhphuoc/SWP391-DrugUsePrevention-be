@@ -139,6 +139,38 @@ namespace DrugUsePreventionAPI.Migrations
                     b.ToTable("Appointments");
                 });
 
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Assessment", b =>
+                {
+                    b.Property<int>("AssessmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssessmentID"));
+
+                    b.Property<string>("AssessmentName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("AssessmentType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MaxAge")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinAge")
+                        .HasColumnType("int");
+
+                    b.HasKey("AssessmentID");
+
+                    b.ToTable("Assessments");
+                });
+
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AssessmentResult", b =>
                 {
                     b.Property<int>("ResultID")
