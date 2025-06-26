@@ -20,10 +20,10 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         [Required]
         public DateTime EndDate { get; set; }
-        public required string Type { get; set; } = "COBAN";//"NANGCAO";
+        public required string Type { get; set; } = "HocSinh";//"SinhVien", "PhuHuynh";
         [Required]
         [MaxLength(10)]
-        public string Status { get; set; } = "OPEN";    
+        public string Status { get; set; } = "OPEN"; //"CLOSED" , "PENDING";   
 
         [Required]
         public int AgeMin { get; set; }

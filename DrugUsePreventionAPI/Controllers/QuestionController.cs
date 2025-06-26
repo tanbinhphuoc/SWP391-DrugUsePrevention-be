@@ -113,6 +113,17 @@ namespace DrugUsePreventionAPI.Controllers
                 return Ok(new { message = "Xóa Question Thành Công." });
             return NotFound(new { message = "Xóa Question Thất Bại." });
         }
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpPost("CreateMultipleQuestionsForAssessment")]
+        public async Task<IActionResult> CreateMultipleQuestionsForAssessment([FromBody] List<CreateQuestionWithAnswersDto> questionDtos)
+        {
+            var result = await _questionService.CreateMultipleQuestionsWithAnswers(questionDtos);
+            if (result)
+                return Ok(new { message = "Tạo nhiều câu hỏi và câu trả lời thành công." });
+
+            return BadRequest(new { message = "Tạo nhiều câu hỏi và câu trả lời thất bại." });
+        }
+
     }
 
 }

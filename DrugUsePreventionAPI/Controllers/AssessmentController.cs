@@ -21,22 +21,55 @@ namespace DrugUsePreventionAPI.Controllers
         [HttpPost("CreateAssessment")]
         public async Task<IActionResult> CreateAssessment(CreateAssessmentDto assessmentDto)
         {
+            if (string.IsNullOrWhiteSpace(assessmentDto.AssessmentStage) ||
+                (assessmentDto.AssessmentStage != "Input" && assessmentDto.AssessmentStage != "Output"))
+            {
+                return BadRequest(new { message = "AssessmentStage phải là 'Input' hoặc 'Output'" });
+            }
+
+            if (assessmentDto.AssessmentStage == "Output" && !assessmentDto.CourseID.HasValue)
+            {
+                return BadRequest(new { message = "Vui lòng nhập CourseID cho Assessment Output" });
+            }
+
             var result = await _assessmentService.CreateAssessment(assessmentDto);
-            if (result)
-                return Ok(new { message = "Tạo Assessment thành công" });
-            return BadRequest(new { message = "Tạo Assessment thất bại" });
+
+            if (result.Equals("Tạo Assessment thành công", StringComparison.OrdinalIgnoreCase))
+                return Ok(new { message = result });
+
+            return BadRequest(new { message = result });
         }
+
+
+
+
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpPut("UpdateAssessment")]
         public async Task<IActionResult> UpdateAsessment(int id, [FromBody] CreateAssessmentDto assessmentDto)
         {
-            var result = await _assessmentService.UpdateAssessment(id, assessmentDto);
-            if (result)
-                return Ok(new { mesage = "Cập nhật Assessment thành công" });
+            if (string.IsNullOrWhiteSpace(assessmentDto.AssessmentStage) ||
+                (assessmentDto.AssessmentStage != "Input" && assessmentDto.AssessmentStage != "Output"))
+            {
+                return BadRequest(new { message = "AssessmentStage phải là 'Input' hoặc 'Output'" });
+            }
 
-            return BadRequest(new { mesage = "Cập nhật Assessment thất bại" });
+            if (assessmentDto.AssessmentStage == "Output" && !assessmentDto.CourseID.HasValue)
+            {
+                return BadRequest(new { message = "Vui lòng nhập CourseID cho Assessment Output" });
+            }
+
+            var isUpdated = await _assessmentService.UpdateAssessment(id, assessmentDto);
+            if (isUpdated)
+                return Ok(new { message = "Cập nhật Assessment thành công" });
+
+            string stage = assessmentDto.AssessmentStage == "Input" ? "đầu vào" : "đầu ra";
+            string type = assessmentDto.AssessmentType;
+            string courseInfo = assessmentDto.AssessmentStage == "Output" ? $" cho khóa học {assessmentDto.CourseID}" : "";
+
+            return BadRequest(new { message = $"Cập nhật thất bại. Đã tồn tại Assessment {stage} loại {type}{courseInfo}." });
         }
+
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetAllAssessment")]
@@ -46,16 +79,37 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { message = assessment });
         }
 
-        [Authorize(Roles = "Admin,Manager")]
-        [HttpGet("GetGetAssessmentById")]
-        public async Task<ActionResult<Assessment>> GetAssessmentById(int id)
+        [HttpGet("GetAssessmentsByStage")]
+        public async Task<IActionResult> GetAssessmentsByStage(string stage)
         {
-            var assessment = await _assessmentService.GetAssessmentById(id);
-            if (assessment == null)
+            if (string.IsNullOrWhiteSpace(stage) ||
+                (stage != "Input" && stage != "Output"))
             {
-                return BadRequest(new { message = "Không tìm thấy Assessment " });
+                return BadRequest(new { message = "Stage phải là 'Input' hoặc 'Output'" });
             }
+
+            var all = await _assessmentService.GetAllAssessment();
+            var filtered = all
+                .Where(a => a.AssessmentStage == stage && !a.IsDeleted)
+                .ToList();
+
+            return Ok(new { message = filtered });
+        }
+        [HttpGet("GetAssessmentByAge")]
+        public async Task<IActionResult> GetAssessmentByAge(int age)
+        {
+            var assessment = await _assessmentService.GetAssessmentByAge(age);
             return Ok(new { message = assessment });
+        }
+
+        [HttpGet("GetAssessmentFormById")]
+        public async Task<IActionResult> GetAssessmentFormById(int id)
+        {
+            var result = await _assessmentService.GetAssessmentById(id);
+            if (result == null)
+                return NotFound(new { message = "Không tìm thấy bài đánh giá." });
+
+            return Ok(new { message = result });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -70,22 +124,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
 
-        [HttpGet("GetAssessmentByAge")]
-        public async Task<IActionResult> GetAssessmentByAge(int age)
-        {
-            var assessment = await _assessmentService.GetAssessmentByAge(age);
-            return Ok(new { message = assessment });
-        }
-
-        [HttpGet("GetAssessmentFormById")]
-        public async Task<IActionResult> GetAssessmentFormById(int id)
-        {
-            var result = await _assessmentService.GetAssessmentById(id);
-            if (result == null)
-                return NotFound(new { message = "Không tìm thấy bài đánh giá."}); 
-
-            return Ok(new { message = result });
-        }
+        
     }
 
 }

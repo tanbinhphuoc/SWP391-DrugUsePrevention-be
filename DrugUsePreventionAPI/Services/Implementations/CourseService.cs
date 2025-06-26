@@ -122,15 +122,20 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<Course?> GetCourseById(int id)
         {
             Log.Information("Retrieving course with ID {CourseId}", id);
-            var course = await _unitOfWork.Courses.GetByIdAsync(id);
+
+            var courseList = await _unitOfWork.Courses.FindAsync(c => c.CourseID == id && !c.IsDeleted);
+            var course = courseList.FirstOrDefault(); // Vì FindAsync trả về IEnumerable
+
             if (course == null)
             {
-                Log.Warning("Course with ID {CourseId} not found", id);
+                Log.Warning("Course with ID {CourseId} not found or has been deleted", id);
                 throw new EntityNotFoundException("Course", id);
             }
+
             Log.Information("Retrieved course {Title}", course.Title);
             return course;
         }
+
 
         public async Task<bool> DeleteCourse(int id)
         {

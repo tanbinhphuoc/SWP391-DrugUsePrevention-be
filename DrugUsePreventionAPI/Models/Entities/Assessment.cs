@@ -15,6 +15,7 @@ public class Assessment
     [Required]
     [MaxLength(10)]
     public required string AssessmentType { get; set; }
+    public string AssessmentStage { get; set; } = "Input";
 
     public int? MinAge { get; set; }
     public int? MaxAge { get; set; }

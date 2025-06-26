@@ -4,6 +4,7 @@ using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250624201935_update11")]
+    partial class update11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,38 +140,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Assessment", b =>
-                {
-                    b.Property<int>("AssessmentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssessmentID"));
-
-                    b.Property<string>("AssessmentName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("AssessmentType")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MaxAge")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MinAge")
-                        .HasColumnType("int");
-
-                    b.HasKey("AssessmentID");
-
-                    b.ToTable("Assessments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AssessmentResult", b =>

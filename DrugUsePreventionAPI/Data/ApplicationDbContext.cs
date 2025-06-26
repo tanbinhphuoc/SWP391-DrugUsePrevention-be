@@ -18,6 +18,7 @@ namespace DrugUsePreventionAPI.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<ConsultantAppointmentEvaluation> ConsultantAppointmentEvaluations { get; set; }
         public DbSet<Assessment> Assessments { get; set; }
+
         public DbSet<CourseAssessment> CourseAssessments { get; set; }
         public DbSet<AssessmentResult> AssessmentResults { get; set; }
         public DbSet<Survey> Surveys { get; set; }
@@ -56,11 +57,16 @@ namespace DrugUsePreventionAPI.Data
                 .Property(p => p.Amount)
                 .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Consultant>()
-                .Property(c => c.GoogleMeetLink)
-                .HasMaxLength(255)
-                .IsUnicode(true)
-                .IsRequired(false);
+            modelBuilder.Entity<CourseAssessment>()
+                .HasOne(ca => ca.Course)
+                .WithMany(c => c.CourseAssessments)
+                .HasForeignKey(ca => ca.CourseID);
+
+            modelBuilder.Entity<CourseAssessment>()
+                .HasOne(ca => ca.Assessment)
+                .WithMany(a => a.CourseAssessments)
+                .HasForeignKey(ca => ca.AssessmentID);
+
 
             // Các cấu hình khóa composite
             modelBuilder.Entity<CourseRegistration>()
