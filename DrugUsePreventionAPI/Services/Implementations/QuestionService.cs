@@ -132,25 +132,29 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<List<Question>> GetAllQuestionForAssessment()
         {
-            return (await _unitOfWork.Questions.FindAsync(q => q.AssessmentID != null)).ToList();
+            return (await _unitOfWork.Questions.FindAsync(q => q.AssessmentID != null && !q.IsDeleted)).ToList();
+
         }
 
         public async Task<Question?> GetQuestionForAssessmentById(int id)
         {
             var question = await _unitOfWork.Questions.GetByIdAsync(id);
-            return question?.AssessmentID != null ? question : null;
+            return (question?.AssessmentID != null && !question.IsDeleted) ? question : null;
+
         }
 
         public async Task<bool> DeleteQuestionForAssessment(int id)
         {
             var questionForAssessment = await _unitOfWork.Questions.GetByIdAsync(id);
-            if (questionForAssessment == null || questionForAssessment.AssessmentID == null)
+            if (questionForAssessment == null || questionForAssessment.AssessmentID == null || questionForAssessment.IsDeleted)
             {
                 return false;
             }
+
             try
             {
-                _unitOfWork.Questions.Remove(questionForAssessment);
+                questionForAssessment.IsDeleted = true;
+                _unitOfWork.Questions.Update(questionForAssessment);
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -159,6 +163,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
         public async Task<bool> CreateMultipleQuestionsWithAnswers(List<CreateQuestionWithAnswersDto> questionsWithAnswers)
         {
             try

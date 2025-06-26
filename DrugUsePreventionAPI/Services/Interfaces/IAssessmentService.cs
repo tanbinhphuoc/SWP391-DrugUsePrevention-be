@@ -5,7 +5,8 @@ namespace DrugUsePreventionAPI.Services.Interfaces
 {
     public interface IAssessmentService
     {
-        Task<bool> CreateAssessment(CreateAssessmentDto assessmentDto);
+        Task<string> CreateAssessment(CreateAssessmentDto assessmentDto);
+
         Task<List<Assessment>> GetAllAssessment();
         Task<bool> UpdateAssessment(int id, CreateAssessmentDto assessmentDto);
         Task<bool> DeleteAssessment(int id);

@@ -60,24 +60,34 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<List<AnswerOption>> GetAllAnswerOption()
         {
-            return (await _unitOfWork.AnswerOptions.GetAllAsync()).ToList();
+            var result = await _unitOfWork.AnswerOptions.FindAsync(a => !a.IsDeleted);
+            return result.ToList();
         }
+
 
         public async Task<AnswerOption?> GetAnswerOptionById(int id)
         {
-            return await _unitOfWork.AnswerOptions.GetByIdAsync(id);
+            var answerOption = await _unitOfWork.AnswerOptions.GetByIdAsync(id);
+
+            if (answerOption == null || answerOption.IsDeleted)
+                return null;
+
+            return answerOption;
         }
+
 
         public async Task<bool> DeleteAnswerOption(int id)
         {
             var answerOption = await _unitOfWork.AnswerOptions.GetByIdAsync(id);
-            if (answerOption == null)
+            if (answerOption == null || answerOption.IsDeleted)
             {
                 return false;
             }
+
             try
             {
-                _unitOfWork.AnswerOptions.Remove(answerOption);
+                answerOption.IsDeleted = true;
+                _unitOfWork.AnswerOptions.Update(answerOption);
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -86,6 +96,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
     }
 
 }
