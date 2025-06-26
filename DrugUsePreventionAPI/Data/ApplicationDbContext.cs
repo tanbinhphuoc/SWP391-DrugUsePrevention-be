@@ -56,6 +56,12 @@ namespace DrugUsePreventionAPI.Data
                 .Property(p => p.Amount)
                 .HasColumnType("decimal(18,2)");
 
+            modelBuilder.Entity<Consultant>()
+                .Property(c => c.GoogleMeetLink)
+                .HasMaxLength(255)
+                .IsUnicode(true)
+                .IsRequired(false);
+
             // Các cấu hình khóa composite
             modelBuilder.Entity<CourseRegistration>()
                 .HasKey(cr => new { cr.UserID, cr.CourseID });

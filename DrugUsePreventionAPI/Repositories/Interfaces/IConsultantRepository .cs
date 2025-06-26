@@ -1,20 +1,15 @@
 ﻿using DrugUsePreventionAPI.Models.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Repositories.Interfaces
 {
     public interface IConsultantRepository : IGenericRepository<Consultant>
     {
-        // Lấy Consultant với User và Certificate
+        Task<IEnumerable<Consultant>> GetAvailableConsultantsAsync();
+        Task<Consultant> GetConsultantWithUserAsync(int id);
         Task<Consultant> GetConsultantWithUserAndCertificateAsync(int id);
-
-        // Lấy tất cả Consultant đang hoạt động
-        Task<IEnumerable<Consultant>> GetActiveConsultantsAsync();
-
-        // Kiểm tra Consultant có cuộc hẹn đã xác nhận hay không
-        Task<bool> HasConfirmedAppointmentsAsync(int consultantId);
-
-        // Lấy Consultant theo UserID
+        Task<bool> HasConfirmedAppointmentsAsync(int id);
         Task<Consultant> GetByUserIdAsync(int userId);
     }
 }

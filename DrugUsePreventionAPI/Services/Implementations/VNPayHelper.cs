@@ -1,77 +1,112 @@
 ﻿using DrugUsePreventionAPI.Configurations;
 using DrugUsePreventionAPI.Models.Entities;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DrugUsePreventionAPI.Services.Implementations
+public class VNPayHelper
 {
-    public class VNPayHelper
+    private readonly VNPaySettings _vnpaySettings;
+    public int MaxRetryAttempts => 3;
+
+    public VNPayHelper(IOptions<VNPaySettings> vnpaySettings)
     {
-        private readonly VNPaySettings _vnpaySettings;
-
-        public VNPayHelper(IOptions<VNPaySettings> vnpaySettings)
-        {
-            _vnpaySettings = vnpaySettings.Value;
-        }
-
-        public string CreatePaymentUrl(Payment payment, string orderInfo)
-        {
-            var tmnCode = _vnpaySettings.TmnCode ?? throw new InvalidOperationException("TmnCode is not configured.");
-            var hashSecret = _vnpaySettings.HashSecret ?? throw new InvalidOperationException("HashSecret is not configured.");
-            var vnpUrl = _vnpaySettings.BaseUrl + "/paymentv2/vpcpay.html";
-            var returnUrl = _vnpaySettings.ReturnUrl ?? throw new InvalidOperationException("ReturnUrl is not configured.");
-
-            var vnpParams = new Dictionary<string, string>
-        {
-            { "vnp_Version", "2.1.0" },
-            { "vnp_Command", "pay" },
-            { "vnp_TmnCode", tmnCode },
-            { "vnp_Amount", ((int)(payment.Amount * 100)).ToString() },
-            { "vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss") },
-            { "vnp_CurrCode", "VND" },
-            { "vnp_IpAddr", "127.0.0.1" },
-            { "vnp_Locale", "vn" },
-            { "vnp_OrderInfo", orderInfo },
-            { "vnp_OrderType", "appointment_payment" },
-            { "vnp_ReturnUrl", returnUrl },
-            { "vnp_TxnRef", payment.TransactionID }
-        };
-
-            var sortedParams = vnpParams.OrderBy(kvp => kvp.Key);
-            var queryString = string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));
-            var hashData = $"{hashSecret}&{queryString}";
-            var secureHash = ComputeHmacSha256(hashData, hashSecret);
-            queryString += $"&vnp_SecureHash={secureHash}";
-
-            return $"{vnpUrl}?{queryString}";
-        }
-
-        public bool VerifyCallback(Dictionary<string, string> queryParams)
-        {
-            var hashSecret = _vnpaySettings.HashSecret;
-
-            var secureHash = queryParams["vnp_SecureHash"];
-            queryParams.Remove("vnp_SecureHash");
-
-            var sortedParams = queryParams.OrderBy(kvp => kvp.Key);
-            var hashData = string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-            var computedHash = ComputeHmacSha256(hashData, hashSecret);
-
-            return secureHash.Equals(computedHash, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private string ComputeHmacSha256(string data, string key)
-        {
-            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key)))
-            {
-                var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
-            }
-        }
+        _vnpaySettings = vnpaySettings.Value ?? throw new ArgumentNullException(nameof(vnpaySettings));
     }
 
+    private static string Encode(string input)
+        => WebUtility.UrlEncode(input).Replace("+", "%20");
+
+    public string CreatePaymentUrl(Payment payment, string orderInfo, DateTime? expireDate = null, HttpContext context = null)
+    {
+        var tmnCode = _vnpaySettings.TmnCode;
+        var hashSecret = _vnpaySettings.HashSecret;
+        var vnpUrl = _vnpaySettings.PaymentUrl;
+        var returnUrl = _vnpaySettings.ReturnUrl;
+
+        var ipAddress = context?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+        var vietnamTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        var vnp_CreateDate = vietnamTime.ToString("yyyyMMddHHmmss");
+        var vnp_ExpireDate = (expireDate ?? vietnamTime.AddMinutes(15)).ToString("yyyyMMddHHmmss");
+
+        var vnpParams = new SortedDictionary<string, string>
+    {
+        { "vnp_Version", "2.1.0" },
+        { "vnp_Command", "pay" },
+        { "vnp_TmnCode", tmnCode },
+        { "vnp_Amount", ((int)(payment.Amount * 100)).ToString() },
+        { "vnp_CreateDate", vnp_CreateDate },
+        { "vnp_ExpireDate", vnp_ExpireDate },
+        { "vnp_CurrCode", "VND" },
+        { "vnp_IpAddr", ipAddress },
+        { "vnp_Locale", "vn" },
+        { "vnp_OrderInfo", orderInfo.Length > 100 ? orderInfo.Substring(0, 100) : orderInfo },
+        { "vnp_OrderType", "other" },
+        { "vnp_ReturnUrl", returnUrl },
+        { "vnp_TxnRef", payment.TransactionID }
+    };
+
+        var signData = string.Join("&", vnpParams.Select(kvp => $"{kvp.Key}={WebUtility.UrlEncode(kvp.Value)}"));
+        var secureHash = ComputeHmacSha512(hashSecret, signData);
+
+        var queryString = signData + $"&vnp_SecureHash={secureHash}";
+        return $"{vnpUrl}?{queryString}";
+    }
+
+    public bool VerifyCallback(Dictionary<string, string> queryParams)
+    {
+        var hashSecret = _vnpaySettings.HashSecret;
+        if (!queryParams.TryGetValue("vnp_SecureHash", out var secureHash) || string.IsNullOrEmpty(secureHash))
+        {
+            Serilog.Log.Warning("Missing or empty vnp_SecureHash in callback");
+            return false;
+        }
+
+        var vnpParams = queryParams
+            .Where(kvp => kvp.Key != "vnp_SecureHash" && kvp.Key != "vnp_SecureHashType")
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        if (vnpParams.Count == 0)
+        {
+            Serilog.Log.Warning("No valid parameters for signature verification");
+            return false;
+        }
+
+        var sortedParams = vnpParams.OrderBy(kvp => kvp.Key).ToList();
+        var signData = string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={WebUtility.UrlEncode(kvp.Value)}"));
+        var computedHash = ComputeHmacSha512(hashSecret, signData);
+
+        if (!secureHash.Equals(computedHash, StringComparison.OrdinalIgnoreCase))
+        {
+            Serilog.Log.Warning("Signature mismatch. Expected: {ComputedHash}, Received: {SecureHash}", computedHash, secureHash);
+            return false;
+        }
+
+        Serilog.Log.Information("Callback signature verified successfully for transaction {TransactionId}", queryParams.GetValueOrDefault("vnp_TxnRef"));
+        return true;
+    }
+
+    public int ExtractAppointmentIdFromTxnRef(string txnRef)
+    {
+        var parts = txnRef.Split('-', StringSplitOptions.RemoveEmptyEntries);
+        var appointmentIdStr = parts.Last();
+        if (!int.TryParse(appointmentIdStr, out int appointmentId))
+        {
+            Serilog.Log.Error("Invalid transaction reference format: {TxnRef}", txnRef);
+            throw new ArgumentException("Invalid transaction reference format.");
+        }
+        return appointmentId;
+    }
+
+    private string ComputeHmacSha512(string key, string inputData)
+    {
+        var keyBytes = Encoding.UTF8.GetBytes(key);
+        var inputBytes = Encoding.UTF8.GetBytes(inputData);
+        using (var hmac = new HMACSHA512(keyBytes))
+        {
+            var hashValue = hmac.ComputeHash(inputBytes);
+            return BitConverter.ToString(hashValue).Replace("-", "").ToLower();
+        }
+    }
 }

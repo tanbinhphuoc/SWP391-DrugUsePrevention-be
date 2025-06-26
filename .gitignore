@@ -100,3 +100,9 @@ $tf/
 
 # Visual Studio Code
 .vscode/
+
+appsettings.json
+appsettings.Development.json
+secrets.json
+.env
+
