@@ -11,7 +11,8 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         [Required]
         [MaxLength(255)]
-        public required string Title { get; set; }
+        public required string CourseName { get; set; }
+
 
         public string? Description { get; set; }
 

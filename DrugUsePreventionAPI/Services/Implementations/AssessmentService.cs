@@ -5,6 +5,7 @@ using DrugUsePreventionAPI.Repositories;
 using Microsoft.Extensions.Configuration;
 using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -166,6 +167,12 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<List<Assessment>> GetAllAssessment()
         {
             return await _unitOfWork.Assessments.GetAllActiveAssessmentsAsync();
+        }
+
+        public async Task<List<Course>> GetAvailableCourses()
+        {
+            var allCourses = await _unitOfWork.Courses.GetAllAsync();
+            return allCourses.Where(c => !c.IsDeleted).ToList();
         }
 
 
