@@ -79,6 +79,21 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { message = assessment });
         }
 
+        [HttpGet("GetAvailableCourses")]
+        public async Task<IActionResult> GetAvailableCourses()
+        {
+            var courses = await _assessmentService.GetAvailableCourses();
+
+            var courseList = courses.Select(c => new
+            {
+                c.CourseID,
+                c.CourseName
+            });
+
+            return Ok(new { message = courseList });
+        }
+
+
         [HttpGet("GetAssessmentsByStage")]
         public async Task<IActionResult> GetAssessmentsByStage(string stage)
         {

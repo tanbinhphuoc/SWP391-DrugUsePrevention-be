@@ -128,7 +128,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var latestResult = await _unitOfWork.AssessmentResults.FindAsync(r => r.UserID == userId);
             var result = latestResult.OrderByDescending(r => r.TakeTime).FirstOrDefault();
 
-            return result != null && result.Score < 4;
+            return result != null && result.Score <= 4;
         }
     }
 }
