@@ -40,7 +40,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                 var course = new Course
                 {
-                    Title = courseDto.Title,
+                    CourseName = courseDto.CourseName,
                     Description = courseDto.Description,
                     StartDate = courseDto.StartDate,
                     EndDate = courseDto.EndDate,
@@ -56,7 +56,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                 await _unitOfWork.Courses.AddAsync(course);
                 await _unitOfWork.SaveChangesAsync();
-            Log.Information("Created course {Title} with ID {CourseId}", course.Title, course.CourseID);
+            Log.Information("Created course {Title} with ID {CourseId}", course.CourseName, course.CourseID);
                 return true;
             }
             catch (BusinessRuleViolationException)
@@ -93,7 +93,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new EntityNotFoundException("Course", id);
             }
 
-            course.Title = courseDto.Title;
+            course.CourseName = courseDto.CourseName;
             course.Description = courseDto.Description;
             course.StartDate = courseDto.StartDate;
             course.EndDate = courseDto.EndDate;
@@ -107,7 +107,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             _unitOfWork.Courses.Update(course);
             await _unitOfWork.SaveChangesAsync();
-            Log.Information("Updated course {Title}", course.Title);
+            Log.Information("Updated course {CourseName}", course.CourseName);
             return true;
         }
 
@@ -122,15 +122,20 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<Course?> GetCourseById(int id)
         {
             Log.Information("Retrieving course with ID {CourseId}", id);
-            var course = await _unitOfWork.Courses.GetByIdAsync(id);
+
+            var courseList = await _unitOfWork.Courses.FindAsync(c => c.CourseID == id && !c.IsDeleted);
+            var course = courseList.FirstOrDefault(); // Vì FindAsync trả về IEnumerable
+
             if (course == null)
             {
-                Log.Warning("Course with ID {CourseId} not found", id);
+                Log.Warning("Course with ID {CourseId} not found or has been deleted", id);
                 throw new EntityNotFoundException("Course", id);
             }
-            Log.Information("Retrieved course {Title}", course.Title);
+
+            Log.Information("Retrieved course {CourseName}", course.CourseName);
             return course;
         }
+
 
         public async Task<bool> DeleteCourse(int id)
         {
@@ -148,7 +153,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             _unitOfWork.Courses.Remove(course);
                 await _unitOfWork.SaveChangesAsync();
-            Log.Information("Deleted course {Title}", course.Title);
+            Log.Information("Deleted course {CourseName}", course.CourseName);
                 return true;
             }
             catch

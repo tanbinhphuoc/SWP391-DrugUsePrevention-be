@@ -6,6 +6,6 @@
         public required int AssessmentId { get; set; }
         public required List<int> AnswerOptionId { get; set; }     
         public required string AssessmentStage { get; set; } = "Input";
-        public required int CourseId { get; set; }
+        public int? CourseId { get; set; }
     }
 }

@@ -8,6 +8,8 @@
         public string? AssessmentStage { get; set; } = "Input"; // "Output";
         public int MinAge { get; set; }
         public int MaxAge { get; set; }
+        // Chỉ yêu cầu nếu là Output
+        public int? CourseID { get; set; }
     }
 
 
