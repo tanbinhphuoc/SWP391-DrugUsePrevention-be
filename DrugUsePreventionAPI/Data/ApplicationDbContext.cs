@@ -1,9 +1,11 @@
 ﻿using DrugUsePreventionAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-public class ApplicationDbContext : DbContext
+namespace DrugUsePreventionAPI.Data
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options) { }
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
@@ -49,6 +51,16 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(p => p.UserID)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
+            modelBuilder.Entity<CourseAssessment>()
+                .HasOne(ca => ca.Course)
+                .WithMany(c => c.CourseAssessments)
+                .HasForeignKey(ca => ca.CourseID);
+
+            modelBuilder.Entity<CourseAssessment>()
+                .HasOne(ca => ca.Assessment)
+                .WithMany(a => a.CourseAssessments)
+                .HasForeignKey(ca => ca.AssessmentID);
+
 
         modelBuilder.Entity<Payment>()
             .HasOne(p => p.Appointment)

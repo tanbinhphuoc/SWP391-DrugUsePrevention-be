@@ -4,6 +4,7 @@ using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250624201935_update11")]
+    partial class update11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,20 +109,23 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<DateTime>("EndDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("GoogleMeetLink")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ScheduleIds")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -286,9 +292,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GoogleMeetLink")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("HourlyRate")
                         .HasColumnType("decimal(18,2)");
 
@@ -399,11 +402,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<int?>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<string>("CourseName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -426,6 +424,11 @@ namespace DrugUsePreventionAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -495,9 +498,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("RetryCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -803,7 +803,7 @@ namespace DrugUsePreventionAPI.Migrations
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ConsultantAppointmentEvaluation", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", "Appointment")
-                        .WithMany()
+                        .WithMany("Evaluations")
                         .HasForeignKey("AppointmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -871,7 +871,7 @@ namespace DrugUsePreventionAPI.Migrations
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Payment", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", "Appointment")
-                        .WithMany()
+                        .WithMany("Payments")
                         .HasForeignKey("AppointmentID");
 
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
@@ -980,6 +980,13 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("CourseAssessments");
 
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Appointment", b =>
+                {
+                    b.Navigation("Evaluations");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>
