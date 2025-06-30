@@ -6,6 +6,7 @@ namespace DrugUsePreventionAPI.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
+
         public IUserRepository Users { get; private set; }
         public IRoleRepository Roles { get; private set; }
         public IConsultantRepository Consultants { get; private set; }
@@ -58,6 +59,12 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
+        }
+
+        public void Attach<TEntity>(TEntity entity) where TEntity : class
+        {
+            var repository = _context.Set<TEntity>();
+            repository.Attach(entity);
         }
 
         public void Dispose()

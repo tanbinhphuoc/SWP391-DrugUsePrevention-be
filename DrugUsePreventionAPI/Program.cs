@@ -12,6 +12,7 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,7 +68,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "https://4465-2405-4802-8012-15b0-71b6-1cf0-27aa-442.ngrok-free.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -231,6 +232,12 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+// Cấu hình để ASP.NET Core sử dụng `X-Forwarded-For` header từ proxy
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 // Configure exception handling middleware with detailed logging
 app.UseExceptionHandler(errorApp =>

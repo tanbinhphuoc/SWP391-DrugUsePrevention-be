@@ -71,6 +71,10 @@ namespace DrugUsePreventionAPI.Repositories
             return _dbSet.AsQueryable();
         }
 
+        public void Attach(TEntity entity)
+        {
+            _dbSet.Attach(entity);
+        }
     }
 
 }

@@ -49,6 +49,7 @@ CREATE TABLE Consultants (
   hourlyRate DECIMAL(10,2) NOT NULL DEFAULT 0.0,
   createdAt DATETIME2 NOT NULL DEFAULT GETDATE(),
   updatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+  googleMeetLink NVARCHAR(255) NULL,
   CONSTRAINT FK_Consultants_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_Consultants_Certificates FOREIGN KEY (certificateID) REFERENCES Certificates(certificateID)
 );
@@ -73,20 +74,23 @@ CREATE TABLE Courses (
   courseID INT IDENTITY(1,1) PRIMARY KEY,
   title NVARCHAR(255) NOT NULL,
   description NVARCHAR(MAX) NULL,
-  startDate DATE NOT NULL,
-  endDate DATE NOT NULL,
+  startDate DATETIME2 NOT NULL,               
+  endDate DATETIME2 NOT NULL,                
+  type NVARCHAR(20) NOT NULL DEFAULT 'COBAN', 
   status NVARCHAR(10) NOT NULL DEFAULT 'OPEN',
   ageMin INT NOT NULL,
   ageMax INT NULL,
   capacity INT NULL,
   price DECIMAL(10,2) NOT NULL DEFAULT 0.0,
   createdAt DATETIME2 NOT NULL DEFAULT GETDATE(),
-  updatedAt DATETIME2 NOT NULL DEFAULT GETDATE()
+  updatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+  isDeleted BIT NOT NULL DEFAULT 0            
 );
 GO
+
 -- Constraint cho trường status tương tự ENUM
 ALTER TABLE Courses
-ADD CONSTRAINT CHK_Courses_Status CHECK (status IN ('OPEN','CLOSED','PAUSED'));
+ADD CONSTRAINT CHK_Courses_Status CHECK (status IN ('OPEN','CLOSED','PENDING'));
 GO
 
 -- 7. Blogs
@@ -122,12 +126,12 @@ CREATE TABLE Appointments (
   consultantID INT NOT NULL,
   startDateTime DATETIME2 NOT NULL,
   endDateTime DATETIME2 NOT NULL,
-  googleMeetLink NVARCHAR(255) NULL,
   price DECIMAL(10,2) NOT NULL DEFAULT 0.0,
   status NVARCHAR(20) NOT NULL DEFAULT 'PENDING_PAYMENT',
   note NVARCHAR(MAX) NULL,
   createdAt DATETIME2 NOT NULL DEFAULT GETDATE(),
   updatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+  ScheduleIds NVARCHAR(255) Null,
   CONSTRAINT FK_Appointments_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_Appointments_Consultants FOREIGN KEY (consultantID) REFERENCES Consultants(consultantID)
 );
@@ -156,11 +160,12 @@ CREATE TABLE Assessments (
   description NVARCHAR(MAX) NULL,
   assessmentType NVARCHAR(10) NOT NULL,
   minAge INT NULL,
-  maxAge INT NULL
+  maxAge INT NULL,
+  IsDeleted BIT NOT NULL DEFAULT 0
 );
 GO
 ALTER TABLE Assessments
-ADD CONSTRAINT CHK_Assessments_Type CHECK (assessmentType IN ('PRE','POST'));
+ADD CONSTRAINT CHK_Assessments_Type CHECK (assessmentType IN ('Assist','Crafft'));
 GO
 
 -- 12. Course Assessments
@@ -180,13 +185,16 @@ CREATE TABLE AssessmentResults (
   assessmentID INT NOT NULL,
   courseID INT NULL,
   resultName NVARCHAR(255) NULL,
+  assessmentStage NVARCHAR(50) NOT NULL DEFAULT 'Input',
   score FLOAT NOT NULL,
   takeTime DATETIME2 NOT NULL DEFAULT GETDATE(),
+  
   CONSTRAINT FK_AssessmentResults_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_AssessmentResults_Assessments FOREIGN KEY (assessmentID) REFERENCES Assessments(assessmentID),
   CONSTRAINT FK_AssessmentResults_Courses FOREIGN KEY (courseID) REFERENCES Courses(courseID)
 );
 GO
+
 
 -- 14. Surveys
 CREATE TABLE Surveys (
@@ -266,6 +274,7 @@ CREATE TABLE Payments (
   paymentMethod NVARCHAR(50) NULL,
   status NVARCHAR(10) NOT NULL DEFAULT 'PENDING',
   transactionID NVARCHAR(100) NULL,
+  RetryCount INT NULL,
   CONSTRAINT FK_Payments_Users FOREIGN KEY (userID) REFERENCES Users(userID),
   CONSTRAINT FK_Payments_Courses FOREIGN KEY (courseID) REFERENCES Courses(courseID),
   CONSTRAINT FK_Payments_Appointments FOREIGN KEY (appointmentID) REFERENCES Appointments(appointmentID)
@@ -299,3 +308,92 @@ select * from Payments
 update ConsultantSchedules
 set isAvailable = '1'
 where scheduleID = 165
+
+
+
+-- Kiểm tra Payments với trạng thái SUCCESS
+SELECT * FROM Payments WHERE UserID = 20 AND Status = 'SUCCESS';
+
+-- Kiểm tra Appointments liên quan
+SELECT a.*, p.PaymentID, u.FullName AS ConsultantName
+FROM Appointments a
+LEFT JOIN Payments p ON a.AppointmentID = p.AppointmentID
+LEFT JOIN Consultants c ON a.ConsultantID = c.ConsultantID
+LEFT JOIN Users u ON c.UserID = u.UserID
+WHERE a.UserID = 20 AND p.Status = 'SUCCESS';
+
+
+
+go;
+
+CREATE OR ALTER PROCEDURE GetConsultantSchedulesWithStatus
+    @ConsultantId INT,
+    @StartDate DATE,
+    @EndDate DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Tạo bảng tạm để lưu kết quả
+    CREATE TABLE #TempSchedules (
+        ScheduleID INT,
+        ConsultantID INT,
+        DayOfWeek NVARCHAR(50),
+        Date DATE,
+        StartTime TIME,
+        EndTime TIME,
+        IsAvailable BIT,
+        Notes NVARCHAR(MAX),
+        AppointmentStatus NVARCHAR(20),
+        PaymentStatus NVARCHAR(10)
+    );
+
+    -- Lấy tất cả lịch trong khoảng thời gian
+    INSERT INTO #TempSchedules (ScheduleID, ConsultantID, DayOfWeek, Date, StartTime, EndTime, IsAvailable, Notes)
+    SELECT 
+        s.ScheduleID,
+        s.ConsultantID,
+        s.DayOfWeek,
+        s.Date,
+        s.StartTime,
+        s.EndTime,
+        s.IsAvailable,
+        s.Notes
+    FROM ConsultantSchedules s
+    WHERE s.ConsultantID = @ConsultantId
+        AND s.Date BETWEEN @StartDate AND @EndDate;
+
+    -- Cập nhật trạng thái cuộc hẹn và thanh toán
+    UPDATE t
+    SET 
+        t.AppointmentStatus = a.Status,
+        t.PaymentStatus = p.Status
+    FROM #TempSchedules t
+    LEFT JOIN Appointments a ON (
+        (a.ScheduleIds LIKE '%,' + CAST(t.ScheduleID AS VARCHAR(10)) + ',%' 
+         OR a.ScheduleIds = CAST(t.ScheduleID AS VARCHAR(10))
+         OR (a.ScheduleIds IS NULL AND t.ScheduleID IS NULL))
+        AND a.consultantID = t.ConsultantID -- Đảm bảo khớp ConsultantID
+    )
+    LEFT JOIN Payments p ON a.AppointmentID = p.AppointmentID
+    WHERE (a.Status IN ('PENDING_PAYMENT', 'CONFIRMED') OR a.Status IS NULL)
+        AND (p.Status IN ('PENDING', 'SUCCESS', 'FAILED') OR p.Status IS NULL);
+
+    -- Trả về kết quả
+    SELECT 
+        ScheduleID,
+        ConsultantID,
+        DayOfWeek,
+        Date,
+        StartTime,
+        EndTime,
+        IsAvailable,
+        Notes,
+        AppointmentStatus,
+        PaymentStatus
+    FROM #TempSchedules;
+
+    DROP TABLE #TempSchedules;
+END;
+GO
+EXEC GetConsultantSchedulesWithStatus @ConsultantId = 5, @StartDate = '2025-06-20', @EndDate = '2025-06-30';

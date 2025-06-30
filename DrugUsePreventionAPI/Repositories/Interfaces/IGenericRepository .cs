@@ -13,4 +13,5 @@ public interface IGenericRepository<TEntity> where TEntity : class
     void Remove(TEntity entity);
     void RemoveRange(IEnumerable<TEntity> entities);
     Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
+    void Attach(TEntity entity);
 }

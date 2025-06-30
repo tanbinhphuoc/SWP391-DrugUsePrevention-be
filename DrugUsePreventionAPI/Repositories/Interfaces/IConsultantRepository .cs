@@ -11,5 +11,6 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<Consultant> GetConsultantWithUserAndCertificateAsync(int id);
         Task<bool> HasConfirmedAppointmentsAsync(int id);
         Task<Consultant> GetByUserIdAsync(int userId);
+        Task<Consultant> GetByUserIdTrackedAsync(int userId);
     }
 }
