@@ -1,6 +1,8 @@
 ﻿using DrugUsePreventionAPI.Data;
+using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,43 @@ namespace DrugUsePreventionAPI.Repositories
     {
         public ConsultantScheduleRepository(ApplicationDbContext context) : base(context) { }
 
+        public async Task<IEnumerable<(ConsultantSchedule Schedule, string? AppointmentStatus, string? PaymentStatus)>> GetSchedulesWithAppointmentStatusAsync(int consultantId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                var schedules = await _context.Database
+                    .SqlQueryRaw<ScheduleWithStatus>(
+                        "EXEC GetConsultantSchedulesWithStatus @ConsultantId, @StartDate, @EndDate",
+                        new[]
+                        {
+                            new SqlParameter("@ConsultantId", consultantId),
+                            new SqlParameter("@StartDate", startDate.Date),
+                            new SqlParameter("@EndDate", endDate.Date)
+                        })
+                    .ToListAsync();
+
+                return schedules.Select(s => (
+                    new ConsultantSchedule
+                    {
+                        ScheduleID = s.ScheduleID,
+                        ConsultantID = s.ConsultantID,
+                        DayOfWeek = s.DayOfWeek ?? string.Empty, // Xử lý NULL
+                        Date = s.Date,
+                        StartTime = s.StartTime,
+                        EndTime = s.EndTime,
+                        IsAvailable = s.IsAvailable,
+                        Notes = s.Notes ?? string.Empty // Xử lý NULL
+                    },
+                    s.AppointmentStatus,
+                    s.PaymentStatus
+                ));
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex, "Error executing GetConsultantSchedulesWithStatus for ConsultantId={ConsultantId}", consultantId);
+                throw;
+            }
+        }
         public async Task<IEnumerable<ConsultantSchedule>> GetSchedulesByConsultantAndDateRangeAsync(int consultantId, DateTime startDate, DateTime endDate)
         {
             return await _context.ConsultantSchedules
@@ -66,5 +105,8 @@ namespace DrugUsePreventionAPI.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(predicate, cancellationToken);
         }
+
+
+
     }
 }

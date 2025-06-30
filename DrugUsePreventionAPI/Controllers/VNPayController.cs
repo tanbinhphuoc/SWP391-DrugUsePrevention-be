@@ -55,8 +55,12 @@ namespace DrugUsePreventionAPI.Controllers
             try
             {
                 var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, transactionId, vnpayResponseCode, HttpContext);
-                Serilog.Log.Information("Payment processed successfully for appointment {AppointmentId}", appointmentId);
-                return Ok(new { success = true, message = "Payment processed successfully.", data = appointment });
+
+                // Trả về kết quả và chuyển hướng đến trang frontend
+                string frontendUrl = $"http://localhost:5173/user-dashboard/appointments?appointmentId={appointmentId}&vnp_ResponseCode={vnpayResponseCode}";
+
+                // Chuyển hướng người dùng đến trang frontend
+                return Redirect(frontendUrl);
             }
             catch (BusinessRuleViolationException ex)
             {

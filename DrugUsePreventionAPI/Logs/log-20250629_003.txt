@@ -1,0 +1,157 @@
+2025-06-29 10:43:54.678 +07:00 [INF] Updated ReturnUrl to: https://e631-203-205-32-171.ngrok-free.app/api/vnpay/return
+2025-06-29 10:43:55.316 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-29 10:43:56.376 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-29 10:43:57.221 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-29 10:43:58.529 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-29 10:43:58.533 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-29 10:43:58.536 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-29 10:43:58.675 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 successfully announced in 90.1504 ms
+2025-06-29 10:43:58.705 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-29 10:43:59.300 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 all the dispatchers started
+2025-06-29 10:44:37.456 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-29 10:44:37.884 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:44:38.278 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:44:38.911 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:44:39.048 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:44:39.068 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:44:39.086 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:44:39.107 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:44:39.198 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:44:39.731 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:44:44.503 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:44:44.515 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:44:44.553 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:44:46.764 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:44:46.867 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-29 10:44:46.870 +07:00 [INF] Using client IP from header: ::1
+2025-06-29 10:44:46.874 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-29 10:44:47.476 +07:00 [INF] Appointment 109 created with payment URL
+2025-06-29 10:45:27.541 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15045230","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 109 for 1 hours","vnp_PayDate":"20250629104611","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15045230","vnp_TransactionStatus":"00","vnp_TxnRef":"33bcec40-4c26-4937-ab1b-70b5174018f3-109","vnp_SecureHash":"9e5b17356bf7d244eda4d237a04fb0cd240b66742b7a13666267bf24f1423e3deefe15408e2d05c20bc922c9e4b3d6908c9512dbe06b83ae51baefb99e7490cd"}
+2025-06-29 10:45:27.551 +07:00 [INF] Callback signature verified successfully for transaction 33bcec40-4c26-4937-ab1b-70b5174018f3-109
+2025-06-29 10:45:27.556 +07:00 [INF] Confirming payment for appointment 109, transaction 33bcec40-4c26-4937-ab1b-70b5174018f3-109
+2025-06-29 10:45:27.625 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15045230","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 109 for 1 hours","vnp_PayDate":"20250629104611","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15045230","vnp_TransactionStatus":"00","vnp_TxnRef":"33bcec40-4c26-4937-ab1b-70b5174018f3-109","vnp_SecureHash":"9e5b17356bf7d244eda4d237a04fb0cd240b66742b7a13666267bf24f1423e3deefe15408e2d05c20bc922c9e4b3d6908c9512dbe06b83ae51baefb99e7490cd"}
+2025-06-29 10:45:27.628 +07:00 [INF] Callback signature verified successfully for transaction 33bcec40-4c26-4937-ab1b-70b5174018f3-109
+2025-06-29 10:45:31.350 +07:00 [INF] Email sent to buitham8758@gmail.com
+2025-06-29 10:45:34.593 +07:00 [INF] Email sent to CR7@KingOfEurope.com
+2025-06-29 10:45:34.595 +07:00 [INF] Payment confirmed for appointment 109
+2025-06-29 10:46:18.831 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:46:18.849 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:46:18.917 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:46:18.936 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:46:18.942 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:46:18.961 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:46:18.969 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:46:18.982 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:46:19.163 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:49:29.312 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-29 10:49:29.333 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 caught stopping signal...
+2025-06-29 10:49:29.486 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 caught stopped signal...
+2025-06-29 10:49:29.499 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 All dispatchers stopped
+2025-06-29 10:49:29.500 +07:00 [WRN] Server laptop-qlc4gki0:4344:4fed5c07 caught shutdown signal...
+2025-06-29 10:49:29.531 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 successfully reported itself as stopped in 12.7375 ms
+2025-06-29 10:49:29.532 +07:00 [INF] Server laptop-qlc4gki0:4344:4fed5c07 has been stopped in total 48.6546 ms
+2025-06-29 10:50:11.988 +07:00 [INF] Updated ReturnUrl to: https://e631-203-205-32-171.ngrok-free.app/api/vnpay/return
+2025-06-29 10:50:12.656 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-29 10:50:14.731 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-29 10:50:16.249 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-29 10:50:17.720 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-29 10:50:17.722 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-29 10:50:17.724 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-29 10:50:17.896 +07:00 [INF] Server laptop-qlc4gki0:23080:f351ac55 successfully announced in 128.7668 ms
+2025-06-29 10:50:17.913 +07:00 [INF] Server laptop-qlc4gki0:23080:f351ac55 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-29 10:50:18.160 +07:00 [INF] Server laptop-qlc4gki0:23080:f351ac55 all the dispatchers started
+2025-06-29 10:50:33.158 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-29 10:50:33.433 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:50:33.712 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:50:36.069 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:50:36.103 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:50:36.114 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:50:36.122 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:50:36.173 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:50:36.389 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:50:36.550 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:50:38.880 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:50:38.889 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:50:39.061 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:50:41.243 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:50:41.293 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-29 10:50:41.296 +07:00 [INF] Using client IP from header: ::1
+2025-06-29 10:50:41.300 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-29 10:50:41.949 +07:00 [INF] Appointment 110 created with payment URL
+2025-06-29 10:51:28.230 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15045235","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 110 for 1 hours","vnp_PayDate":"20250629105213","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15045235","vnp_TransactionStatus":"00","vnp_TxnRef":"0b45f85d-5b70-4269-9471-2c433221f1cb-110","vnp_SecureHash":"701bc7087fcbc281bf7b1b659f83f3f205f40693c9ad43321d9087c29db5c5570d60375110a4734425f0e0bed185627f998fafe4b3a084879029adfb73e7685c"}
+2025-06-29 10:51:28.263 +07:00 [INF] Callback signature verified successfully for transaction 0b45f85d-5b70-4269-9471-2c433221f1cb-110
+2025-06-29 10:51:28.275 +07:00 [INF] Confirming payment for appointment 110, transaction 0b45f85d-5b70-4269-9471-2c433221f1cb-110
+2025-06-29 10:51:28.409 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15045235","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 110 for 1 hours","vnp_PayDate":"20250629105213","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15045235","vnp_TransactionStatus":"00","vnp_TxnRef":"0b45f85d-5b70-4269-9471-2c433221f1cb-110","vnp_SecureHash":"701bc7087fcbc281bf7b1b659f83f3f205f40693c9ad43321d9087c29db5c5570d60375110a4734425f0e0bed185627f998fafe4b3a084879029adfb73e7685c"}
+2025-06-29 10:51:28.411 +07:00 [INF] Callback signature verified successfully for transaction 0b45f85d-5b70-4269-9471-2c433221f1cb-110
+2025-06-29 10:51:32.058 +07:00 [INF] Email sent to buitham8758@gmail.com
+2025-06-29 10:51:35.188 +07:00 [INF] Email sent to CR7@KingOfEurope.com
+2025-06-29 10:51:35.191 +07:00 [INF] Payment confirmed for appointment 110
+2025-06-29 10:55:26.886 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:55:27.010 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:55:27.132 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:55:27.185 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:55:27.208 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:55:27.223 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:55:27.258 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:55:27.279 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:55:27.562 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:58:00.236 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:58:00.466 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:58:00.654 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:58:00.703 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:58:00.710 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:58:00.719 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:58:00.730 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:58:00.767 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:58:01.079 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 10:58:05.567 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:58:05.604 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:58:05.633 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:58:05.640 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:58:05.645 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751167721, exp: 1751254121, iat: 1751167721, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 10:58:05.646 +07:00 [INF] Retrieving available consultants
+2025-06-29 10:58:05.649 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 10:58:05.655 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 10:58:05.680 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 11:02:23.730 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:02:23.765 +07:00 [INF] Retrieving available consultants
+2025-06-29 11:02:23.871 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 11:02:23.883 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:02:23.889 +07:00 [INF] Retrieving available consultants
+2025-06-29 11:02:23.892 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:02:23.914 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 11:02:23.919 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 11:02:24.140 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 11:02:26.591 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:02:26.597 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 11:02:26.628 +07:00 [INF] Retrieved 12 schedules
+2025-06-29 11:02:30.199 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:02:30.215 +07:00 [INF] Booking appointment for UserID=22 with ConsultantID=5
+2025-06-29 11:02:30.218 +07:00 [INF] Using client IP from header: ::1
+2025-06-29 11:02:30.221 +07:00 [INF] Booking appointment for user 22 with consultant 5
+2025-06-29 11:02:30.358 +07:00 [INF] Appointment 111 created with payment URL
+2025-06-29 11:03:18.391 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15045245","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 111 for 1 hours","vnp_PayDate":"20250629110356","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15045245","vnp_TransactionStatus":"00","vnp_TxnRef":"c4201073-30a8-4959-b5d4-381c53277eea-111","vnp_SecureHash":"8761fee58a1eb8bea81c756a5b400605808e68bc3951b4dfa22382229575cbf991dbf4651b1543b8529cbaf64c62bd2b4cac5d53b6058766ad10582d19a890a5"}
+2025-06-29 11:03:18.435 +07:00 [INF] Callback signature verified successfully for transaction c4201073-30a8-4959-b5d4-381c53277eea-111
+2025-06-29 11:03:18.441 +07:00 [INF] Confirming payment for appointment 111, transaction c4201073-30a8-4959-b5d4-381c53277eea-111
+2025-06-29 11:03:18.523 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15045245","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 111 for 1 hours","vnp_PayDate":"20250629110356","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15045245","vnp_TransactionStatus":"00","vnp_TxnRef":"c4201073-30a8-4959-b5d4-381c53277eea-111","vnp_SecureHash":"8761fee58a1eb8bea81c756a5b400605808e68bc3951b4dfa22382229575cbf991dbf4651b1543b8529cbaf64c62bd2b4cac5d53b6058766ad10582d19a890a5"}
+2025-06-29 11:03:18.525 +07:00 [INF] Callback signature verified successfully for transaction c4201073-30a8-4959-b5d4-381c53277eea-111
+2025-06-29 11:03:21.917 +07:00 [INF] Email sent to tanphse180176@fpt.edu.vn
+2025-06-29 11:03:25.186 +07:00 [INF] Email sent to CR7@KingOfEurope.com
+2025-06-29 11:03:25.189 +07:00 [INF] Payment confirmed for appointment 111
+2025-06-29 11:03:26.624 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:03:26.640 +07:00 [INF] Retrieving available consultants
+2025-06-29 11:03:27.101 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 11:03:27.467 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:03:27.524 +07:00 [INF] Retrieving available consultants
+2025-06-29 11:03:27.570 +07:00 [INF] Retrieved 5 available consultants
+2025-06-29 11:03:27.582 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751169739, exp: 1751256139, iat: 1751169739, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-29 11:03:27.829 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-06-29T00:00:00.0000000" to "2025-06-29T00:00:00.0000000"
+2025-06-29 11:03:28.055 +07:00 [INF] Retrieved 12 schedules

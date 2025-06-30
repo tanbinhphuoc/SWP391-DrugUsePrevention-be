@@ -1,0 +1,60 @@
+2025-06-27 13:02:49.797 +07:00 [INF] Updated ReturnUrl to: https://98f8-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-06-27 13:02:50.133 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-27 13:02:52.054 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-27 13:02:53.071 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-27 13:02:53.791 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-27 13:02:53.793 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-27 13:02:53.795 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-27 13:02:53.844 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd successfully announced in 35.6665 ms
+2025-06-27 13:02:53.848 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-27 13:02:53.860 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd all the dispatchers started
+2025-06-27 13:04:26.058 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-27 13:05:12.264 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751004267, exp: 1751090667, iat: 1751004267, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 13:05:12.405 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-30T00:00:00.0000000" to "2025-06-30T00:00:00.0000000"
+2025-06-27 13:05:12.473 +07:00 [INF] Retrieved 11 schedules
+2025-06-27 13:05:40.627 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751004267, exp: 1751090667, iat: 1751004267, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 13:05:40.683 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-27 13:05:40.691 +07:00 [INF] Using client IP from header: 203.0.113.5
+2025-06-27 13:05:40.699 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-27 13:05:41.250 +07:00 [INF] Appointment 96 created with payment URL
+2025-06-27 13:57:26.536 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-27 13:57:26.573 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd caught stopping signal...
+2025-06-27 13:57:26.585 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd caught stopped signal...
+2025-06-27 13:57:26.587 +07:00 [WRN] Server laptop-qlc4gki0:23492:ec0f1bbd caught shutdown signal...
+2025-06-27 13:57:26.624 +07:00 [WRN] Server laptop-qlc4gki0:23492:ec0f1bbd stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-27 13:57:26.692 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd successfully reported itself as stopped in 52.9985 ms
+2025-06-27 13:57:26.694 +07:00 [INF] Server laptop-qlc4gki0:23492:ec0f1bbd has been stopped in total 108.9193 ms
+2025-06-27 13:58:26.310 +07:00 [INF] Updated ReturnUrl to: https://5aad-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-06-27 13:58:26.562 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-27 13:58:28.196 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-27 13:58:28.996 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-27 13:58:29.716 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-27 13:58:29.718 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-27 13:58:29.719 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-27 13:58:29.789 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 successfully announced in 53.941 ms
+2025-06-27 13:58:29.792 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-27 13:58:29.796 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 all the dispatchers started
+2025-06-27 13:58:51.378 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-27 13:59:53.555 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751007532, exp: 1751093932, iat: 1751007532, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 13:59:53.696 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-27 13:59:53.703 +07:00 [INF] Using client IP from header: 203.0.113.5
+2025-06-27 13:59:53.709 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-27 13:59:54.095 +07:00 [INF] Appointment 97 created with payment URL
+2025-06-27 14:00:01.842 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751007532, exp: 1751093932, iat: 1751007532, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 14:00:01.857 +07:00 [INF] Retrieving available consultants
+2025-06-27 14:00:01.960 +07:00 [INF] Retrieved 3 available consultants
+2025-06-27 14:05:53.342 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-27 14:05:53.345 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 caught stopping signal...
+2025-06-27 14:05:53.371 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 caught stopped signal...
+2025-06-27 14:05:53.372 +07:00 [WRN] Server laptop-qlc4gki0:17648:12f6ba59 caught shutdown signal...
+2025-06-27 14:05:53.374 +07:00 [WRN] Server laptop-qlc4gki0:17648:12f6ba59 stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-06-27 14:05:53.401 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 successfully reported itself as stopped in 18.9929 ms
+2025-06-27 14:05:53.403 +07:00 [INF] Server laptop-qlc4gki0:17648:12f6ba59 has been stopped in total 32.0388 ms

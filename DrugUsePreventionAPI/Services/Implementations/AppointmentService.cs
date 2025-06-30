@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DrugUsePreventionAPI.Configurations;
 using DrugUsePreventionAPI.Exceptions;
+using DrugUsePreventionAPI.Models.DTOs.Admin;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories;
@@ -48,17 +49,23 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<ConsultantScheduleDto>> GetConsultantSchedulesAsync(int consultantId, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<ConsultantScheduleResponseDto>> GetConsultantSchedulesAsync(int consultantId, DateTime startDate, DateTime endDate)
         {
             Log.Information("Retrieving schedules for consultant {ConsultantId} from {StartDate} to {EndDate}", consultantId, startDate, endDate);
-            var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesByConsultantAndDateRangeAsync(consultantId, startDate, endDate);
-            var filteredSchedules = schedules.Where(s => s.IsAvailable).OrderBy(s => s.ScheduleID);
-            var result = _mapper.Map<IEnumerable<ConsultantScheduleDto>>(filteredSchedules);
+
+            var schedules = await _unitOfWork.ConsultantSchedules.GetSchedulesWithAppointmentStatusAsync(consultantId, startDate, endDate);
+            var result = schedules.Select(s => new ConsultantScheduleResponseDto
+            {
+                Schedule = _mapper.Map<ConsultantScheduleDto>(s.Schedule),
+                AppointmentStatus = s.AppointmentStatus,
+                PaymentStatus = s.PaymentStatus
+            }).OrderBy(s => s.Schedule.Date).ThenBy(s => s.Schedule.StartTime);
+
             Log.Information("Retrieved {Count} schedules", result.Count());
             return result;
         }
 
-        public async Task<(AppointmentDto appointment, string paymentUrl)> BookAppointmentAsync(BookAppointmentDto bookDto, int userId, HttpContext context = null)
+        public async Task<(AppointmentDto appointment, string paymentUrl)> BookAppointmentAsync(BookAppointmentDto bookDto, int userId, string clientIp, HttpContext context = null)
         {
             Log.Information("Booking appointment for user {UserId} with consultant {ConsultantId}", userId, bookDto.ConsultantId);
 
@@ -145,7 +152,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             await _unitOfWork.Appointments.UpdateAppointmentSchedulesAsync(appointment.AppointmentID, bookDto.ScheduleIds);
 
-            var paymentUrl = _vnPayHelper.CreatePaymentUrl(payment, $"Appointment {appointment.AppointmentID} for {durationHours} hours", null, context);
+            var paymentUrl = _vnPayHelper.CreatePaymentUrl(payment, $"Appointment {appointment.AppointmentID} for {durationHours} hours", clientIp, context);
             var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
 
             Log.Information("Appointment {AppointmentId} created with payment URL", appointment.AppointmentID);
@@ -345,6 +352,41 @@ namespace DrugUsePreventionAPI.Services.Implementations
             Log.Information("Retrieved {Count} appointments for consultant {ConsultantId}", result.Count(), consultantId);
             return result;
         }
+
+        public async Task<IEnumerable<PaymentHistoryDto>> GetPaymentHistoryAsync(int userId, bool isAdmin, DateTime? startDate, DateTime? endDate)
+        {
+            Log.Information("Retrieving payment history for user {UserId}, isAdmin: {IsAdmin}", userId, isAdmin);
+
+            IEnumerable<Payment> payments;
+            if (isAdmin)
+            {
+                // Admin: Lấy tất cả giao dịch SUCCESS của mọi user
+                payments = await _unitOfWork.Payments.GetAllPaymentsAsync(startDate, endDate, "SUCCESS");
+            }
+            else
+            {
+                // Member: Lấy giao dịch SUCCESS của userId
+                payments = await _unitOfWork.Payments.GetPaymentsByUserIdAsync(userId, startDate, endDate);
+                payments = payments.Where(p => p.Status == "SUCCESS").ToList();
+            }
+
+            var result = _mapper.Map<IEnumerable<PaymentHistoryDto>>(payments);
+            Log.Information("Retrieved {Count} payment records for user {UserId}", result.Count(), userId);
+            return result;
+        }
+
+
+        public async Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate)
+        {
+            return await _unitOfWork.Appointments.GetAppointmentStatisticsAsync(startDate, endDate);
+        }
+
+        public async Task<PaymentStatDto> GetPaymentStatisticsAsync(DateTime? startDate, DateTime? endDate)
+        {
+            return await _unitOfWork.Payments.GetPaymentStatisticsAsync(startDate, endDate);
+        }
+
+
         private string BuildMemberEmailBody(Appointment appointment, User consultant, string meetLink)
         {
             return $@"
