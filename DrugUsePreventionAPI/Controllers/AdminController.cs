@@ -20,12 +20,18 @@ namespace DrugUsePreventionAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAppointmentService _appointmentService;
         private readonly IConfiguration _configuration;
 
-        public AdminController(IUserService userService, IUnitOfWork unitOfWork, IConfiguration configuration)
+        public AdminController(
+            IUserService userService,
+            IUnitOfWork unitOfWork,
+            IAppointmentService appointmentService,
+            IConfiguration configuration)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
+            _appointmentService = appointmentService;
             _configuration = configuration;
         }
 
@@ -39,36 +45,40 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("payment-statistics")]
-        public async Task<IActionResult> GetPaymentStatistics([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string? status = null)
+        public async Task<IActionResult> GetPaymentStatistics([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             try
             {
-                var payments = await _unitOfWork.Payments.GetPaymentsByDateAndStatusAsync(startDate, endDate, status);
-
-                var stats = payments
-                    .GroupBy(p => p.Status)
-                    .Select(g => new
-                    {
-                        Status = g.Key,
-                        Count = g.Count(),
-                        TotalAmount = g.Sum(p => p.Amount)
-                    })
-                    .ToList();
-
-                var totalRevenue = payments.Sum(p => p.Amount);
-                var totalTransactions = payments.Count();
-
+                var stats = await _appointmentService.GetPaymentStatisticsAsync(startDate, endDate);
                 return Ok(new
                 {
-                    TotalRevenue = totalRevenue,
-                    TotalTransactions = totalTransactions,
-                    BreakdownByStatus = stats
+                    success = true,
+                    data = stats
                 });
             }
             catch (Exception ex)
             {
                 Serilog.Log.Error(ex, "Error retrieving payment statistics");
-                return StatusCode(500, new { message = "An error occurred while retrieving payment statistics." });
+                return StatusCode(500, new { success = false, message = "An error occurred while retrieving payment statistics." });
+            }
+        }
+
+        [HttpGet("appointment-statistics")]
+        public async Task<IActionResult> GetAppointmentStatistics([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            try
+            {
+                var stats = await _appointmentService.GetAppointmentStatisticsAsync(startDate, endDate);
+                return Ok(new
+                {
+                    success = true,
+                    data = stats
+                });
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex, "Error retrieving appointment statistics");
+                return StatusCode(500, new { success = false, message = "An error occurred while retrieving appointment statistics." });
             }
         }
 

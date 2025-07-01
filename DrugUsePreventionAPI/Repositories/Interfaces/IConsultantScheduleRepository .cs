@@ -13,5 +13,6 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<List<ConsultantSchedule>> GetByIdsAsync(List<int> scheduleIds);
         Task RemoveRange(IEnumerable<ConsultantSchedule> schedules);
         Task<ConsultantSchedule> GetAsync(Expression<Func<ConsultantSchedule, bool>> predicate, CancellationToken cancellationToken = default);
+        Task<IEnumerable<(ConsultantSchedule Schedule, string? AppointmentStatus, string? PaymentStatus)>> GetSchedulesWithAppointmentStatusAsync(int consultantId, DateTime startDate, DateTime endDate);
     }
 }

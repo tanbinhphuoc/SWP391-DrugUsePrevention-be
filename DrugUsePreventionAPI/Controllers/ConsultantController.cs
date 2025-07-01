@@ -25,7 +25,7 @@ namespace DrugUsePreventionAPI.Controllers
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        [HttpPost("create")]
+        [HttpPost("createConsultant(Admin)")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateConsultant([FromBody] CreateConsultantDto createConsultantDto)
         {
@@ -51,7 +51,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}GetConsultantByID")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetConsultant(int id)
         {
@@ -62,7 +62,7 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(consultant);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}UpdateConsultant")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateConsultant(int id, [FromBody] UpdateConsultantDto updateConsultantDto)
         {
@@ -90,7 +90,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}DeleteConsultant")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConsultant(int id)
         {
@@ -113,7 +113,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpPut("me")]
+        [HttpPut("UpdateConsultantByConsultant")]
         [Authorize(Roles = "Consultant")]
         public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateConsultantDto updateConsultantDto)
         {

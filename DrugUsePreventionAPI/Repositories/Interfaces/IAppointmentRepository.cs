@@ -1,4 +1,8 @@
 ﻿using DrugUsePreventionAPI.Models.Entities;
+using DrugUsePreventionAPI.Models.DTOs.Admin;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Repositories.Interfaces
 {
@@ -10,5 +14,6 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<bool> IsTimeSlotBookedAsync(int consultantId, DateTime startDateTime, DateTime endDateTime);
         Task<Payment> GetByAppointmentIdAsync(int appointmentId);
         Task UpdateAppointmentSchedulesAsync(int appointmentId, List<int> scheduleIds);
+        Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate);
     }
 }

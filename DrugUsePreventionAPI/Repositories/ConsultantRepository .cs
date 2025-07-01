@@ -50,7 +50,16 @@ namespace DrugUsePreventionAPI.Repositories
             return await _context.Consultants
                 .AsNoTracking()
                 .Include(c => c.User)
+                .Include(c => c.Certificate)
                 .FirstOrDefaultAsync(c => c.UserID == userId);
         }
+        public async Task<Consultant> GetByUserIdTrackedAsync(int userId)
+        {
+            return await _context.Consultants
+                .Include(c => c.User)
+                .Include(c => c.Certificate)
+                .FirstOrDefaultAsync(c => c.UserID == userId);
+        }
+
     }
 }

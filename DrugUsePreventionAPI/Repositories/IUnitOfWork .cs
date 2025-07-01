@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Repositories.Interfaces;
+using System.Security.Cryptography;
 
 namespace DrugUsePreventionAPI.Repositories
 {
@@ -19,7 +20,6 @@ namespace DrugUsePreventionAPI.Repositories
         IQuestionRepository Questions { get; }
         IAnswerOptionRepository AnswerOptions { get; }
         Task<int> SaveChangesAsync();
-
-
+        void Attach<TEntity>(TEntity entity) where TEntity : class;
     }
 }

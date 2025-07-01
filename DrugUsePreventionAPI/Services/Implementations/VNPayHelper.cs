@@ -18,14 +18,14 @@ public class VNPayHelper
     private static string Encode(string input)
         => WebUtility.UrlEncode(input).Replace("+", "%20");
 
-    public string CreatePaymentUrl(Payment payment, string orderInfo, DateTime? expireDate = null, HttpContext context = null)
+    public string CreatePaymentUrl(Payment payment, string orderInfo, string clientIp, HttpContext context = null, DateTime? expireDate = null)
     {
         var tmnCode = _vnpaySettings.TmnCode;
         var hashSecret = _vnpaySettings.HashSecret;
         var vnpUrl = _vnpaySettings.PaymentUrl;
         var returnUrl = _vnpaySettings.ReturnUrl;
 
-        var ipAddress = context?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+        var ipAddress = clientIp ?? context?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
         var vietnamTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
         var vnp_CreateDate = vietnamTime.ToString("yyyyMMddHHmmss");
         var vnp_ExpireDate = (expireDate ?? vietnamTime.AddMinutes(15)).ToString("yyyyMMddHHmmss");

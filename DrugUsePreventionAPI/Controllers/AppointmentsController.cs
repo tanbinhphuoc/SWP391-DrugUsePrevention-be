@@ -24,7 +24,7 @@ namespace DrugUsePreventionAPI.Controllers
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        [HttpGet("consultants")]
+        [HttpGet("GetAllConsultant")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAvailableConsultants()
         {
@@ -39,8 +39,7 @@ namespace DrugUsePreventionAPI.Controllers
                 return StatusCode(500, new { success = false, message = "An error occurred while retrieving consultants." });
             }
         }
-
-        [HttpGet("consultants/{consultantId}/schedules")]
+        [HttpGet("{consultantId}/ConsultantSchedules")]
         [AllowAnonymous]
         public async Task<IActionResult> GetConsultantSchedules(int consultantId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
@@ -62,7 +61,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpPost("book")]
+        [HttpPost("BookAppointment")]
         [Authorize(Roles = "Member,Guest")]
         public async Task<IActionResult> BookAppointment([FromBody] BookAppointmentDto dto, [FromHeader(Name = "X-Forwarded-For")] string? clientIp = null)
         {
@@ -89,20 +88,16 @@ namespace DrugUsePreventionAPI.Controllers
 
                 Log.Information("Booking appointment for UserID={UserID} with ConsultantID={ConsultantId}", userId, dto.ConsultantId);
 
-                // Tạo HttpContext giả lập để truyền IP client
-                var httpContext = new DefaultHttpContext();
-                if (!string.IsNullOrEmpty(clientIp))
+                // Lấy IP client, ưu tiên X-Forwarded-For và kiểm tra định dạng
+                var clientIpAddress = clientIp?.Split(',')[0]; // Lấy IP đầu tiên từ X-Forwarded-For
+                if (string.IsNullOrEmpty(clientIpAddress))
                 {
-                    httpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Parse(clientIp);
-                    Log.Information("Using client IP from header: {ClientIp}", clientIp);
+                    clientIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
                 }
-                else
-                {
-                    httpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Parse("203.0.113.5"); 
-                    Log.Warning("No client IP available, using fallback IP: 203.0.113.5");
-                }
+                clientIpAddress = clientIpAddress ?? "127.0.0.1"; // Fallback an toàn
+                Log.Information("Using client IP from header: {ClientIpAddress}", clientIpAddress);
 
-                var (appointment, paymentUrl) = await _appointmentService.BookAppointmentAsync(dto, userId, httpContext);
+                var (appointment, paymentUrl) = await _appointmentService.BookAppointmentAsync(dto, userId, clientIpAddress);
                 return Ok(new { success = true, data = new { Appointment = appointment, PaymentUrl = paymentUrl } });
             }
             catch (InvalidOperationException ex)
@@ -186,7 +181,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpGet("my-appointments")]
+        [HttpGet("GetAppointmentAboutMember")]
         [Authorize(Roles = "Member,Guest")]
         public async Task<IActionResult> GetMyAppointments()
         {
@@ -215,7 +210,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpGet("consultant-appointments")]
+        [HttpGet("GetAllAppointmentAboutConsultant")]
         [Authorize(Roles = "Consultant")]
         public async Task<IActionResult> GetConsultantAppointments()
         {
@@ -256,7 +251,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [HttpGet("consultant-appointments/{consultantId}")]
+        [HttpGet("GetAppointmentConsultant(ID)")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetConsultantAppointmentsById(int consultantId)
         {
@@ -271,5 +266,36 @@ namespace DrugUsePreventionAPI.Controllers
                 return StatusCode(500, new { success = false, message = "An error occurred while retrieving consultant appointments." });
             }
         }
+
+        [HttpGet("payment-history")]
+        [Authorize(Roles = "Admin,Member,Guest")]
+        public async Task<IActionResult> GetPaymentHistory([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    Log.Warning("No user ID claim found in token");
+                    return Unauthorized(new { success = false, message = "Unauthorized access." });
+                }
+
+                if (!int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
+                    return BadRequest(new { success = false, message = "Invalid user ID format." });
+                }
+
+                var isAdmin = User.IsInRole("Admin");
+                var payments = await _appointmentService.GetPaymentHistoryAsync(userId, isAdmin, startDate, endDate);
+                return Ok(new { success = true, data = payments });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving payment history for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { success = false, message = "An error occurred while retrieving payment history." });
+            }
+        }
+
     }
 }

@@ -125,12 +125,11 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return true;
         }
 
-        // Trong ConsultantService.cs
         public async Task<ConsultantDto> UpdateConsultantProfileAsync(int userId, UpdateConsultantDto updateConsultantDto, bool isAdmin = false)
         {
             Log.Information("Updating consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
 
-            var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
+            var consultant = await _unitOfWork.Consultants.GetByUserIdTrackedAsync(userId);
             if (consultant == null)
             {
                 Log.Warning("Consultant with UserID {UserId} not found", userId);
@@ -150,34 +149,32 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new UnauthorizedAccessException("You can only update your own profile.");
             }
 
-            if (updateConsultantDto.UserName != null && await _unitOfWork.Users.UsernameExistsAsync(updateConsultantDto.UserName) && updateConsultantDto.UserName != user.UserName)
-            {
-                Log.Warning("Username {UserName} already exists", updateConsultantDto.UserName);
-                throw new DuplicateEntityException("User", "Username", updateConsultantDto.UserName);
-            }
-
-            if (updateConsultantDto.Email != null && await _unitOfWork.Users.EmailExistsAsync(updateConsultantDto.Email) && updateConsultantDto.Email != user.Email)
-            {
-                Log.Warning("Email {Email} already exists", updateConsultantDto.Email);
-                throw new DuplicateEntityException("User", "Email", updateConsultantDto.Email);
-            }
+            // Đính kèm user và consultant vào DbContext để theo dõi
+            //_unitOfWork.Attach(user);
+            //_unitOfWork.Attach(consultant);
 
             _mapper.Map(updateConsultantDto, user);
             _mapper.Map(updateConsultantDto, consultant);
+
             if (!string.IsNullOrEmpty(updateConsultantDto.Password))
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(updateConsultantDto.Password);
             }
+
             user.UpdatedAt = DateTime.UtcNow;
             consultant.UpdatedAt = DateTime.UtcNow;
 
-            _unitOfWork.Users.Update(user);
-            _unitOfWork.Consultants.Update(consultant);
+            // _unitOfWork.Users.Update(user);
+            //_unitOfWork.Consultants.Update(consultant);
+
             await _unitOfWork.SaveChangesAsync();
 
             var result = _mapper.Map<ConsultantDto>(consultant);
             Log.Information("Updated consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
             return result;
         }
+
+
+
     }
 }
