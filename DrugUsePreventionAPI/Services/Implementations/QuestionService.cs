@@ -3,17 +3,22 @@ using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using Microsoft.Extensions.Configuration;
+using DrugUsePreventionAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class QuestionService : IQuestionService
     {
-        private readonly IUnitOfWork _unitOfWork; private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork; 
+        private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
 
-        public QuestionService(IUnitOfWork unitOfWork, IConfiguration configuration)
+        public QuestionService(IUnitOfWork unitOfWork, IConfiguration configuration, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
+            _context = context;
         }
 
         public async Task<bool> CreateQuestionForSurvey(CreateQuestionForSurveyDto createQuestionForSurveyDto)
@@ -136,12 +141,32 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         }
 
-        public async Task<Question?> GetQuestionForAssessmentById(int id)
+        public async Task<List<GetQuestionWithAnswersDto>> GetAllQuestionsWithAnswersForAssessmentId(int assessmentId)
         {
-            var question = await _unitOfWork.Questions.GetByIdAsync(id);
-            return (question?.AssessmentID != null && !question.IsDeleted) ? question : null;
+            var questions = await _context.Questions
+                .Include(q => q.AnswerOptions)
+                .Where(q => q.AssessmentID == assessmentId && !q.IsDeleted)
+                .ToListAsync();
 
+            var result = questions.Select(q => new GetQuestionWithAnswersDto
+            {
+                QuestionId = q.QuestionID,
+                QuestionText = q.QuestionText,
+                QuestionType = q.QuestionType,
+                Answers = q.AnswerOptions
+                    .Where(a => !a.IsDeleted)
+                    .Select(a => new GetQuestionWithAnswersDto.AnswerOptionDto
+                    {
+                        AnswerId = a.OptionID,
+                        OptionText = a.OptionText,
+                        ScoreValue = a.ScoreValue ?? 0
+                    }).ToList()
+            }).ToList();
+
+            return result;
         }
+
+
 
         public async Task<bool> DeleteQuestionForAssessment(int id)
         {
