@@ -13,7 +13,8 @@ namespace DrugUsePreventionAPI.Services.Interfaces
 
         Task<bool> CreateQuestionForAssessment(CreateQuestionForAssessmentDto createQuestionForAssessmentDto);
         Task<List<Question>> GetAllQuestionForAssessment();
-        Task<Question?> GetQuestionForAssessmentById(int id);
+        Task<List<GetQuestionWithAnswersDto>> GetAllQuestionsWithAnswersForAssessmentId(int assessmentId);
+
         Task<bool> UpdateQuestionForAssessment(int id, CreateQuestionForAssessmentDto createQuestionForAssessmentDto);
         Task<bool> DeleteQuestionForAssessment(int id);
         Task<bool> CreateMultipleQuestionsWithAnswers(List<CreateQuestionWithAnswersDto> questionsWithAnswers);
