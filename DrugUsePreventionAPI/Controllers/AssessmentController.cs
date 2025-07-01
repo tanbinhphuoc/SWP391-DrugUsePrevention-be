@@ -1,4 +1,5 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
+﻿using DrugUsePreventionAPI.Models.DTOs.Assessment;
+using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -18,31 +19,26 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [Authorize(Roles = "Admin,Manager")]
-        [HttpPost("CreateAssessment")]
-        public async Task<IActionResult> CreateAssessment(CreateAssessmentDto assessmentDto)
+        [HttpPost("CreateInputAssessment")]
+        public async Task<IActionResult> CreateInputAssessment([FromBody] CreateInputAssessmentDto dto)
         {
-            if (string.IsNullOrWhiteSpace(assessmentDto.AssessmentStage) ||
-                (assessmentDto.AssessmentStage != "Input" && assessmentDto.AssessmentStage != "Output"))
-            {
-                return BadRequest(new { message = "AssessmentStage phải là 'Input' hoặc 'Output'" });
-            }
+            var result = await _assessmentService.CreateInputAssessment(dto);
+            if (result.IsSuccess)
+                return Ok(new { success = true, message = result.Message, id = result.AssessmentId });
 
-            if (assessmentDto.AssessmentStage == "Output" && !assessmentDto.CourseID.HasValue)
-            {
-                return BadRequest(new { message = "Vui lòng nhập CourseID cho Assessment Output" });
-            }
-
-            var result = await _assessmentService.CreateAssessment(assessmentDto);
-
-            if (result.Equals("Tạo Assessment thành công", StringComparison.OrdinalIgnoreCase))
-                return Ok(new { message = result });
-
-            return BadRequest(new { message = result });
+            return BadRequest(new { success = false, message = result.Message });
         }
 
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpPost("CreateOutputAssessment")]
+        public async Task<IActionResult> CreateOutputAssessment([FromBody] CreateOutputAssessmentDto dto)
+        {
+            var result = await _assessmentService.CreateOutputAssessment(dto);
+            if (result.IsSuccess)
+                return Ok(new { success = true, message = result.Message, id = result.AssessmentId });
 
-
-
+            return BadRequest(new { success = false, message = result.Message });
+        }
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpPut("UpdateAssessment")]
@@ -51,70 +47,69 @@ namespace DrugUsePreventionAPI.Controllers
             if (string.IsNullOrWhiteSpace(assessmentDto.AssessmentStage) ||
                 (assessmentDto.AssessmentStage != "Input" && assessmentDto.AssessmentStage != "Output"))
             {
-                return BadRequest(new { message = "AssessmentStage phải là 'Input' hoặc 'Output'" });
+                return BadRequest(new { success = false, message = "AssessmentStage phải là 'Input' hoặc 'Output'" });
             }
 
             if (assessmentDto.AssessmentStage == "Output" && !assessmentDto.CourseID.HasValue)
             {
-                return BadRequest(new { message = "Vui lòng nhập CourseID cho Assessment Output" });
+                return BadRequest(new { success = false, message = "Vui lòng nhập CourseID cho Assessment Output" });
             }
 
             var isUpdated = await _assessmentService.UpdateAssessment(id, assessmentDto);
             if (isUpdated)
-                return Ok(new { message = "Cập nhật Assessment thành công" });
+                return Ok(new { success = true, message = "Cập nhật Assessment thành công" });
 
             string stage = assessmentDto.AssessmentStage == "Input" ? "đầu vào" : "đầu ra";
             string type = assessmentDto.AssessmentType;
             string courseInfo = assessmentDto.AssessmentStage == "Output" ? $" cho khóa học {assessmentDto.CourseID}" : "";
 
-            return BadRequest(new { message = $"Cập nhật thất bại. Đã tồn tại Assessment {stage} loại {type}{courseInfo}." });
+            return BadRequest(new { success = false, message = $"Cập nhật thất bại. Đã tồn tại Assessment {stage} loại {type}{courseInfo}." });
         }
-
-
         [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetAllAssessment")]
-        public async Task<ActionResult<List<Assessment>>> GetAllAssessment()
+        public async Task<IActionResult> GetAllAssessment()
         {
-            var assessment = await _assessmentService.GetAllAssessment();
-            return Ok(new { message = assessment });
+            var assessments = await _assessmentService.GetAllAssessmentWithCourse();
+            return Ok(new { success = true, message = "Lấy danh sách thành công", data = assessments });
         }
+
+
 
         [HttpGet("GetAvailableCourses")]
         public async Task<IActionResult> GetAvailableCourses()
         {
             var courses = await _assessmentService.GetAvailableCourses();
-
             var courseList = courses.Select(c => new
             {
                 c.CourseID,
                 c.CourseName
             });
 
-            return Ok(new { message = courseList });
+            return Ok(new { success = true, message = "Lấy danh sách khóa học thành công", data = courseList });
         }
-
-
         [HttpGet("GetAssessmentsByStage")]
         public async Task<IActionResult> GetAssessmentsByStage(string stage)
         {
             if (string.IsNullOrWhiteSpace(stage) ||
                 (stage != "Input" && stage != "Output"))
             {
-                return BadRequest(new { message = "Stage phải là 'Input' hoặc 'Output'" });
+                return BadRequest(new { success = false, message = "Stage phải là 'Input' hoặc 'Output'" });
             }
 
-            var all = await _assessmentService.GetAllAssessment();
+            var all = await _assessmentService.GetAllAssessmentWithCourse();
             var filtered = all
-                .Where(a => a.AssessmentStage == stage && !a.IsDeleted)
+                .Where(a => a.AssessmentStage == stage)
                 .ToList();
 
-            return Ok(new { message = filtered });
+            return Ok(new { success = true, message = "Lọc thành công", data = filtered });
         }
+
+
         [HttpGet("GetAssessmentByAge")]
         public async Task<IActionResult> GetAssessmentByAge(int age)
         {
             var assessment = await _assessmentService.GetAssessmentByAge(age);
-            return Ok(new { message = assessment });
+            return Ok(new { success = true, message = "Lấy thành công", data = assessment });
         }
 
         [HttpGet("GetAssessmentFormById")]
@@ -122,9 +117,9 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentService.GetAssessmentById(id);
             if (result == null)
-                return NotFound(new { message = "Không tìm thấy bài đánh giá." });
+                return NotFound(new { success = false, message = "Không tìm thấy bài đánh giá." });
 
-            return Ok(new { message = result });
+            return Ok(new { success = true, message = "Lấy thành công", data = result });
         }
 
         [Authorize(Roles = "Admin,Manager")]
@@ -133,13 +128,9 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var result = await _assessmentService.DeleteAssessment(id);
             if (result)
-                return Ok(new { message = "Xóa Assessment thành công." });
+                return Ok(new { success = true, message = "Xóa Assessment thành công." });
 
-            return BadRequest(new { message = "Xóa Assessment thất bại hoặc không tồn tại." });
+            return BadRequest(new { success = false, message = "Xóa Assessment thất bại hoặc không tồn tại." });
         }
-
-
-        
     }
-
 }
