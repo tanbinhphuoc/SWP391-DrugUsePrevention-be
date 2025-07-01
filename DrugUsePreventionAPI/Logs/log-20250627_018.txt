@@ -1,0 +1,48 @@
+2025-06-27 23:36:30.328 +07:00 [INF] Updated ReturnUrl to: https://430b-2402-800-6327-d359-942f-26ec-adf8-2a5d.ngrok-free.app/api/vnpay/return
+2025-06-27 23:36:31.327 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-27 23:36:34.756 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-27 23:36:37.872 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-27 23:36:39.938 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-27 23:36:39.945 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-27 23:36:39.951 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-27 23:36:40.067 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b successfully announced in 55.4545 ms
+2025-06-27 23:36:40.091 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-27 23:36:40.128 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b all the dispatchers started
+2025-06-27 23:38:09.996 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-06-27 23:40:08.625 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751042310, exp: 1751128710, iat: 1751042310, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 23:40:09.129 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-27 23:40:09.148 +07:00 [INF] Using client IP from header: 192.168.1.1
+2025-06-27 23:40:09.168 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-27 23:40:09.652 +07:00 [WRN] Time slot is already booked for consultant 5
+2025-06-27 23:40:09.665 +07:00 [ERR] Error booking appointment for UserID=20
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Selected time slot is already booked.
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.BookAppointmentAsync(BookAppointmentDto bookDto, Int32 userId, String clientIp, HttpContext context) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 119
+   at DrugUsePreventionAPI.Controllers.AppointmentsController.BookAppointment(BookAppointmentDto dto, String clientIp) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AppointmentsController.cs:line 100
+2025-06-27 23:41:03.669 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751042310, exp: 1751128710, iat: 1751042310, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 23:41:03.723 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-27 23:41:03.743 +07:00 [INF] Using client IP from header: 192.168.1.1
+2025-06-27 23:41:03.750 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-27 23:41:03.807 +07:00 [WRN] Invalid or non-consecutive schedules for consultant 5
+2025-06-27 23:41:03.815 +07:00 [ERR] Error booking appointment for UserID=20
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Selected schedules are invalid or not consecutive.
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.BookAppointmentAsync(BookAppointmentDto bookDto, Int32 userId, String clientIp, HttpContext context) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 95
+   at DrugUsePreventionAPI.Controllers.AppointmentsController.BookAppointment(BookAppointmentDto dto, String clientIp) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AppointmentsController.cs:line 100
+2025-06-27 23:43:29.543 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751042310, exp: 1751128710, iat: 1751042310, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 23:43:29.688 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-06-28T00:00:00.0000000" to "2025-07-02T00:00:00.0000000"
+2025-06-27 23:43:30.137 +07:00 [INF] Retrieved 60 schedules
+2025-06-27 23:43:55.385 +07:00 [INF] JWT Token validated successfully for user: KingKaka, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KingKaka, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: buitham8758@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751042310, exp: 1751128710, iat: 1751042310, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-06-27 23:43:55.406 +07:00 [INF] Booking appointment for UserID=20 with ConsultantID=5
+2025-06-27 23:43:55.420 +07:00 [INF] Using client IP from header: 192.168.1.1
+2025-06-27 23:43:55.430 +07:00 [INF] Booking appointment for user 20 with consultant 5
+2025-06-27 23:43:56.349 +07:00 [INF] Appointment 104 created with payment URL
+2025-06-27 23:54:10.075 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-27 23:54:10.156 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b caught stopping signal...
+2025-06-27 23:54:10.222 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b caught stopped signal...
+2025-06-27 23:54:10.230 +07:00 [WRN] Server laptop-qlc4gki0:28876:d472462b caught shutdown signal...
+2025-06-27 23:54:10.242 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b All dispatchers stopped
+2025-06-27 23:54:10.331 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b successfully reported itself as stopped in 47.4315 ms
+2025-06-27 23:54:10.338 +07:00 [INF] Server laptop-qlc4gki0:28876:d472462b has been stopped in total 115.5162 ms

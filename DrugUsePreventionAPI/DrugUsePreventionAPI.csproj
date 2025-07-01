@@ -32,7 +32,6 @@
 	<ItemGroup>
 		<Folder Include="Migrations\" />
 		<Folder Include="Models\Entities\" />
-		<Folder Include="Models\DTOs\Appointment\" />
 		<Folder Include="Models\DTOs\Auth\" />
 	</ItemGroup>
 

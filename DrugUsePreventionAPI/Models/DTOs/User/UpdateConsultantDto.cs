@@ -11,5 +11,6 @@
         public string? Specialty { get; set; }
         public string? Experience { get; set; }
         public int? CertificateID { get; set; }
+        public string? GoogleMeetLink { get; set; }
     }
 }

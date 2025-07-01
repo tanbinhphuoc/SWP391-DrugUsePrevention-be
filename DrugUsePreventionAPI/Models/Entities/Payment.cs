@@ -14,7 +14,7 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         public int? AppointmentID { get; set; }
 
-        public decimal Amount { get; set; } = 0;
+        public decimal? Amount { get; set; } = 0;
 
         public DateTime? PaymentDate { get; set; } = DateTime.Now;
 

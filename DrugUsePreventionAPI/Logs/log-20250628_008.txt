@@ -1,0 +1,35 @@
+2025-06-28 22:12:37.241 +07:00 [INF] Updated ReturnUrl to: https://4465-2405-4802-8012-15b0-71b6-1cf0-27aa-442.ngrok-free.app/api/vnpay/return
+2025-06-28 22:12:37.543 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-28 22:12:38.581 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-28 22:12:39.302 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-28 22:12:39.833 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-28 22:12:39.837 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-28 22:12:39.841 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-28 22:12:39.905 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f successfully announced in 51.8605 ms
+2025-06-28 22:12:39.908 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-28 22:12:39.914 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f all the dispatchers started
+2025-06-28 22:12:52.303 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-06-28 22:12:52.305 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f caught stopping signal...
+2025-06-28 22:12:52.312 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f caught stopped signal...
+2025-06-28 22:12:52.312 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f All dispatchers stopped
+2025-06-28 22:12:52.314 +07:00 [WRN] Server laptop-qlc4gki0:17452:d1e1952f caught shutdown signal...
+2025-06-28 22:12:52.332 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f successfully reported itself as stopped in 13.9316 ms
+2025-06-28 22:12:52.333 +07:00 [INF] Server laptop-qlc4gki0:17452:d1e1952f has been stopped in total 21.4836 ms
+2025-06-28 22:14:35.303 +07:00 [INF] Updated ReturnUrl to: https://4465-2405-4802-8012-15b0-71b6-1cf0-27aa-442.ngrok-free.app/api/vnpay/return
+2025-06-28 22:14:35.964 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-06-28 22:14:38.089 +07:00 [INF] Hangfire SQL objects installed.
+2025-06-28 22:14:39.833 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-06-28 22:14:40.913 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-06-28 22:14:40.915 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-06-28 22:14:40.917 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-06-28 22:14:41.009 +07:00 [INF] Server laptop-qlc4gki0:14240:6b53dd8b successfully announced in 64.4393 ms
+2025-06-28 22:14:41.018 +07:00 [INF] Server laptop-qlc4gki0:14240:6b53dd8b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-06-28 22:14:41.153 +07:00 [INF] Server laptop-qlc4gki0:14240:6b53dd8b all the dispatchers started

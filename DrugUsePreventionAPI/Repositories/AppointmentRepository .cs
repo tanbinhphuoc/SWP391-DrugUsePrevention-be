@@ -1,5 +1,6 @@
 ﻿using DrugUsePreventionAPI.Data;
 using DrugUsePreventionAPI.Exceptions;
+using DrugUsePreventionAPI.Models.DTOs.Admin;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -29,17 +30,21 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<IEnumerable<Appointment>> GetByUserIdAsync(int userId)
         {
             return await _context.Appointments
-                .AsNoTracking()
-                .Where(a => a.UserID == userId)
-                .ToListAsync();
+         .Include(a => a.User)
+         .Include(a => a.Consultant)
+         .ThenInclude(c => c.User)
+         .Where(a => a.UserID == userId)
+         .ToListAsync();
         }
 
         public async Task<IEnumerable<Appointment>> GetByConsultantIdAsync(int consultantId)
         {
             return await _context.Appointments
-                .AsNoTracking()
-                .Where(a => a.ConsultantID == consultantId)
-                .ToListAsync();
+         .Include(a => a.User)
+         .Include(a => a.Consultant)
+         .ThenInclude(c => c.User)
+         .Where(a => a.ConsultantID == consultantId)
+         .ToListAsync();
         }
 
         public async Task<Appointment> GetAppointmentWithDetailsAsync(int appointmentId)
@@ -67,8 +72,14 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<Payment> GetByAppointmentIdAsync(int appointmentId)
         {
             var payment = await _context.Payments
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.AppointmentID == appointmentId);
+              .AsNoTracking()
+              .Include(p => p.Appointment)
+                  .ThenInclude(a => a.User)
+              .Include(p => p.Appointment)
+                  .ThenInclude(a => a.Consultant)
+                      .ThenInclude(c => c.User)
+              .FirstOrDefaultAsync(p => p.AppointmentID == appointmentId);
+
             if (payment == null)
             {
                 Log.Warning("No payment found for appointment ID {AppointmentId}", appointmentId);
@@ -87,6 +98,34 @@ namespace DrugUsePreventionAPI.Repositories
 
             appointment.ScheduleIds = string.Join(",", scheduleIds);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate)
+        {
+            Log.Information("Retrieving appointment statistics from {StartDate} to {EndDate}", startDate, endDate);
+
+            var query = _context.Appointments.AsNoTracking();
+            if (startDate.HasValue)
+                query = query.Where(a => a.StartDateTime >= startDate.Value);
+            if (endDate.HasValue)
+                query = query.Where(a => a.EndDateTime <= endDate.Value);
+
+            var totalAppointments = await query.CountAsync();
+            var totalConfirmed = await query.CountAsync(a => a.Status == "CONFIRMED");
+            var totalCancelled = await query.CountAsync(a => a.Status == "CANCELED");
+            var totalPending = await query.CountAsync(a => a.Status == "PENDING_PAYMENT");
+
+            var stats = new AppointmentStatDto
+            {
+                TotalAppointments = totalAppointments,
+                TotalConfirmedAppointments = totalConfirmed,
+                TotalCancelledAppointments = totalCancelled,
+                TotalPendingAppointments = totalPending
+            };
+
+            Log.Information("Retrieved appointment statistics: Total={Total}, Confirmed={Confirmed}, Cancelled={Cancelled}, Pending={Pending}",
+                totalAppointments, totalConfirmed, totalCancelled, totalPending);
+            return stats;
         }
     }
 }
