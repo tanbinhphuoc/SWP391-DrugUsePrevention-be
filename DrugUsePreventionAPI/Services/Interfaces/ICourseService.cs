@@ -6,7 +6,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
 {
     public interface ICourseService
     {
-        Task<bool> CreateCourse(CreateCourseDto courseDto);
+        Task<int?> CreateCourse(CreateCourseDto courseDto);
         Task<List<Course>> GetAllCourses();
         Task<Course?> GetCourseById(int id);
         Task<bool> UpdateCourse(int id, CreateCourseDto courseDto);

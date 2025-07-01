@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using DrugUsePreventionAPI.Models.DTOs.Assessment;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -22,83 +23,76 @@ namespace DrugUsePreventionAPI.Services.Implementations
             _context = context;
         }
 
-        public async Task<string> CreateAssessment(CreateAssessmentDto assessmentDto)
+        public async Task<(bool IsSuccess, string Message, int? AssessmentId)> CreateInputAssessment(CreateInputAssessmentDto dto)
         {
-            // Kiểm tra loại đánh giá
-            if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Crafft")
-                return "AssessmentType chỉ được là 'Assist' hoặc 'Crafft'.";
+            if (dto.AssessmentType != "Assist" && dto.AssessmentType != "Crafft")
+                return (false, "AssessmentType phải là 'Assist' hoặc 'Crafft'.", null);
 
-            // Kiểm tra giai đoạn
-            if (assessmentDto.AssessmentStage != "Input" && assessmentDto.AssessmentStage != "Output")
-                return "AssessmentStage chỉ được là 'Input' hoặc 'Output'.";
+            var exists = await _unitOfWork.Assessments.FindAsync(a =>
+                !a.IsDeleted &&
+                a.AssessmentType == dto.AssessmentType &&
+                a.AssessmentStage == "Input");
 
-            // Nếu là Output thì cần CourseID
-            if (assessmentDto.AssessmentStage == "Output" && !assessmentDto.CourseID.HasValue)
-                return "Assessment Output cần có CourseID.";
+            if (exists.Any())
+                return (false, $"Đã tồn tại Assessment Input loại {dto.AssessmentType}.", null);
 
-            // Kiểm tra trùng
-            if (assessmentDto.AssessmentStage == "Output" && assessmentDto.CourseID.HasValue)
-            {
-                var allCourseAssessments = await _context.CourseAssessments
-                    .Include(ca => ca.Assessment)
-                    .Where(ca => !ca.Assessment.IsDeleted)
-                    .ToListAsync();
-
-                var exists = allCourseAssessments.Any(ca =>
-                    ca.CourseID == assessmentDto.CourseID.Value &&
-                    ca.Assessment.AssessmentStage == "Output" &&
-                    ca.Assessment.AssessmentType == assessmentDto.AssessmentType);
-
-                if (exists)
-                    return $"Đã tồn tại Assessment Output loại {assessmentDto.AssessmentType} cho khóa học này.";
-            }
-            else // Nếu là Input
-            {
-                var existing = await _unitOfWork.Assessments.FindAsync(a =>
-                    !a.IsDeleted &&
-                    a.AssessmentStage == "Input" &&
-                    a.AssessmentType == assessmentDto.AssessmentType);
-
-                if (existing.Any())
-                    return $"Đã tồn tại Assessment Input loại {assessmentDto.AssessmentType}.";
-            }
-
-            // Tạo mới
             var assessment = new Assessment
             {
-                AssessmentName = assessmentDto.AssessmentName,
-                Description = assessmentDto.Description,
-                AssessmentType = assessmentDto.AssessmentType,
-                AssessmentStage = assessmentDto.AssessmentStage,
-                MinAge = assessmentDto.MinAge,
-                MaxAge = assessmentDto.MaxAge
+                AssessmentName = dto.AssessmentName,
+                Description = dto.Description,
+                AssessmentType = dto.AssessmentType,
+                AssessmentStage = "Input",
+                MinAge = dto.MinAge,
+                MaxAge = dto.MaxAge
             };
 
             await _unitOfWork.Assessments.AddAsync(assessment);
             await _unitOfWork.SaveChangesAsync();
 
-            // Gắn với Course nếu là Output
-            if (assessmentDto.AssessmentStage == "Output" && assessmentDto.CourseID.HasValue)
-            {
-                try
-                {
-                    var courseAssessment = new CourseAssessment
-                    {
-                        AssessmentID = assessment.AssessmentID,
-                        CourseID = assessmentDto.CourseID.Value
-                    };
-
-                    await _context.CourseAssessments.AddAsync(courseAssessment);
-                    await _context.SaveChangesAsync();
-                }
-                catch
-                {
-                    return "Lỗi khi tạo liên kết CourseAssessment. Có thể CourseID không hợp lệ hoặc đã tồn tại liên kết.";
-                }
-            }
-
-            return "Tạo Assessment thành công";
+            return (true, "Tạo Assessment thành công", assessment.AssessmentID);
         }
+
+
+        public async Task<(bool IsSuccess, string Message, int? AssessmentId)> CreateOutputAssessment(CreateOutputAssessmentDto dto)
+        {
+            if (dto.AssessmentType != "Assist" && dto.AssessmentType != "Crafft")
+                return (false, "AssessmentType phải là 'Assist' hoặc 'Crafft'.", null);
+
+            var exists = await _context.CourseAssessments
+                .Include(ca => ca.Assessment)
+                .Where(ca => ca.CourseID == dto.CourseID && !ca.Assessment.IsDeleted &&
+                             ca.Assessment.AssessmentStage == "Output" &&
+                             ca.Assessment.AssessmentType == dto.AssessmentType)
+                .AnyAsync();
+
+            if (exists)
+                return (false, $"Đã tồn tại Assessment Output loại {dto.AssessmentType} cho khóa học này.", null);
+
+            var assessment = new Assessment
+            {
+                AssessmentName = dto.AssessmentName,
+                Description = dto.Description,
+                AssessmentType = dto.AssessmentType,
+                AssessmentStage = "Output",
+                MinAge = dto.MinAge,
+                MaxAge = dto.MaxAge
+            };
+
+            await _unitOfWork.Assessments.AddAsync(assessment);
+            await _unitOfWork.SaveChangesAsync();
+
+            var courseAssessment = new CourseAssessment
+            {
+                AssessmentID = assessment.AssessmentID,
+                CourseID = dto.CourseID
+            };
+
+            await _context.CourseAssessments.AddAsync(courseAssessment);
+            await _context.SaveChangesAsync();
+
+            return (true, "Tạo Assessment thành công", assessment.AssessmentID);
+        }
+
 
 
 
@@ -164,10 +158,39 @@ namespace DrugUsePreventionAPI.Services.Implementations
         }
 
 
-        public async Task<List<Assessment>> GetAllAssessment()
+        public async Task<List<GetAssessmentListDto>> GetAllAssessmentWithCourse()
         {
-            return await _unitOfWork.Assessments.GetAllActiveAssessmentsAsync();
+            var assessments = await _unitOfWork.Assessments.GetAllActiveAssessmentsAsync();
+
+            var courseAssessments = await _context.CourseAssessments
+                .AsNoTracking()
+                .ToListAsync();
+
+            var result = assessments.Select(a =>
+            {
+                int? courseId = null;
+                if (a.AssessmentStage == "Output")
+                {
+                    courseId = courseAssessments
+                        .FirstOrDefault(ca => ca.AssessmentID == a.AssessmentID)?.CourseID;
+                }
+
+                return new GetAssessmentListDto
+                {
+                    AssessmentID = a.AssessmentID,
+                    AssessmentName = a.AssessmentName,
+                    AssessmentType = a.AssessmentType,
+                    AssessmentStage = a.AssessmentStage,
+                    Description = a.Description,
+                    MinAge = a.MinAge,
+                    MaxAge = a.MaxAge,
+                    CourseID = courseId
+                };
+            }).ToList();
+
+            return result;
         }
+
 
         public async Task<List<Course>> GetAvailableCourses()
         {
