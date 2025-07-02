@@ -24,6 +24,10 @@ namespace DrugUsePreventionAPI.Models.Entities
         [MaxLength(10)]
         public string Status { get; set; } = "PENDING";
 
+        public string? Thumbnail { get; set; }
+
+        public string? AuthorAvatar { get; set; }
+
         // Navigation properties
         public virtual User Author { get; set; }
     }
