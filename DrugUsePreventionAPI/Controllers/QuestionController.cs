@@ -84,15 +84,14 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { message = questionForAssessment });
         }
 
-        [AllowAnonymous]
-        [HttpGet("GetQuestionForAssessmentByID")]
-        public async Task<ActionResult<Question>> GetQuestionForAssessmentById([FromQuery] int id)
+        [HttpGet("GetQuestionsByAssessmentId/{assessmentId}")]
+        public async Task<IActionResult> GetQuestionsByAssessmentId(int assessmentId)
         {
-            var questionForAssessment = await _questionService.GetQuestionForAssessmentById(id);
-            if (questionForAssessment == null)
-                return NotFound(new { message = "Question Không Tồn Tại." });
-            return Ok(new { message = questionForAssessment });
+            var result = await _questionService.GetAllQuestionsWithAnswersForAssessmentId(assessmentId);
+            return Ok(new { success = true, message = "Lấy danh sách câu hỏi thành công", data = result });
         }
+
+
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpPut("UpdateQuestionForAssessment")]
