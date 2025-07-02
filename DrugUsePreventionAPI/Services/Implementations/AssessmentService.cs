@@ -84,7 +84,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var courseAssessment = new CourseAssessment
             {
                 AssessmentID = assessment.AssessmentID,
-                CourseID = dto.CourseID
+                CourseID = dto.CourseID.Value
             };
 
             await _context.CourseAssessments.AddAsync(courseAssessment);
@@ -98,25 +98,47 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
 
 
-        public async Task<bool> UpdateAssessment(int id, CreateAssessmentDto assessmentDto)
+        public async Task<bool> UpdateInputAssessment(int id, CreateInputAssessmentDto assessmentDto)
         {
-            if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Crafft")
-                return false;
-
-            if (assessmentDto.AssessmentStage != "Input" && assessmentDto.AssessmentStage != "Output")
-                return false;
-
-            if (assessmentDto.AssessmentStage == "Output" && !assessmentDto.CourseID.HasValue)
-                return false;
-
             var assessment = await _unitOfWork.Assessments.GetByIdAsync(id);
-            if (assessment == null)
+            if (assessment == null || assessment.AssessmentStage != "Input")
                 return false;
 
             assessment.AssessmentName = assessmentDto.AssessmentName;
             assessment.Description = assessmentDto.Description;
             assessment.AssessmentType = assessmentDto.AssessmentType;
-            assessment.AssessmentStage = assessmentDto.AssessmentStage;
+            assessment.MinAge = assessmentDto.MinAge;
+            assessment.MaxAge = assessmentDto.MaxAge;
+
+            try
+            {
+                _unitOfWork.Assessments.Update(assessment);
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
+        public async Task<bool> UpdateOutputAssessment(int id, CreateOutputAssessmentDto assessmentDto)
+        {
+            if (assessmentDto.AssessmentType != "Assist" && assessmentDto.AssessmentType != "Crafft")
+                return false;
+
+            if (assessmentDto.AssessmentStage != "Output" || !assessmentDto.CourseID.HasValue)
+                return false;
+
+            var assessment = await _unitOfWork.Assessments.GetByIdAsync(id);
+            if (assessment == null || assessment.AssessmentStage != "Output")
+                return false;
+
+            assessment.AssessmentName = assessmentDto.AssessmentName;
+            assessment.Description = assessmentDto.Description;
+            assessment.AssessmentType = assessmentDto.AssessmentType;
             assessment.MinAge = assessmentDto.MinAge;
             assessment.MaxAge = assessmentDto.MaxAge;
 
@@ -125,30 +147,25 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 _unitOfWork.Assessments.Update(assessment);
                 await _unitOfWork.SaveChangesAsync();
 
-                // Xử lý CourseAssessment khi là Output
-                if (assessmentDto.AssessmentStage == "Output" && assessmentDto.CourseID.HasValue)
+                var existingLink = _context.CourseAssessments
+                    .FirstOrDefault(ca => ca.AssessmentID == assessment.AssessmentID);
+
+                if (existingLink != null)
                 {
-                    var existingLink = _context.CourseAssessments
-                        .FirstOrDefault(ca => ca.AssessmentID == assessment.AssessmentID);
-
-                    if (existingLink != null)
+                    existingLink.CourseID = assessmentDto.CourseID.Value;
+                    _context.CourseAssessments.Update(existingLink);
+                }
+                else
+                {
+                    var newLink = new CourseAssessment
                     {
-                        existingLink.CourseID = assessmentDto.CourseID.Value;
-                        _context.CourseAssessments.Update(existingLink);
-                    }
-                    else
-                    {
-                        var newLink = new CourseAssessment
-                        {
-                            AssessmentID = assessment.AssessmentID,
-                            CourseID = assessmentDto.CourseID.Value
-                        };
-                        await _context.CourseAssessments.AddAsync(newLink);
-                    }
-
-                    await _context.SaveChangesAsync();
+                        AssessmentID = assessment.AssessmentID,
+                        CourseID = assessmentDto.CourseID.Value
+                    };
+                    await _context.CourseAssessments.AddAsync(newLink);
                 }
 
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch
@@ -156,6 +173,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return false;
             }
         }
+
 
 
         public async Task<List<GetAssessmentListDto>> GetAllAssessmentWithCourse()

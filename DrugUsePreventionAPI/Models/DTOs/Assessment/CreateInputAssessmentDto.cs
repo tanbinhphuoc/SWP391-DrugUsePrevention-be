@@ -7,5 +7,6 @@
         public string AssessmentType { get; set; } // "Assist" or "Crafft"
         public int MinAge { get; set; }
         public int MaxAge { get; set; }
+        public string AssessmentStage { get; set; } = "Input";
     }
 }
