@@ -403,9 +403,5 @@ ALTER TABLE Blogs ADD Thumbnail NVARCHAR(500);
 ALTER TABLE Blogs ADD AuthorAvatar NVARCHAR(500);
 
 -- Tạo demo_staff trong bảng Users để tạo Blog
-INSERT INTO Users (userID, UserName, Password, Email, RoleID, Status, CreatedAt, UpdatedAt)
-VALUES (1, 'demo_staff', '123', 'demo_staff@demo.com', 1, 'Active', GETDATE(), GETDATE());
 INSERT INTO Users (userName, password, email, roleID)
 VALUES ('demo_staff1', '123456', 'demo@gmail.com', 2);
-INSERT INTO Users (userName, password, email, fullName, roleID, status)
-VALUES ('demo_staff2', '123456', 'demo_staff@demo.com', N'Nhân viên demo', 3, 'Active');
