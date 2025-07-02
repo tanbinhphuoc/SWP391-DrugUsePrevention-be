@@ -1,0 +1,82 @@
+2025-07-02 22:37:41.374 +07:00 [ERR] Failed to get ngrok URL
+System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
+ ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
+ ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.GetStringAsyncCore(HttpRequestMessage request, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Program.<<Main>$>g__GetNgrokUrl|0_11() in D:\SWP391\BE2\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 364
+2025-07-02 22:37:41.430 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-02 22:37:42.251 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-02 22:37:42.942 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-02 22:37:43.691 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-02 22:37:44.218 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DOVIETHOANG\SQLEXPRESS01@DrugUsePreventionDB'
+2025-07-02 22:37:44.220 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-02 22:37:44.221 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-02 22:37:44.244 +07:00 [INF] Server doviethoang:6588:dbcfc0ea successfully announced in 8.0031 ms
+2025-07-02 22:37:44.249 +07:00 [INF] Server doviethoang:6588:dbcfc0ea is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-02 22:37:44.265 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-02 22:37:44.320 +07:00 [INF] Server doviethoang:6588:dbcfc0ea all the dispatchers started
+2025-07-02 22:38:39.529 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-02 22:52:57.396 +07:00 [ERR] Failed to get ngrok URL
+System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
+ ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
+ ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.GetStringAsyncCore(HttpRequestMessage request, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Program.<<Main>$>g__GetNgrokUrl|0_11() in D:\SWP391\BE2\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 364
+2025-07-02 22:52:57.443 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-02 22:52:58.103 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-02 22:52:58.637 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-02 22:52:59.310 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-02 22:52:59.776 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DOVIETHOANG\SQLEXPRESS01@DrugUsePreventionDB'
+2025-07-02 22:52:59.778 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-02 22:52:59.778 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-02 22:52:59.801 +07:00 [INF] Server doviethoang:20824:4ec561fa successfully announced in 7.8873 ms
+2025-07-02 22:52:59.807 +07:00 [INF] Server doviethoang:20824:4ec561fa is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-02 22:52:59.820 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-02 22:52:59.864 +07:00 [INF] Server doviethoang:20824:4ec561fa all the dispatchers started
+2025-07-02 23:14:36.501 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-02 23:14:36.502 +07:00 [INF] Server doviethoang:20824:4ec561fa caught stopping signal...
+2025-07-02 23:14:36.513 +07:00 [INF] Server doviethoang:20824:4ec561fa caught stopped signal...
+2025-07-02 23:14:36.514 +07:00 [INF] Server doviethoang:20824:4ec561fa All dispatchers stopped
+2025-07-02 23:14:36.515 +07:00 [WRN] Server doviethoang:20824:4ec561fa caught shutdown signal...
+2025-07-02 23:14:36.521 +07:00 [INF] Server doviethoang:20824:4ec561fa successfully reported itself as stopped in 4.2186 ms
+2025-07-02 23:14:36.522 +07:00 [INF] Server doviethoang:20824:4ec561fa has been stopped in total 9.0934 ms
