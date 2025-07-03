@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -162,6 +163,10 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)
 builder.Services.AddScoped<VNPayHelper>();
+
+// Đăng ký Blog chuẩn DI
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 // Configure JWT Authentication
 var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
