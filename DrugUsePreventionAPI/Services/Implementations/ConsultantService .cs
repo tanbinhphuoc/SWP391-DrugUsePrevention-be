@@ -27,6 +27,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             Log.Information("Creating consultant with user {UserName}", createConsultantDto.UserName);
 
+            // Validate username and email
             if (await _unitOfWork.Users.UsernameExistsAsync(createConsultantDto.UserName))
             {
                 Log.Warning("Username {UserName} already exists", createConsultantDto.UserName);
@@ -38,9 +39,31 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new DuplicateEntityException("User", "Email", createConsultantDto.Email);
             }
 
+            // Handle certificate
+            Certificate certificate = await _unitOfWork.Certificates
+                .FirstOrDefaultAsync(c => c.CertificateName == createConsultantDto.CertificateName);
+            if (certificate == null)
+            {
+                certificate = new Certificate
+                {
+                    CertificateName = createConsultantDto.CertificateName,
+                    DateAcquired = createConsultantDto.DateAcquired ?? DateTime.UtcNow
+                };
+                await _unitOfWork.Certificates.AddAsync(certificate);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            else if (createConsultantDto.DateAcquired.HasValue)
+            {
+                certificate.DateAcquired = createConsultantDto.DateAcquired.Value;
+                _unitOfWork.Certificates.Update(certificate);
+                await _unitOfWork.SaveChangesAsync();
+            }
+
+            // Create user
             var user = _mapper.Map<User>(createConsultantDto);
             user.Password = BCrypt.Net.BCrypt.HashPassword(createConsultantDto.Password);
-            user.RoleID = (await _unitOfWork.Roles.GetByNameAsync("Consultant"))?.RoleID ?? throw new EntityNotFoundException("Role", "Consultant");
+            user.RoleID = (await _unitOfWork.Roles.GetByNameAsync("Consultant"))?.RoleID
+                ?? throw new EntityNotFoundException("Role", "Consultant");
             user.Status = "Active";
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
@@ -48,10 +71,11 @@ namespace DrugUsePreventionAPI.Services.Implementations
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
+            // Create consultant
             var consultant = new Consultant
             {
                 UserID = user.UserID,
-                CertificateID = createConsultantDto.CertificateID,
+                CertificateID = certificate.CertificateID,
                 Specialty = createConsultantDto.Specialty,
                 Degree = createConsultantDto.Degree,
                 Experience = createConsultantDto.Experience,
@@ -89,7 +113,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (consultant == null)
             {
                 Log.Warning("Consultant with ID {ConsultantId} not found", id);
-                throw new EntityNotFoundException("Consultant", id);
+                throw new EntityNotFoundException("Consultant", id);        
             }
 
             _mapper.Map(updateConsultantDto, consultant);
@@ -125,6 +149,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return true;
         }
 
+        /*
         public async Task<ConsultantDto> UpdateConsultantProfileAsync(int userId, UpdateConsultantDto updateConsultantDto, bool isAdmin = false)
         {
             Log.Information("Updating consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
@@ -174,7 +199,74 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return result;
         }
 
+        */
 
+        public async Task<ConsultantDto> UpdateConsultantProfileAsync(int userId, UpdateConsultantDto updateConsultantDto, bool isAdmin = false)
+        {
+            Log.Information("Updating consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
+
+            var consultant = await _unitOfWork.Consultants.GetByUserIdTrackedAsync(userId);
+            if (consultant == null)
+            {
+                Log.Warning("Consultant with UserID {UserId} not found", userId);
+                throw new EntityNotFoundException("Consultant", userId);
+            }
+
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            if (user == null)
+            {
+                Log.Warning("User with UserID {UserId} not found", userId);
+                throw new EntityNotFoundException("User", userId);
+            }
+
+            if (!isAdmin && user.UserID != userId)
+            {
+                Log.Warning("Unauthorized access to update consultant profile for UserID={UserId}", userId);
+                throw new UnauthorizedAccessException("You can only update your own profile.");
+            }
+
+            // Handle certificate update
+            if (!string.IsNullOrEmpty(updateConsultantDto.CertificateName))
+            {
+                var certificate = await _unitOfWork.Certificates
+                    .FirstOrDefaultAsync(c => c.CertificateName == updateConsultantDto.CertificateName);
+                if (certificate == null)
+                {
+                    certificate = new Certificate
+                    {
+                        CertificateName = updateConsultantDto.CertificateName,
+                        DateAcquired = updateConsultantDto.DateAcquired ?? DateTime.UtcNow
+                    };
+                    await _unitOfWork.Certificates.AddAsync(certificate);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else if (updateConsultantDto.DateAcquired.HasValue)
+                {
+                    certificate.DateAcquired = updateConsultantDto.DateAcquired.Value;
+                    _unitOfWork.Certificates.Update(certificate);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                consultant.CertificateID = certificate.CertificateID;
+            }
+
+            // Update user and consultant
+            _mapper.Map(updateConsultantDto, user);
+            _mapper.Map(updateConsultantDto, consultant);
+
+            if (!string.IsNullOrEmpty(updateConsultantDto.Password))
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(updateConsultantDto.Password);
+            }
+
+            user.UpdatedAt = DateTime.UtcNow;
+            consultant.UpdatedAt = DateTime.UtcNow;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var result = _mapper.Map<ConsultantDto>(consultant);
+            Log.Information("Updated consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
+            return result;
+        }
 
     }
 }

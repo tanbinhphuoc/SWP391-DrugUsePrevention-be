@@ -32,7 +32,6 @@ namespace DrugUsePreventionAPI.Controllers
             try
             {
                 var consultant = await _consultantService.CreateConsultantAsync(createConsultantDto);
-
                 return CreatedAtAction(nameof(GetConsultant), new { id = consultant.ConsultantID }, new
                 {
                     message = "Consultant created successfully.",
@@ -139,7 +138,6 @@ namespace DrugUsePreventionAPI.Controllers
                     return NotFound(new { success = false, message = "User is not a consultant." });
                 }
 
-                // Truyền isAdmin = false để đảm bảo consultant chỉ cập nhật profile của chính họ
                 var updatedConsultant = await _consultantService.UpdateConsultantProfileAsync(userId, updateConsultantDto, false);
                 return Ok(new { success = true, data = updatedConsultant });
             }

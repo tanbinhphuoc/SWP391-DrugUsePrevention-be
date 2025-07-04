@@ -13,13 +13,14 @@ namespace DrugUsePreventionAPI.Mappings
                 .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : null));
 
             CreateMap<BookAppointmentDto, Appointment>();
-            CreateMap<Consultant, ConsultantDto>()
-    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "N/A"))  // Kiểm tra User != null
-    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User != null ? src.User.Email : "N/A"))  // Kiểm tra User != null
+    CreateMap<Consultant, ConsultantDto>()
+    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "N/A"))
+    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User != null ? src.User.Email : "N/A"))
     .ForMember(dest => dest.Specialty, opt => opt.MapFrom(src => src.Specialty))
     .ForMember(dest => dest.Degree, opt => opt.MapFrom(src => src.Degree))
     .ForMember(dest => dest.HourlyRate, opt => opt.MapFrom(src => src.HourlyRate))
-    .ForMember(dest => dest.CertificateName, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.CertificateName : "N/A"))  // Kiểm tra Certificate != null
+    .ForMember(dest => dest.CertificateName, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.CertificateName : "N/A"))
+    .ForMember(dest => dest.DateAcquired, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.DateAcquired : (DateTime?)null))
     .ForMember(dest => dest.GoogleMeetLink, opt => opt.MapFrom(src => src.GoogleMeetLink));
 
             CreateMap<ConsultantSchedule, ConsultantScheduleDto>();
@@ -34,3 +35,5 @@ namespace DrugUsePreventionAPI.Mappings
         }
     }
 }
+
+
