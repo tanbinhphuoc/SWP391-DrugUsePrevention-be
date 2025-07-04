@@ -7,7 +7,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
     {
         Task<ConsultantDto> CreateConsultantAsync(CreateConsultantDto createConsultantDto);
         Task<ConsultantDto> GetConsultantByIdAsync(int id);
-        Task<ConsultantDto> UpdateConsultantAsync(int id, UpdateConsultantDto updateConsultantDto);
+        Task<ConsultantDto> UpdateConsultantAsync(int id, AdminUpdateConsultantDto updateConsultantDto);
         Task<bool> DeleteConsultantAsync(int id);
         Task<ConsultantDto> UpdateConsultantProfileAsync(int userId, UpdateConsultantDto updateConsultantDto, bool isAdmin = false);
     }

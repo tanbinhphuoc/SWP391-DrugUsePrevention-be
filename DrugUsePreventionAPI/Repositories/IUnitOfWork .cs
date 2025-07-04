@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 namespace DrugUsePreventionAPI.Repositories
@@ -21,5 +22,7 @@ namespace DrugUsePreventionAPI.Repositories
         IAnswerOptionRepository AnswerOptions { get; }
         Task<int> SaveChangesAsync();
         void Attach<TEntity>(TEntity entity) where TEntity : class;
+
+        DbContext GetContext();
     }
 }

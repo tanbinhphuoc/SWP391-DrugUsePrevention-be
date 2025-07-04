@@ -1,0 +1,21 @@
+2025-07-05 01:19:24.394 +07:00 [INF] Updated ReturnUrl to: https://a40d-2402-800-6327-d359-4cd1-a9d0-5179-bd17.ngrok-free.app/api/vnpay/return
+2025-07-05 01:19:25.373 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-05 01:19:27.081 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-05 01:19:28.014 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-05 01:19:29.286 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-05 01:19:29.288 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-05 01:19:29.290 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-05 01:19:29.562 +07:00 [INF] Server laptop-qlc4gki0:21696:2acc1e20 successfully announced in 241.1148 ms
+2025-07-05 01:19:29.609 +07:00 [INF] Server laptop-qlc4gki0:21696:2acc1e20 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-05 01:19:29.824 +07:00 [INF] Server laptop-qlc4gki0:21696:2acc1e20 all the dispatchers started
+2025-07-05 01:20:06.834 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-05 01:20:46.359 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751653207, exp: 1751739607, iat: 1751653207, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 01:20:46.571 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-05 01:20:46.767 +07:00 [INF] Consultant updated Password for UserID=26
+2025-07-05 01:25:01.356 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751653458, exp: 1751739858, iat: 1751653458, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 01:25:01.398 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-05 01:25:01.426 +07:00 [INF] Consultant updated Password for UserID=26
