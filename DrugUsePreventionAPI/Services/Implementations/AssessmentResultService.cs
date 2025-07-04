@@ -15,7 +15,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> CreateAssessmentResult(CreateAssessmentResultDto dto)
+        public async Task<string> CreateInputAssessmentResult(CreateInputAssessmentResultDto dto)
         {
             int score = 0;
 
@@ -28,7 +28,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                 if (answer.ScoreValue.HasValue)
                     score += answer.ScoreValue.Value;
-                }
+            }
 
             //  Tính tổng điểm tối đa của toàn bộ bài đánh giá
             var questions = await _unitOfWork.Questions.FindAsync(q =>
@@ -49,25 +49,21 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var oldResults = await _unitOfWork.AssessmentResults.FindAsync(r =>
                 r.UserID == dto.UserId &&
                 r.AssessmentID == dto.AssessmentId &&
-                r.AssessmentStage == dto.AssessmentStage);
+                r.AssessmentStage == "Input");
 
             if (oldResults.Any())
                 _unitOfWork.AssessmentResults.RemoveRange(oldResults);
-
-            //  Nếu là Output mà không có CourseID thì báo lỗi
-            if (dto.AssessmentStage == "Output" && dto.CourseId == null)
-                throw new Exception("Output Assessment phải có CourseID");
 
             //  Tạo mới kết quả
             var result = new AssessmentResult
             {
                 UserID = dto.UserId,
                 AssessmentID = dto.AssessmentId,
-                AssessmentStage = dto.AssessmentStage,
+                AssessmentStage = "Input",
                 Score = finalScore,
                 TakeTime = DateTime.Now,
-                ResultName = $"Bạn đã hoàn thành bài đánh giá với {finalScore} điểm!",
-                CourseID = dto.AssessmentStage == "Output" ? dto.CourseId : null
+                ResultName = $"Bạn đã hoàn thành bài đánh giá đầu vào với {finalScore} điểm!",
+                CourseID = null
             };
 
             await _unitOfWork.AssessmentResults.AddAsync(result);
@@ -75,6 +71,68 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             return result.ResultName;
         }
+
+        public async Task<string> CreateOutputAssessmentResult(CreateOutputAssessmentResultDto dto)
+        {
+            int score = 0;
+
+            // Tính tổng điểm thực tế từ các câu trả lời người dùng chọn
+            foreach (var item in dto.AnswerOptionId)
+            {
+                var answer = await _unitOfWork.AnswerOptions.GetByIdAsync(item);
+                if (answer == null)
+                    throw new Exception("Answer option không tồn tại");
+
+                if (answer.ScoreValue.HasValue)
+                    score += answer.ScoreValue.Value;
+            }
+
+            //  Tính tổng điểm tối đa của toàn bộ bài đánh giá
+            var questions = await _unitOfWork.Questions.FindAsync(q =>
+                q.AssessmentID == dto.AssessmentId && !q.IsDeleted);
+
+            int maxScore = 0;
+            foreach (var question in questions)
+            {
+                var answers = await _unitOfWork.AnswerOptions.FindAsync(a =>
+                    a.QuestionID == question.QuestionID && !a.IsDeleted);
+                maxScore += answers.Max(a => a.ScoreValue ?? 0);
+            }
+
+            //  Chuyển sang thang điểm 10
+            int finalScore = maxScore == 0 ? 0 : (int)Math.Round((double)score / maxScore * 10);
+
+            //  Xóa kết quả cũ của User + Assessment + Stage
+            var oldResults = await _unitOfWork.AssessmentResults.FindAsync(r =>
+                r.UserID == dto.UserId &&
+                r.AssessmentID == dto.AssessmentId &&
+                r.AssessmentStage == "Output");
+
+            if (oldResults.Any())
+                _unitOfWork.AssessmentResults.RemoveRange(oldResults);
+
+            //  Nếu là Output mà không có CourseID thì báo lỗi
+            if (dto.CourseId == null)
+                throw new Exception("Output Assessment phải có CourseID");
+
+            //  Tạo mới kết quả
+            var result = new AssessmentResult
+            {
+                UserID = dto.UserId,
+                AssessmentID = dto.AssessmentId,
+                AssessmentStage = "Output",
+                Score = finalScore,
+                TakeTime = DateTime.Now,
+                ResultName = $"Bạn đã hoàn thành bài đánh giá sau khóa học với {finalScore} điểm!",
+                CourseID = dto.CourseId
+            };
+
+            await _unitOfWork.AssessmentResults.AddAsync(result);
+            await _unitOfWork.SaveChangesAsync();
+
+            return result.ResultName;
+        }
+
 
 
 
