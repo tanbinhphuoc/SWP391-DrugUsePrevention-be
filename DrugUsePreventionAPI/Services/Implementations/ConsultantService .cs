@@ -310,36 +310,39 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 }
             }
 
-            // Handle Certificate Update
+            // Handle Certificate Update (Replace the CertificateName without creating a new one)
             if (!string.IsNullOrEmpty(updateConsultantDto.CertificateName))
             {
                 var certificate = await _unitOfWork.Certificates
-                    .FirstOrDefaultAsync(c => c.CertificateName == updateConsultantDto.CertificateName);
+                    .FirstOrDefaultAsync(c => c.CertificateID == consultant.CertificateID);
 
-                if (certificate == null)
+                if (certificate != null)
                 {
-                    certificate = new Certificate
-                    {
-                        CertificateName = updateConsultantDto.CertificateName,
-                        DateAcquired = updateConsultantDto.DateAcquired ?? DateTime.UtcNow
-                    };
-                    await _unitOfWork.Certificates.AddAsync(certificate);
-                }
-                else if (updateConsultantDto.DateAcquired.HasValue)
-                {
-                    var trackedCertificate = _unitOfWork.GetContext().ChangeTracker.Entries<Certificate>()
-                        .FirstOrDefault(e => e.Entity.CertificateID == certificate.CertificateID)?.Entity;
+                    // Update the existing certificate with the new CertificateName
+                    certificate.CertificateName = updateConsultantDto.CertificateName;
 
-                    if (trackedCertificate != null)
+                    if (updateConsultantDto.DateAcquired.HasValue)
                     {
-                        _unitOfWork.GetContext().Entry(trackedCertificate).State = EntityState.Detached;
+                        certificate.DateAcquired = updateConsultantDto.DateAcquired.Value;
                     }
 
-                    certificate.DateAcquired = updateConsultantDto.DateAcquired.Value;
+                    _unitOfWork.Certificates.Update(certificate);
+                    await _unitOfWork.SaveChangesAsync(); // Save the updated certificate
                 }
+                else
+                {
+                    // Handle the case where the certificate doesn't exist
+                    if (!consultant.CertificateID.HasValue)
+                    {
+                        Log.Warning("Consultant with UserID {UserId} has no associated certificate.", userId);
+                        throw new EntityNotFoundException("Certificate", "No certificate found for the consultant.");
+                    }
 
-                consultant.CertificateID = certificate.CertificateID;
+                    Log.Warning("Certificate with ID {CertificateID} not found for ConsultantID={UserId}", consultant.CertificateID, userId);
+                    throw new EntityNotFoundException("Certificate", consultant.CertificateID.Value); // Ensure we pass a non-nullable int
+                }
             }
+
 
             // Map updates to user and consultant
             _mapper.Map(updateConsultantDto, user);
@@ -364,7 +367,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             consultant.UpdatedAt = DateTime.UtcNow;
 
             _unitOfWork.Consultants.Update(consultant);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(); // Save changes for the Consultant
 
             var result = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(userId);
             return _mapper.Map<ConsultantDto>(result);

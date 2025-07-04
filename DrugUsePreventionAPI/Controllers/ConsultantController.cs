@@ -118,11 +118,12 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
+                // Retrieve user ID from token
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null)
                 {
                     Log.Warning("No user ID claim found in token");
-                    return Unauthorized(new { success = false, message = "Unauthorized access." });
+                    return Unauthorized(new { success = false, message = "Unauthorized access. No user ID claim found." });
                 }
 
                 if (!int.TryParse(userIdClaim.Value, out int userId))
@@ -131,6 +132,7 @@ namespace DrugUsePreventionAPI.Controllers
                     return BadRequest(new { success = false, message = "Invalid user ID format." });
                 }
 
+                // Check if the user is a consultant
                 var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
                 if (consultant == null)
                 {
@@ -138,7 +140,10 @@ namespace DrugUsePreventionAPI.Controllers
                     return NotFound(new { success = false, message = "User is not a consultant." });
                 }
 
+                // Update consultant profile
                 var updatedConsultant = await _consultantService.UpdateConsultantProfileAsync(userId, updateConsultantDto, false);
+
+                // Return success response with updated consultant data
                 return Ok(new { success = true, data = updatedConsultant });
             }
             catch (EntityNotFoundException ex)
@@ -159,8 +164,10 @@ namespace DrugUsePreventionAPI.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex, "Error updating consultant profile for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                return StatusCode(500, new { success = false, message = "An unexpected error occurred while updating consultant profile." });
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred while updating the consultant profile." });
             }
         }
+
+
     }
 }
