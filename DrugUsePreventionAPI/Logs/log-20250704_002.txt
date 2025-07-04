@@ -1,0 +1,66 @@
+2025-07-04 12:03:49.942 +07:00 [INF] Updated ReturnUrl to: https://9b40-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-04 12:03:50.726 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-04 12:03:52.418 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-04 12:03:53.386 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-04 12:03:54.924 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-04 12:03:54.926 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-04 12:03:54.928 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-04 12:03:54.985 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 successfully announced in 30.5101 ms
+2025-07-04 12:03:54.994 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-04 12:03:55.140 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 all the dispatchers started
+2025-07-04 12:04:23.642 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-04 12:08:17.106 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751605464, exp: 1751691864, iat: 1751605464, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:08:17.314 +07:00 [INF] Creating consultant with user Consultant9
+2025-07-04 12:08:18.061 +07:00 [INF] Created consultant 9 with user Consultant9
+2025-07-04 12:08:31.625 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751605464, exp: 1751691864, iat: 1751605464, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:08:31.666 +07:00 [INF] Retrieving available consultants
+2025-07-04 12:08:31.764 +07:00 [INF] Retrieved 6 available consultants
+2025-07-04 12:24:43.176 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751605464, exp: 1751691864, iat: 1751605464, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:25:14.960 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751605464, exp: 1751691864, iat: 1751605464, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:25:35.801 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751606715, exp: 1751693115, iat: 1751606715, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:25:42.236 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751606715, exp: 1751693115, iat: 1751606715, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:25:42.301 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-04 12:25:42.594 +07:00 [INF] Updated consultant profile for UserID=26 by Consultant
+2025-07-04 12:28:24.204 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-04 12:28:24.207 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 caught stopping signal...
+2025-07-04 12:28:24.224 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 caught stopped signal...
+2025-07-04 12:28:24.234 +07:00 [WRN] Server laptop-qlc4gki0:6504:ba9fe798 caught shutdown signal...
+2025-07-04 12:28:24.246 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 All dispatchers stopped
+2025-07-04 12:28:24.266 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 successfully reported itself as stopped in 10.8479 ms
+2025-07-04 12:28:24.267 +07:00 [INF] Server laptop-qlc4gki0:6504:ba9fe798 has been stopped in total 43.1632 ms
+2025-07-04 12:34:36.172 +07:00 [INF] Updated ReturnUrl to: https://8ec4-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-04 12:34:36.597 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-04 12:34:38.758 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-04 12:34:39.603 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-04 12:34:40.652 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-04 12:34:40.656 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-04 12:34:40.659 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-04 12:34:40.741 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 successfully announced in 63.6218 ms
+2025-07-04 12:34:40.745 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-04 12:34:40.752 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 all the dispatchers started
+2025-07-04 12:37:23.112 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-04 12:38:43.722 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751607443, exp: 1751693843, iat: 1751607443, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:38:48.742 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751607443, exp: 1751693843, iat: 1751607443, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:38:56.151 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-04 12:38:56.852 +07:00 [INF] Updated consultant profile for UserID=26 by Consultant
+2025-07-04 12:45:18.224 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751607443, exp: 1751693843, iat: 1751607443, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:45:18.417 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-04 12:45:18.648 +07:00 [INF] Updated consultant profile for UserID=26 by Consultant
+2025-07-04 12:45:22.068 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751607443, exp: 1751693843, iat: 1751607443, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 12:45:22.089 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-04 12:45:22.252 +07:00 [INF] Updated consultant profile for UserID=26 by Consultant
+2025-07-04 12:46:35.023 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-04 12:46:35.025 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 caught stopping signal...
+2025-07-04 12:46:35.055 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 caught stopped signal...
+2025-07-04 12:46:35.057 +07:00 [WRN] Server laptop-qlc4gki0:51764:97b536f5 caught shutdown signal...
+2025-07-04 12:46:35.064 +07:00 [WRN] Server laptop-qlc4gki0:51764:97b536f5 stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-04 12:46:35.115 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 successfully reported itself as stopped in 40.5413 ms
+2025-07-04 12:46:35.116 +07:00 [INF] Server laptop-qlc4gki0:51764:97b536f5 has been stopped in total 60.4526 ms

@@ -1,0 +1,28 @@
+2025-07-03 15:52:49.510 +07:00 [INF] Updated ReturnUrl to: https://a76a-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-03 15:52:50.297 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-03 15:52:52.650 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-03 15:52:53.838 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-03 16:03:21.296 +07:00 [INF] Updated ReturnUrl to: https://a76a-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-03 16:03:21.988 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-03 16:03:23.890 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-03 16:03:25.019 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-03 16:03:26.761 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-03 16:03:26.764 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-03 16:03:26.765 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-03 16:03:27.078 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad successfully announced in 139.5398 ms
+2025-07-03 16:03:27.091 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-03 16:03:27.234 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad all the dispatchers started
+2025-07-03 16:03:45.104 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-03 16:03:45.408 +07:00 [INF] Retrieving available consultants
+2025-07-03 16:03:45.623 +07:00 [INF] Retrieved 5 available consultants
+2025-07-03 16:05:57.994 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-03 16:05:58.000 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad caught stopping signal...
+2025-07-03 16:05:58.041 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad caught stopped signal...
+2025-07-03 16:05:58.085 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad All dispatchers stopped
+2025-07-03 16:05:58.093 +07:00 [WRN] Server laptop-qlc4gki0:40032:b6914bad caught shutdown signal...
+2025-07-03 16:05:58.135 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad successfully reported itself as stopped in 15.9681 ms
+2025-07-03 16:05:58.137 +07:00 [INF] Server laptop-qlc4gki0:40032:b6914bad has been stopped in total 96.3541 ms

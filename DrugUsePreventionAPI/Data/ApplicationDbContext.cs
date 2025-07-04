@@ -1,7 +1,7 @@
 ﻿using DrugUsePreventionAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DrugUsePreventionAPI.Data
+namespace DrugUsePreventionAPI.Controllers.Data
 {
     public class ApplicationDbContext : DbContext
     {

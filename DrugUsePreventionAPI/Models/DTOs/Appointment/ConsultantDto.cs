@@ -9,7 +9,8 @@
         public string? Degree { get; set; }
         public decimal HourlyRate { get; set; }
         public string? CertificateName { get; set; }
-
+        public DateTime? DateAcquired { get; set; }
+        public string? Experience { get; set; }
         public string? GoogleMeetLink { get; set; }
     }
 }

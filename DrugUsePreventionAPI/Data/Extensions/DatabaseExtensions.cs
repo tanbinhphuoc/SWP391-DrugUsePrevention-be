@@ -1,11 +1,11 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DrugUsePreventionAPI.Data.Extensions
+namespace DrugUsePreventionAPI.Controllers.Data.Extensions
 {
     public static class DatabaseExtensions
     {

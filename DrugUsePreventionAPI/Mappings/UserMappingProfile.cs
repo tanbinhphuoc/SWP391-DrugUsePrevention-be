@@ -8,7 +8,8 @@ namespace DrugUsePreventionAPI.Mappings
     {
         public UserMappingProfile() 
         {
-            CreateMap<User, UserDto>().ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));            CreateMap<CreateUserDto, User>();
+            CreateMap<User, UserDto>().ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));     
+            CreateMap<CreateUserDto, User>();
             CreateMap<UpdateUserDto, User>();
             CreateMap<CreateUserByAdminDto, User>();
             CreateMap<CreateConsultantDto, User>()
@@ -18,8 +19,7 @@ namespace DrugUsePreventionAPI.Mappings
               .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Active"))
               .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-              .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-              .ForMember(dest => dest.RoleID, opt => opt.MapFrom(src => 4));
+              .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
             CreateMap<UpdateConsultantDto, User>()
               .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
               .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
@@ -32,7 +32,6 @@ namespace DrugUsePreventionAPI.Mappings
                 .ForMember(dest => dest.HourlyRate, opt => opt.MapFrom(src => src.HourlyRate))
                 .ForMember(dest => dest.Specialty, opt => opt.MapFrom(src => src.Specialty))
                 .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
-                .ForMember(dest => dest.CertificateID, opt => opt.MapFrom(src => src.CertificateID))
                 .ForMember(dest => dest.GoogleMeetLink, opt => opt.MapFrom(src => src.GoogleMeetLink))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
         }

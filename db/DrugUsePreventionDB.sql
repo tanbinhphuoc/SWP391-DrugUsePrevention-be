@@ -87,6 +87,10 @@ CREATE TABLE Courses (
   isDeleted BIT NOT NULL DEFAULT 0            
 );
 GO
+EXEC sp_rename 'Courses.title', 'CourseName', 'COLUMN';
+SELECT OBJECT_NAME(object_id) AS ObjectName, definition
+FROM sys.sql_modules
+WHERE definition LIKE '%title%';
 
 -- Constraint cho trường status tương tự ENUM
 ALTER TABLE Courses
@@ -304,6 +308,14 @@ select * from Consultants
 select * from ConsultantSchedules
 select * from Appointments 
 select * from Payments
+select * from Courses
+select * from Assessments
+select * from AssessmentResults
+select * from AnswerOptions
+select * from CourseRegistrations
+select * from Questions
+
+
 
 update ConsultantSchedules
 set isAvailable = '1'

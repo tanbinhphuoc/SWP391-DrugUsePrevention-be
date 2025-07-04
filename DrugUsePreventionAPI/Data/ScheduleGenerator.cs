@@ -5,7 +5,7 @@ using Serilog;
 using System;
 using System.Threading.Tasks;
 
-namespace DrugUsePreventionAPI.Data.Extensions
+namespace DrugUsePreventionAPI.Controllers.Data
 {
     public class ScheduleGenerator
     {

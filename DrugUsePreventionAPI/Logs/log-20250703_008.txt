@@ -1,0 +1,190 @@
+2025-07-03 15:27:32.275 +07:00 [INF] Updated ReturnUrl to: https://8f77-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-03 15:27:33.428 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-03 15:27:37.168 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-03 15:27:38.735 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-03 15:27:41.507 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-03 15:27:41.510 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-03 15:27:41.512 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-03 15:27:41.622 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f successfully announced in 77.1211 ms
+2025-07-03 15:27:41.632 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-03 15:27:41.813 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f all the dispatchers started
+2025-07-03 15:28:23.951 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-03 15:28:43.587 +07:00 [INF] JWT Token validated successfully for user: ConsultantH, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 25, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: ConsultantH, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoangdq1@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751531304, exp: 1751617704, iat: 1751531304, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:28:43.813 +07:00 [INF] Retrieving available consultants
+2025-07-03 15:28:43.976 +07:00 [INF] Retrieved 5 available consultants
+2025-07-03 15:30:32.223 +07:00 [INF] JWT Token validated successfully for user: ConsultantH, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 25, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: ConsultantH, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoangdq1@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751531304, exp: 1751617704, iat: 1751531304, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:30:32.252 +07:00 [INF] Retrieving available consultants
+2025-07-03 15:30:32.331 +07:00 [INF] Retrieved 6 available consultants
+2025-07-03 15:30:52.357 +07:00 [INF] JWT Token validated successfully for user: ConsultantH, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 25, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: ConsultantH, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoangdq1@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751531304, exp: 1751617704, iat: 1751531304, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:30:52.454 +07:00 [INF] Retrieving schedules for consultant 8 from "2025-07-03T00:00:00.0000000" to "2025-07-03T00:00:00.0000000"
+2025-07-03 15:30:52.797 +07:00 [INF] Retrieved 1 schedules
+2025-07-03 15:31:26.577 +07:00 [INF] JWT Token validated successfully for user: ConsultantH, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 25, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: ConsultantH, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoangdq1@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751531304, exp: 1751617704, iat: 1751531304, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:31:54.526 +07:00 [INF] JWT Token validated successfully for user: ConsultantH, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 25, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: ConsultantH, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: hoangdq1@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751531304, exp: 1751617704, iat: 1751531304, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:32:23.325 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751531514, exp: 1751617914, iat: 1751531514, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:32:23.387 +07:00 [INF] Booking appointment for UserID=22 with ConsultantID=8
+2025-07-03 15:32:23.391 +07:00 [INF] Using client IP from header: 203.0.113.5
+2025-07-03 15:32:23.407 +07:00 [INF] Booking appointment for user 22 with consultant 8
+2025-07-03 15:32:24.025 +07:00 [INF] Appointment 117 created with payment URL
+2025-07-03 15:33:16.735 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"7777700","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15053828","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 117 for 1 hours","vnp_PayDate":"20250703153400","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15053828","vnp_TransactionStatus":"00","vnp_TxnRef":"8a79f1c2-ce08-4de7-a63c-063dfe6db3d4-117","vnp_SecureHash":"88305f89d9f9fc799ab6e16804edef08b11336d705e2d7ec6b6ec3d36143fe888ee35cb6f1429bf20e5aafc236cd6f6f5a7f2be4037a5fd2f6e975e26d6f6a2a"}
+2025-07-03 15:33:16.745 +07:00 [INF] Callback signature verified successfully for transaction 8a79f1c2-ce08-4de7-a63c-063dfe6db3d4-117
+2025-07-03 15:33:16.750 +07:00 [INF] Confirming payment for appointment 117, transaction 8a79f1c2-ce08-4de7-a63c-063dfe6db3d4-117
+2025-07-03 15:33:16.811 +07:00 [INF] Request Query: {"vnp_Amount":"7777700","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15053828","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 117 for 1 hours","vnp_PayDate":"20250703153400","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15053828","vnp_TransactionStatus":"00","vnp_TxnRef":"8a79f1c2-ce08-4de7-a63c-063dfe6db3d4-117","vnp_SecureHash":"88305f89d9f9fc799ab6e16804edef08b11336d705e2d7ec6b6ec3d36143fe888ee35cb6f1429bf20e5aafc236cd6f6f5a7f2be4037a5fd2f6e975e26d6f6a2a"}
+2025-07-03 15:33:16.813 +07:00 [INF] Callback signature verified successfully for transaction 8a79f1c2-ce08-4de7-a63c-063dfe6db3d4-117
+2025-07-03 15:33:23.469 +07:00 [INF] Email sent to tanphse180176@fpt.edu.vn
+2025-07-03 15:33:28.968 +07:00 [INF] Email sent to hoangdq1@gmail.com
+2025-07-03 15:33:28.971 +07:00 [INF] Payment confirmed for appointment 117
+2025-07-03 15:33:29.804 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:29 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:29 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:29.907 +07:00 [INF] Retrieving available consultants
+2025-07-03 15:33:29.927 +07:00 [INF] Retrieved 5 available consultants
+2025-07-03 15:33:29.932 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:29 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:29 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:29.936 +07:00 [INF] Retrieving available consultants
+2025-07-03 15:33:29.937 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:29 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:29 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:29.945 +07:00 [INF] Retrieved 5 available consultants
+2025-07-03 15:33:29.946 +07:00 [INF] Retrieving schedules for consultant 6 from "2025-07-03T00:00:00.0000000" to "2025-07-03T00:00:00.0000000"
+2025-07-03 15:33:29.989 +07:00 [INF] Retrieved 12 schedules
+2025-07-03 15:33:46.839 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:46 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:46 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:46.847 +07:00 [INF] Retrieving schedules for consultant 6 from "2025-07-04T00:00:00.0000000" to "2025-07-04T00:00:00.0000000"
+2025-07-03 15:33:46.879 +07:00 [INF] Retrieved 12 schedules
+2025-07-03 15:33:50.002 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:50 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:50 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:50.013 +07:00 [INF] Retrieving schedules for consultant 6 from "2025-07-06T00:00:00.0000000" to "2025-07-06T00:00:00.0000000"
+2025-07-03 15:33:50.036 +07:00 [INF] Retrieved 12 schedules
+2025-07-03 15:33:52.988 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:52 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:52 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:52.995 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-07-06T00:00:00.0000000" to "2025-07-06T00:00:00.0000000"
+2025-07-03 15:33:53.022 +07:00 [INF] Retrieved 12 schedules
+2025-07-03 15:33:56.456 +07:00 [ERR] JWT Authentication failed: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:56 AM'.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '7/1/2025 3:37:17 PM', Current time (UTC): '7/3/2025 8:33:56 AM'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-07-03 15:33:56.462 +07:00 [INF] Retrieving schedules for consultant 1 from "2025-07-08T00:00:00.0000000" to "2025-07-08T00:00:00.0000000"
+2025-07-03 15:33:56.491 +07:00 [INF] Retrieved 12 schedules
+2025-07-03 15:35:11.442 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751531514, exp: 1751617914, iat: 1751531514, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:35:11.446 +07:00 [INF] Retrieving schedules for consultant 8 from "2025-07-03T00:00:00.0000000" to "2025-07-03T00:00:00.0000000"
+2025-07-03 15:35:11.477 +07:00 [INF] Retrieved 1 schedules
+2025-07-03 15:35:48.278 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-03 15:35:48.283 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f caught stopping signal...
+2025-07-03 15:35:48.356 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f caught stopped signal...
+2025-07-03 15:35:48.357 +07:00 [WRN] Server laptop-qlc4gki0:47488:03ec5f3f caught shutdown signal...
+2025-07-03 15:35:48.374 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f All dispatchers stopped
+2025-07-03 15:35:48.465 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f successfully reported itself as stopped in 72.5789 ms
+2025-07-03 15:35:48.467 +07:00 [INF] Server laptop-qlc4gki0:47488:03ec5f3f has been stopped in total 111.2887 ms
+2025-07-03 15:37:02.465 +07:00 [INF] Updated ReturnUrl to: https://a76a-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-03 15:37:02.902 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-03 15:37:04.901 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-03 15:37:05.741 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-03 15:37:07.098 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V1'
+2025-07-03 15:37:07.100 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-03 15:37:07.102 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-03 15:37:07.220 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 successfully announced in 94.2531 ms
+2025-07-03 15:37:07.223 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-03 15:37:07.230 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 all the dispatchers started
+2025-07-03 15:37:07.245 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-03 15:37:34.317 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-03 15:38:04.701 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751531855, exp: 1751618255, iat: 1751531855, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-03 15:38:04.855 +07:00 [INF] Retrieving available consultants
+2025-07-03 15:38:04.953 +07:00 [ERR] Failed executing DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ConsultantID], [c].[CertificateID], [c].[CreatedAt], [c].[Degree], [c].[Experience], [c].[GoogleMeetLink], [c].[HourlyRate], [c].[Specialty], [c].[UpdatedAt], [c].[UserID], [u].[UserID], [u].[Address], [u].[CreatedAt], [u].[DateOfBirth], [u].[Email], [u].[FullName], [u].[Password], [u].[Phone], [u].[RoleID], [u].[Status], [u].[UpdatedAt], [u].[UserName]
+FROM [Consultants] AS [c]
+INNER JOIN [Users] AS [u] ON [c].[UserID] = [u].[UserID]
+WHERE [u].[Status] = N'Active' AND EXISTS (
+    SELECT 1
+    FROM [ConsultantSchedules] AS [c0]
+    WHERE [c0].[ConsultantID] = [c].[ConsultantID] AND [c0].[IsAvailable] = CAST(1 AS bit))
+2025-07-03 15:38:05.015 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'DrugUsePreventionAPI.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'GoogleMeetLink'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:644ae043-c39c-42b8-8e8f-f3eb49ce02f0
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'GoogleMeetLink'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:644ae043-c39c-42b8-8e8f-f3eb49ce02f0
+Error Number:207,State:1,Class:16
+2025-07-03 15:38:05.030 +07:00 [ERR] Error retrieving available consultants
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'GoogleMeetLink'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at DrugUsePreventionAPI.Repositories.ConsultantRepository.GetAvailableConsultantsAsync() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Repositories\ConsultantRepository .cs:line 17
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.GetAvailableConsultantsAsync() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 46
+   at DrugUsePreventionAPI.Controllers.AppointmentsController.GetAvailableConsultants() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AppointmentsController.cs:line 33
+ClientConnectionId:644ae043-c39c-42b8-8e8f-f3eb49ce02f0
+Error Number:207,State:1,Class:16
+2025-07-03 15:38:19.743 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-03 15:38:19.744 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 caught stopping signal...
+2025-07-03 15:38:19.759 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 caught stopped signal...
+2025-07-03 15:38:19.759 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 All dispatchers stopped
+2025-07-03 15:38:19.761 +07:00 [WRN] Server laptop-qlc4gki0:47616:0891c859 caught shutdown signal...
+2025-07-03 15:38:19.770 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 successfully reported itself as stopped in 6.7416 ms
+2025-07-03 15:38:19.771 +07:00 [INF] Server laptop-qlc4gki0:47616:0891c859 has been stopped in total 11.763 ms

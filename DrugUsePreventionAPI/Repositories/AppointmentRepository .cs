@@ -1,4 +1,4 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Models.DTOs.Admin;
 using DrugUsePreventionAPI.Models.Entities;

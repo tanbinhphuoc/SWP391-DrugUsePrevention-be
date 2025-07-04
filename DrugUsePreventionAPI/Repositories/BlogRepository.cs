@@ -1,8 +1,8 @@
 ﻿using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
-using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
+using DrugUsePreventionAPI.Controllers.Data;
 
 namespace DrugUsePreventionAPI.Repositories
 {

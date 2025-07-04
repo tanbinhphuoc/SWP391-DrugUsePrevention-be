@@ -160,7 +160,7 @@ namespace DrugUsePreventionAPI.Controllers
                 var appointmentIdStr = transactionParts.Last();
                 if (!int.TryParse(appointmentIdStr, out int appointmentId))
                 {
-                    Log.Warning("Invalid transactionId format: {TransactionId}", queryParams["vnp_TxnRef"]);
+                    Log.Warning("Invalid transactionId format: {Transa  ctionId}", queryParams["vnp_TxnRef"]);
                     return BadRequest(new { success = false, message = "Invalid transaction ID format." });
                 }
 

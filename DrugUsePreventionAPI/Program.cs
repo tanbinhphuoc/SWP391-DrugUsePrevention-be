@@ -1,6 +1,5 @@
 ﻿using DrugUsePreventionAPI.Configurations;
-using DrugUsePreventionAPI.Data;
-using DrugUsePreventionAPI.Data.Extensions;
+using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Mappings;
 using DrugUsePreventionAPI.Models.Entities;
@@ -288,6 +287,9 @@ using (var scope = app.Services.CreateScope())
         "generate-daily-schedules",
         () => scheduleGenerator.GenerateDailySchedulesAsync(DateTime.UtcNow.Date),
         Cron.Daily());
+
+    var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+    await SeedAdminAsync(unitOfWork);
 }
 
 // Configure the HTTP request pipeline
@@ -328,7 +330,7 @@ async Task SeedAdminAsync(IUnitOfWork unitOfWork)
             var adminRole = await unitOfWork.Roles.GetByNameAsync("Admin");
             if (adminRole == null)
             {
-                adminRole = new Role { RoleName = "Admin", Description = "Administrator role" };
+                adminRole = new Role { RoleName = "Admin", Description = "Quản trị viên" };
                 await unitOfWork.Roles.AddAsync(adminRole);
                 await unitOfWork.SaveChangesAsync();
             }
