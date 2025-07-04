@@ -1,4 +1,5 @@
-﻿namespace DrugUsePreventionAPI.Models.DTOs.User
+﻿
+namespace DrugUsePreventionAPI.Models.DTOs.User
 {
     public class UpdateConsultantDto
     {
@@ -10,7 +11,8 @@
         public decimal? HourlyRate { get; set; }
         public string? Specialty { get; set; }
         public string? Experience { get; set; }
-        public int? CertificateID { get; set; }
+        public string? CertificateName { get; set; } // Allow updating CertificateName
+        public DateTime? DateAcquired { get; set; } // Allow updating DateAcquired
         public string? GoogleMeetLink { get; set; }
     }
 }

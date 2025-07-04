@@ -1,4 +1,4 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;

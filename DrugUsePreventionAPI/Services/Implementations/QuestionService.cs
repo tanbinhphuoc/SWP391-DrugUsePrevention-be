@@ -3,8 +3,8 @@ using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using Microsoft.Extensions.Configuration;
-using DrugUsePreventionAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using DrugUsePreventionAPI.Controllers.Data;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {

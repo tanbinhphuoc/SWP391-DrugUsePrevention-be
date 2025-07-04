@@ -1,4 +1,4 @@
-﻿using DrugUsePreventionAPI.Data;
+﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
