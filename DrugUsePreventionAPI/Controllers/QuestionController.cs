@@ -112,16 +112,51 @@ namespace DrugUsePreventionAPI.Controllers
                 return Ok(new { message = "Xóa Question Thành Công." });
             return NotFound(new { message = "Xóa Question Thất Bại." });
         }
-        [Authorize(Roles = "Admin,Manager")]
-        [HttpPost("CreateMultipleQuestionsForAssessment")]
-        public async Task<IActionResult> CreateMultipleQuestionsForAssessment([FromBody] List<CreateQuestionWithAnswersDto> questionDtos)
-        {
-            var result = await _questionService.CreateMultipleQuestionsWithAnswers(questionDtos);
-            if (result)
-                return Ok(new { message = "Tạo nhiều câu hỏi và câu trả lời thành công." });
 
-            return BadRequest(new { message = "Tạo nhiều câu hỏi và câu trả lời thất bại." });
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpPost("CreateQuestionsWithAnswers")]
+        public async Task<IActionResult> CreateQuestionsWithAnswers([FromBody] List<CreateQuestionWithAnswersDto> dtoList)
+        {
+            if (dtoList == null || !dtoList.Any())
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Danh sách câu hỏi không được để trống"
+                });
+            }
+
+            try
+            {
+                bool result = await _questionService.CreateMultipleQuestionsWithAnswers(dtoList);
+
+                if (result)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Tạo câu hỏi và câu trả lời thành công"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Tạo câu hỏi thất bại do lỗi không xác định"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
         }
+
 
     }
 
