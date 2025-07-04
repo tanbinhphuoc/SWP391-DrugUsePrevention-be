@@ -2,8 +2,10 @@
 
 namespace DrugUsePreventionAPI.Models.DTOs.User
 {
-    public class UpdateConsultantDto
+    public class AdminUpdateConsultantDto
     {
+        [StringLength(100, ErrorMessage = "Tên đăng nhập không được vượt quá 100 ký tự.")]
+        public string? UserName { get; set; }
         [StringLength(255, MinimumLength = 8, ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự.")]
         public string? Password { get; set; }
         [EmailAddress(ErrorMessage = "Email không hợp lệ.")]

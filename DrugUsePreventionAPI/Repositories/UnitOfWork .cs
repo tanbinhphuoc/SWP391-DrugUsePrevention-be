@@ -1,5 +1,6 @@
 ﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugUsePreventionAPI.Repositories
 {
@@ -67,7 +68,10 @@ namespace DrugUsePreventionAPI.Repositories
             var repository = _context.Set<TEntity>();
             repository.Attach(entity);
         }
-
+        public DbContext GetContext()
+        {
+            return _context;
+        }
         public void Dispose()
         {
             _context.Dispose();

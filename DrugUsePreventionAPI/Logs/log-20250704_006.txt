@@ -1,0 +1,40 @@
+2025-07-04 14:45:37.880 +07:00 [INF] Updated ReturnUrl to: https://1bc1-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-04 14:45:39.090 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-04 14:45:42.271 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-04 14:45:43.738 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-04 14:45:44.952 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-04 14:45:44.955 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-04 14:45:44.957 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-04 14:45:45.255 +07:00 [INF] Server laptop-qlc4gki0:14144:8e727691 successfully announced in 249.3299 ms
+2025-07-04 14:45:45.274 +07:00 [INF] Server laptop-qlc4gki0:14144:8e727691 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-04 14:45:45.361 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-04 14:45:45.550 +07:00 [INF] Server laptop-qlc4gki0:14144:8e727691 all the dispatchers started
+2025-07-04 15:18:30.088 +07:00 [INF] Updated ReturnUrl to: https://4e3c-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-04 15:18:31.078 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-04 15:18:33.970 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-04 15:18:35.235 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-04 15:18:36.391 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-04 15:18:36.393 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-04 15:18:36.394 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-04 15:18:36.486 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 successfully announced in 72.3678 ms
+2025-07-04 15:18:36.489 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-04 15:18:36.495 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 all the dispatchers started
+2025-07-04 15:18:36.506 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-04 15:18:50.036 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-04 15:18:50.271 +07:00 [INF] Retrieving available consultants
+2025-07-04 15:18:50.448 +07:00 [INF] Retrieved 6 available consultants
+2025-07-04 15:32:39.875 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-04 15:32:39.922 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 caught stopping signal...
+2025-07-04 15:32:39.963 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 caught stopped signal...
+2025-07-04 15:32:39.966 +07:00 [WRN] Server laptop-qlc4gki0:35852:4cfd4913 caught shutdown signal...
+2025-07-04 15:32:39.979 +07:00 [WRN] Server laptop-qlc4gki0:35852:4cfd4913 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-04 15:32:40.019 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 successfully reported itself as stopped in 17.6711 ms
+2025-07-04 15:32:40.020 +07:00 [INF] Server laptop-qlc4gki0:35852:4cfd4913 has been stopped in total 56.9309 ms

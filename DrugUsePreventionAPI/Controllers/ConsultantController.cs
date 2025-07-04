@@ -63,7 +63,7 @@ namespace DrugUsePreventionAPI.Controllers
 
         [HttpPut("{id}UpdateConsultant")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateConsultant(int id, [FromBody] UpdateConsultantDto updateConsultantDto)
+        public async Task<IActionResult> UpdateConsultant(int id, [FromBody] AdminUpdateConsultantDto updateConsultantDto)
         {
             try
             {

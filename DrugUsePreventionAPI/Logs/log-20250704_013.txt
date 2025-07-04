@@ -1,0 +1,70 @@
+2025-07-04 17:15:57.976 +07:00 [INF] Updated ReturnUrl to: https://4e3c-118-69-69-187.ngrok-free.app/api/vnpay/return
+2025-07-04 17:15:59.242 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-04 17:16:01.367 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-04 17:16:02.326 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-04 17:16:03.743 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-04 17:16:03.744 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-04 17:16:03.746 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-04 17:16:04.023 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 successfully announced in 248.3646 ms
+2025-07-04 17:16:04.036 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-04 17:16:04.180 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 all the dispatchers started
+2025-07-04 17:16:18.987 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-04 17:16:42.510 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751624179, exp: 1751710579, iat: 1751624179, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 17:16:42.683 +07:00 [INF] Admin updating consultant with ID 9
+2025-07-04 17:16:42.778 +07:00 [INF] Admin updated Password for ConsultantID=9
+2025-07-04 17:20:15.382 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751624319, exp: 1751710719, iat: 1751624319, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 17:20:38.153 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751624319, exp: 1751710719, iat: 1751624319, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 17:20:38.261 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-04 17:20:38.456 +07:00 [ERR] Error updating consultant profile for UserID=26
+BCrypt.Net.SaltParseException: Invalid salt version
+   at BCrypt.Net.BCrypt.HashPassword(String inputKey, String salt, Boolean enhancedEntropy, HashType hashType)
+   at BCrypt.Net.BCrypt.Verify(String text, String hash, Boolean enhancedEntropy, HashType hashType)
+   at DrugUsePreventionAPI.Services.Implementations.ConsultantService.UpdateConsultantProfileAsync(Int32 userId, UpdateConsultantDto updateConsultantDto, Boolean isAdmin)
+   at DrugUsePreventionAPI.Controllers.ConsultantController.UpdateMyProfile(UpdateConsultantDto updateConsultantDto)
+2025-07-04 17:21:08.615 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751624319, exp: 1751710719, iat: 1751624319, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 17:21:08.644 +07:00 [INF] Updating consultant profile for UserID=26 by Consultant
+2025-07-04 17:21:08.713 +07:00 [ERR] Error updating consultant profile for UserID=26
+BCrypt.Net.SaltParseException: Invalid salt version
+   at BCrypt.Net.BCrypt.HashPassword(String inputKey, String salt, Boolean enhancedEntropy, HashType hashType)
+   at BCrypt.Net.BCrypt.Verify(String text, String hash, Boolean enhancedEntropy, HashType hashType)
+   at DrugUsePreventionAPI.Services.Implementations.ConsultantService.UpdateConsultantProfileAsync(Int32 userId, UpdateConsultantDto updateConsultantDto, Boolean isAdmin)
+   at DrugUsePreventionAPI.Controllers.ConsultantController.UpdateMyProfile(UpdateConsultantDto updateConsultantDto)
+2025-07-04 17:26:03.889 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-04 17:26:03.938 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 caught stopping signal...
+2025-07-04 17:26:03.979 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 caught stopped signal...
+2025-07-04 17:26:03.987 +07:00 [WRN] Server laptop-qlc4gki0:50240:e73d26d5 caught shutdown signal...
+2025-07-04 17:26:04.101 +07:00 [WRN] Server laptop-qlc4gki0:50240:e73d26d5 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-04 17:26:04.260 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 successfully reported itself as stopped in 140.7933 ms
+2025-07-04 17:26:04.261 +07:00 [INF] Server laptop-qlc4gki0:50240:e73d26d5 has been stopped in total 282.253 ms
+2025-07-04 22:55:43.082 +07:00 [INF] Updated ReturnUrl to: https://3b5a-2402-800-6327-d359-4cd1-a9d0-5179-bd17.ngrok-free.app/api/vnpay/return
+2025-07-04 22:55:44.270 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-04 22:55:48.600 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-04 22:55:51.483 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-04 22:55:55.783 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-04 22:55:55.791 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-04 22:55:55.798 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-04 22:55:55.951 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 successfully announced in 101.876 ms
+2025-07-04 22:55:55.963 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-04 22:55:55.987 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 all the dispatchers started
+2025-07-04 23:02:30.792 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-04 23:52:27.774 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751646260, exp: 1751732660, iat: 1751646260, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 23:52:28.331 +07:00 [INF] Retrieving available consultants
+2025-07-04 23:52:28.532 +07:00 [INF] Retrieved 6 available consultants
+2025-07-04 23:52:52.171 +07:00 [INF] JWT Token validated successfully for user: Consultant9, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 26, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Consultant9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsultantThuDuc@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1751646260, exp: 1751732660, iat: 1751646260, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-04 23:52:52.210 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-05T00:00:00.0000000"
+2025-07-04 23:52:52.448 +07:00 [INF] Retrieved 12 schedules
+2025-07-04 23:59:45.077 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-04 23:59:45.108 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 caught stopping signal...
+2025-07-04 23:59:45.155 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 caught stopped signal...
+2025-07-04 23:59:45.156 +07:00 [WRN] Server laptop-qlc4gki0:49680:6066b313 caught shutdown signal...
+2025-07-04 23:59:45.177 +07:00 [WRN] Server laptop-qlc4gki0:49680:6066b313 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-04 23:59:45.297 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 successfully reported itself as stopped in 99.7852 ms
+2025-07-04 23:59:45.299 +07:00 [INF] Server laptop-qlc4gki0:49680:6066b313 has been stopped in total 144.4738 ms

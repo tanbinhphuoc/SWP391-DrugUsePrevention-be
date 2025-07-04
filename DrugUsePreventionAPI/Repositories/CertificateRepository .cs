@@ -2,6 +2,8 @@
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Repositories
@@ -10,9 +12,14 @@ namespace DrugUsePreventionAPI.Repositories
     {
         public CertificateRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<Certificate> FirstOrDefaultAsync(System.Linq.Expressions.Expression<System.Func<Certificate, bool>> predicate)
+        public async Task<Certificate> FirstOrDefaultAsync(Expression<Func<Certificate, bool>> predicate, bool asNoTracking = false)
         {
-            return await _context.Certificates.FirstOrDefaultAsync(predicate);
+            var query = _context.Certificates.AsQueryable();
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+            return await query.FirstOrDefaultAsync(predicate);
         }
     }
 }
