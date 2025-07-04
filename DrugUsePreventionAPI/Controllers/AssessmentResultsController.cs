@@ -11,11 +11,33 @@ namespace DrugUsePreventionAPI.Controllers
         private readonly IAssessmentResultService _assessmentResultService;
         public AssessmentResultsController(IAssessmentResultService assessmentResultService) { _assessmentResultService = assessmentResultService; }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAssessmentResult(CreateAssessmentResultDto dto)
+        [HttpPost("create-input")]
+        public async Task<IActionResult> CreateInputResult([FromBody] CreateInputAssessmentResultDto dto)
         {
-            var result = await _assessmentResultService.CreateAssessmentResult(dto);
-            return Ok(new { message = result });
+            try
+            {
+                var resultMessage = await _assessmentResultService.CreateInputAssessmentResult(dto);
+                return Ok(new { success = true, message = resultMessage });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        // Tạo kết quả bài đánh giá đầu ra (Output)
+        [HttpPost("create-output")]
+        public async Task<IActionResult> CreateOutputResult([FromBody] CreateOutputAssessmentResultDto dto)
+        {
+            try
+            {
+                var resultMessage = await _assessmentResultService.CreateOutputAssessmentResult(dto);
+                return Ok(new { success = true, message = resultMessage });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
         }
 
         [HttpGet("compare-assessments")]
