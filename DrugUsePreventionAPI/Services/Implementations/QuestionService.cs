@@ -191,41 +191,72 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<bool> CreateMultipleQuestionsWithAnswers(List<CreateQuestionWithAnswersDto> questionsWithAnswers)
         {
-            try
+            if (questionsWithAnswers == null || !questionsWithAnswers.Any())
+                throw new Exception("Danh sách câu hỏi không được để trống");
+
+            int assessmentId = questionsWithAnswers.First().AssessmentID;
+
+            // 1. Lấy câu hỏi đã có để tính tổng điểm tối đa hiện tại
+            var existingQuestions = await _unitOfWork.Questions.FindAsync(q =>
+                q.AssessmentID == assessmentId && !q.IsDeleted);
+
+            int existingMaxScore = 0;
+            foreach (var q in existingQuestions)
             {
-                foreach (var questionDto in questionsWithAnswers)
+                var answers = await _unitOfWork.AnswerOptions.FindAsync(a =>
+                    a.QuestionID == q.QuestionID && !a.IsDeleted);
+                existingMaxScore += answers.Max(a => a.ScoreValue ?? 0);
+            }
+
+            // 2. Tính tổng điểm tối đa của câu hỏi sắp thêm
+            int newMaxScore = 0;
+
+            foreach (var questionDto in questionsWithAnswers)
+            {
+                if (questionDto.Answers == null || !questionDto.Answers.Any())
+                    throw new Exception("Mỗi câu hỏi phải có ít nhất một đáp án");
+
+                // Kiểm tra điểm hợp lệ cho từng đáp án
+                if (questionDto.Answers.Any(a => a.ScoreValue < 0 || a.ScoreValue > 10))
+                    throw new Exception("Điểm của mỗi đáp án phải nằm trong khoảng từ 0 đến 10");
+
+                newMaxScore += questionDto.Answers.Max(a => a.ScoreValue);
+            }
+
+            int totalScore = existingMaxScore + newMaxScore;
+            if (totalScore != 10)
+                throw new Exception($"Tổng điểm tối đa của toàn bài phải đúng bằng 10. Hiện tại: {totalScore}");
+
+            // 3. Lưu câu hỏi và đáp án vào DB
+            foreach (var questionDto in questionsWithAnswers)
+            {
+                var question = new Question
                 {
-                    var question = new Question
+                    AssessmentID = questionDto.AssessmentID,
+                    QuestionText = questionDto.QuestionText,
+                    QuestionType = questionDto.QuestionType
+                };
+
+                await _unitOfWork.Questions.AddAsync(question);
+                await _unitOfWork.SaveChangesAsync();
+
+                foreach (var answerDto in questionDto.Answers)
+                {
+                    var answer = new AnswerOption
                     {
-                        AssessmentID = questionDto.AssessmentID,
-                        QuestionText = questionDto.QuestionText,
-                        QuestionType = questionDto.QuestionType
+                        QuestionID = question.QuestionID,
+                        OptionText = answerDto.OptionText,
+                        ScoreValue = answerDto.ScoreValue
                     };
 
-                    await _unitOfWork.Questions.AddAsync(question);
-                    await _unitOfWork.SaveChangesAsync();
-
-                    foreach (var answer in questionDto.Answers)
-                    {
-                        var answerOption = new AnswerOption
-                        {
-                            QuestionID = question.QuestionID,
-                            OptionText = answer.OptionText,
-                            ScoreValue = answer.ScoreValue
-                        };
-
-                        await _unitOfWork.AnswerOptions.AddAsync(answerOption);
-                    }
+                    await _unitOfWork.AnswerOptions.AddAsync(answer);
                 }
+            }
 
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
+
 
     }
 
