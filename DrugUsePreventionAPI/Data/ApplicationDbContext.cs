@@ -51,30 +51,20 @@ namespace DrugUsePreventionAPI.Controllers.Data
                 .HasForeignKey(p => p.UserID)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
-            modelBuilder.Entity<CourseAssessment>()
-                .HasOne(ca => ca.Course)
-                .WithMany(c => c.CourseAssessments)
-                .HasForeignKey(ca => ca.CourseID);
-
-            modelBuilder.Entity<CourseAssessment>()
-                .HasOne(ca => ca.Assessment)
-                .WithMany(a => a.CourseAssessments)
-                .HasForeignKey(ca => ca.AssessmentID);
-
 
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Appointment)
-                .WithMany() // No reverse navigation needed in Appointment
+                .WithMany(a => a.Payments)
                 .HasForeignKey(p => p.AppointmentID)
                 .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false); // AppointmentID can be NULL
+                .IsRequired(false); // AppointmentID có thể NULL
 
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Course)
                 .WithMany(c => c.Payments)
                 .HasForeignKey(p => p.CourseID)
                 .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false); // CourseID can be NULL
+                .IsRequired(false); // CourseID có thể NULL
 
             // Appointment configuration
             modelBuilder.Entity<Appointment>()
@@ -94,6 +84,11 @@ namespace DrugUsePreventionAPI.Controllers.Data
                 .HasForeignKey(a => a.ConsultantID)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
+
+            // Course configuration
+            modelBuilder.Entity<Course>()
+                .Property(c => c.Price)
+                .HasColumnType("decimal(10,2)");
 
             // Consultant configuration
             modelBuilder.Entity<Consultant>()
@@ -133,7 +128,7 @@ namespace DrugUsePreventionAPI.Controllers.Data
                 .WithMany(p => p.SurveyResponses)
                 .HasForeignKey(sr => sr.ProgramID)
                 .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false); // ProgramID can be NULL
+                .IsRequired(false); // ProgramID có thể NULL
 
             // ConsultantSchedule index
             modelBuilder.Entity<ConsultantSchedule>()

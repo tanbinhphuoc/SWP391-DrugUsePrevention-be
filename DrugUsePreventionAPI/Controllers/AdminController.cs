@@ -1,4 +1,5 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.User;
+﻿using DrugUsePreventionAPI.Exceptions;
+using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Services.Interfaces;
@@ -42,6 +43,21 @@ namespace DrugUsePreventionAPI.Controllers
             if (user == null)
                 return NotFound();
             return Ok(user);
+        }
+
+        [HttpGet("GetAllAppointments")]
+        public async Task<IActionResult> GetAllAppointments()
+        {
+            try
+            {
+                var appointments = await _appointmentService.GetAllAppointmentsAsync();
+                return Ok(new { success = true, data = appointments });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving all appointments");
+                return StatusCode(500, new { success = false, message = "An error occurred while retrieving appointments." });
+            }
         }
 
         [HttpGet("payment-statistics")]
@@ -140,6 +156,31 @@ namespace DrugUsePreventionAPI.Controllers
             {
                 Serilog.Log.Error(ex, "Error processing refund for PaymentID={PaymentID}", paymentId);
                 return StatusCode(500, new { message = "An error occurred while processing the refund." });
+            }
+        }
+
+        [HttpPut("appointments/{appointmentId}/UpdateAppointmentStatus")]
+        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromBody] string newStatus)
+        {
+            try
+            {
+                await _appointmentService.UpdateAppointmentStatusAsync(appointmentId, newStatus);
+                return Ok(new { success = true, message = "Appointment status updated successfully." });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Log.Warning(ex, "Appointment {AppointmentId} not found", appointmentId);
+                return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                Log.Warning(ex, "Invalid status update for AppointmentID={AppointmentId}: {Message}", appointmentId, ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error updating appointment status for AppointmentID={AppointmentId}", appointmentId);
+                return StatusCode(500, new { success = false, message = "An error occurred while updating appointment status." });
             }
         }
 

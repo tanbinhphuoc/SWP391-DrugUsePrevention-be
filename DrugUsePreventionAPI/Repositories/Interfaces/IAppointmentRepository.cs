@@ -15,5 +15,6 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<Payment> GetByAppointmentIdAsync(int appointmentId);
         Task UpdateAppointmentSchedulesAsync(int appointmentId, List<int> scheduleIds);
         Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate);
+        Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
     }
 }

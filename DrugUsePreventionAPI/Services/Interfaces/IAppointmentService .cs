@@ -13,7 +13,10 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<IEnumerable<AppointmentDto>> GetConsultantAppointmentsAsync(int consultantId);
         Task HandleIPNAsync(Dictionary<string, string> queryParams);
         Task<IEnumerable<PaymentHistoryDto>> GetPaymentHistoryAsync(int userId, bool isAdmin, DateTime? startDate, DateTime? endDate);
-        Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate); // Thêm mới
-        Task<PaymentStatDto> GetPaymentStatisticsAsync(DateTime? startDate, DateTime? endDate); // Thêm mới
+        Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate); 
+        Task<PaymentStatDto> GetPaymentStatisticsAsync(DateTime? startDate, DateTime? endDate);
+        Task<IEnumerable<AppointmentAdmindto>> GetAllAppointmentsAsync();
+        Task UpdateAppointmentStatusAsync(int appointmentId, string newStatus);
+        Task ResendAppointmentEmailAsync(int appointmentId);
     }
 }

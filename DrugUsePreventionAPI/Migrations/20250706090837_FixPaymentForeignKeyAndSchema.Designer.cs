@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250627083559_update13")]
-    partial class update13
+    [Migration("20250706090837_FixPaymentForeignKeyAndSchema")]
+    partial class FixPaymentForeignKeyAndSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,7 +113,7 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("ScheduleIds")
                         .HasColumnType("nvarchar(max)");
@@ -189,6 +189,9 @@ namespace DrugUsePreventionAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlogID"));
 
+                    b.Property<string>("AuthorAvatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("AuthorID")
                         .HasColumnType("int");
 
@@ -203,6 +206,9 @@ namespace DrugUsePreventionAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -290,10 +296,12 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GoogleMeetLink")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("HourlyRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("Specialty")
                         .HasMaxLength(255)
@@ -483,10 +491,13 @@ namespace DrugUsePreventionAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int?>("AppointmentID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AppointmentID1")
                         .HasColumnType("int");
 
                     b.Property<int?>("CourseID")
@@ -517,6 +528,8 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasKey("PaymentID");
 
                     b.HasIndex("AppointmentID");
+
+                    b.HasIndex("AppointmentID1");
 
                     b.HasIndex("CourseID");
 
@@ -795,7 +808,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "User")
                         .WithOne("Consultant")
                         .HasForeignKey("DrugUsePreventionAPI.Models.Entities.Consultant", "UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Certificate");
@@ -875,16 +888,22 @@ namespace DrugUsePreventionAPI.Migrations
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", "Appointment")
                         .WithMany()
-                        .HasForeignKey("AppointmentID");
+                        .HasForeignKey("AppointmentID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("AppointmentID1");
 
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
                         .WithMany("Payments")
-                        .HasForeignKey("CourseID");
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Appointment");
@@ -983,6 +1002,11 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("CourseAssessments");
 
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Appointment", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>
