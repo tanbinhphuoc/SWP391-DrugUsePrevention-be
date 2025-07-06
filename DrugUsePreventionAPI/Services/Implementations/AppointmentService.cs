@@ -386,6 +386,83 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return await _unitOfWork.Payments.GetPaymentStatisticsAsync(startDate, endDate);
         }
 
+        public async Task<IEnumerable<AppointmentAdmindto>> GetAllAppointmentsAsync()
+        {
+            Log.Information("Retrieving all appointments");
+
+            var items = await _unitOfWork.Appointments.GetAllAppointmentsAsync();
+            var result = _mapper.Map<IEnumerable<AppointmentAdmindto>>(items);
+            // Xử lý PaymentStatus in-memory
+            result = result.Select(a =>
+            {
+                var appointment = items.FirstOrDefault(x => x.AppointmentID == a.AppointmentID);
+                if (appointment != null && appointment.Payments != null)
+                {
+                    var latestPayment = appointment.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault();
+                    a.PaymentStatus = latestPayment?.Status ?? "PENDING";
+                }
+                else
+                {
+                    a.PaymentStatus = "PENDING"; // Giá trị mặc định nếu không có Payments
+                }
+                return a;
+            }).ToList();
+
+            Log.Information("Retrieved {Count} appointments", result.Count());
+            return result;
+        }
+
+        public async Task UpdateAppointmentStatusAsync(int appointmentId, string newStatus)
+        {
+            Log.Information("Updating status for appointment {AppointmentId} to {NewStatus}", appointmentId, newStatus);
+
+            var appointment = await _unitOfWork.Appointments.GetByIdAsync(appointmentId);
+            if (appointment == null)
+            {
+                Log.Warning("Appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Appointment", appointmentId);
+            }
+
+            if (!new[] { "PENDING_PAYMENT", "CONFIRMED", "CANCELED" }.Contains(newStatus))
+            {
+                Log.Warning("Invalid status {NewStatus} for appointment {AppointmentId}", newStatus, appointmentId);
+                throw new BusinessRuleViolationException("Invalid status. Allowed values: PENDING_PAYMENT, CONFIRMED, CANCELED.");
+            }
+
+            appointment.Status = newStatus;
+            appointment.UpdatedAt = DateTime.UtcNow;
+            _unitOfWork.Appointments.Update(appointment);
+            await _unitOfWork.SaveChangesAsync();
+
+            Log.Information("Updated status for appointment {AppointmentId} to {NewStatus}", appointmentId, newStatus);
+        }
+
+
+        public async Task ResendAppointmentEmailAsync(int appointmentId)
+        {
+            Log.Information("Resending confirmation email for appointment {AppointmentId}", appointmentId);
+
+            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
+            if (appointment == null)
+            {
+                Log.Warning("Appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Appointment", appointmentId);
+            }
+
+            var consultant = appointment.Consultant;
+            var member = appointment.User;
+            var meetLink = consultant.GoogleMeetLink;
+
+            var subjectMember = $"Appointment Confirmation - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+            var bodyMember = BuildMemberEmailBody(appointment, consultant.User, meetLink);
+            await _emailService.SendEmailAsync(member.Email, subjectMember, bodyMember, true);
+
+            var subjectConsultant = $"New Appointment Notification - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+            var bodyConsultant = BuildConsultantEmailBody(appointment, member, meetLink);
+            await _emailService.SendEmailAsync(consultant.User.Email, subjectConsultant, bodyConsultant, true);
+
+            Log.Information("Confirmation emails resent for appointment {AppointmentId}", appointmentId);
+        }
 
         private string BuildMemberEmailBody(Appointment appointment, User consultant, string meetLink)
         {

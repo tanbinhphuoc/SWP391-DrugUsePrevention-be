@@ -57,7 +57,7 @@ namespace DrugUsePreventionAPI.Controllers
                 var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, transactionId, vnpayResponseCode, HttpContext);
 
                 // Trả về kết quả và chuyển hướng đến trang frontend
-                string frontendUrl = $"http://localhost:5173/user-dashboard/appointments?appointmentId={appointmentId}&vnp_ResponseCode={vnpayResponseCode}";
+                string frontendUrl = $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode={code}&appointmentId={appointmentId}";
 
                 // Chuyển hướng người dùng đến trang frontend
                 return Redirect(frontendUrl);

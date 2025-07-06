@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DrugUsePreventionAPI.Models.DTOs.Admin;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
@@ -29,7 +30,16 @@ namespace DrugUsePreventionAPI.Configurations
                 .ForMember(dest => dest.AppointmentEndDateTime, opt => opt.MapFrom(src => src.Appointment.EndDateTime))
                 .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.PaymentMethod));
 
-           
+            CreateMap<Appointment, AppointmentAdmindto>()
+               .ForMember(dest => dest.AppointmentID, opt => opt.MapFrom(src => src.AppointmentID))
+               .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.ConsultantName, opt => opt.MapFrom(src => src.Consultant.User.FullName))
+               .ForMember(dest => dest.StartDateTime, opt => opt.MapFrom(src => src.StartDateTime))
+               .ForMember(dest => dest.EndDateTime, opt => opt.MapFrom(src => src.EndDateTime))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+               .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+               .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Note))
+               .ForMember(dest => dest.PaymentStatus, opt => opt.Ignore());
         }
     }
 }
