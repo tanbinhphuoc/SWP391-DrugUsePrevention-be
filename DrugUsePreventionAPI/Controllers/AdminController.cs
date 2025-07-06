@@ -22,27 +22,111 @@ namespace DrugUsePreventionAPI.Controllers
         private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAppointmentService _appointmentService;
+        private readonly IConsultantService _consultantService;
         private readonly IConfiguration _configuration;
 
         public AdminController(
             IUserService userService,
             IUnitOfWork unitOfWork,
             IAppointmentService appointmentService,
+            IConsultantService consultantService,
             IConfiguration configuration)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
             _appointmentService = appointmentService;
+            _consultantService = consultantService;
             _configuration = configuration;
         }
 
-        [HttpGet("users/{id}")]
+        [HttpGet("users/{id}FindUserByID")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
                 return NotFound();
             return Ok(user);
+        }
+
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(new { success = true, data = users });
+        }
+
+        [HttpGet("users/role/{roleName}GetUserByRole")]
+        public async Task<IActionResult> GetUsersByRole(string roleName)
+        {
+            var users = await _userService.GetUsersByRoleAsync(roleName);
+            return Ok(new { success = true, data = users });
+        }
+
+        [HttpGet("users/status/{status}GetUserByStatus")]
+        public async Task<IActionResult> GetUsersByStatus(string status)
+        {
+            var users = await _userService.GetUsersByStatusAsync(status);
+            return Ok(new { success = true, data = users });
+        }
+
+        [HttpGet("users/GetUsersByCreatedDateRange")]
+        public async Task<IActionResult> GetUsersByCreatedDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            var users = await _userService.GetUsersByCreatedDateRangeAsync(startDate, endDate);
+            return Ok(new { success = true, data = users });
+        }
+
+        [HttpGet("users/SearchUsers(Name or Email)")]
+        public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
+        {
+            var users = await _userService.SearchUsersAsync(searchTerm);
+            return Ok(new { success = true, data = users });
+        }
+
+        [HttpGet("users/GetUserCountByRole")]
+        public async Task<IActionResult> GetUserCountByRole(string roleName)
+        {
+            var count = await _userService.GetUserCountByRoleAsync(roleName);
+            return Ok(new { success = true, data = count });
+        }
+
+        [HttpGet("users/stats/GetNewUserCount")]
+        public async Task<IActionResult> GetNewUserCount([FromQuery] DateTime startDate)
+        {
+            var count = await _userService.GetNewUserCountAsync(startDate);
+            return Ok(new { success = true, data = count });
+        }
+
+        [HttpGet("users/stats/Ratio(Active/Inactive)")]
+        public async Task<IActionResult> GetActiveInactiveRatio()
+        {
+            var ratio = await _userService.GetActiveInactiveRatioAsync();
+            return Ok(new { success = true, data = ratio });
+        }
+
+        [HttpPut("users/{id}/SetStatusForUser")]
+        public async Task<IActionResult> ToggleUserStatus(int id, [FromBody] string newStatus)
+        {
+            try
+            {
+                await _userService.ToggleUserStatusAsync(id, newStatus);
+                return Ok(new { success = true, message = $"User status updated to {newStatus}." });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Log.Warning(ex, "User {UserId} not found", id);
+                return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                Log.Warning(ex, "Invalid status update for User {UserId}: {Message}", id, ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error toggling status for User {UserId}", id);
+                return StatusCode(500, new { success = false, message = "An error occurred while updating user status." });
+            }
         }
 
         [HttpGet("GetAllAppointments")]
@@ -58,6 +142,34 @@ namespace DrugUsePreventionAPI.Controllers
                 Log.Error(ex, "Error retrieving all appointments");
                 return StatusCode(500, new { success = false, message = "An error occurred while retrieving appointments." });
             }
+        }
+
+        [HttpGet("GetAllConsultants")]
+        public async Task<IActionResult> GetAllConsultants()
+        {
+            var consultants = await _consultantService.GetConsultantsByStatusAsync("Active");
+            return Ok(new { success = true, data = consultants });
+        }
+
+        [HttpGet("consultants/GetConsultantsBySpecialty")]
+        public async Task<IActionResult> GetConsultantsBySpecialty(string specialty)
+        {
+            var consultants = await _consultantService.GetConsultantsBySpecialtyAsync(specialty);
+            return Ok(new { success = true, data = consultants });
+        }
+
+        [HttpGet("consultants/GetConsultantsByStatus")]
+        public async Task<IActionResult> GetConsultantsByStatus(string status)
+        {
+            var consultants = await _consultantService.GetConsultantsByStatusAsync(status);
+            return Ok(new { success = true, data = consultants });
+        }
+
+        [HttpGet("consultants/GetConsultantPerformanceStats")]
+        public async Task<IActionResult> GetConsultantPerformanceStats(int consultantId)
+        {
+            var stats = await _consultantService.GetConsultantPerformanceStatsAsync(consultantId);
+            return Ok(new { success = true, data = stats });
         }
 
         [HttpGet("payment-statistics")]
@@ -182,6 +294,66 @@ namespace DrugUsePreventionAPI.Controllers
                 Log.Error(ex, "Error updating appointment status for AppointmentID={AppointmentId}", appointmentId);
                 return StatusCode(500, new { success = false, message = "An error occurred while updating appointment status." });
             }
+        }
+
+        [HttpGet("users/GetAllUserStats")]
+        public async Task<IActionResult> GetAllUserStats()
+        {
+            var roles = await _unitOfWork.Roles.GetAllAsync();
+            var stats = new Dictionary<string, object>
+    {
+        { "roleCounts", new List<int>() },
+        { "newUserCount", 0 },
+        { "activeInactiveRatio", new Dictionary<string, int>() }
+    };
+
+            var roleCounts = new List<int>();
+            foreach (var role in roles)
+            {
+                var count = await _userService.GetUserCountByRoleAsync(role.RoleName);
+                roleCounts.Add(count);
+            }
+            stats["roleCounts"] = roleCounts;
+
+            stats["newUserCount"] = await _userService.GetNewUserCountAsync(DateTime.UtcNow.AddMonths(-1));
+            stats["activeInactiveRatio"] = await _userService.GetActiveInactiveRatioAsync();
+
+            return Ok(new { success = true, data = stats });
+        }
+
+        [HttpPut("consultants/{consultantId}/toggle-status")]
+        public async Task<IActionResult> ToggleConsultantStatus(int consultantId, [FromBody] string newStatus)
+        {
+            try
+            {
+                var consultant = await _unitOfWork.Consultants.GetByIdAsync(consultantId);
+                if (consultant == null || consultant.User == null)
+                {
+                    return NotFound(new { success = false, message = "Consultant not found." });
+                }
+                await _userService.ToggleUserStatusAsync(consultant.UserID, newStatus);
+                return Ok(new { success = true, message = $"Consultant status updated to {newStatus}." });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error toggling status for Consultant {ConsultantId}", consultantId);
+                return StatusCode(500, new { success = false, message = "An error occurred while updating consultant status." });
+            }
+        }
+
+        [HttpGet("consultants/GetAllConsultantsPerformanceStats")]
+        public async Task<IActionResult> GetAllConsultantsPerformanceStats()
+        {
+            var consultants = await _unitOfWork.Consultants.GetAllAsync();
+            var stats = new List<object>();
+
+            foreach (var consultant in consultants)
+            {
+                var performance = await _consultantService.GetConsultantPerformanceStatsAsync(consultant.ConsultantID);
+                stats.Add(new { ConsultantId = consultant.ConsultantID, Performance = performance });
+            }
+
+            return Ok(new { success = true, data = stats });
         }
 
         private async Task SendRefundEmail(Payment payment)

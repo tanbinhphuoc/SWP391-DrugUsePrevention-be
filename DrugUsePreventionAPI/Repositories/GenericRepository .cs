@@ -17,10 +17,17 @@ namespace DrugUsePreventionAPI.Repositories
             _dbSet = context.Set<TEntity>();
         }
 
+        public virtual async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        /*
         public async Task<TEntity> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
+        */
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {

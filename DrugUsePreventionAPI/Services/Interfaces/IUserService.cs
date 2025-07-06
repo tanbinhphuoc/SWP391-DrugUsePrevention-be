@@ -12,6 +12,13 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
         Task<bool> DeleteUserAsync(int id);
         Task<UserDto> UpdateUserRoleAsync(int id, string roleName, string callerRole);
-        
+        Task<IEnumerable<UserDto>> GetUsersByRoleAsync(string roleName);
+        Task<IEnumerable<UserDto>> GetUsersByStatusAsync(string status);
+        Task<IEnumerable<UserDto>> GetUsersByCreatedDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<UserDto>> SearchUsersAsync(string searchTerm);
+        Task<int> GetUserCountByRoleAsync(string roleName);
+        Task<int> GetNewUserCountAsync(DateTime startDate);
+        Task<Dictionary<string, int>> GetActiveInactiveRatioAsync();
+        Task<bool> ToggleUserStatusAsync(int id, string newStatus);
     }
 }
