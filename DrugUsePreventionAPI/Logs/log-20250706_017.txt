@@ -1,0 +1,56 @@
+2025-07-06 20:04:40.381 +07:00 [INF] Updated ReturnUrl to: https://1e62-2405-4800-5714-6960-7cbe-7c7e-3b57-2ff.ngrok-free.app/api/vnpay/return
+2025-07-06 20:04:41.294 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-06 20:04:43.273 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-06 20:04:45.737 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-06 20:04:45.740 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-06 20:04:45.742 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-06 20:04:46.061 +07:00 [INF] Server laptop-qlc4gki0:47004:5efc6d21 successfully announced in 214.8301 ms
+2025-07-06 20:04:46.081 +07:00 [INF] Server laptop-qlc4gki0:47004:5efc6d21 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-06 20:04:46.128 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-06 20:04:46.282 +07:00 [INF] Server laptop-qlc4gki0:47004:5efc6d21 all the dispatchers started
+2025-07-06 20:06:05.429 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-06 20:06:05.901 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-06 20:06:57.736 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751807199, exp: 1751893599, iat: 1751807199, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-06 20:06:58.065 +07:00 [INF] Toggling status for user ID 3 to Inactive
+2025-07-06 20:06:58.238 +07:00 [INF] Toggled status for user consultant1 to Inactive
+2025-07-06 20:07:39.954 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751807199, exp: 1751893599, iat: 1751807199, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-06 20:07:40.016 +07:00 [INF] Retrieving performance stats for consultant ID 1
+2025-07-06 20:07:40.119 +07:00 [INF] Retrieved performance stats for consultant 1: Count=1, Revenue=100.00, CancellationRate=0%
+2025-07-06 20:07:40.132 +07:00 [INF] Retrieving performance stats for consultant ID 2
+2025-07-06 20:07:40.145 +07:00 [INF] Retrieved performance stats for consultant 2: Count=0, Revenue=0.00, CancellationRate=0%
+2025-07-06 20:07:40.149 +07:00 [INF] Retrieving performance stats for consultant ID 5
+2025-07-06 20:07:40.157 +07:00 [INF] Retrieved performance stats for consultant 5: Count=3, Revenue=299997.00, CancellationRate=1.3513513513513513513513513500%
+2025-07-06 20:07:40.175 +07:00 [INF] Retrieving performance stats for consultant ID 6
+2025-07-06 20:07:40.182 +07:00 [INF] Retrieved performance stats for consultant 6: Count=0, Revenue=0.00, CancellationRate=0%
+2025-07-06 20:07:40.185 +07:00 [INF] Retrieving performance stats for consultant ID 7
+2025-07-06 20:07:40.190 +07:00 [INF] Retrieved performance stats for consultant 7: Count=0, Revenue=0.00, CancellationRate=0%
+2025-07-06 20:07:40.194 +07:00 [INF] Retrieving performance stats for consultant ID 8
+2025-07-06 20:07:40.202 +07:00 [INF] Retrieved performance stats for consultant 8: Count=1, Revenue=77777.00, CancellationRate=0%
+2025-07-06 20:07:40.205 +07:00 [INF] Retrieving performance stats for consultant ID 9
+2025-07-06 20:07:40.211 +07:00 [INF] Retrieved performance stats for consultant 9: Count=0, Revenue=0.00, CancellationRate=0%
+2025-07-06 20:18:40.853 +07:00 [INF] Updated ReturnUrl to: https://1e62-2405-4800-5714-6960-7cbe-7c7e-3b57-2ff.ngrok-free.app/api/vnpay/return
+2025-07-06 20:18:42.057 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-06 20:18:45.499 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-06 20:18:47.808 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-06 20:18:47.811 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-06 20:18:47.812 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-06 20:18:47.885 +07:00 [INF] Server laptop-qlc4gki0:7288:40667a49 successfully announced in 47.0546 ms
+2025-07-06 20:18:47.894 +07:00 [INF] Server laptop-qlc4gki0:7288:40667a49 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-06 20:18:47.932 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-06 20:18:48.139 +07:00 [INF] Server laptop-qlc4gki0:7288:40667a49 all the dispatchers started
+2025-07-06 20:19:21.191 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-06 20:19:21.551 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-06 20:20:03.917 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751807977, exp: 1751894377, iat: 1751807977, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-06 20:20:04.124 +07:00 [INF] Retrieving users by status Active
+2025-07-06 20:20:04.192 +07:00 [INF] Retrieved 20 users with status Active
+2025-07-06 20:20:46.274 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751807977, exp: 1751894377, iat: 1751807977, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-06 20:20:46.341 +07:00 [INF] Retrieving users created between "2025-06-01T00:00:00.0000000" and "2025-07-01T00:00:00.0000000"
+2025-07-06 20:20:46.378 +07:00 [INF] Retrieved 20 users

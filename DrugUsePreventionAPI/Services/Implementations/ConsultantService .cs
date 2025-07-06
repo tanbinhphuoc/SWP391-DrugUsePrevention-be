@@ -373,7 +373,42 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return _mapper.Map<ConsultantDto>(result);
         }
 
+        public async Task<IEnumerable<ConsultantDto>> GetConsultantsBySpecialtyAsync(string specialty)
+        {
+            Log.Information("Retrieving consultants by specialty {Specialty}", specialty);
+            var consultants = await _unitOfWork.Consultants.GetConsultantsBySpecialtyAsync(specialty);
+            var result = _mapper.Map<IEnumerable<ConsultantDto>>(consultants);
+            Log.Information("Retrieved {Count} consultants for specialty {Specialty}", result.Count(), specialty);
+            return result;
+        }
 
+        public async Task<IEnumerable<ConsultantDto>> GetConsultantsByStatusAsync(string status)
+        {
+            Log.Information("Retrieving consultants by status {Status}", status);
+            var consultants = await _unitOfWork.Consultants.GetConsultantsByStatusAsync(status);
+            var result = _mapper.Map<IEnumerable<ConsultantDto>>(consultants);
+            Log.Information("Retrieved {Count} consultants with status {Status}", result.Count(), status);
+            return result;
+        }
+
+        public async Task<Dictionary<string, object>> GetConsultantPerformanceStatsAsync(int consultantId)
+        {
+            Log.Information("Retrieving performance stats for consultant ID {ConsultantId}", consultantId);
+            var repo = _unitOfWork.Consultants;
+            var consultationCount = await repo.GetConsultationCountAsync(consultantId);
+            var revenue = await repo.GetRevenueAsync(consultantId);
+            var cancellationRate = await repo.GetCancellationRateAsync(consultantId);
+
+            var stats = new Dictionary<string, object>
+            {
+                { "consultationCount", consultationCount },
+                { "revenue", revenue },
+                { "cancellationRate", cancellationRate }
+            };
+            Log.Information("Retrieved performance stats for consultant {ConsultantId}: Count={Count}, Revenue={Revenue}, CancellationRate={Rate}%",
+                consultantId, consultationCount, revenue, cancellationRate);
+            return stats;
+        }
 
     }
 }

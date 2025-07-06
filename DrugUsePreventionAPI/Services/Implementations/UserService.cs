@@ -5,17 +5,21 @@ using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Exceptions;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitOfWork; private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -137,6 +141,89 @@ namespace DrugUsePreventionAPI.Services.Implementations
             Log.Information("Updated role for user {UserName} to {RoleName}", result.UserName, roleName);
             return result;
         }
-    }
 
+        public async Task<IEnumerable<UserDto>> GetUsersByRoleAsync(string roleName)
+        {
+            Log.Information("Retrieving users by role {RoleName}", roleName);
+            var users = await _unitOfWork.Users.GetUsersByRoleAsync(roleName);
+            var result = _mapper.Map<IEnumerable<UserDto>>(users);
+            Log.Information("Retrieved {Count} users for role {RoleName}", result.Count(), roleName);
+            return result;
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersByStatusAsync(string status)
+        {
+            Log.Information("Retrieving users by status {Status}", status);
+            var users = await _unitOfWork.Users.GetUsersByStatusAsync(status);
+            var result = _mapper.Map<IEnumerable<UserDto>>(users);
+            Log.Information("Retrieved {Count} users with status {Status}", result.Count(), status);
+            return result;
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersByCreatedDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            Log.Information("Retrieving users created between {StartDate} and {EndDate}", startDate, endDate);
+            var users = await _unitOfWork.Users.GetUsersByCreatedDateRangeAsync(startDate, endDate);
+            var result = _mapper.Map<IEnumerable<UserDto>>(users);
+            Log.Information("Retrieved {Count} users", result.Count());
+            return result;
+        }
+
+        public async Task<IEnumerable<UserDto>> SearchUsersAsync(string searchTerm)
+        {
+            Log.Information("Searching users with term {SearchTerm}", searchTerm);
+            var users = await _unitOfWork.Users.SearchUsersAsync(searchTerm);
+            var result = _mapper.Map<IEnumerable<UserDto>>(users);
+            Log.Information("Retrieved {Count} users for search term {SearchTerm}", result.Count(), searchTerm);
+            return result;
+        }
+
+        public async Task<int> GetUserCountByRoleAsync(string roleName)
+        {
+            Log.Information("Getting user count by role {RoleName}", roleName);
+            var count = await _unitOfWork.Users.GetUserCountByRoleAsync(roleName);
+            Log.Information("User count for role {RoleName} is {Count}", roleName, count);
+            return count;
+        }
+
+        public async Task<int> GetNewUserCountAsync(DateTime startDate)
+        {
+            Log.Information("Getting new user count since {StartDate}", startDate);
+            var count = await _unitOfWork.Users.GetNewUserCountAsync(startDate);
+            Log.Information("New user count since {StartDate} is {Count}", startDate, count);
+            return count;
+        }
+
+        public async Task<Dictionary<string, int>> GetActiveInactiveRatioAsync()
+        {
+            Log.Information("Getting active/inactive user ratio");
+            var ratio = await _unitOfWork.Users.GetActiveInactiveRatioAsync();
+            Log.Information("Active/Inactive ratio: Active={Active}%, Inactive={Inactive}%", ratio["Active"], ratio["Inactive"]);
+            return ratio;
+        }
+
+        public async Task<bool> ToggleUserStatusAsync(int id, string newStatus)
+        {
+            Log.Information("Toggling status for user ID {UserId} to {NewStatus}", id, newStatus);
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            if (user == null)
+            {
+                Log.Warning("User with ID {UserId} not found", id);
+                throw new EntityNotFoundException("User", id);
+            }
+
+            if (!new[] { "Active", "Inactive" }.Contains(newStatus))
+            {
+                Log.Warning("Invalid status {NewStatus} for user ID {UserId}", newStatus, id);
+                throw new BusinessRuleViolationException("Status must be 'Active' or 'Inactive'.");
+            }
+
+            user.Status = newStatus;
+            user.UpdatedAt = DateTime.UtcNow;
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+            Log.Information("Toggled status for user {UserName} to {NewStatus}", user.UserName, newStatus);
+            return true;
+        }
+    }
 }
