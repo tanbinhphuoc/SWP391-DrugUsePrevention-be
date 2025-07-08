@@ -20,23 +20,36 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             bool existedRegistration = await _unitOfWork.CourseRegistrations.ExistsAsync(
                 createCourseRegistrationDto.userID, createCourseRegistrationDto.courseID);
+
             if (existedRegistration)
             {
                 throw new Exception("Bạn đã đăng ký khóa học này!");
             }
 
             var course = await _unitOfWork.Courses.GetByIdAsync(createCourseRegistrationDto.courseID);
-            if (course == null)
+            if (course == null || course.IsDeleted)
             {
                 throw new Exception("Không tìm thấy khóa học.");
             }
 
-            // Nếu khóa học đang ở trạng thái PENDING thì chuyển sang OPEN
-            if (course.Status.ToUpper() == "PENDING")
+            // ❌ Không cho đăng ký nếu khóa học đang CLOSED
+            if (course.Status.Equals("CLOSED", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new Exception("Khóa học đã đóng, không thể đăng ký.");
+            }
+
+            // Nếu đang là PENDING thì chuyển sang OPEN
+            if (course.Status.Equals("PENDING", StringComparison.OrdinalIgnoreCase))
             {
                 course.Status = "OPEN";
                 course.UpdatedAt = DateTime.UtcNow;
                 _unitOfWork.Courses.Update(course);
+            }
+
+            // Cho phép đăng ký nếu Status = OPEN
+            if (!course.Status.Equals("OPEN", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new Exception("Khóa học hiện không mở để đăng ký.");
             }
 
             var courseRegistration = new CourseRegistration

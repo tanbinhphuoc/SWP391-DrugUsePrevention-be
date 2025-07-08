@@ -77,7 +77,7 @@ builder.Services.AddCors(options =>
 // Add services to the container
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never;
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -158,6 +158,11 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
 builder.Services.AddScoped<ScheduleGenerator>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ICourseVideoRepository, CourseVideoRepository>();
+builder.Services.AddScoped<IUserVideoProgressRepository, UserVideoProgressRepository>();
+builder.Services.AddScoped<ICourseVideoService, CourseVideoService>();
+
+
 
 
 // Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)
