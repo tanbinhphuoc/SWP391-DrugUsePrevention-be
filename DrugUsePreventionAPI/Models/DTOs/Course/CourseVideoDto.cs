@@ -1,6 +1,6 @@
 ﻿namespace DrugUsePreventionAPI.Models.DTOs.Course
 {
-    public class CreateCourseVideoDto
+    public class CourseVideoDto
     {
         public int CourseID { get; set; }
         public string Title { get; set; }

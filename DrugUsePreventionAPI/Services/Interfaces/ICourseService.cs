@@ -13,6 +13,8 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<bool> DeleteCourse(int id);
         Task<bool> IsGetCourse(double score);
         Task<List<Course>> GetCoursesByAge(int age);
+        Task<List<Course>> GetCompletedCoursesByUser(int userId);
+        Task<List<Course>> GetUncompletedCoursesByUser(int userId);
 
     }
 }

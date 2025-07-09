@@ -32,7 +32,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new Exception("Không tìm thấy khóa học.");
             }
 
-            // ❌ Không cho đăng ký nếu khóa học đang CLOSED
+            // Không cho đăng ký nếu khóa học đang CLOSED
             if (course.Status.Equals("CLOSED", StringComparison.OrdinalIgnoreCase))
             {
                 throw new Exception("Khóa học đã đóng, không thể đăng ký.");
@@ -60,8 +60,21 @@ namespace DrugUsePreventionAPI.Services.Implementations
             };
 
             await _unitOfWork.CourseRegistrations.AddAsync(courseRegistration);
+
+            // Tạo bản ghi UserCourseProgress cho theo dõi tiến độ
+            var userProgress = new UserCourseProgress
+            {
+                CourseID = createCourseRegistrationDto.courseID,
+                UserID = createCourseRegistrationDto.userID,
+                IsCompleted = false,
+                CompletedAt = null
+            };
+
+            await _unitOfWork.UserCourseProgress.AddAsync(userProgress);
+
             await _unitOfWork.SaveChangesAsync();
         }
+
 
     }
 

@@ -25,8 +25,7 @@ public class CourseService : ICourseService
             if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
                 throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
 
-            // ❌ KHÔNG kiểm tra trùng type nữa
-            // ✅ Kiểm tra trùng tên
+            // Kiểm tra trùng tên
             var duplicateName = await _unitOfWork.Courses.FindAsync(c =>
                 !c.IsDeleted && c.CourseName.ToLower() == courseDto.CourseName.ToLower());
 
@@ -171,4 +170,42 @@ public class CourseService : ICourseService
         var courses = allCourses.Where(c => c.AgeMin <= age && c.AgeMax >= age).ToList();
         return courses;
     }
+    public async Task<List<Course>> GetCompletedCoursesByUser(int userId)
+    {
+        var progressList = await _unitOfWork
+            .UserCourseProgress
+            .FindAsync(p => p.UserID == userId && p.IsCompleted);
+
+        var courseIds = progressList.Select(p => p.CourseID).ToList();
+
+        var completedCourses = await _unitOfWork.Courses.FindAsync(c =>
+            courseIds.Contains(c.CourseID) && !c.IsDeleted);
+
+        if (!completedCourses.Any())
+            throw new BusinessRuleViolationException("Không có khóa học nào đã hoàn thành.");
+
+        return completedCourses.ToList();
+    }
+
+
+    public async Task<List<Course>> GetUncompletedCoursesByUser(int userId)
+    {
+        var progressList = await _unitOfWork.UserCourseProgress.FindAsync(p =>
+            p.UserID == userId && !p.IsCompleted);
+
+        var courseIds = progressList.Select(p => p.CourseID).ToList();
+
+        var courses = await _unitOfWork.Courses.FindAsync(c =>
+            courseIds.Contains(c.CourseID) && !c.IsDeleted);
+
+        var result = courses.ToList();
+
+        if (!result.Any())
+            throw new BusinessRuleViolationException("Không có khóa học nào đang học.");
+
+        return result;
+    }
+
+
+
 }

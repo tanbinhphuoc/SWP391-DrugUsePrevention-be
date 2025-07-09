@@ -4,6 +4,7 @@ using DrugUsePreventionAPI.Controllers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250709123109_update18")]
+    partial class update18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -460,39 +463,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.ToTable("CourseRegistrations");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseVideo", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VideoUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CourseID");
-
-                    b.ToTable("CourseVideos");
-                });
-
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Payment", b =>
                 {
                     b.Property<int>("PaymentID")
@@ -914,17 +884,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseVideo", b =>
-                {
-                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Payment", b =>

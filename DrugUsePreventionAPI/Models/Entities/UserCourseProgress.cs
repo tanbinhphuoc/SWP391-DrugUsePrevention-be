@@ -1,13 +1,12 @@
 ﻿namespace DrugUsePreventionAPI.Models.Entities
 {
-    public class CourseVideo
+    public class UserCourseProgress
     {
         public int ID { get; set; }
+        public int UserID { get; set; }
         public int CourseID { get; set; }
-        public string Title { get; set; }
-        public string VideoUrl { get; set; }
-        public string Description { get; set; }
-        public int Order { get; set; }
+        public bool IsCompleted { get; set; }
+        public DateTime? CompletedAt { get; set; }
 
         // Navigation
         public Course Course { get; set; }
