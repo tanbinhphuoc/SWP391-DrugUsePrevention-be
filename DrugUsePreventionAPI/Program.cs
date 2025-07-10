@@ -68,7 +68,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://4465-2405-4802-8012-15b0-71b6-1cf0-27aa-442.ngrok-free.app")
+        policy.WithOrigins("http://localhost:5174", "https://4465-2405-4802-8012-15b0-71b6-1cf0-27aa-442.ngrok-free.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });

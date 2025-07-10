@@ -507,6 +507,9 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<int?>("AppointmentID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AppointmentID1")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CourseID")
                         .HasColumnType("int");
 
@@ -535,6 +538,8 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasKey("PaymentID");
 
                     b.HasIndex("AppointmentID");
+
+                    b.HasIndex("AppointmentID1");
 
                     b.HasIndex("CourseID");
 
@@ -934,6 +939,10 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasForeignKey("AppointmentID")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("AppointmentID1");
+
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
                         .WithMany("Payments")
                         .HasForeignKey("CourseID")
@@ -1052,6 +1061,11 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("CourseAssessments");
 
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Appointment", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>

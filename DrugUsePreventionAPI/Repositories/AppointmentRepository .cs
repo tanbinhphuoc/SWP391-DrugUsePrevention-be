@@ -127,5 +127,23 @@ namespace DrugUsePreventionAPI.Repositories
                 totalAppointments, totalConfirmed, totalCancelled, totalPending);
             return stats;
         }
+
+
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
+        {
+            Log.Information("Retrieving all appointments");
+
+            var items = await _context.Appointments
+                .AsNoTracking()
+                .Include(a => a.User)
+                .Include(a => a.Consultant)
+                .ThenInclude(c => c.User)
+                .Include(a => a.Payments)
+                .OrderByDescending(a => a.StartDateTime)
+                .ToListAsync();
+
+            Log.Information("Retrieved {Count} appointments", items.Count);
+            return items;
+        }
     }
 }

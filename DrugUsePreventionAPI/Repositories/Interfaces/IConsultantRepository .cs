@@ -12,5 +12,10 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<bool> HasConfirmedAppointmentsAsync(int id);
         Task<Consultant> GetByUserIdAsync(int userId);
         Task<Consultant> GetByUserIdTrackedAsync(int userId);
+        Task<IEnumerable<Consultant>> GetConsultantsBySpecialtyAsync(string specialty);
+        Task<IEnumerable<Consultant>> GetConsultantsByStatusAsync(string status);
+        Task<int> GetConsultationCountAsync(int consultantId);
+        Task<decimal> GetRevenueAsync(int consultantId);
+        Task<decimal> GetCancellationRateAsync(int consultantId);
     }
 }

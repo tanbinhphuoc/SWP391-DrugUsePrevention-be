@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DrugUsePreventionAPI.Models.Entities
 {
@@ -12,6 +13,7 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         public int? CourseID { get; set; }
 
+        [ForeignKey("Appointment")]
         public int? AppointmentID { get; set; }
 
         public decimal? Amount { get; set; } = 0;
