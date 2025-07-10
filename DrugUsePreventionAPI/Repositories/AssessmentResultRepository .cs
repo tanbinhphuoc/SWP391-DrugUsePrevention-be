@@ -12,7 +12,7 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<AssessmentResult> GetByUserAndCourseAsync(int userId, int courseId, string stage)
         {
             return await _context.AssessmentResults
-                .FirstOrDefaultAsync(x => x.UserID == userId && x.CourseID == courseId && x.AssessmentStage == stage);
+                .FirstOrDefaultAsync(x => x.UserID == userId && x.CourseID == courseId );
         }
         public async Task<AssessmentResult?> GetLatestResultByUserAsync(int userId)
         {

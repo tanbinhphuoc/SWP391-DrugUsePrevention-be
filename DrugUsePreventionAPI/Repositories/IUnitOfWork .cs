@@ -20,6 +20,10 @@ namespace DrugUsePreventionAPI.Repositories
         ISurveyRepository Surveys { get; }
         IQuestionRepository Questions { get; }
         IAnswerOptionRepository AnswerOptions { get; }
+        IUserCourseProgressRepository UserCourseProgress { get; }
+        ICourseVideoRepository CourseVideos { get; }
+
+
         Task<int> SaveChangesAsync();
         void Attach<TEntity>(TEntity entity) where TEntity : class;
 

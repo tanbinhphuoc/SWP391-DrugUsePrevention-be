@@ -25,16 +25,17 @@ public class CourseService : ICourseService
             if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
                 throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
 
-            var existingCourse = await _unitOfWork.Courses.GetCourseByTypeAsync(courseDto.Type);
-            if (existingCourse != null && !existingCourse.IsDeleted)
-                throw new BusinessRuleViolationException($"Khóa học cho loại '{courseDto.Type}' đã tồn tại.");
+            // Kiểm tra trùng tên
+            var duplicateName = await _unitOfWork.Courses.FindAsync(c =>
+                !c.IsDeleted && c.CourseName.ToLower() == courseDto.CourseName.ToLower());
+
+            if (duplicateName.Any())
+                throw new BusinessRuleViolationException($"Tên khóa học '{courseDto.CourseName}' đã tồn tại.");
 
             var course = new Course
             {
                 CourseName = courseDto.CourseName,
                 Description = courseDto.Description,
-                StartDate = courseDto.StartDate,
-                EndDate = courseDto.EndDate,
                 Status = courseDto.Status,
                 AgeMin = courseDto.AgeMin,
                 AgeMax = courseDto.AgeMax,
@@ -50,7 +51,7 @@ public class CourseService : ICourseService
             await _unitOfWork.SaveChangesAsync();
 
             Log.Information("Created course {Title} with ID {CourseId}", course.CourseName, course.CourseID);
-            return course.CourseID; //  trả ID
+            return course.CourseID;
         }
         catch (BusinessRuleViolationException)
         {
@@ -64,50 +65,58 @@ public class CourseService : ICourseService
     }
 
 
+
     public async Task<bool> UpdateCourse(int id, CreateCourseDto courseDto)
-    {
-        if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
-        {
-            Log.Warning("Invalid course type {Type}", courseDto.Type);
-            throw new BusinessRuleViolationException("Course type must be HocSinh or SinhVien or PhuHuynh.");
-        }
+{
+    if (courseDto.Type != "HocSinh" && courseDto.Type != "SinhVien" && courseDto.Type != "PhuHuynh")
+        throw new BusinessRuleViolationException("Loại khóa học không hợp lệ.");
 
-        var validStatuses = new[] { "OPEN", "CLOSED", "PENDING" };
-        if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
-            throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
+    var validStatuses = new[] { "OPEN", "CLOSED", "PENDING" };
+    if (!validStatuses.Contains(courseDto.Status?.ToUpper()))
+        throw new BusinessRuleViolationException("Trạng thái khóa học chỉ được là 'OPEN', 'CLOSED' hoặc 'PENDING'.");
 
-        var course = await _unitOfWork.Courses.GetByIdAsync(id);
-        if (course == null || course.IsDeleted)
-        {
-            Log.Warning("Course with ID {CourseId} not found or deleted", id);
-            throw new EntityNotFoundException("Course", id);
-        }
+    var course = await _unitOfWork.Courses.GetByIdAsync(id);
+    if (course == null || course.IsDeleted)
+        throw new EntityNotFoundException("Course", id);
 
-        course.CourseName = courseDto.CourseName;
-        course.Description = courseDto.Description;
-        course.StartDate = courseDto.StartDate;
-        course.EndDate = courseDto.EndDate;
-        course.Status = courseDto.Status;
-        course.AgeMin = courseDto.AgeMin;
-        course.AgeMax = courseDto.AgeMax;
-        course.Capacity = courseDto.Capacity;
-        course.Price = courseDto.Price;
-        course.Type = courseDto.Type;
-        course.UpdatedAt = DateTime.UtcNow;
+    // Kiểm tra trùng tên (ngoại trừ chính nó)
+    var duplicateName = await _unitOfWork.Courses.FindAsync(c =>
+        !c.IsDeleted &&
+        c.CourseID != id &&
+        c.CourseName.ToLower() == courseDto.CourseName.ToLower());
 
-        _unitOfWork.Courses.Update(course);
-        await _unitOfWork.SaveChangesAsync();
-        Log.Information("Updated course {CourseName}", course.CourseName);
-        return true;
-    }
+    if (duplicateName.Any())
+        throw new BusinessRuleViolationException($"Tên khóa học '{courseDto.CourseName}' đã tồn tại.");
+
+
+    // Cập nhật
+    course.CourseName = courseDto.CourseName;
+    course.Description = courseDto.Description;
+    course.Status = courseDto.Status;
+    course.AgeMin = courseDto.AgeMin;
+    course.AgeMax = courseDto.AgeMax;
+    course.Capacity = courseDto.Capacity;
+    course.Price = courseDto.Price;
+    course.Type = courseDto.Type;
+    course.UpdatedAt = DateTime.UtcNow;
+
+    _unitOfWork.Courses.Update(course);
+    await _unitOfWork.SaveChangesAsync();
+
+    Log.Information("Updated course {CourseName}", course.CourseName);
+    return true;
+}
+
 
     public async Task<List<Course>> GetAllCourses()
     {
         Log.Information("Retrieving all courses");
-        var courses = await _unitOfWork.Courses.GetAllActiveCourses(); // Có điều kiện IsDeleted = false trong đó
+        var courses = await _unitOfWork.Courses.GetAllActiveCourses(); // hàm này đã lọc IsDeleted
         Log.Information("Retrieved {Count} courses", courses.Count);
         return courses;
     }
+
+
 
     public async Task<Course?> GetCourseById(int id)
     {
@@ -161,4 +170,42 @@ public class CourseService : ICourseService
         var courses = allCourses.Where(c => c.AgeMin <= age && c.AgeMax >= age).ToList();
         return courses;
     }
+    public async Task<List<Course>> GetCompletedCoursesByUser(int userId)
+    {
+        var progressList = await _unitOfWork
+            .UserCourseProgress
+            .FindAsync(p => p.UserID == userId && p.IsCompleted);
+
+        var courseIds = progressList.Select(p => p.CourseID).ToList();
+
+        var completedCourses = await _unitOfWork.Courses.FindAsync(c =>
+            courseIds.Contains(c.CourseID) && !c.IsDeleted);
+
+        if (!completedCourses.Any())
+            throw new BusinessRuleViolationException("Không có khóa học nào đã hoàn thành.");
+
+        return completedCourses.ToList();
+    }
+
+
+    public async Task<List<Course>> GetUncompletedCoursesByUser(int userId)
+    {
+        var progressList = await _unitOfWork.UserCourseProgress.FindAsync(p =>
+            p.UserID == userId && !p.IsCompleted);
+
+        var courseIds = progressList.Select(p => p.CourseID).ToList();
+
+        var courses = await _unitOfWork.Courses.FindAsync(c =>
+            courseIds.Contains(c.CourseID) && !c.IsDeleted);
+
+        var result = courses.ToList();
+
+        if (!result.Any())
+            throw new BusinessRuleViolationException("Không có khóa học nào đang học.");
+
+        return result;
+    }
+
+
+
 }

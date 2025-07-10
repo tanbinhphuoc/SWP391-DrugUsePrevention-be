@@ -8,7 +8,9 @@ namespace DrugUsePreventionAPI.Mappings
     { 
         public CourseMappingProfile() 
         { 
-            CreateMap<Course, CreateCourseDto>().ReverseMap(); 
+            CreateMap<Course, CreateCourseDto>().ReverseMap();
+            CreateMap<CreateCourseVideoDto, CourseVideo>();
+            CreateMap<CourseVideo, CourseVideoDto>();
         }
     } 
 }

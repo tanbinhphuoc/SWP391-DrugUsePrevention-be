@@ -48,8 +48,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             //  Xóa kết quả cũ của User + Assessment + Stage
             var oldResults = await _unitOfWork.AssessmentResults.FindAsync(r =>
                 r.UserID == dto.UserId &&
-                r.AssessmentID == dto.AssessmentId &&
-                r.AssessmentStage == "Input");
+                r.AssessmentID == dto.AssessmentId);
 
             if (oldResults.Any())
                 _unitOfWork.AssessmentResults.RemoveRange(oldResults);
@@ -59,7 +58,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
             {
                 UserID = dto.UserId,
                 AssessmentID = dto.AssessmentId,
-                AssessmentStage = "Input",
                 Score = finalScore,
                 TakeTime = DateTime.Now,
                 ResultName = $"Bạn đã hoàn thành bài đánh giá đầu vào với {finalScore} điểm!",
@@ -105,8 +103,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             //  Xóa kết quả cũ của User + Assessment + Stage
             var oldResults = await _unitOfWork.AssessmentResults.FindAsync(r =>
                 r.UserID == dto.UserId &&
-                r.AssessmentID == dto.AssessmentId &&
-                r.AssessmentStage == "Output");
+                r.AssessmentID == dto.AssessmentId);
 
             if (oldResults.Any())
                 _unitOfWork.AssessmentResults.RemoveRange(oldResults);
@@ -120,7 +117,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
             {
                 UserID = dto.UserId,
                 AssessmentID = dto.AssessmentId,
-                AssessmentStage = "Output",
                 Score = finalScore,
                 TakeTime = DateTime.Now,
                 ResultName = $"Bạn đã hoàn thành bài đánh giá sau khóa học với {finalScore} điểm!",
@@ -140,13 +136,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
         {
             // Bài Input: chỉ cần UserID + Stage là "Input", không cần CourseID
             var inputResult = (await _unitOfWork.AssessmentResults.FindAsync(r =>
-                r.UserID == userId && r.AssessmentStage == "Input"))
+                r.UserID == userId))
                 .OrderByDescending(r => r.TakeTime)
                 .FirstOrDefault();
 
             // Bài Output: cần đúng cả UserID + Stage = "Output" + CourseID
             var outputResult = (await _unitOfWork.AssessmentResults.FindAsync(r =>
-                r.UserID == userId && r.AssessmentStage == "Output" && r.CourseID == courseId))
+                r.UserID == userId && r.CourseID == courseId))
                 .OrderByDescending(r => r.TakeTime)
                 .FirstOrDefault();
 
