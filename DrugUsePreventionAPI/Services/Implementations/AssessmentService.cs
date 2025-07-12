@@ -115,7 +115,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (assessment == null || assessment.IsDeleted)
                 throw new EntityNotFoundException("Assessment", id);
 
-            // Lấy danh sách assessment khác có cùng AssessmentType và chưa gắn với khóa học
+            var newName = dto.AssessmentName.Trim().ToLower();
+            var oldName = assessment.AssessmentName.Trim().ToLower();
+
+            // Chỉ kiểm tra trùng tên nếu tên mới khác tên cũ
+            if (newName != oldName)
+            {
+                var nameConflict = await _unitOfWork.Assessments.FindAsync(a =>
+                    !a.IsDeleted &&
+                    a.AssessmentID != id &&
+                    a.AssessmentName.Trim().ToLower() == newName);
+
+                if (nameConflict.Any())
+                    throw new BusinessRuleViolationException("Đã tồn tại Assessment khác có cùng tên.");
+            }
+
+            // Kiểm tra nếu có assessment khác cùng loại và chưa gắn với khóa học
             var potentialConflicts = await _context.Assessments
                 .Include(a => a.CourseAssessments)
                 .Where(a =>
@@ -124,20 +139,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     a.AssessmentType == dto.AssessmentType)
                 .ToListAsync();
 
-            // Kiểm tra nếu tồn tại bản ghi khác cùng loại và chưa gắn khóa học
             if (potentialConflicts.Any(a => a.CourseAssessments == null || !a.CourseAssessments.Any()))
                 throw new BusinessRuleViolationException($"Đã tồn tại Assessment đầu vào loại {dto.AssessmentType}.");
 
-            // Kiểm tra trùng tên
-            var nameExists = await _unitOfWork.Assessments.FindAsync(a =>
-                !a.IsDeleted &&
-                a.AssessmentID != id &&
-                a.AssessmentName.ToLower() == dto.AssessmentName.ToLower());
-
-            if (nameExists.Any())
-                throw new BusinessRuleViolationException($"Tên Assessment '{dto.AssessmentName}' đã tồn tại.");
-
-            // Cập nhật dữ liệu
+            // Cập nhật
             assessment.AssessmentName = dto.AssessmentName;
             assessment.Description = dto.Description;
             assessment.AssessmentType = dto.AssessmentType;
@@ -169,14 +174,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (assessment == null)
                 return (false, "Assessment không tồn tại.");
 
-            var isNameExists = await _unitOfWork.Assessments.FindAsync(a =>
-                !a.IsDeleted &&
-                a.AssessmentID != id &&
-                a.AssessmentName.ToLower() == dto.AssessmentName.ToLower());
+            // Nếu tên thay đổi thì mới kiểm tra trùng tên
+            var newName = dto.AssessmentName.Trim().ToLower();
+            var oldName = assessment.AssessmentName.Trim().ToLower();
 
-            if (isNameExists.Any())
-                return (false, "Tên Assessment đã tồn tại.");
+            if (newName != oldName)
+            {
+                var isNameExists = await _unitOfWork.Assessments.FindAsync(a =>
+                    !a.IsDeleted &&
+                    a.AssessmentID != id &&
+                    a.AssessmentName.Trim().ToLower() == newName);
 
+                if (isNameExists.Any())
+                    return (false, "Đã tồn tại Assessment khác có cùng tên.");
+            }
+
+            // Kiểm tra loại assessment đã tồn tại cho khóa học
             var isTypeExists = await _context.CourseAssessments
                 .Include(ca => ca.Assessment)
                 .AnyAsync(ca =>
@@ -188,7 +201,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (isTypeExists)
                 return (false, $"Đã tồn tại Assessment Output loại {dto.AssessmentType} cho khóa học này.");
 
-            // Update fields
+            // Cập nhật
             assessment.AssessmentName = dto.AssessmentName;
             assessment.Description = dto.Description;
             assessment.AssessmentType = dto.AssessmentType;
@@ -224,7 +237,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return (false, "Lỗi khi cập nhật Assessment Output");
             }
         }
-
 
 
 

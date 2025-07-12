@@ -408,7 +408,7 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -462,11 +462,11 @@ namespace DrugUsePreventionAPI.Migrations
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseVideo", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("VideoID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoID"));
 
                     b.Property<int>("CourseID")
                         .HasColumnType("int");
@@ -475,8 +475,8 @@ namespace DrugUsePreventionAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -486,7 +486,7 @@ namespace DrugUsePreventionAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("VideoID");
 
                     b.HasIndex("CourseID");
 
@@ -505,9 +505,6 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<int?>("AppointmentID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AppointmentID1")
                         .HasColumnType("int");
 
                     b.Property<int?>("CourseID")
@@ -538,8 +535,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasKey("PaymentID");
 
                     b.HasIndex("AppointmentID");
-
-                    b.HasIndex("AppointmentID1");
 
                     b.HasIndex("CourseID");
 
@@ -935,13 +930,9 @@ namespace DrugUsePreventionAPI.Migrations
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Payment", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", "Appointment")
-                        .WithMany()
+                        .WithMany("Payments")
                         .HasForeignKey("AppointmentID")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Appointment", null)
-                        .WithMany("Payments")
-                        .HasForeignKey("AppointmentID1");
 
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
                         .WithMany("Payments")

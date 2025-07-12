@@ -71,7 +71,7 @@ namespace DrugUsePreventionAPI.Migrations
                     AgeMin = table.Column<int>(type: "int", nullable: false),
                     AgeMax = table.Column<int>(type: "int", nullable: true),
                     Capacity = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -123,17 +123,17 @@ namespace DrugUsePreventionAPI.Migrations
                 name: "CourseVideos",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    VideoID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseID = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Order = table.Column<int>(type: "int", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseVideos", x => x.ID);
+                    table.PrimaryKey("PK_CourseVideos", x => x.VideoID);
                     table.ForeignKey(
                         name: "FK_CourseVideos_Courses_CourseID",
                         column: x => x.CourseID,
