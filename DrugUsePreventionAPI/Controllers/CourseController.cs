@@ -159,6 +159,17 @@ public class CourseController : ControllerBase
     public async Task<IActionResult> GetCoursesByAge([FromQuery] int age)
     {
         var courses = await _courseService.GetCoursesByAge(age);
+
+        if (courses == null || !courses.Any())
+        {
+            return Ok(new
+            {
+                success = false,
+                message = "Không có khóa học nào phù hợp với độ tuổi của bạn.",
+                data = new List<object>()
+            });
+        }
+
         return Ok(new
         {
             success = true,
@@ -166,6 +177,7 @@ public class CourseController : ControllerBase
             data = courses
         });
     }
+
     [HttpGet("completed/{userId}")]
     public async Task<ActionResult> GetCompletedCourses(int userId)
     {
