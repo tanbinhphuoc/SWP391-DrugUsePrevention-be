@@ -3,6 +3,10 @@ using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DrugUsePreventionAPI.Models.Entities;
+using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
 
 [Route("api/[controller]")]
 [ApiController]
@@ -155,6 +159,17 @@ public class CourseController : ControllerBase
     public async Task<IActionResult> GetCoursesByAge([FromQuery] int age)
     {
         var courses = await _courseService.GetCoursesByAge(age);
+
+        if (courses == null || !courses.Any())
+        {
+            return Ok(new
+            {
+                success = false,
+                message = "Không có khóa học nào phù hợp với độ tuổi của bạn.",
+                data = new List<object>()
+            });
+        }
+
         return Ok(new
         {
             success = true,
@@ -162,4 +177,51 @@ public class CourseController : ControllerBase
             data = courses
         });
     }
+
+    [HttpGet("completed/{userId}")]
+    public async Task<ActionResult> GetCompletedCourses(int userId)
+    {
+        var courses = await _courseService.GetCompletedCoursesByUser(userId);
+
+        if (courses == null || !courses.Any())
+        {
+            return NotFound(new
+            {
+                success = false,
+                message = "Không có khóa học nào đã hoàn thành.",
+                errors = new[] { "Người dùng chưa hoàn thành bất kỳ khóa học nào." }
+            });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            message = "Danh sách khóa học đã hoàn thành.",
+            data = courses
+        });
+    }
+
+    [HttpGet("uncompleted/{userId}")]
+    public async Task<ActionResult> GetUncompletedCourses(int userId)
+    {
+        var courses = await _courseService.GetUncompletedCoursesByUser(userId);
+
+        if (courses == null || !courses.Any())
+        {
+            return NotFound(new
+            {
+                success = false,
+                message = "Không có khóa học nào chưa hoàn thành.",
+                errors = new[] { "Người dùng đã hoàn thành tất cả các khóa học hoặc không có khóa học nào." }
+            });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            message = "Danh sách khóa học chưa hoàn thành.",
+            data = courses
+        });
+    }
+
 }

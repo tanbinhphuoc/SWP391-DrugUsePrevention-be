@@ -18,9 +18,10 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<Course?> GetCourseByTypeAsync(string type)
         {
             return await _context.Courses
-                .Where(c => c.Type == type && c.Status == "OPEN")
+                .Where(c => !c.IsDeleted && c.Type.ToLower().Trim() == type.ToLower().Trim())
                 .FirstOrDefaultAsync();
         }
+
         //chỉ lấy các Course chưa bị xóa
         public async Task<List<Course>> GetAllActiveCourses()
         {

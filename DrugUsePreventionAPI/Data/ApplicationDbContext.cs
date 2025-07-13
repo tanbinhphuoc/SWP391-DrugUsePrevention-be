@@ -27,6 +27,11 @@ namespace DrugUsePreventionAPI.Controllers.Data
         public DbSet<ProgramParticipation> ProgramParticipations { get; set; }
         public DbSet<SurveyResponse> SurveyResponses { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<UserCourseProgress> UserCourseProgresses { get; set; }
+        public DbSet<CourseVideo> CourseVideos { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -142,6 +142,8 @@ builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepo
 builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
+builder.Services.AddScoped<IUserCourseProgressRepository, UserCourseProgressRepository>();
+builder.Services.AddScoped<ICourseVideoRepository, CourseVideoRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register services
@@ -158,6 +160,12 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
 builder.Services.AddScoped<ScheduleGenerator>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IUserCourseProgressService, UserCourseProgressService>();
+builder.Services.AddScoped<ICourseVideoService, CourseVideoService>();
+
+
+
+
 
 
 // Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)

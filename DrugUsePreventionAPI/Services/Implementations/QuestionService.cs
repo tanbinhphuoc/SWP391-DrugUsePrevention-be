@@ -21,78 +21,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
             _context = context;
         }
 
-        public async Task<bool> CreateQuestionForSurvey(CreateQuestionForSurveyDto createQuestionForSurveyDto)
-        {
-            try
-            {
-                var questionForSurvey = new Question
-                {
-                    SurveyID = createQuestionForSurveyDto.surveyID,
-                    QuestionText = createQuestionForSurveyDto.questionText,
-                    QuestionType = createQuestionForSurveyDto.questionType
-                };
-                await _unitOfWork.Questions.AddAsync(questionForSurvey);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> UpdateQuestionForSurvey(int id, CreateQuestionForSurveyDto createQuestionForSurveyDto)
-        {
-            var questionForSurvey = await _unitOfWork.Questions.GetByIdAsync(id);
-            if (questionForSurvey == null)
-                return false;
-
-            questionForSurvey.SurveyID = createQuestionForSurveyDto.surveyID;
-            questionForSurvey.QuestionText = createQuestionForSurveyDto.questionText;
-            questionForSurvey.QuestionType = createQuestionForSurveyDto.questionType;
-
-            try
-            {
-                _unitOfWork.Questions.Update(questionForSurvey);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<List<Question>> GetAllQuestionForSurvey()
-        {
-            return (await _unitOfWork.Questions.FindAsync(q => q.SurveyID != null)).ToList();
-        }
-
-        public async Task<Question?> GetQuestionForSurveyById(int id)
-        {
-            var question = await _unitOfWork.Questions.GetByIdAsync(id);
-            return question?.SurveyID != null ? question : null;
-        }
-
-        public async Task<bool> DeleteQuestionForSurvey(int id)
-        {
-            var questionForSurvey = await _unitOfWork.Questions.GetByIdAsync(id);
-            if (questionForSurvey == null || questionForSurvey.SurveyID == null)
-            {
-                return false;
-            }
-            try
-            {
-                _unitOfWork.Questions.Remove(questionForSurvey);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public async Task<bool> CreateQuestionForAssessment(CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
         {
             try
@@ -113,27 +41,84 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-        public async Task<bool> UpdateQuestionForAssessment(int id, CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
+        public async Task<bool> UpdateMultipleQuestionsWithAnswers(List<CreateQuestionWithAnswersDto> updatedQuestions)
         {
-            var questionForAssessment = await _unitOfWork.Questions.GetByIdAsync(id);
-            if (questionForAssessment == null || questionForAssessment.AssessmentID == null)
-                return false;
+            if (updatedQuestions == null || !updatedQuestions.Any())
+                throw new Exception("Danh sách câu hỏi không được để trống.");
 
-            questionForAssessment.AssessmentID = createQuestionForAssessmentDto.assessmentID;
-            questionForAssessment.QuestionText = createQuestionForAssessmentDto.questionText;
-            questionForAssessment.QuestionType = createQuestionForAssessmentDto.questionType;
+            int assessmentId = updatedQuestions.First().AssessmentID;
 
-            try
+            // Lấy các câu hỏi hiện tại để xóa và cập nhật lại
+            var existingQuestions = await _unitOfWork.Questions.FindAsync(q =>
+                q.AssessmentID == assessmentId && !q.IsDeleted);
+
+            foreach (var q in existingQuestions)
             {
-                _unitOfWork.Questions.Update(questionForAssessment);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
+                q.IsDeleted = true;
+                _unitOfWork.Questions.Update(q);
+
+                foreach (var a in q.AnswerOptions)
+                {
+                    a.IsDeleted = true;
+                    _unitOfWork.AnswerOptions.Update(a);
+                }
             }
-            catch
+
+            int totalScore = 0;
+            var questionTexts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var questionDto in updatedQuestions)
             {
-                return false;
+                // Trùng nội dung câu hỏi
+                if (!questionTexts.Add(questionDto.QuestionText.Trim()))
+                    throw new Exception("Không được có câu hỏi trùng nhau.");
+
+                if (questionDto.Answers == null || !questionDto.Answers.Any())
+                    throw new Exception("Mỗi câu hỏi phải có ít nhất một đáp án.");
+
+                var validScores = questionDto.Answers.Select(a => a.ScoreValue).ToList();
+
+                if (validScores.Any(score => score < 0 || score > 10))
+                    throw new Exception("Điểm của mỗi đáp án phải nằm trong khoảng từ 0 đến 10.");
+
+                if (validScores.Count(s => s > 0) != 1)
+                    throw new Exception("Mỗi câu hỏi chỉ được phép có duy nhất một đáp án có điểm lớn hơn 0.");
+
+                totalScore += validScores.Max();
             }
+
+            if (totalScore != 10)
+                throw new Exception($"Tổng điểm tối đa của toàn bài phải đúng bằng 10. Hiện tại: {totalScore}");
+
+            // Lưu câu hỏi mới
+            foreach (var questionDto in updatedQuestions)
+            {
+                var question = new Question
+                {
+                    AssessmentID = questionDto.AssessmentID,
+                    QuestionText = questionDto.QuestionText,
+                    QuestionType = questionDto.QuestionType
+                };
+
+                await _unitOfWork.Questions.AddAsync(question);
+                await _unitOfWork.SaveChangesAsync(); // để có QuestionID
+
+                foreach (var answerDto in questionDto.Answers)
+                {
+                    var answer = new AnswerOption
+                    {
+                        QuestionID = question.QuestionID,
+                        OptionText = answerDto.OptionText,
+                        ScoreValue = answerDto.ScoreValue
+                    };
+                    await _unitOfWork.AnswerOptions.AddAsync(answer);
+                }
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
+
 
         public async Task<List<Question>> GetAllQuestionForAssessment()
         {
@@ -201,6 +186,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 q.AssessmentID == assessmentId && !q.IsDeleted);
 
             int existingMaxScore = 0;
+            var existingQuestionTexts = existingQuestions.Select(q => q.QuestionText.Trim().ToLower()).ToHashSet();
+
             foreach (var q in existingQuestions)
             {
                 var answers = await _unitOfWork.AnswerOptions.FindAsync(a =>
@@ -208,19 +195,30 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 existingMaxScore += answers.Max(a => a.ScoreValue ?? 0);
             }
 
-            // 2. Tính tổng điểm tối đa của câu hỏi sắp thêm
+            // 2. Tính tổng điểm tối đa của câu hỏi sắp thêm và kiểm tra ràng buộc
             int newMaxScore = 0;
 
             foreach (var questionDto in questionsWithAnswers)
             {
+                // Kiểm tra trùng nội dung câu hỏi
+                if (existingQuestionTexts.Contains(questionDto.QuestionText.Trim().ToLower()))
+                    throw new Exception($"Câu hỏi '{questionDto.QuestionText}' đã tồn tại trong bài đánh giá.");
+
+                existingQuestionTexts.Add(questionDto.QuestionText.Trim().ToLower());
+
                 if (questionDto.Answers == null || !questionDto.Answers.Any())
                     throw new Exception("Mỗi câu hỏi phải có ít nhất một đáp án");
 
-                // Kiểm tra điểm hợp lệ cho từng đáp án
-                if (questionDto.Answers.Any(a => a.ScoreValue < 0 || a.ScoreValue > 10))
+                // Kiểm tra điểm hợp lệ
+                var scoreValues = questionDto.Answers.Select(a => a.ScoreValue).ToList();
+                if (scoreValues.Any(score => score < 0 || score > 10))
                     throw new Exception("Điểm của mỗi đáp án phải nằm trong khoảng từ 0 đến 10");
 
-                newMaxScore += questionDto.Answers.Max(a => a.ScoreValue);
+                // Kiểm tra chỉ có 1 đáp án > 0
+                if (scoreValues.Count(v => v > 0) > 1)
+                    throw new Exception($"Chỉ được phép có 1 đáp án có điểm lớn hơn 0 trong câu hỏi '{questionDto.QuestionText}'");
+
+                newMaxScore += scoreValues.Max();
             }
 
             int totalScore = existingMaxScore + newMaxScore;
@@ -256,6 +254,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
+
 
 
     }
