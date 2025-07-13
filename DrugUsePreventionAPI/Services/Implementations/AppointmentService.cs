@@ -298,7 +298,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
             Log.Information("Payment confirmed for appointment {AppointmentId}", appointmentId);
             return appointmentDto;
         }
-
         */
 
         public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId, string vnpayResponseCode, HttpContext context)
