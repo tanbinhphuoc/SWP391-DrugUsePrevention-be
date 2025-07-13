@@ -1,0 +1,84 @@
+2025-07-09 17:27:07.787 +07:00 [INF] Updated ReturnUrl to: https://8671fc508ab4.ngrok-free.app/api/vnpay/return
+2025-07-09 17:27:08.131 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 17:27:10.101 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-09 17:27:12.563 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-09 17:27:12.565 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-09 17:27:12.567 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-09 17:27:12.647 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 successfully announced in 56.9317 ms
+2025-07-09 17:27:12.650 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-09 17:27:12.656 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 all the dispatchers started
+2025-07-09 17:27:12.667 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-09 17:27:14.994 +07:00 [INF] Generated schedules from "2025-07-09T00:00:00.0000000Z" to "2025-07-16T00:00:00.0000000Z" for all consultants
+2025-07-09 17:27:53.788 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-09 17:28:31.172 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:28:31.370 +07:00 [INF] Retrieving all users
+2025-07-09 17:28:31.410 +07:00 [INF] Retrieved 22 users
+2025-07-09 17:28:42.651 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:28:53.269 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:28:53.300 +07:00 [INF] Retrieving available consultants
+2025-07-09 17:28:53.406 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 17:28:59.148 +07:00 [INF] Retrieving available consultants
+2025-07-09 17:28:59.173 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 17:31:25.478 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:31:31.699 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:31:32.949 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:31:35.542 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:35:35.190 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:35:35.677 +07:00 [INF] Retrieving all appointments
+2025-07-09 17:35:35.779 +07:00 [INF] Retrieving all appointments
+2025-07-09 17:35:36.264 +07:00 [INF] Retrieved 110 appointments
+2025-07-09 17:35:36.310 +07:00 [INF] Retrieved 110 appointments
+2025-07-09 17:35:42.827 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:35:55.117 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:35:55.168 +07:00 [INF] Retrieving consultants by status Active
+2025-07-09 17:35:55.218 +07:00 [INF] Retrieved 6 consultants with status Active
+2025-07-09 17:36:00.777 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:36:15.301 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:36:45.598 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:36:45.660 +07:00 [INF] Retrieving consultant with ID 5
+2025-07-09 17:36:45.726 +07:00 [INF] Retrieved consultant 5
+2025-07-09 17:36:49.996 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:36:51.474 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:37:29.322 +07:00 [INF] Retrieving available consultants
+2025-07-09 17:37:29.398 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 17:41:36.476 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752056874, exp: 1752143274, iat: 1752056874, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:41:37.056 +07:00 [INF] Retrieving user with ID 1
+2025-07-09 17:41:37.311 +07:00 [INF] Retrieved user admin
+2025-07-09 17:41:47.384 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:41:55.036 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:47:44.459 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-09 17:47:44.511 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 caught stopping signal...
+2025-07-09 17:47:44.538 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 caught stopped signal...
+2025-07-09 17:47:44.540 +07:00 [WRN] Server laptop-qlc4gki0:51908:ca774c48 caught shutdown signal...
+2025-07-09 17:47:44.560 +07:00 [WRN] Server laptop-qlc4gki0:51908:ca774c48 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-09 17:47:44.629 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 successfully reported itself as stopped in 32.0113 ms
+2025-07-09 17:47:44.631 +07:00 [INF] Server laptop-qlc4gki0:51908:ca774c48 has been stopped in total 92.6115 ms
+2025-07-09 17:48:52.465 +07:00 [INF] Updated ReturnUrl to: https://8671fc508ab4.ngrok-free.app/api/vnpay/return
+2025-07-09 17:48:53.650 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 17:48:56.688 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-09 17:48:59.437 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-09 17:48:59.440 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-09 17:48:59.442 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-09 17:48:59.587 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda successfully announced in 110.558 ms
+2025-07-09 17:48:59.595 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-09 17:48:59.717 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda all the dispatchers started
+2025-07-09 17:49:37.095 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-09 17:50:04.422 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058179, exp: 1752144579, iat: 1752058179, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:50:04.877 +07:00 [INF] Retrieving all users
+2025-07-09 17:50:04.951 +07:00 [INF] Retrieved 22 users
+2025-07-09 17:50:19.292 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:55:08.061 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-09 17:55:08.090 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda caught stopping signal...
+2025-07-09 17:55:08.222 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda caught stopped signal...
+2025-07-09 17:55:08.224 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda All dispatchers stopped
+2025-07-09 17:55:08.232 +07:00 [WRN] Server laptop-qlc4gki0:26896:0adcabda caught shutdown signal...
+2025-07-09 17:55:08.318 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda successfully reported itself as stopped in 54.6586 ms
+2025-07-09 17:55:08.319 +07:00 [INF] Server laptop-qlc4gki0:26896:0adcabda has been stopped in total 97.6157 ms

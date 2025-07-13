@@ -1,0 +1,131 @@
+2025-07-09 17:55:57.444 +07:00 [INF] Updated ReturnUrl to: https://8671fc508ab4.ngrok-free.app/api/vnpay/return
+2025-07-09 17:55:58.956 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 17:56:03.351 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-09 17:56:07.719 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-09 17:56:07.722 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-09 17:56:07.723 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-09 17:56:07.856 +07:00 [INF] Server laptop-qlc4gki0:41636:4e6fee48 successfully announced in 103.7393 ms
+2025-07-09 17:56:07.863 +07:00 [INF] Server laptop-qlc4gki0:41636:4e6fee48 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-09 17:56:08.216 +07:00 [INF] Server laptop-qlc4gki0:41636:4e6fee48 all the dispatchers started
+2025-07-09 17:56:32.154 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-09 17:56:52.684 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058593, exp: 1752144993, iat: 1752058593, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 17:56:52.901 +07:00 [INF] User: admin, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin"]
+2025-07-09 17:56:52.921 +07:00 [INF] Retrieving all users
+2025-07-09 17:56:52.979 +07:00 [INF] Retrieved 22 users
+2025-07-09 17:57:17.670 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 17:59:04.933 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output, Boolean needReplace, Int32 decodedLength)
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-07-09 17:59:05.203 +07:00 [WRN] JWT Challenge: invalid_token, , User Authenticated: false, Roles: None, Claims: None
+2025-07-09 18:00:20.914 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output, Boolean needReplace, Int32 decodedLength)
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-07-09 18:00:20.929 +07:00 [WRN] JWT Challenge: invalid_token, , User Authenticated: false, Roles: None, Claims: None
+2025-07-09 18:01:44.277 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058593, exp: 1752144993, iat: 1752058593, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 18:02:03.462 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058904, exp: 1752145304, iat: 1752058904, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 18:02:03.486 +07:00 [INF] User: admin, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin"]
+2025-07-09 18:02:03.494 +07:00 [INF] Retrieving all users
+2025-07-09 18:02:03.533 +07:00 [INF] Retrieved 22 users
+2025-07-09 18:02:11.221 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 18:09:55.264 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058904, exp: 1752145304, iat: 1752058904, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 18:09:55.597 +07:00 [INF] Retrieving available consultants
+2025-07-09 18:09:56.094 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 18:10:01.758 +07:00 [INF] Retrieving available consultants
+2025-07-09 18:10:01.782 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 19:00:04.679 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 19:03:57.662 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058904, exp: 1752145304, iat: 1752058904, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 19:04:25.016 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output, Boolean needReplace, Int32 decodedLength)
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-07-09 19:05:15.839 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752058904, exp: 1752145304, iat: 1752058904, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 19:05:16.241 +07:00 [INF] Retrieving available consultants
+2025-07-09 19:05:16.673 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 19:05:27.191 +07:00 [INF] Retrieving available consultants
+2025-07-09 19:05:27.299 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 19:07:53.389 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output, Boolean needReplace, Int32 decodedLength)
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-07-09 19:12:05.211 +07:00 [INF] Retrieving available consultants
+2025-07-09 19:12:05.741 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 19:12:21.315 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 19:14:57.355 +07:00 [ERR] JWT Authentication failed: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output, Boolean needReplace, Int32 decodedLength)
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2025-07-09 19:15:46.882 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-09 19:15:46.903 +07:00 [INF] Server laptop-qlc4gki0:41636:4e6fee48 caught stopping signal...
+2025-07-09 19:15:46.985 +07:00 [INF] Server laptop-qlc4gki0:41636:4e6fee48 caught stopped signal...
+2025-07-09 19:15:47.165 +07:00 [WRN] Server laptop-qlc4gki0:41636:4e6fee48 caught shutdown signal...
+2025-07-09 19:15:47.360 +07:00 [WRN] Server laptop-qlc4gki0:41636:4e6fee48 stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-09 19:29:49.545 +07:00 [INF] Updated ReturnUrl to: https://8671fc508ab4.ngrok-free.app/api/vnpay/return
+2025-07-09 19:29:51.643 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 19:29:59.762 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-09 19:30:04.914 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-09 19:30:04.921 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-09 19:30:04.928 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-09 19:30:05.592 +07:00 [INF] Server laptop-qlc4gki0:52936:b0fa87eb successfully announced in 577.3423 ms
+2025-07-09 19:30:05.621 +07:00 [INF] Server laptop-qlc4gki0:52936:b0fa87eb is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-09 19:30:05.707 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-09 19:30:05.923 +07:00 [INF] Server laptop-qlc4gki0:52936:b0fa87eb all the dispatchers started
+2025-07-09 19:30:58.830 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752064235, exp: 1752150635, iat: 1752064235, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 19:30:59.661 +07:00 [INF] User: admin, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin"]
+2025-07-09 19:30:59.736 +07:00 [INF] Retrieving all users
+2025-07-09 19:30:59.908 +07:00 [INF] Retrieved 22 users
+2025-07-09 19:31:07.467 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-09 19:34:10.439 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752064235, exp: 1752150635, iat: 1752064235, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 19:34:11.040 +07:00 [INF] Retrieving available consultants
+2025-07-09 19:34:12.106 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 19:34:20.677 +07:00 [INF] Retrieving available consultants
+2025-07-09 19:34:20.784 +07:00 [INF] Retrieved 6 available consultants
+2025-07-09 19:43:30.900 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-09 19:43:30.979 +07:00 [INF] Server laptop-qlc4gki0:52936:b0fa87eb caught stopping signal...
+2025-07-09 19:43:31.486 +07:00 [INF] Server laptop-qlc4gki0:52936:b0fa87eb caught stopped signal...
+2025-07-09 19:43:31.560 +07:00 [WRN] Server laptop-qlc4gki0:52936:b0fa87eb caught shutdown signal...
+2025-07-09 19:43:31.629 +07:00 [WRN] Server laptop-qlc4gki0:52936:b0fa87eb stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.

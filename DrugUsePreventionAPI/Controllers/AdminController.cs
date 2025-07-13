@@ -10,13 +10,14 @@ using Serilog;
 using System;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -40,6 +41,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/{id}FindUserByID")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -49,13 +51,17 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllUsers")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUsers()
         {
+            Log.Information("User: {User}, IsAuthenticated: {IsAuth}, Roles: {Roles}",
+                User.Identity?.Name, User.Identity?.IsAuthenticated, User.FindAll(ClaimTypes.Role));
             var users = await _userService.GetAllUsersAsync();
             return Ok(new { success = true, data = users });
         }
 
         [HttpGet("users/role/{roleName}GetUserByRole")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsersByRole(string roleName)
         {
             var users = await _userService.GetUsersByRoleAsync(roleName);
@@ -63,6 +69,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/status/{status}GetUserByStatus")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsersByStatus(string status)
         {
             var users = await _userService.GetUsersByStatusAsync(status);
@@ -70,6 +77,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/GetUsersByCreatedDateRange")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsersByCreatedDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             var users = await _userService.GetUsersByCreatedDateRangeAsync(startDate, endDate);
@@ -77,6 +85,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/SearchUsers(Name or Email)")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
         {
             var users = await _userService.SearchUsersAsync(searchTerm);
@@ -84,6 +93,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/GetUserCountByRole")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUserCountByRole(string roleName)
         {
             var count = await _userService.GetUserCountByRoleAsync(roleName);
@@ -91,6 +101,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/stats/GetNewUserCount")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetNewUserCount([FromQuery] DateTime startDate)
         {
             var count = await _userService.GetNewUserCountAsync(startDate);
@@ -98,6 +109,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/stats/Ratio(Active/Inactive)")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetActiveInactiveRatio()
         {
             var ratio = await _userService.GetActiveInactiveRatioAsync();
@@ -105,6 +117,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("users/{id}/SetStatusForUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ToggleUserStatus(int id, [FromBody] string newStatus)
         {
             try
@@ -130,6 +143,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllAppointments")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAppointments()
         {
             try
@@ -145,6 +159,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllConsultants")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllConsultants()
         {
             var consultants = await _consultantService.GetConsultantsByStatusAsync("Active");
@@ -159,6 +174,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants/GetConsultantsByStatus")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetConsultantsByStatus(string status)
         {
             var consultants = await _consultantService.GetConsultantsByStatusAsync(status);
@@ -166,6 +182,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants/GetConsultantPerformanceStats")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetConsultantPerformanceStats(int consultantId)
         {
             var stats = await _consultantService.GetConsultantPerformanceStatsAsync(consultantId);
@@ -173,6 +190,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("payment-statistics")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetPaymentStatistics([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             try
@@ -192,6 +210,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("appointment-statistics")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAppointmentStatistics([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             try
@@ -211,6 +230,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("payment-details/{appointmentId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetPaymentDetails(int appointmentId)
         {
             try
@@ -246,6 +266,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost("payment/{paymentId}/refund")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RefundPayment(int paymentId)
         {
             try
@@ -272,6 +293,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("appointments/{appointmentId}/UpdateAppointmentStatus")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromBody] string newStatus)
         {
             try
@@ -297,6 +319,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/GetAllUserStats")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUserStats()
         {
             var roles = await _unitOfWork.Roles.GetAllAsync();
@@ -322,6 +345,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("consultants/{consultantId}/toggle-status")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ToggleConsultantStatus(int consultantId, [FromBody] string newStatus)
         {
             try
@@ -342,6 +366,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants/GetAllConsultantsPerformanceStats")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllConsultantsPerformanceStats()
         {
             var consultants = await _unitOfWork.Consultants.GetAllAsync();
