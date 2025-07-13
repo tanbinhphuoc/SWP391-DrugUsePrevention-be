@@ -1,4 +1,4 @@
-2025-07-11 12:23:43.585 +07:00 [ERR] Failed to get ngrok URL
+2025-07-11 14:53:46.478 +07:00 [ERR] Failed to get ngrok URL
 System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
  ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
  ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
@@ -19,75 +19,25 @@ System.AggregateException: One or more errors occurred. (No connection could be 
    --- End of inner exception stack trace ---
    at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
    at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
-   at Program.<<Main>$>g__GetNgrokUrl|0_11() in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 374
-2025-07-11 12:23:43.637 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
-2025-07-11 12:23:44.805 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-11 12:23:45.986 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-11 12:23:46.837 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
-2025-07-11 12:23:47.877 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V2'
-2025-07-11 12:23:47.880 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-11 12:23:47.884 +07:00 [INF] Using the following options for Hangfire Server:
+   at Program.<<Main>$>g__GetNgrokUrl|0_11() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 366
+2025-07-11 14:53:46.764 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-11 14:53:47.406 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-11 14:53:49.563 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-11 14:53:54.876 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-11 14:53:54.882 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-11 14:53:54.888 +07:00 [INF] Using the following options for Hangfire Server:
     Worker count: 20
     Listening queues: 'default'
     Shutdown timeout: 00:00:15
     Schedule polling interval: 00:00:15
-2025-07-11 12:23:47.920 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d successfully announced in 16.5683 ms
-2025-07-11 12:23:47.926 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-11 12:23:48.032 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d all the dispatchers started
-2025-07-11 12:23:48.906 +07:00 [INF] Generated schedules from "2025-07-11T00:00:00.0000000Z" to "2025-07-18T00:00:00.0000000Z" for all consultants
-2025-07-11 12:24:25.598 +07:00 [WRN] Failed to determine the https port for redirect.
-2025-07-11 12:39:17.021 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752212330, exp: 1752298730, iat: 1752212330, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-11 12:39:17.112 +07:00 [INF] Created course aaaaaa with ID 1026
-2025-07-11 12:54:11.928 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
-2025-07-11 12:54:11.930 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d caught stopping signal...
-2025-07-11 12:54:11.945 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d caught stopped signal...
-2025-07-11 12:54:11.953 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d All dispatchers stopped
-2025-07-11 12:54:11.956 +07:00 [WRN] Server desktop-nggl106:25528:3fef0b7d caught shutdown signal...
-2025-07-11 12:54:11.967 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d successfully reported itself as stopped in 7.293 ms
-2025-07-11 12:54:11.968 +07:00 [INF] Server desktop-nggl106:25528:3fef0b7d has been stopped in total 25.2694 ms
-2025-07-11 12:57:02.229 +07:00 [ERR] Failed to get ngrok URL
-System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
- ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
- ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
-   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
-   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
-   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
-   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
-   --- End of inner exception stack trace ---
-   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
-   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
-   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
-   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
-   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
-   at System.Net.Http.HttpConnectionPool.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
-   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
-   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
-   at System.Net.Http.HttpClient.GetStringAsyncCore(HttpRequestMessage request, CancellationToken cancellationToken)
-   --- End of inner exception stack trace ---
-   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
-   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
-   at Program.<<Main>$>g__GetNgrokUrl|0_11() in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 374
-2025-07-11 12:57:02.274 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
-2025-07-11 12:57:02.421 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-11 12:57:03.010 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-11 12:57:03.486 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
-2025-07-11 12:57:04.118 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V2'
-2025-07-11 12:57:04.122 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-11 12:57:04.124 +07:00 [INF] Using the following options for Hangfire Server:
-    Worker count: 20
-    Listening queues: 'default'
-    Shutdown timeout: 00:00:15
-    Schedule polling interval: 00:00:15
-2025-07-11 12:57:04.158 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae successfully announced in 13.2848 ms
-2025-07-11 12:57:04.164 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-11 12:57:04.291 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae all the dispatchers started
-2025-07-11 12:57:23.329 +07:00 [WRN] Failed to determine the https port for redirect.
-2025-07-11 12:57:44.354 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752213444, exp: 1752299844, iat: 1752213444, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-11 12:57:47.217 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752213444, exp: 1752299844, iat: 1752213444, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-11 13:34:26.573 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
-2025-07-11 13:34:26.576 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae caught stopping signal...
-2025-07-11 13:34:26.582 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae caught stopped signal...
-2025-07-11 13:34:26.596 +07:00 [WRN] Server desktop-nggl106:28116:df11b4ae caught shutdown signal...
-2025-07-11 13:34:26.609 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae All dispatchers stopped
-2025-07-11 13:34:26.626 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae successfully reported itself as stopped in 9.4338 ms
-2025-07-11 13:34:26.628 +07:00 [INF] Server desktop-nggl106:28116:df11b4ae has been stopped in total 47.0988 ms
+2025-07-11 14:53:55.024 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a successfully announced in 81.9553 ms
+2025-07-11 14:53:55.033 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-11 14:53:55.055 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a all the dispatchers started
+2025-07-11 14:54:01.869 +07:00 [INF] Generated schedules from "2025-07-11T00:00:00.0000000Z" to "2025-07-18T00:00:00.0000000Z" for all consultants
+2025-07-11 15:00:13.349 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-11 15:00:13.355 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a caught stopping signal...
+2025-07-11 15:00:13.373 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a caught stopped signal...
+2025-07-11 15:00:13.378 +07:00 [WRN] Server laptop-qlc4gki0:23096:d41b359a caught shutdown signal...
+2025-07-11 15:00:13.385 +07:00 [WRN] Server laptop-qlc4gki0:23096:d41b359a stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-11 15:00:13.415 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a successfully reported itself as stopped in 17.9588 ms
+2025-07-11 15:00:13.420 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a has been stopped in total 47.0178 ms
