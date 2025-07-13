@@ -1,14 +1,16 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Assessment;
-using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
-using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿// Controller: AssessmentController.cs
 using Microsoft.AspNetCore.Mvc;
+using DrugUsePreventionAPI.Services.Interfaces;
+using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
+using DrugUsePreventionAPI.Models.DTOs.Assessment;
+using DrugUsePreventionAPI.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using Serilog;
 
 namespace DrugUsePreventionAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AssessmentController : ControllerBase
     {
         private readonly IAssessmentService _assessmentService;
@@ -18,138 +20,128 @@ namespace DrugUsePreventionAPI.Controllers
             _assessmentService = assessmentService;
         }
 
-        [Authorize(Roles = "Admin,Manager")]
         [HttpPost("CreateInputAssessment")]
         public async Task<IActionResult> CreateInputAssessment([FromBody] CreateInputAssessmentDto dto)
         {
             var result = await _assessmentService.CreateInputAssessment(dto);
-            if (result.IsSuccess)
-                return Ok(new { success = true, message = result.Message, id = result.AssessmentId });
+            if (!result.IsSuccess)
+                return BadRequest(new
+                {
+                    success = false,
+                    message = result.Message
+                });
 
-            return BadRequest(new { success = false, message = result.Message });
+            return Ok(new
+            {
+                success = true,
+                message = result.Message,
+                assessmentId = result.AssessmentId
+            });
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+
         [HttpPost("CreateOutputAssessment")]
         public async Task<IActionResult> CreateOutputAssessment([FromBody] CreateOutputAssessmentDto dto)
         {
             var result = await _assessmentService.CreateOutputAssessment(dto);
-            if (result.IsSuccess)
-                return Ok(new { success = true, message = result.Message, id = result.AssessmentId });
+            if (!result.IsSuccess)
+                return BadRequest(new
+                {
+                    success = false,
+                    message = result.Message
+                });
 
-            return BadRequest(new { success = false, message = result.Message });
+            return Ok(new
+            {
+                success = true,
+                message = result.Message,
+                assessmentId = result.AssessmentId
+            });
         }
 
-        [Authorize(Roles = "Admin,Manager")]
-        [HttpPut("UpdateInputAssessment")]
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("UpdateInputAssessment/{id}")]
         public async Task<IActionResult> UpdateInputAssessment(int id, [FromBody] CreateInputAssessmentDto dto)
         {
-            if (dto.AssessmentStage != "Input")
-                return BadRequest(new { success = false, message = "AssessmentStage phải là 'Input'" });
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ" });
 
-            var isUpdated = await _assessmentService.UpdateInputAssessment(id, dto);
-            if (isUpdated)
-                return Ok(new { success = true, message = "Cập nhật Assessment Input thành công" });
+            try
+            {
+                var result = await _assessmentService.UpdateInputAssessmentWithValidation(id, dto);
+                if (!result)
+                    return BadRequest(new { success = false, message = "Cập nhật thất bại" });
 
-            return BadRequest(new { success = false, message = "Cập nhật Assessment Input thất bại" });
+                return Ok(new { success = true, message = "Cập nhật Assessment thành công" });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi không xác định khi cập nhật Assessment");
+                return StatusCode(500, new { success = false, message = "Lỗi server nội bộ" });
+            }
         }
 
 
-
-
-        [Authorize(Roles = "Admin,Manager")]
-        [HttpPut("UpdateOutputAssessment")]
+        [HttpPut("UpdateOutputAssessment/{id}")]
         public async Task<IActionResult> UpdateOutputAssessment(int id, [FromBody] CreateOutputAssessmentDto dto)
         {
-            // Đảm bảo đúng giai đoạn "Output"
-            if (!string.Equals(dto.AssessmentStage, "Output", StringComparison.OrdinalIgnoreCase))
+            var result = await _assessmentService.UpdateOutputAssessmentWithValidation(id, dto);
+            if (!result.IsSuccess)
+                return BadRequest(new
+                {
+                    success = false,
+                    message = result.Message
+                });
+
+            return Ok(new
             {
-                return BadRequest(new { success = false, message = "AssessmentStage phải là 'Output'" });
-            }
-
-            // CourseID bắt buộc với Output
-            if (dto.CourseID is null || dto.CourseID <= 0)
-            {
-                return BadRequest(new { success = false, message = "Vui lòng nhập CourseID hợp lệ cho Assessment Output" });
-            }
-
-            var isUpdated = await _assessmentService.UpdateOutputAssessment(id, dto);
-
-            if (isUpdated)
-            {
-                return Ok(new { success = true, message = "Cập nhật Assessment Output thành công" });
-            }
-
-            return BadRequest(new { success = false, message = "Cập nhật Assessment Output thất bại hoặc không tồn tại" });
-        }
-
-
-        [Authorize(Roles = "Admin,Manager")]
-        [HttpGet("GetAllAssessment")]
-        public async Task<IActionResult> GetAllAssessment()
-        {
-            var assessments = await _assessmentService.GetAllAssessmentWithCourse();
-            return Ok(new { success = true, message = "Lấy danh sách thành công", data = assessments });
-        }
-
-
-
-        [HttpGet("GetAvailableCourses")]
-        public async Task<IActionResult> GetAvailableCourses()
-        {
-            var courses = await _assessmentService.GetAvailableCourses();
-            var courseList = courses.Select(c => new
-            {
-                c.CourseID,
-                c.CourseName
+                success = true,
+                message = result.Message
             });
-
-            return Ok(new { success = true, message = "Lấy danh sách khóa học thành công", data = courseList });
-        }
-        [HttpGet("GetAssessmentsByStage")]
-        public async Task<IActionResult> GetAssessmentsByStage(string stage)
-        {
-            if (string.IsNullOrWhiteSpace(stage) ||
-                (stage != "Input" && stage != "Output"))
-            {
-                return BadRequest(new { success = false, message = "Stage phải là 'Input' hoặc 'Output'" });
-            }
-
-            var all = await _assessmentService.GetAllAssessmentWithCourse();
-            var filtered = all
-                .Where(a => a.AssessmentStage == stage)
-                .ToList();
-
-            return Ok(new { success = true, message = "Lọc thành công", data = filtered });
         }
 
 
-        [HttpGet("GetAssessmentByAge")]
-        public async Task<IActionResult> GetAssessmentByAge(int age)
-        {
-            var assessment = await _assessmentService.GetAssessmentByAge(age);
-            return Ok(new { success = true, message = "Lấy thành công", data = assessment });
-        }
-
-        [HttpGet("GetAssessmentFormById")]
-        public async Task<IActionResult> GetAssessmentFormById(int id)
-        {
-            var result = await _assessmentService.GetAssessmentById(id);
-            if (result == null)
-                return NotFound(new { success = false, message = "Không tìm thấy bài đánh giá." });
-
-            return Ok(new { success = true, message = "Lấy thành công", data = result });
-        }
-
-        [Authorize(Roles = "Admin,Manager")]
-        [HttpDelete("DeleteAssessment")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAssessment(int id)
         {
-            var result = await _assessmentService.DeleteAssessment(id);
-            if (result)
-                return Ok(new { success = true, message = "Xóa Assessment thành công." });
+            var success = await _assessmentService.DeleteAssessment(id);
+            if (!success)
+                return NotFound(new { success = false, message = "Assessment không tồn tại" });
 
-            return BadRequest(new { success = false, message = "Xóa Assessment thất bại hoặc không tồn tại." });
+            return Ok(new { success = true, message = "Xóa thành công" });
+        }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetAssessmentById(int id)
+        {
+            var dto = await _assessmentService.GetAssessmentById(id);
+            if (dto == null)
+                return NotFound(new { success = false, message = "Assessment không tồn tại" });
+
+            return Ok(new { success = true, data = dto });
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllAssessments()
+        {
+            var result = await _assessmentService.GetAllAssessmentWithCourse();
+            return Ok(new { success = true, data = result });
+        }
+
+        [HttpGet("GetByAge/{age}")]
+        public async Task<IActionResult> GetByAge(int age)
+        {
+            var assessments = await _assessmentService.GetAssessmentByAge(age);
+            return Ok(new { success = true, data = assessments });
         }
     }
 }

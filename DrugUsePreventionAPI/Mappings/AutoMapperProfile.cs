@@ -30,6 +30,7 @@ namespace DrugUsePreventionAPI.Configurations
                 .ForMember(dest => dest.AppointmentEndDateTime, opt => opt.MapFrom(src => src.Appointment.EndDateTime))
                 .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.PaymentMethod));
 
+
             CreateMap<Appointment, AppointmentAdmindto>()
                .ForMember(dest => dest.AppointmentID, opt => opt.MapFrom(src => src.AppointmentID))
                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FullName))

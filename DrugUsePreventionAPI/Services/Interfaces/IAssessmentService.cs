@@ -12,8 +12,9 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<List<GetAssessmentListDto>> GetAllAssessmentWithCourse();
 
         Task<List<Course>> GetAvailableCourses();
-        Task<bool> UpdateInputAssessment(int id, CreateInputAssessmentDto assessmentDto);
-        Task<bool> UpdateOutputAssessment(int id, CreateOutputAssessmentDto assessmentDto);
+        Task<bool> UpdateInputAssessmentWithValidation(int id, CreateInputAssessmentDto dto);
+        Task<(bool IsSuccess, string Message)> UpdateOutputAssessmentWithValidation(int id, CreateOutputAssessmentDto dto);
+
         Task<bool> DeleteAssessment(int id);
         Task<List<Assessment>> GetAssessmentByAge(int age);
         Task<GetAssessmentDto?> GetAssessmentById(int id);

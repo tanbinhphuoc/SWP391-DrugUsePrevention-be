@@ -16,11 +16,6 @@ namespace DrugUsePreventionAPI.Models.Entities
 
         public string? Description { get; set; }
 
-        [Required]
-        public DateTime StartDate { get; set; }
-
-        [Required]
-        public DateTime EndDate { get; set; }
         public required string Type { get; set; } = "HocSinh";//"SinhVien", "PhuHuynh";
         [Required]
         [MaxLength(10)]

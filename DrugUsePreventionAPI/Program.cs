@@ -126,38 +126,46 @@
     builder.Services.Configure<VNPaySettings>(vnPaySettings);
     builder.Services.Configure<GmailSettings>(gmailSettings);
 
-    // Register repositories
-    builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-    builder.Services.AddScoped<IConsultantRepository, ConsultantRepository>();
-    builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
-    builder.Services.AddScoped<IConsultantScheduleRepository, ConsultantScheduleRepository>();
-    builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-    builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-    builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
-    builder.Services.AddScoped<IAssessmentResultRepository, AssessmentResultRepository>();
-    builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-    builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepository>();
-    builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
-    builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
-    builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
-    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// Register repositories
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IConsultantRepository, ConsultantRepository>();
+builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+builder.Services.AddScoped<IConsultantScheduleRepository, ConsultantScheduleRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentResultRepository, AssessmentResultRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepository>();
+builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
+builder.Services.AddScoped<IUserCourseProgressRepository, UserCourseProgressRepository>();
+builder.Services.AddScoped<ICourseVideoRepository, CourseVideoRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-    // Register services
-    builder.Services.AddScoped<IAuthService, AuthService>();
-    builder.Services.AddScoped<IUserService, UserService>();
-    builder.Services.AddScoped<IAppointmentService, AppointmentService>();
-    builder.Services.AddScoped<IConsultantService, ConsultantService>();
-    builder.Services.AddScoped<ICourseService, CourseService>();
-    builder.Services.AddScoped<ICourseRegistrationService, CourseRegistrationService>();
-    builder.Services.AddScoped<IAssessmentService, AssessmentService>();
-    builder.Services.AddScoped<ISurveyService, SurveyService>();
-    builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
-    builder.Services.AddScoped<IQuestionService, QuestionService>();
-    builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
-    builder.Services.AddScoped<ScheduleGenerator>();
-    builder.Services.AddScoped<IEmailService, EmailService>();
+// Register services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IConsultantService, ConsultantService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ICourseRegistrationService, CourseRegistrationService>();
+builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
+builder.Services.AddScoped<ScheduleGenerator>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IUserCourseProgressService, UserCourseProgressService>();
+builder.Services.AddScoped<ICourseVideoService, CourseVideoService>();
+
+
+
+
 
 
     // Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)

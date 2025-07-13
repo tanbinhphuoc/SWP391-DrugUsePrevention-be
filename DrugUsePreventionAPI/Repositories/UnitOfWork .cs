@@ -22,6 +22,8 @@ namespace DrugUsePreventionAPI.Repositories
         public ISurveyRepository Surveys { get; private set; }
         public IQuestionRepository Questions { get; private set; }
         public IAnswerOptionRepository AnswerOptions { get; private set; }
+        public IUserCourseProgressRepository UserCourseProgress { get; private set; }
+        public ICourseVideoRepository CourseVideos { get; private set; }
 
 
         public UnitOfWork(
@@ -39,7 +41,10 @@ namespace DrugUsePreventionAPI.Repositories
             ICourseRegistrationRepository courseRegistrationRepository,
             ISurveyRepository surveyRepository,
             IQuestionRepository questionRepository,
-            IAnswerOptionRepository answerOptionRepository)
+            IAnswerOptionRepository answerOptionRepository,
+            ICourseVideoRepository courseVideoRepository,
+            IUserCourseProgressRepository userCourseProgressRepository
+        )
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             Users = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
@@ -56,6 +61,9 @@ namespace DrugUsePreventionAPI.Repositories
             Surveys = surveyRepository ?? throw new ArgumentNullException(nameof(surveyRepository));
             Questions = questionRepository ?? throw new ArgumentNullException(nameof(questionRepository));
             AnswerOptions = answerOptionRepository ?? throw new ArgumentNullException(nameof(answerOptionRepository));
+            UserCourseProgress = userCourseProgressRepository ?? throw new ArgumentNullException(nameof(userCourseProgressRepository));
+            CourseVideos = courseVideoRepository ?? throw new ArgumentNullException(nameof(courseVideoRepository));
+
         }
 
         public async Task<int> SaveChangesAsync()

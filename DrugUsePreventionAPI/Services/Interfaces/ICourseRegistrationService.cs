@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.CourseRegistration;
+using DrugUsePreventionAPI.Models.Entities;
 
 namespace DrugUsePreventionAPI.Services.Interfaces
 {
