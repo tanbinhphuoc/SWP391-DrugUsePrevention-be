@@ -4,6 +4,7 @@ using DrugUsePreventionAPI.Controllers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250713170618_update4")]
+    partial class update4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,10 +38,6 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("AssessmentStage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("AssessmentType")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -52,7 +51,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("AssessmentID");
 
-                    b.ToTable("Assessments", (string)null);
+                    b.ToTable("Assessments");
                 });
 
             modelBuilder.Entity("CourseRegistration", b =>
@@ -81,6 +80,7 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransactionID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserID")
@@ -92,7 +92,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("CourseRegistrations", (string)null);
+                    b.ToTable("CourseRegistrations");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AnswerOption", b =>
@@ -120,7 +120,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("QuestionID");
 
-                    b.ToTable("AnswerOptions", (string)null);
+                    b.ToTable("AnswerOptions");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Appointment", b =>
@@ -167,7 +167,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AssessmentResult", b =>
@@ -205,7 +205,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("AssessmentResults", (string)null);
+                    b.ToTable("AssessmentResults");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Blog", b =>
@@ -246,7 +246,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Blogs", (string)null);
+                    b.ToTable("Blogs");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>
@@ -267,7 +267,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("CertificateID");
 
-                    b.ToTable("Certificates", (string)null);
+                    b.ToTable("Certificates");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CommunicationProgram", b =>
@@ -298,7 +298,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("ProgramID");
 
-                    b.ToTable("CommunicationPrograms", (string)null);
+                    b.ToTable("CommunicationPrograms");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Consultant", b =>
@@ -347,7 +347,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasIndex("UserID")
                         .IsUnique();
 
-                    b.ToTable("Consultants", (string)null);
+                    b.ToTable("Consultants");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ConsultantAppointmentEvaluation", b =>
@@ -379,7 +379,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("ConsultantAppointmentEvaluations", (string)null);
+                    b.ToTable("ConsultantAppointmentEvaluations");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ConsultantSchedule", b =>
@@ -417,7 +417,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("ConsultantID", "Date", "IsAvailable");
 
-                    b.ToTable("ConsultantSchedules", (string)null);
+                    b.ToTable("ConsultantSchedules");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Course", b =>
@@ -468,7 +468,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("CourseID");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseAssessment", b =>
@@ -483,7 +483,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("AssessmentID");
 
-                    b.ToTable("CourseAssessments", (string)null);
+                    b.ToTable("CourseAssessments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseVideo", b =>
@@ -516,7 +516,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("CourseID");
 
-                    b.ToTable("CourseVideos", (string)null);
+                    b.ToTable("CourseVideos");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Payment", b =>
@@ -566,7 +566,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ProgramParticipation", b =>
@@ -584,7 +584,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("ProgramID");
 
-                    b.ToTable("ProgramParticipations", (string)null);
+                    b.ToTable("ProgramParticipations");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Question", b =>
@@ -618,7 +618,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("SurveyID");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Role", b =>
@@ -639,7 +639,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Survey", b =>
@@ -669,7 +669,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Surveys", (string)null);
+                    b.ToTable("Surveys");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.SurveyResponse", b =>
@@ -703,7 +703,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("SurveyResponses", (string)null);
+                    b.ToTable("SurveyResponses");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.User", b =>
@@ -761,7 +761,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("RoleID");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
@@ -790,7 +790,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserCourseProgresses", (string)null);
+                    b.ToTable("UserCourseProgresses");
                 });
 
             modelBuilder.Entity("CourseRegistration", b =>

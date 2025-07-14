@@ -8,16 +8,14 @@ namespace DrugUsePreventionAPI.Services.Interfaces
     {
         Task<(bool IsSuccess, string Message, int? AssessmentId)> CreateInputAssessment(CreateInputAssessmentDto dto);
         Task<(bool IsSuccess, string Message, int? AssessmentId)> CreateOutputAssessment(CreateOutputAssessmentDto dto);
-
-        Task<List<GetAssessmentListDto>> GetAllAssessmentWithCourse();
-
+        Task<List<GetAssessmentInputDto>> GetAllAssessmentInput();
+        Task<List<GetAssessmentOutputDto>> GetAllAssessmentOutput();
         Task<List<Course>> GetAvailableCourses();
         Task<bool> UpdateInputAssessmentWithValidation(int id, CreateInputAssessmentDto dto);
         Task<(bool IsSuccess, string Message)> UpdateOutputAssessmentWithValidation(int id, CreateOutputAssessmentDto dto);
-
         Task<bool> DeleteAssessment(int id);
         Task<List<Assessment>> GetAssessmentByAge(int age);
-        Task<GetAssessmentDto?> GetAssessmentById(int id);
-
+        Task<GetAssessmentInputDto?> GetInputAssessmentById(int id);
+        Task<GetAssessmentOutputDto?> GetOutputAssessmentById(int id);
     }
 }

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using DrugUsePreventionAPI.Models.DTOs.Admin;
 using DrugUsePreventionAPI.Models.DTOs.Appointment;
+using DrugUsePreventionAPI.Models.DTOs.AssessmentDto;
+using DrugUsePreventionAPI.Models.DTOs.Course;
+using DrugUsePreventionAPI.Models.DTOs.CourseRegistration;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 
@@ -41,6 +44,9 @@ namespace DrugUsePreventionAPI.Configurations
                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Note))
                .ForMember(dest => dest.PaymentStatus, opt => opt.Ignore());
+
+
+
         }
     }
 }
