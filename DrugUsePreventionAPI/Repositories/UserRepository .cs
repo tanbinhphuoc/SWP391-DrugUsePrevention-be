@@ -101,6 +101,12 @@ namespace DrugUsePreventionAPI.Repositories
             return await _context.Users
                 .CountAsync(u => u.CreatedAt >= startDate);
         }
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await _context.Users
+                .Include(u => u.Role)  
+                .FirstOrDefaultAsync(u => u.UserID == id);
+        }
 
         public async Task<Dictionary<string, int>> GetActiveInactiveRatioAsync()
         {
