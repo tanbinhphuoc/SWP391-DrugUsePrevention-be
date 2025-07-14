@@ -33,11 +33,14 @@ namespace DrugUsePreventionAPI.Controllers.Data
 
 
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Composite keys
             modelBuilder.Entity<CourseRegistration>()
-                .HasKey(cr => new { cr.UserID, cr.CourseID });
+            .HasKey(x => x.CourseRegistrationID); 
+
+
 
             modelBuilder.Entity<CourseAssessment>()
                 .HasKey(ca => new { ca.CourseID, ca.AssessmentID });

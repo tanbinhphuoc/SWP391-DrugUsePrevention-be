@@ -1,15 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using DrugUsePreventionAPI.Models.Entities;
 
-namespace DrugUsePreventionAPI.Models.Entities
+public class CourseRegistration
 {
-    public class CourseRegistration
-    {
-        public int UserID { get; set; }
-        public int CourseID { get; set; }
-        public DateTime RegisterTime { get; set; } = DateTime.Now;
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int CourseRegistrationID { get; set; }
+    public int CourseID { get; set; }
+    public int UserID { get; set; }
+    public DateTime RegistrationDate { get; set; }
+    public string Status { get; set; } // PENDING_PAYMENT, CONFIRMED, CANCELED
 
-        // Navigation properties
-        public virtual User User { get; set; }
-        public virtual Course Course { get; set; }
-    }
+    public string? TransactionID { get; set; }
+    public decimal? Amount { get; set; }
+    public string PaymentStatus { get; set; } // PENDING, SUCCESS, FAILED
+
+    public Course Course { get; set; }
+    public User User { get; set; }
 }

@@ -35,6 +35,10 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("AssessmentStage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AssessmentType")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -48,7 +52,47 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("AssessmentID");
 
-                    b.ToTable("Assessments");
+                    b.ToTable("Assessments", (string)null);
+                });
+
+            modelBuilder.Entity("CourseRegistration", b =>
+                {
+                    b.Property<int>("CourseRegistrationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseRegistrationID"));
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseRegistrationID");
+
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CourseRegistrations", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AnswerOption", b =>
@@ -76,7 +120,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("QuestionID");
 
-                    b.ToTable("AnswerOptions");
+                    b.ToTable("AnswerOptions", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Appointment", b =>
@@ -123,7 +167,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AssessmentResult", b =>
@@ -161,7 +205,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("AssessmentResults");
+                    b.ToTable("AssessmentResults", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Blog", b =>
@@ -202,7 +246,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>
@@ -223,7 +267,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("CertificateID");
 
-                    b.ToTable("Certificates");
+                    b.ToTable("Certificates", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CommunicationProgram", b =>
@@ -254,7 +298,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("ProgramID");
 
-                    b.ToTable("CommunicationPrograms");
+                    b.ToTable("CommunicationPrograms", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Consultant", b =>
@@ -303,7 +347,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.HasIndex("UserID")
                         .IsUnique();
 
-                    b.ToTable("Consultants");
+                    b.ToTable("Consultants", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ConsultantAppointmentEvaluation", b =>
@@ -335,7 +379,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("ConsultantAppointmentEvaluations");
+                    b.ToTable("ConsultantAppointmentEvaluations", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ConsultantSchedule", b =>
@@ -373,7 +417,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("ConsultantID", "Date", "IsAvailable");
 
-                    b.ToTable("ConsultantSchedules");
+                    b.ToTable("ConsultantSchedules", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Course", b =>
@@ -424,7 +468,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("CourseID");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseAssessment", b =>
@@ -439,25 +483,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("AssessmentID");
 
-                    b.ToTable("CourseAssessments");
-                });
-
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseRegistration", b =>
-                {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserID", "CourseID");
-
-                    b.HasIndex("CourseID");
-
-                    b.ToTable("CourseRegistrations");
+                    b.ToTable("CourseAssessments", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseVideo", b =>
@@ -490,7 +516,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("CourseID");
 
-                    b.ToTable("CourseVideos");
+                    b.ToTable("CourseVideos", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Payment", b =>
@@ -540,7 +566,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.ProgramParticipation", b =>
@@ -558,7 +584,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("ProgramID");
 
-                    b.ToTable("ProgramParticipations");
+                    b.ToTable("ProgramParticipations", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Question", b =>
@@ -592,7 +618,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("SurveyID");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Role", b =>
@@ -613,7 +639,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Survey", b =>
@@ -643,7 +669,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Surveys");
+                    b.ToTable("Surveys", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.SurveyResponse", b =>
@@ -677,7 +703,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("SurveyResponses");
+                    b.ToTable("SurveyResponses", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.User", b =>
@@ -735,16 +761,16 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("RoleID");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("UserCourseProgressID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserCourseProgressID"));
 
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
@@ -758,11 +784,32 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("UserCourseProgressID");
 
                     b.HasIndex("CourseID");
 
-                    b.ToTable("UserCourseProgresses");
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserCourseProgresses", (string)null);
+                });
+
+            modelBuilder.Entity("CourseRegistration", b =>
+                {
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
+                        .WithMany("CourseRegistrations")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "User")
+                        .WithMany("CourseRegistrations")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AnswerOption", b =>
@@ -897,25 +944,6 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseRegistration", b =>
-                {
-                    b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
-                        .WithMany("CourseRegistrations")
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "User")
-                        .WithMany("CourseRegistrations")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.CourseVideo", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
@@ -1042,7 +1070,15 @@ namespace DrugUsePreventionAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Course");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Assessment", b =>

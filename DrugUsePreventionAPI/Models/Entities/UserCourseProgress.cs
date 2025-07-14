@@ -2,7 +2,7 @@
 {
     public class UserCourseProgress
     {
-        public int ID { get; set; }
+        public int UserCourseProgressID { get; set; }
         public int UserID { get; set; }
         public int CourseID { get; set; }
         public bool IsCompleted { get; set; }
@@ -10,6 +10,7 @@
 
         // Navigation
         public Course Course { get; set; }
+        public User User { get; set; }
     }
 
 }

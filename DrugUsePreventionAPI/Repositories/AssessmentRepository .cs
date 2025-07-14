@@ -37,9 +37,12 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<List<Assessment>> GetAllActiveAssessmentsAsync()
         {
             return await _context.Assessments
+                .Include(a => a.CourseAssessments) 
                 .Where(a => !a.IsDeleted)
                 .ToListAsync();
         }
+
+
     }
 
 }

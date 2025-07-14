@@ -98,6 +98,20 @@ public class VNPayHelper
         }
         return appointmentId;
     }
+    public int ExtractCourseRegistrationIdFromTxnRef(string txnRef)
+    {
+        if (!txnRef.StartsWith("COURSE-"))
+            throw new ArgumentException("Invalid transaction reference format.");
+
+        var withoutPrefix = txnRef.Substring("COURSE-".Length);
+        var parts = withoutPrefix.Split('-', 2); 
+
+        if (parts.Length < 2 || !int.TryParse(parts[0], out int registrationId))
+            throw new ArgumentException("Invalid CourseRegistrationID in transaction reference.");
+
+        return registrationId;
+    }
+
 
     private string ComputeHmacSha512(string key, string inputData)
     {

@@ -120,20 +120,37 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { success = true, message = "Xóa thành công" });
         }
 
-        [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetAssessmentById(int id)
+        [HttpGet("GetInputById/{id}")]
+        public async Task<IActionResult> GetInputById(int id)
         {
-            var dto = await _assessmentService.GetAssessmentById(id);
+            var dto = await _assessmentService.GetInputAssessmentById(id);
             if (dto == null)
-                return NotFound(new { success = false, message = "Assessment không tồn tại" });
+                return NotFound(new { success = false, message = "Assessment đầu vào không tồn tại" });
 
             return Ok(new { success = true, data = dto });
         }
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllAssessments()
+        [HttpGet("GetOutputById/{id}")]
+        public async Task<IActionResult> GetOutputById(int id)
         {
-            var result = await _assessmentService.GetAllAssessmentWithCourse();
+            var dto = await _assessmentService.GetOutputAssessmentById(id);
+            if (dto == null)
+                return NotFound(new { success = false, message = "Assessment đầu ra không tồn tại" });
+
+            return Ok(new { success = true, data = dto });
+        }
+
+        [HttpGet("GetAllInput")]
+        public async Task<IActionResult> GetAllInputAssessments()
+        {
+            var result = await _assessmentService.GetAllAssessmentInput();
+            return Ok(new { success = true, data = result });
+        }
+
+        [HttpGet("GetAllOutput")]
+        public async Task<IActionResult> GetAllOutputAssessments()
+        {
+            var result = await _assessmentService.GetAllAssessmentOutput();
             return Ok(new { success = true, data = result });
         }
 
