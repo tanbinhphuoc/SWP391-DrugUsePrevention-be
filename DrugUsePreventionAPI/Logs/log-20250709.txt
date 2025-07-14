@@ -1,4 +1,4 @@
-2025-07-11 14:53:46.478 +07:00 [ERR] Failed to get ngrok URL
+2025-07-09 17:24:31.881 +07:00 [ERR] Failed to get ngrok URL
 System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
  ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
  ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
@@ -20,24 +20,6 @@ System.AggregateException: One or more errors occurred. (No connection could be 
    at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
    at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
    at Program.<<Main>$>g__GetNgrokUrl|0_11() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 366
-2025-07-11 14:53:46.764 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
-2025-07-11 14:53:47.406 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-11 14:53:49.563 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-11 14:53:54.876 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
-2025-07-11 14:53:54.882 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-11 14:53:54.888 +07:00 [INF] Using the following options for Hangfire Server:
-    Worker count: 20
-    Listening queues: 'default'
-    Shutdown timeout: 00:00:15
-    Schedule polling interval: 00:00:15
-2025-07-11 14:53:55.024 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a successfully announced in 81.9553 ms
-2025-07-11 14:53:55.033 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-11 14:53:55.055 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a all the dispatchers started
-2025-07-11 14:54:01.869 +07:00 [INF] Generated schedules from "2025-07-11T00:00:00.0000000Z" to "2025-07-18T00:00:00.0000000Z" for all consultants
-2025-07-11 15:00:13.349 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
-2025-07-11 15:00:13.355 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a caught stopping signal...
-2025-07-11 15:00:13.373 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a caught stopped signal...
-2025-07-11 15:00:13.378 +07:00 [WRN] Server laptop-qlc4gki0:23096:d41b359a caught shutdown signal...
-2025-07-11 15:00:13.385 +07:00 [WRN] Server laptop-qlc4gki0:23096:d41b359a stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
-2025-07-11 15:00:13.415 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a successfully reported itself as stopped in 17.9588 ms
-2025-07-11 15:00:13.420 +07:00 [INF] Server laptop-qlc4gki0:23096:d41b359a has been stopped in total 47.0178 ms
+2025-07-09 17:24:32.201 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-09 17:24:34.844 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 17:24:45.430 +07:00 [INF] Hangfire SQL objects installed.

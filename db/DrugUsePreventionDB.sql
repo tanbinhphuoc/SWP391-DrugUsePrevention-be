@@ -298,13 +298,13 @@ GO
 INSERT INTO ConsultantSchedules (ConsultantID, DayOfWeek, Date, StartTime, EndTime, IsAvailable, Notes)
 VALUES (1, 'Saturday', '2025-07-05', '07:00:00', '08:00:00', 1, NULL);
 
-select * from Roles
-select * from Users
-select * from Consultants
-select * from ConsultantSchedules
-select * from Appointments 
-select * from Payments
-select * from Certificates
+	select * from Roles
+	select * from Users
+	select * from Consultants
+	select * from ConsultantSchedules
+	select * from Appointments 
+	select * from Payments
+	select * from Certificates
 
 update ConsultantSchedules
 set isAvailable = '1'
@@ -397,7 +397,7 @@ BEGIN
     DROP TABLE #TempSchedules;
 END;
 GO
-EXEC GetConsultantSchedulesWithStatus @ConsultantId = 5, @StartDate = '2025-06-20', @EndDate = '2025-06-30';
+EXEC GetConsultantSchedulesWithStatus @ConsultantId = 5, @StartDate = '2025-07-01', @EndDate = '2025-07-07';
 
 -- Thêm Thumbnail và Avatar trong bảng Blogs
 ALTER TABLE Blogs ADD Thumbnail NVARCHAR(500);
@@ -406,3 +406,6 @@ ALTER TABLE Blogs ADD AuthorAvatar NVARCHAR(500);
 -- Tạo demo_staff trong bảng Users để tạo Blog
 INSERT INTO Users (userName, password, email, roleID)
 VALUES ('demo_staff1', '123456', 'demo@gmail.com', 2);
+
+
+SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Appointments';
