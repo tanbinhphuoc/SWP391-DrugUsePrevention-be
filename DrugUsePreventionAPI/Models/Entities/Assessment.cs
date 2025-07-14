@@ -15,6 +15,9 @@ public class Assessment
     [Required]
     [MaxLength(10)]
     public required string AssessmentType { get; set; }
+    [Required]
+    public string AssessmentStage { get; set; } = "Input"; // hoặc "Output" nếu dùng cho tạo output
+
 
 
     // chuyển đổi trạng thái không hoạt động khi deleted
