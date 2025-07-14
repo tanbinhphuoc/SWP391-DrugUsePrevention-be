@@ -61,6 +61,10 @@ namespace DrugUsePreventionAPI.Mappings
                 .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
                 .ForMember(dest => dest.GoogleMeetLink, opt => opt.MapFrom(src => src.GoogleMeetLink))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            CreateMap<User, MemberProfileDto>()
+               .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+               .ForMember(dest => dest.AssessmentStage, opt => opt.Ignore());
         }
     }
 }
