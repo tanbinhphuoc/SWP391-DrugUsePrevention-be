@@ -238,32 +238,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-
-
-
-        public async Task<List<GetAssessmentListDto>> GetAllAssessmentWithCourse()
-        {
-            var assessments = await _unitOfWork.Assessments.GetAllActiveAssessmentsAsync();
-            var courseAssessments = await _context.CourseAssessments.AsNoTracking().ToListAsync();
-
-            var result = assessments.Select(a =>
-            {
-                int? courseId = courseAssessments
-                    .FirstOrDefault(ca => ca.AssessmentID == a.AssessmentID)?.CourseID;
-
-                return new GetAssessmentListDto
-                {
-                    AssessmentID = a.AssessmentID,
-                    AssessmentName = a.AssessmentName,
-                    AssessmentType = a.AssessmentType,
-                    Description = a.Description,
-                    CourseID = courseId
-                };
-            }).ToList();
-
-            return result;
-        }
-
         public async Task<List<Course>> GetAvailableCourses()
         {
             var allCourses = await _unitOfWork.Courses.GetAllAsync();
@@ -306,33 +280,80 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-        public async Task<GetAssessmentDto?> GetAssessmentById(int id)
+        public async Task<List<GetAssessmentInputDto>> GetAllAssessmentInput()
         {
-            var assessment = await _unitOfWork.Assessments.GetAssessmentWithQuestionsAsync(id);
-            if (assessment == null || assessment.IsDeleted) return null;
+            var assessments = await _unitOfWork.Assessments.FindAsync(a =>
+                !a.IsDeleted &&
+                !_context.CourseAssessments.Any(ca => ca.AssessmentID == a.AssessmentID));
 
-            var dto = new GetAssessmentDto
+            return assessments.Select(a => new GetAssessmentInputDto
             {
-                AssessmentName = assessment.AssessmentName,
-                Questions = assessment.Questions
-                    .Where(q => !q.IsDeleted)
-                    .Select(q => new QuestionDto
-                    {
-                        QuestionId = q.QuestionID,
-                        QuestionText = q.QuestionText,
-                        Answers = q.AnswerOptions
-                            .Where(ans => !ans.IsDeleted)
-                            .Select(ans => new AnswerDto
-                            {
-                                AnswerId = ans.OptionID,
-                                OptionText = ans.OptionText,
-                                IsCorrect = ans.ScoreValue > 0
-                            }).ToList()
-                    }).ToList()
-            };
-
-            return dto;
+                AssessmentID = a.AssessmentID,
+                AssessmentName = a.AssessmentName,
+                AssessmentType = a.AssessmentType,
+                Description = a.Description
+            }).ToList();
         }
+
+        public async Task<List<GetAssessmentOutputDto>> GetAllAssessmentOutput()
+        {
+            var courseAssessments = await _context.CourseAssessments
+                .Include(ca => ca.Assessment)
+                .Where(ca => !ca.Assessment.IsDeleted)
+                .ToListAsync();
+
+            return courseAssessments.Select(ca => new GetAssessmentOutputDto
+            {
+                AssessmentID = ca.Assessment.AssessmentID,
+                AssessmentName = ca.Assessment.AssessmentName,
+                AssessmentType = ca.Assessment.AssessmentType,
+                Description = ca.Assessment.Description,
+                CourseID = ca.CourseID
+            }).ToList();
+        }
+        public async Task<GetAssessmentInputDto?> GetInputAssessmentById(int id)
+        {
+            var assessment = await _unitOfWork.Assessments.GetByIdAsync(id);
+            if (assessment == null || assessment.IsDeleted)
+                return null;
+
+            // Đảm bảo là đầu vào (không liên kết với khóa học nào)
+            bool isInput = !await _context.CourseAssessments.AnyAsync(ca => ca.AssessmentID == id);
+            if (!isInput) return null;
+
+            return new GetAssessmentInputDto
+            {
+                AssessmentID = assessment.AssessmentID,
+                AssessmentName = assessment.AssessmentName,
+                Description = assessment.Description,
+                AssessmentType = assessment.AssessmentType
+            };
+        }
+        public async Task<GetAssessmentOutputDto?> GetOutputAssessmentById(int id)
+        {
+            var assessment = await _unitOfWork.Assessments.GetByIdAsync(id);
+            if (assessment == null || assessment.IsDeleted)
+                return null;
+
+            // Tìm liên kết với Course
+            var courseAssessment = await _context.CourseAssessments
+                .FirstOrDefaultAsync(ca => ca.AssessmentID == id);
+
+            if (courseAssessment == null)
+                return null;
+
+            return new GetAssessmentOutputDto
+            {
+                AssessmentID = assessment.AssessmentID,
+                AssessmentName = assessment.AssessmentName,
+                Description = assessment.Description,
+                AssessmentType = assessment.AssessmentType,
+                CourseID = courseAssessment.CourseID
+            };
+        }
+
+
+
     }
 
 }

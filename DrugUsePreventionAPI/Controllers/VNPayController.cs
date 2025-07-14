@@ -17,12 +17,19 @@ namespace DrugUsePreventionAPI.Controllers
     {
         private readonly IAppointmentService _appointmentService;
         private readonly VNPayHelper _vnpayHelper;
+        private readonly ICourseRegistrationService _courseRegistrationService;
 
-        public VNPayController(IAppointmentService appointmentService, VNPayHelper vnpayHelper)
+
+        public VNPayController(
+            IAppointmentService appointmentService,
+            VNPayHelper vnpayHelper,
+            ICourseRegistrationService courseRegistrationService)
         {
-            _appointmentService = appointmentService ?? throw new ArgumentNullException(nameof(appointmentService));
-            _vnpayHelper = vnpayHelper ?? throw new ArgumentNullException(nameof(vnpayHelper));
+            _appointmentService = appointmentService;
+            _vnpayHelper = vnpayHelper;
+            _courseRegistrationService = courseRegistrationService;
         }
+
 
         [HttpGet("return")]
         [HttpPost("return")]
@@ -48,19 +55,27 @@ namespace DrugUsePreventionAPI.Controllers
             if (!queryParams.TryGetValue("vnp_TxnRef", out var vnpTxnRef) || string.IsNullOrEmpty(vnpTxnRef))
                 return BadRequest(new { success = false, message = "Transaction reference missing." });
 
-            var appointmentId = _vnpayHelper.ExtractAppointmentIdFromTxnRef(vnpTxnRef);
             var transactionId = vnpTxnRef;
             var vnpayResponseCode = queryParams.TryGetValue("vnp_ResponseCode", out var code) ? code : "99";
 
             try
             {
-                var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, transactionId, vnpayResponseCode, HttpContext);
+                if (vnpTxnRef.Contains("COURSE-"))
+                {
+                    var courseRegistrationId = _vnpayHelper.ExtractCourseRegistrationIdFromTxnRef(vnpTxnRef);
+                    var result = await _courseRegistrationService.ConfirmPaymentAsync(courseRegistrationId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
-                // Trả về kết quả và chuyển hướng đến trang frontend
-                string frontendUrl = $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode={code}&appointmentId={appointmentId}";
+                    string redirectUrl = $"http://localhost:5173/member-dashboard?tab=courses&vnp_ResponseCode={vnpayResponseCode}&courseId={courseRegistrationId}";// thay vào đây tính tiền Course
+                    return Redirect(redirectUrl);
+                }
+                else
+                {
+                    var appointmentId = _vnpayHelper.ExtractAppointmentIdFromTxnRef(vnpTxnRef);
+                    var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
-                // Chuyển hướng người dùng đến trang frontend
-                return Redirect(frontendUrl);
+                    string redirectUrl = $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode={vnpayResponseCode}&appointmentId={appointmentId}";
+                    return Redirect(redirectUrl);
+                }
             }
             catch (BusinessRuleViolationException ex)
             {
@@ -69,10 +84,11 @@ namespace DrugUsePreventionAPI.Controllers
             }
             catch (Exception ex)
             {
-                Serilog.Log.Error(ex, "Error processing VNPay return callback for appointment {AppointmentId}", appointmentId);
+                Serilog.Log.Error(ex, "Error processing VNPay return callback");
                 return StatusCode(500, new { success = false, message = "An error occurred while processing the payment callback." });
             }
         }
+
 
         [HttpPost("ipn")]
         [AllowAnonymous]

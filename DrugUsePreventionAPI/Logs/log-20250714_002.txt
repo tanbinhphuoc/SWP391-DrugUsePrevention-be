@@ -1,54 +1,6 @@
-2025-07-14 01:24:51.501 +07:00 [INF] Updated ReturnUrl to: https://13928b713798.ngrok-free.app/api/vnpay/return
-2025-07-14 01:24:52.649 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-14 01:25:11.023 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-14 01:25:12.805 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
-2025-07-14 01:25:12.807 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-14 01:25:12.809 +07:00 [INF] Using the following options for Hangfire Server:
-    Worker count: 20
-    Listening queues: 'default'
-    Shutdown timeout: 00:00:15
-    Schedule polling interval: 00:00:15
-2025-07-14 01:25:12.876 +07:00 [INF] Server laptop-qlc4gki0:12132:6440229d successfully announced in 42.3569 ms
-2025-07-14 01:25:12.886 +07:00 [INF] Server laptop-qlc4gki0:12132:6440229d is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-14 01:25:13.038 +07:00 [INF] Server laptop-qlc4gki0:12132:6440229d all the dispatchers started
-2025-07-14 01:26:05.990 +07:00 [WRN] Failed to determine the https port for redirect.
-2025-07-14 01:27:58.298 +07:00 [INF] JWT Token validated successfully for user: Hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 21, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: 1dqhoang@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1752431167, exp: 1752517567, iat: 1752431167, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-14 01:27:58.493 +07:00 [INF] Booking appointment for UserID=21 with ConsultantID=5
-2025-07-14 01:27:58.499 +07:00 [INF] Using client IP from header: 203.0.113.5
-2025-07-14 01:27:58.503 +07:00 [INF] Booking appointment for user 21 with consultant 5
-2025-07-14 01:27:59.082 +07:00 [INF] Appointment 120 created with payment URL
-2025-07-14 01:28:34.574 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15072281","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 120 for 1 hours","vnp_PayDate":"20250714012926","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15072281","vnp_TransactionStatus":"00","vnp_TxnRef":"2f2a089d-5c81-4e54-820d-eb35eca6d57b-120","vnp_SecureHash":"64c180ab92d25b870909ef9144e2ab00b48767157c8b63f8353d1b1117be0bf285d02f0105218028a037384031bc07eaab8120abeb29abf465f297e21de7c71f"}
-2025-07-14 01:28:34.587 +07:00 [INF] Callback signature verified successfully for transaction 2f2a089d-5c81-4e54-820d-eb35eca6d57b-120
-2025-07-14 01:28:34.593 +07:00 [INF] Confirming payment for appointment 120, transaction 2f2a089d-5c81-4e54-820d-eb35eca6d57b-120
-2025-07-14 01:28:34.629 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15072281","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 120 for 1 hours","vnp_PayDate":"20250714012926","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15072281","vnp_TransactionStatus":"00","vnp_TxnRef":"2f2a089d-5c81-4e54-820d-eb35eca6d57b-120","vnp_SecureHash":"64c180ab92d25b870909ef9144e2ab00b48767157c8b63f8353d1b1117be0bf285d02f0105218028a037384031bc07eaab8120abeb29abf465f297e21de7c71f"}
-2025-07-14 01:28:34.631 +07:00 [INF] Callback signature verified successfully for transaction 2f2a089d-5c81-4e54-820d-eb35eca6d57b-120
-2025-07-14 01:28:37.942 +07:00 [INF] Email sent to 1dqhoang@gmail.com
-2025-07-14 01:28:40.796 +07:00 [INF] Email sent to CR7@KingOfEurope.com
-2025-07-14 01:28:40.800 +07:00 [INF] Payment confirmed for appointment 120
-2025-07-14 01:36:55.957 +07:00 [INF] Updated ReturnUrl to: https://13928b713798.ngrok-free.app/api/vnpay/return
-2025-07-14 01:36:56.713 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-14 01:36:58.249 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-14 01:37:00.202 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
-2025-07-14 01:37:00.204 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-14 01:37:00.205 +07:00 [INF] Using the following options for Hangfire Server:
-    Worker count: 20
-    Listening queues: 'default'
-    Shutdown timeout: 00:00:15
-    Schedule polling interval: 00:00:15
-2025-07-14 01:37:00.271 +07:00 [INF] Server laptop-qlc4gki0:20512:2a4b35af successfully announced in 41.4253 ms
-2025-07-14 01:37:00.280 +07:00 [INF] Server laptop-qlc4gki0:20512:2a4b35af is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-14 01:37:00.449 +07:00 [INF] Server laptop-qlc4gki0:20512:2a4b35af all the dispatchers started
-2025-07-14 01:37:44.430 +07:00 [WRN] Failed to determine the https port for redirect.
-2025-07-14 01:37:44.652 +07:00 [INF] JWT Token validated successfully for user: Hoang, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 21, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Hoang, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: 1dqhoang@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1752431167, exp: 1752517567, iat: 1752431167, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-14 01:37:44.972 +07:00 [INF] Booking appointment for UserID=21 with ConsultantID=5
-2025-07-14 01:37:44.977 +07:00 [INF] Using client IP from header: 203.0.113.5
-2025-07-14 01:37:44.984 +07:00 [INF] Booking appointment for user 21 with consultant 5
-2025-07-14 01:37:45.589 +07:00 [INF] Appointment 121 created with payment URL
-2025-07-14 01:38:21.760 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15072295","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 121 for 1 hours","vnp_PayDate":"20250714013914","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15072295","vnp_TransactionStatus":"00","vnp_TxnRef":"ab1abbe0-f56f-4c88-ba25-23f23b3419ef-121","vnp_SecureHash":"0804a877c3b25730a1f2435f24111d640d35e77ef78bb5cf02667f080a3f26821f7c6fbbe686e47c0383f629c299ef871b25e96d7a356ee40cb90a1450503611"}
-2025-07-14 01:38:21.776 +07:00 [INF] Callback signature verified successfully for transaction ab1abbe0-f56f-4c88-ba25-23f23b3419ef-121
-2025-07-14 01:38:21.781 +07:00 [INF] Confirming payment for appointment 121, transaction ab1abbe0-f56f-4c88-ba25-23f23b3419ef-121
-2025-07-14 01:38:21.886 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15072295","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 121 for 1 hours","vnp_PayDate":"20250714013914","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15072295","vnp_TransactionStatus":"00","vnp_TxnRef":"ab1abbe0-f56f-4c88-ba25-23f23b3419ef-121","vnp_SecureHash":"0804a877c3b25730a1f2435f24111d640d35e77ef78bb5cf02667f080a3f26821f7c6fbbe686e47c0383f629c299ef871b25e96d7a356ee40cb90a1450503611"}
-2025-07-14 01:38:21.888 +07:00 [INF] Callback signature verified successfully for transaction ab1abbe0-f56f-4c88-ba25-23f23b3419ef-121
-2025-07-14 01:38:25.109 +07:00 [INF] Email sent to 1dqhoang@gmail.com
-2025-07-14 01:38:28.478 +07:00 [INF] Email sent to CR7@KingOfEurope.com
-2025-07-14 01:38:28.481 +07:00 [INF] Payment confirmed for appointment 121
+2025-07-14 00:05:51.979 +07:00 [INF] Updated ReturnUrl to: https://ad0875477ffb.ngrok-free.app/api/vnpay/return
+2025-07-14 00:05:52.443 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-14 00:05:52.598 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-14 00:06:17.829 +07:00 [INF] Updated ReturnUrl to: https://ad0875477ffb.ngrok-free.app/api/vnpay/return
+2025-07-14 00:06:18.307 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-14 00:06:18.472 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.

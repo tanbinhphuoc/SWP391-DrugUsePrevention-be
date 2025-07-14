@@ -298,13 +298,13 @@ GO
 INSERT INTO ConsultantSchedules (ConsultantID, DayOfWeek, Date, StartTime, EndTime, IsAvailable, Notes)
 VALUES (1, 'Saturday', '2025-07-05', '07:00:00', '08:00:00', 1, NULL);
 
-	select * from Roles
-	select * from Users
-	select * from Consultants
-	select * from ConsultantSchedules
-	select * from Appointments 
-	select * from Payments
-	select * from Certificates
+select * from Roles
+select * from Users
+select * from Consultants
+select * from ConsultantSchedules
+select * from Appointments 
+select * from Payments
+select * from Certificates
 
 update ConsultantSchedules
 set isAvailable = '1'
@@ -397,7 +397,7 @@ BEGIN
     DROP TABLE #TempSchedules;
 END;
 GO
-EXEC GetConsultantSchedulesWithStatus @ConsultantId = 5, @StartDate = '2025-07-01', @EndDate = '2025-07-07';
+EXEC GetConsultantSchedulesWithStatus @ConsultantId = 5, @StartDate = '2025-06-20', @EndDate = '2025-06-30';
 
 -- Thêm Thumbnail và Avatar trong bảng Blogs
 ALTER TABLE Blogs ADD Thumbnail NVARCHAR(500);
