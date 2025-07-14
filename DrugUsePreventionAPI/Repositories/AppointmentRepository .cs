@@ -49,12 +49,20 @@ namespace DrugUsePreventionAPI.Repositories
 
         public async Task<Appointment> GetAppointmentWithDetailsAsync(int appointmentId)
         {
+            /*
             var appointment = await _context.Appointments
                 .AsNoTracking()
                 .Include(a => a.User)
                 .Include(a => a.Consultant)
                     .ThenInclude(c => c.User) // Đảm bảo tải User của Consultant
                 .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
+            */
+            var appointment = await _context.Appointments
+    .Include(a => a.User)
+    .Include(a => a.Consultant)
+        .ThenInclude(c => c.User)
+    .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
+
             if (appointment == null)
             {
                 Log.Warning("Appointment {AppointmentId} not found", appointmentId);
