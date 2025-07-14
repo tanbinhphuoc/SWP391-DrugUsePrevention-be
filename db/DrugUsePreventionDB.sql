@@ -408,4 +408,3 @@ INSERT INTO Users (userName, password, email, roleID)
 VALUES ('demo_staff1', '123456', 'demo@gmail.com', 2);
 
 
-SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Appointments';
