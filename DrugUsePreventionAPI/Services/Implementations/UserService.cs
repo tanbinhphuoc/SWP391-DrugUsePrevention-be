@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
-using DrugUsePreventionAPI.Exceptions;
+using DrugUsePreventionAPI.Services.Interfaces;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
@@ -142,6 +143,76 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return result;
         }
 
+        public async Task<UserDto> UpdateUserProfileAsync(int userId, UpdateUserProfileDto updateUserProfileDto)
+        {
+            // Lấy người dùng theo ID
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("User", userId);
+            }
+
+            // Cập nhật các trường thông tin người dùng
+            if (updateUserProfileDto.FullName != null)
+                user.FullName = updateUserProfileDto.FullName;
+            if (updateUserProfileDto.Phone != null)
+                user.Phone = updateUserProfileDto.Phone;
+            if (updateUserProfileDto.Address != null)
+                user.Address = updateUserProfileDto.Address;
+            if (updateUserProfileDto.DateOfBirth.HasValue)
+                user.DateOfBirth = updateUserProfileDto.DateOfBirth;
+            if (updateUserProfileDto.Email != null)
+                user.Email = updateUserProfileDto.Email;
+
+            // Cập nhật thời gian sửa đổi và lưu vào cơ sở dữ liệu
+            user.UpdatedAt = DateTime.UtcNow;
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            var updatedUserDto = _mapper.Map<UserDto>(user);
+            return updatedUserDto;
+        }
+
+
+        public async Task<UserDto> UpdateUserPasswordAsync(int userId, UpdatePasswordDto updatePasswordDto)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("User", userId);
+            }
+
+            // Kiểm tra mật khẩu cũ có đúng không
+            if (!BCrypt.Net.BCrypt.Verify(updatePasswordDto.OldPassword, user.Password))
+            {
+                throw new BusinessRuleViolationException("Mật khẩu cũ không đúng.");
+            }
+
+            // Kiểm tra mật khẩu mới có hợp lệ không (ví dụ: độ dài, độ phức tạp)
+            if (updatePasswordDto.NewPassword.Length < 8 ||
+                !updatePasswordDto.NewPassword.Any(char.IsUpper) ||
+                !updatePasswordDto.NewPassword.Any(char.IsDigit))
+            {
+                throw new BusinessRuleViolationException("Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa và chữ số.");
+            }
+
+            // Kiểm tra mật khẩu mới và xác nhận mật khẩu mới có khớp không
+            if (updatePasswordDto.NewPassword != updatePasswordDto.ConfirmNewPassword)
+            {
+                throw new BusinessRuleViolationException("Mật khẩu mới và xác nhận mật khẩu mới không khớp.");
+            }
+
+            // Cập nhật mật khẩu mới
+            user.Password = BCrypt.Net.BCrypt.HashPassword(updatePasswordDto.NewPassword);
+            user.UpdatedAt = DateTime.UtcNow;
+
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            var updatedUserDto = _mapper.Map<UserDto>(user);
+            return updatedUserDto;
+        }
+
         public async Task<IEnumerable<UserDto>> GetUsersByRoleAsync(string roleName)
         {
             Log.Information("Retrieving users by role {RoleName}", roleName);
@@ -200,6 +271,33 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var ratio = await _unitOfWork.Users.GetActiveInactiveRatioAsync();
             Log.Information("Active/Inactive ratio: Active={Active}%, Inactive={Inactive}%", ratio["Active"], ratio["Inactive"]);
             return ratio;
+        }
+
+        public async Task<MemberProfileDto> GetMemberProfileAsync(int userId)
+        {
+            Log.Information("Retrieving member profile for user ID {UserId}", userId);
+
+            // Lấy thông tin người dùng và Role từ repository
+            var user = await _unitOfWork.Users.GetUserWithRoleAsync(userId);
+            if (user == null)
+            {
+                Log.Warning("User with ID {UserId} not found", userId);
+                throw new EntityNotFoundException("User", userId);
+            }
+
+            // Lấy kết quả assessment stage "Input" nếu người dùng đã làm assessment
+            var latestInputResult = await _unitOfWork.AssessmentResults.GetAssessmentResultByUserAsync(userId, "Input");
+
+            var result = _mapper.Map<MemberProfileDto>(user);
+
+            // Nếu đã làm assessment, thì cập nhật stage "Input"
+            if (latestInputResult != null)
+            {
+                result.AssessmentStage = "Input"; // Chỉ hiển thị "Input" nếu người dùng đã thực hiện assessment ở stage này
+            }
+
+            Log.Information("Retrieved member profile for user {UserName}", user.UserName);
+            return result;
         }
 
         public async Task<bool> ToggleUserStatusAsync(int id, string newStatus)

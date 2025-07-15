@@ -300,6 +300,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         }
         */
 
+        /*
         public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId, string vnpayResponseCode, HttpContext context)
         {
             Log.Information("Confirming payment for appointment {AppointmentId}, transaction {TransactionId}", appointmentId, transactionId);
@@ -440,6 +441,199 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new BusinessRuleViolationException($"Payment failed with response code {vnpayResponseCode}. Please try again.");
             }
         }
+        */
+
+        public async Task<AppointmentDto> ConfirmPaymentAsync(int appointmentId, string transactionId, string vnpayResponseCode, HttpContext context)
+        {
+            Log.Information("Confirming payment for appointment {AppointmentId}, transaction {TransactionId}", appointmentId, transactionId);
+
+            if (context == null)
+            {
+                Log.Error("HttpContext is null for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Invalid request context.");
+            }
+
+            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
+            if (appointment == null)
+            {
+                Log.Warning("Appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Appointment", appointmentId);
+            }
+
+            var payment = await _unitOfWork.Payments.GetByAppointmentAndTransactionAsync(appointmentId, transactionId);
+            if (payment == null)
+            {
+                Log.Warning("Payment for appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Payment", appointmentId);
+            }
+
+            if (payment.Amount == null)
+            {
+                Log.Error("Payment amount is null for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Payment amount is invalid.");
+            }
+
+            int retryCount = payment.RetryCount ?? 0;
+            if (retryCount >= _vnPayHelper.MaxRetryAttempts)
+            {
+                Log.Warning("Max retry attempts reached for appointment {AppointmentId}", appointmentId);
+                appointment.Status = "CANCELED";
+                payment.Status = "FAILED";
+                await _unitOfWork.SaveChangesAsync();
+                throw new BusinessRuleViolationException("Maximum retry attempts reached. Appointment canceled.");
+            }
+
+            var queryParams = context.Request.HasFormContentType
+                ? context.Request.Form.ToDictionary(k => k.Key, v => v.Value.ToString())
+                : context.Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString());
+
+            if (queryParams.Count == 0)
+            {
+                Log.Warning("No query parameters found in callback for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Invalid callback data.");
+            }
+
+            Log.Information("Request Query: {Query}", JsonSerializer.Serialize(queryParams));
+
+            queryParams["vnp_TxnRef"] = transactionId;
+            queryParams["vnp_ResponseCode"] = vnpayResponseCode;
+
+            if (!_vnPayHelper.VerifyCallback(queryParams))
+            {
+                Log.Warning("Invalid VNPay callback signature for appointment {AppointmentId}", appointmentId);
+                payment.RetryCount = retryCount + 1;
+                await _unitOfWork.SaveChangesAsync();
+                throw new BusinessRuleViolationException("Invalid payment callback signature. Please try again.");
+            }
+
+            if (queryParams.TryGetValue("vnp_Amount", out var vnpAmountStr) && !string.IsNullOrEmpty(vnpAmountStr))
+            {
+                if (decimal.TryParse(vnpAmountStr, out var vnpAmount) && vnpAmount / 100 != payment.Amount)
+                {
+                    Log.Warning("Amount mismatch: VNPay={VnpAmount}, Expected={ExpectedAmount}", vnpAmount / 100, payment.Amount);
+                    throw new BusinessRuleViolationException("Payment amount mismatch.");
+                }
+            }
+            else
+            {
+                Log.Warning("vnp_Amount is missing in callback for appointment {AppointmentId}", appointmentId);
+                throw new BusinessRuleViolationException("Payment amount is missing.");
+            }
+
+            // Chỉ cập nhật trạng thái appointment khi payment thành công và responseCode là "00"
+            if (vnpayResponseCode == "00")
+            {
+                // Cập nhật trạng thái của payment và appointment
+                payment.Status = "SUCCESS";
+                payment.RetryCount = 0;
+                appointment.Status = "CONFIRMED";  // Cập nhật trạng thái của appointment thành "CONFIRMED"
+
+                // Cập nhật lịch hẹn không còn trống
+                var consultant = appointment.Consultant;
+                if (consultant == null || string.IsNullOrEmpty(consultant.GoogleMeetLink))
+                {
+                    Log.Warning("Consultant {ConsultantId} not found or no Google Meet link", appointment.ConsultantID);
+                    throw new BusinessRuleViolationException("Consultant has no Google Meet link configured.");
+                }
+
+                var scheduleIds = appointment.ScheduleIds?.Split(',').Select(int.Parse).ToList() ?? new List<int>();
+                if (scheduleIds.Any())
+                {
+                    var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(scheduleIds);
+                    foreach (var schedule in schedules)
+                    {
+                        schedule.IsAvailable = false;
+                        _unitOfWork.ConsultantSchedules.Update(schedule);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                // Lưu các thay đổi vào cơ sở dữ liệu
+                await _unitOfWork.SaveChangesAsync();
+
+                var member = appointment.User;
+                if (member == null)
+                {
+                    Log.Warning("Member not found for appointment {AppointmentId}", appointmentId);
+                    throw new EntityNotFoundException("User", appointment.UserID);
+                }
+
+                var meetLink = consultant.GoogleMeetLink;
+
+                // Gửi email cho người dùng và tư vấn viên
+                var subjectMember = $"Appointment Confirmation - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+                var bodyMember = BuildMemberEmailBody(appointment, consultant.User, meetLink);
+                await _emailService.SendEmailAsync(member.Email, subjectMember, bodyMember, true);
+
+                var subjectConsultant = $"New Appointment Notification - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+                var bodyConsultant = BuildConsultantEmailBody(appointment, member, meetLink);
+                await _emailService.SendEmailAsync(consultant.User.Email, subjectConsultant, bodyConsultant, true);
+
+                var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
+                Log.Information("Payment confirmed for appointment {AppointmentId}", appointmentId);
+                return appointmentDto;
+            }
+            else
+            {
+                Log.Warning("Payment failed for appointment {AppointmentId} with response code {VnpayResponseCode}", appointmentId, vnpayResponseCode);
+                // Cập nhật trạng thái nếu thanh toán thất bại
+                payment.Status = "FAILED";
+                appointment.Status = "CANCELED";
+                await _unitOfWork.SaveChangesAsync();
+
+                // Lấy thông tin user và consultant
+                var user = appointment.User;
+                var consultant = appointment.Consultant;
+                var appointmentTime = appointment.StartDateTime;
+
+                // Gửi email thông báo hủy lịch cho người dùng
+                var subjectMember = $"Appointment Canceled - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+                var bodyMember = BuildCancellationEmailBody(appointment, user, consultant, appointmentTime);
+                await _emailService.SendEmailAsync(appointment.User.Email, subjectMember, bodyMember, true);
+
+                // Gửi email thông báo hủy cho tư vấn viên
+                var subjectConsultant = $"Appointment Canceled - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+                var bodyConsultant = BuildConsultantCancellationEmailBody(appointment, user, appointmentTime);
+                await _emailService.SendEmailAsync(appointment.Consultant.User.Email, subjectConsultant, bodyConsultant, true);
+
+                throw new BusinessRuleViolationException($"Payment failed with response code {vnpayResponseCode}. Please try again.");
+            }
+        }
+
+        private string BuildCancellationEmailBody(Appointment appointment, User? user, Consultant? consultant, DateTime appointmentTime)
+        {
+            return $@"
+<div style='font-family:Arial,sans-serif;'>
+    <h2 style='color:#e76f51;'>Appointment Canceled</h2>
+    <p>Dear <b>{user.FullName}</b>,</p>
+    <p>We regret to inform you that your appointment with <b>{consultant.User.FullName}</b> scheduled for <b>{appointmentTime:dd/MM/yyyy HH:mm}</b> has been <span style='color:red;'>CANCELED</span> due to a payment FAILED.</p>
+    <table style='border-collapse:collapse;'>
+        <tr><td><b>Date:</b></td><td>{appointment.StartDateTime:dd/MM/yyyy}</td></tr>
+        <tr><td><b>Time:</b></td><td>{appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}</td></tr>
+        <tr><td><b>Price:</b></td><td>{appointment.Price:N0} VND</td></tr>
+    </table>
+    <p style='margin-top:20px;'>Please try to rebook your appointment. We apologize for the inconvenience.<br/>--<br/>DrugUsePrevention Team</p>
+</div>";
+        }
+
+
+        private string BuildConsultantCancellationEmailBody(Appointment appointment, User user, DateTime appointmentTime)
+        {
+            return $@"
+<div style='font-family:Arial,sans-serif;'>
+    <h2 style='color:#e76f51;'>Appointment Canceled</h2>
+    <p>Dear <b>{appointment.Consultant.User.FullName}</b>,</p>
+    <p>We regret to inform you that your appointment with <b>{user.FullName}</b> scheduled for <b>{appointmentTime:dd/MM/yyyy HH:mm}</b> has been <span style='color:red;'>CANCELED</span> due to a payment FAILED.</p>
+    <table style='border-collapse:collapse;'>
+        <tr><td><b>Client:</b></td><td>{user.FullName}</td></tr>
+        <tr><td><b>Date:</b></td><td>{appointment.StartDateTime:dd/MM/yyyy}</td></tr>
+        <tr><td><b>Time:</b></td><td>{appointment.StartDateTime:HH:mm} - {appointment.EndDateTime:HH:mm}</td></tr>
+        <tr><td><b>Price:</b></td><td>{appointment.Price:N0} VND</td></tr>
+    </table>
+    <p style='margin-top:20px;'>Please be aware of this cancellation.<br/>--<br/>DrugUsePrevention Team</p>
+</div>";
+        }
+
 
         public async Task HandleIPNAsync(Dictionary<string, string> queryParams)
         {

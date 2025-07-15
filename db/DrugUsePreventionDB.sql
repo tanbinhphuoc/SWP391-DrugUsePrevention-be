@@ -406,3 +406,5 @@ ALTER TABLE Blogs ADD AuthorAvatar NVARCHAR(500);
 -- Tạo demo_staff trong bảng Users để tạo Blog
 INSERT INTO Users (userName, password, email, roleID)
 VALUES ('demo_staff1', '123456', 'demo@gmail.com', 2);
+
+
