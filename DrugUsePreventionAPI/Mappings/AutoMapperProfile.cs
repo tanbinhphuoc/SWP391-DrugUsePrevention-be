@@ -46,7 +46,7 @@ namespace DrugUsePreventionAPI.Configurations
                .ForMember(dest => dest.PaymentStatus, opt => opt.Ignore());
 
             CreateMap<CourseRegistration, CourseRegistrationDto>()
-           .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.CourseName));
+                .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.CourseName));
 
         }
     }

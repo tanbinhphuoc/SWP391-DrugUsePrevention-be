@@ -1,0 +1,71 @@
+2025-07-05 12:34:10.503 +07:00 [INF] Updated ReturnUrl to: https://6db3-118-69-182-144.ngrok-free.app/api/vnpay/return
+2025-07-05 12:34:11.301 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-05 12:34:15.119 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-05 12:34:17.914 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-05 12:34:20.801 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-05 12:34:20.808 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-05 12:34:20.815 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-05 12:34:21.019 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 successfully announced in 145.2839 ms
+2025-07-05 12:34:21.034 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-05 12:34:21.059 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 all the dispatchers started
+2025-07-05 12:34:21.077 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-05 12:34:27.848 +07:00 [INF] Generated schedules from "2025-07-05T00:00:00.0000000Z" to "2025-07-12T00:00:00.0000000Z" for all consultants
+2025-07-05 12:35:10.903 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-05 12:35:45.845 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:35:46.457 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-05T00:00:00.0000000"
+2025-07-05 12:35:46.920 +07:00 [INF] Retrieved 12 schedules
+2025-07-05 12:39:05.620 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:39:05.667 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-05T00:00:00.0000000"
+2025-07-05 12:39:05.779 +07:00 [INF] Retrieved 12 schedules
+2025-07-05 12:39:10.985 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:39:11.047 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-05T00:00:00.0000000"
+2025-07-05 12:39:11.149 +07:00 [INF] Retrieved 12 schedules
+2025-07-05 12:46:32.494 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:46:46.803 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:46:46.818 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-07T00:00:00.0000000"
+2025-07-05 12:46:46.928 +07:00 [INF] Retrieved 36 schedules
+2025-07-05 12:48:44.738 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:48:44.913 +07:00 [INF] Booking appointment for UserID=22 with ConsultantID=5
+2025-07-05 12:48:44.930 +07:00 [INF] Using client IP from header: 203.0.113.5
+2025-07-05 12:48:44.955 +07:00 [INF] Booking appointment for user 22 with consultant 5
+2025-07-05 12:48:45.970 +07:00 [INF] Appointment 118 created with payment URL
+2025-07-05 12:49:36.785 +07:00 [INF] VNPay RETURN callback received: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15056972","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 118 for 1 hours","vnp_PayDate":"20250705125019","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15056972","vnp_TransactionStatus":"00","vnp_TxnRef":"52e1e15d-482f-4eeb-938f-5600484bc3fc-118","vnp_SecureHash":"9a63d2be0315776a1a1b9af4fb111de27d7805b9cb916d0dd03cb416c63b4e93d464285c0406d80da67ba3fadc8c80c11b2ea3792c71a4e38799215517a097f9"}
+2025-07-05 12:49:36.814 +07:00 [INF] Callback signature verified successfully for transaction 52e1e15d-482f-4eeb-938f-5600484bc3fc-118
+2025-07-05 12:49:36.837 +07:00 [INF] Confirming payment for appointment 118, transaction 52e1e15d-482f-4eeb-938f-5600484bc3fc-118
+2025-07-05 12:49:36.989 +07:00 [INF] Request Query: {"vnp_Amount":"9999900","vnp_BankCode":"NCB","vnp_BankTranNo":"VNP15056972","vnp_CardType":"ATM","vnp_OrderInfo":"Appointment 118 for 1 hours","vnp_PayDate":"20250705125019","vnp_ResponseCode":"00","vnp_TmnCode":"BI6CAXNN","vnp_TransactionNo":"15056972","vnp_TransactionStatus":"00","vnp_TxnRef":"52e1e15d-482f-4eeb-938f-5600484bc3fc-118","vnp_SecureHash":"9a63d2be0315776a1a1b9af4fb111de27d7805b9cb916d0dd03cb416c63b4e93d464285c0406d80da67ba3fadc8c80c11b2ea3792c71a4e38799215517a097f9"}
+2025-07-05 12:49:36.998 +07:00 [INF] Callback signature verified successfully for transaction 52e1e15d-482f-4eeb-938f-5600484bc3fc-118
+2025-07-05 12:49:40.971 +07:00 [INF] Email sent to tanphse180176@fpt.edu.vn
+2025-07-05 12:49:44.246 +07:00 [INF] Email sent to CR7@KingOfEurope.com
+2025-07-05 12:49:44.255 +07:00 [INF] Payment confirmed for appointment 118
+2025-07-05 12:50:00.639 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751693712, exp: 1751780112, iat: 1751693712, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 12:50:00.657 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-07T00:00:00.0000000"
+2025-07-05 12:50:00.785 +07:00 [INF] Retrieved 36 schedules
+2025-07-05 12:58:47.056 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-05 12:58:47.066 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 caught stopping signal...
+2025-07-05 12:58:47.118 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 caught stopped signal...
+2025-07-05 12:58:47.123 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 All dispatchers stopped
+2025-07-05 12:58:47.126 +07:00 [WRN] Server laptop-qlc4gki0:6044:e531f2a0 caught shutdown signal...
+2025-07-05 12:58:47.213 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 successfully reported itself as stopped in 58.5517 ms
+2025-07-05 12:58:47.220 +07:00 [INF] Server laptop-qlc4gki0:6044:e531f2a0 has been stopped in total 101.878 ms
+2025-07-05 12:59:34.794 +07:00 [INF] Updated ReturnUrl to: https://6db3-118-69-182-144.ngrok-free.app/api/vnpay/return
+2025-07-05 12:59:37.469 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-05 12:59:41.539 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-05 12:59:46.200 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-05 12:59:54.099 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-05 12:59:54.107 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-05 12:59:54.115 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-05 12:59:54.347 +07:00 [INF] Server laptop-qlc4gki0:39152:ee044b9a successfully announced in 140.4768 ms
+2025-07-05 12:59:54.384 +07:00 [INF] Server laptop-qlc4gki0:39152:ee044b9a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-05 12:59:54.819 +07:00 [INF] Server laptop-qlc4gki0:39152:ee044b9a all the dispatchers started
+2025-07-05 13:00:24.914 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-05 13:01:06.113 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 22, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1751695227, exp: 1751781627, iat: 1751695227, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-05 13:01:06.745 +07:00 [INF] Retrieving schedules for consultant 5 from "2025-07-05T00:00:00.0000000" to "2025-07-07T00:00:00.0000000"
+2025-07-05 13:01:07.205 +07:00 [INF] Retrieved 36 schedules
