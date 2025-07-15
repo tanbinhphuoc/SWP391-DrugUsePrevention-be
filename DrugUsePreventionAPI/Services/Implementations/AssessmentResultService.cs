@@ -15,7 +15,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> CreateInputAssessmentResult(CreateInputAssessmentResultDto dto)
+        public async Task<AssessmentResultResponseDto> CreateInputAssessmentResult(CreateInputAssessmentResultDto dto)
         {
             int score = 0;
 
@@ -67,10 +67,14 @@ namespace DrugUsePreventionAPI.Services.Implementations
             await _unitOfWork.AssessmentResults.AddAsync(result);
             await _unitOfWork.SaveChangesAsync();
 
-            return result.ResultName;
+            return new AssessmentResultResponseDto
+            {
+                Message = result.ResultName,
+                Score = finalScore
+            };
         }
 
-        public async Task<string> CreateOutputAssessmentResult(CreateOutputAssessmentResultDto dto)
+        public async Task<AssessmentResultResponseDto> CreateOutputAssessmentResult(CreateOutputAssessmentResultDto dto)
         {
             int score = 0;
 
@@ -126,7 +130,11 @@ namespace DrugUsePreventionAPI.Services.Implementations
             await _unitOfWork.AssessmentResults.AddAsync(result);
             await _unitOfWork.SaveChangesAsync();
 
-            return result.ResultName;
+            return new AssessmentResultResponseDto
+            {
+                Message = result.ResultName,
+                Score = finalScore
+            };
         }
 
 
