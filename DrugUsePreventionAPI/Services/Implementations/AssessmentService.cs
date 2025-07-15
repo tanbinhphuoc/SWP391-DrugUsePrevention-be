@@ -71,15 +71,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (!dto.CourseID.HasValue)
                 return (false, "Phải chọn Course khi tạo Assessment Output.", null);
 
+            // Không cho phép cùng CourseID đã có Assessment Output (bất kể loại)
             var exists = await _context.CourseAssessments
                 .Include(ca => ca.Assessment)
                 .AnyAsync(ca =>
                     ca.CourseID == dto.CourseID &&
-                    !ca.Assessment.IsDeleted &&
-                    ca.Assessment.AssessmentType == dto.AssessmentType);
+                    !ca.Assessment.IsDeleted);
 
             if (exists)
-                return (false, $"Đã tồn tại Assessment Output loại {dto.AssessmentType} cho khóa học này.", null);
+                return (false, $"Khóa học này đã có Assessment Output.", null);
 
             var assessment = new Assessment
             {
@@ -103,6 +103,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             return (true, "Tạo Assessment Output thành công", assessment.AssessmentID);
         }
+
 
 
 
@@ -171,10 +172,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 return (false, "Phải có CourseID khi cập nhật Assessment Output.");
 
             var assessment = await _unitOfWork.Assessments.GetByIdAsync(id);
-            if (assessment == null)
+            if (assessment == null || assessment.IsDeleted)
                 return (false, "Assessment không tồn tại.");
 
-            // Nếu tên thay đổi thì mới kiểm tra trùng tên
+            // Nếu tên thay đổi thì kiểm tra trùng tên
             var newName = dto.AssessmentName.Trim().ToLower();
             var oldName = assessment.AssessmentName.Trim().ToLower();
 
@@ -189,7 +190,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     return (false, "Đã tồn tại Assessment khác có cùng tên.");
             }
 
-            // Kiểm tra loại assessment đã tồn tại cho khóa học
+            // Kiểm tra đã tồn tại assessment khác cùng loại và cùng CourseID
             var isTypeExists = await _context.CourseAssessments
                 .Include(ca => ca.Assessment)
                 .AnyAsync(ca =>
@@ -201,7 +202,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (isTypeExists)
                 return (false, $"Đã tồn tại Assessment Output loại {dto.AssessmentType} cho khóa học này.");
 
-            // Cập nhật
+            // Cập nhật thông tin assessment
             assessment.AssessmentName = dto.AssessmentName;
             assessment.Description = dto.Description;
             assessment.AssessmentType = dto.AssessmentType;
@@ -211,19 +212,37 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 _unitOfWork.Assessments.Update(assessment);
                 await _unitOfWork.SaveChangesAsync();
 
+                // Cập nhật liên kết CourseAssessment
                 var existingLink = await _context.CourseAssessments
-                    .FirstOrDefaultAsync(ca => ca.AssessmentID == assessment.AssessmentID);
+                    .FirstOrDefaultAsync(ca => ca.AssessmentID == id);
 
                 if (existingLink != null)
                 {
-                    existingLink.CourseID = dto.CourseID.Value;
-                    _context.CourseAssessments.Update(existingLink);
+                    // Nếu CourseID thay đổi thì cập nhật
+                    if (existingLink.CourseID != dto.CourseID.Value)
+                    {
+                        // Kiểm tra lại trước khi cập nhật (an toàn)
+                        var conflict = await _context.CourseAssessments
+                            .Include(ca => ca.Assessment)
+                            .AnyAsync(ca =>
+                                ca.CourseID == dto.CourseID &&
+                                ca.AssessmentID != id &&
+                                !ca.Assessment.IsDeleted &&
+                                ca.Assessment.AssessmentType == dto.AssessmentType);
+
+                        if (conflict)
+                            return (false, $"Khóa học đã có Assessment Output loại {dto.AssessmentType} khác.");
+
+                        existingLink.CourseID = dto.CourseID.Value;
+                        _context.CourseAssessments.Update(existingLink);
+                    }
                 }
                 else
                 {
+                    // Nếu chưa có liên kết thì tạo mới
                     var newLink = new CourseAssessment
                     {
-                        AssessmentID = assessment.AssessmentID,
+                        AssessmentID = id,
                         CourseID = dto.CourseID.Value
                     };
                     await _context.CourseAssessments.AddAsync(newLink);
@@ -232,11 +251,13 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 await _context.SaveChangesAsync();
                 return (true, "Cập nhật Assessment Output thành công");
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Error(ex, "Lỗi khi cập nhật Assessment Output");
                 return (false, "Lỗi khi cập nhật Assessment Output");
             }
         }
+
 
         public async Task<List<Course>> GetAvailableCourses()
         {

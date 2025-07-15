@@ -16,8 +16,8 @@ namespace DrugUsePreventionAPI.Controllers
         {
             try
             {
-                var resultMessage = await _assessmentResultService.CreateInputAssessmentResult(dto);
-                return Ok(new { success = true, message = resultMessage });
+                var result = await _assessmentResultService.CreateInputAssessmentResult(dto);
+                return Ok(new { success = true, message = result.Message, score = result.Score });
             }
             catch (Exception ex)
             {
@@ -25,20 +25,20 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        // Tạo kết quả bài đánh giá đầu ra (Output)
         [HttpPost("create-output")]
         public async Task<IActionResult> CreateOutputResult([FromBody] CreateOutputAssessmentResultDto dto)
         {
             try
             {
-                var resultMessage = await _assessmentResultService.CreateOutputAssessmentResult(dto);
-                return Ok(new { success = true, message = resultMessage });
+                var result = await _assessmentResultService.CreateOutputAssessmentResult(dto);
+                return Ok(new { success = true, message = result.Message, score = result.Score });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
+
 
         [HttpGet("compare-assessments")]
         public async Task<IActionResult> CompareAssessmentResults([FromQuery] int userId, [FromQuery] int courseId)
