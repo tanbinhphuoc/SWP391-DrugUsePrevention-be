@@ -1,0 +1,94 @@
+2025-07-06 11:04:11.079 +07:00 [INF] Updated ReturnUrl to: https://dad6-118-68-123-101.ngrok-free.app/api/vnpay/return
+2025-07-06 11:04:12.916 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-06 11:04:18.588 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-06 11:04:22.598 +07:00 [WRN] The foreign key property 'Payment.AppointmentID1' was created in shadow state because a conflicting property with the simple name 'AppointmentID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-07-06 11:04:22.769 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-06 11:04:26.854 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB'
+2025-07-06 11:04:26.864 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-06 11:04:26.876 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-06 11:04:27.344 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f successfully announced in 322.2837 ms
+2025-07-06 11:04:27.381 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-06 11:04:27.928 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f all the dispatchers started
+2025-07-06 11:04:55.523 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-06 11:05:16.445 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1751774698, exp: 1751861098, iat: 1751774698, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-06 11:05:17.174 +07:00 [INF] Retrieving all appointments
+2025-07-06 11:05:17.189 +07:00 [INF] Retrieving all appointments
+2025-07-06 11:05:17.508 +07:00 [ERR] Failed executing DbCommand (75ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[AppointmentID], [a].[ConsultantID], [a].[CreatedAt], [a].[EndDateTime], [a].[Note], [a].[Price], [a].[ScheduleIds], [a].[StartDateTime], [a].[Status], [a].[UpdatedAt], [a].[UserID], [u].[UserID], [u].[Address], [u].[CreatedAt], [u].[DateOfBirth], [u].[Email], [u].[FullName], [u].[Password], [u].[Phone], [u].[RoleID], [u].[Status], [u].[UpdatedAt], [u].[UserName], [c].[ConsultantID], [c].[CertificateID], [c].[CreatedAt], [c].[Degree], [c].[Experience], [c].[GoogleMeetLink], [c].[HourlyRate], [c].[Specialty], [c].[UpdatedAt], [c].[UserID], [u0].[UserID], [u0].[Address], [u0].[CreatedAt], [u0].[DateOfBirth], [u0].[Email], [u0].[FullName], [u0].[Password], [u0].[Phone], [u0].[RoleID], [u0].[Status], [u0].[UpdatedAt], [u0].[UserName], [p].[PaymentID], [p].[Amount], [p].[AppointmentID], [p].[AppointmentID1], [p].[CourseID], [p].[PaymentDate], [p].[PaymentMethod], [p].[RetryCount], [p].[Status], [p].[TransactionID], [p].[UserID]
+FROM [Appointments] AS [a]
+INNER JOIN [Users] AS [u] ON [a].[UserID] = [u].[UserID]
+INNER JOIN [Consultants] AS [c] ON [a].[ConsultantID] = [c].[ConsultantID]
+INNER JOIN [Users] AS [u0] ON [c].[UserID] = [u0].[UserID]
+LEFT JOIN [Payments] AS [p] ON [a].[AppointmentID] = [p].[AppointmentID1]
+ORDER BY [a].[StartDateTime] DESC, [a].[AppointmentID], [u].[UserID], [c].[ConsultantID], [u0].[UserID]
+2025-07-06 11:05:17.675 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'DrugUsePreventionAPI.Controllers.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'AppointmentID1'.
+Invalid column name 'AppointmentID1'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:a3371135-1d54-4e3b-977b-b0497132bddc
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'AppointmentID1'.
+Invalid column name 'AppointmentID1'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:a3371135-1d54-4e3b-977b-b0497132bddc
+Error Number:207,State:1,Class:16
+2025-07-06 11:05:18.857 +07:00 [ERR] Error retrieving all appointments
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'AppointmentID1'.
+Invalid column name 'AppointmentID1'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at DrugUsePreventionAPI.Repositories.AppointmentRepository.GetAllAppointmentsAsync() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Repositories\AppointmentRepository .cs:line 136
+   at DrugUsePreventionAPI.Services.Implementations.AppointmentService.GetAllAppointmentsAsync() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\AppointmentService.cs:line 393
+   at DrugUsePreventionAPI.Controllers.AdminController.GetAllAppointments() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\AdminController.cs:line 53
+ClientConnectionId:a3371135-1d54-4e3b-977b-b0497132bddc
+Error Number:207,State:1,Class:16
+2025-07-06 11:08:11.007 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-06 11:08:11.018 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f caught stopping signal...
+2025-07-06 11:08:11.103 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f caught stopped signal...
+2025-07-06 11:08:11.108 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f All dispatchers stopped
+2025-07-06 11:08:11.117 +07:00 [WRN] Server laptop-qlc4gki0:52552:1ca5bd5f caught shutdown signal...
+2025-07-06 11:08:11.770 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f successfully reported itself as stopped in 641.7323 ms
+2025-07-06 11:08:11.777 +07:00 [INF] Server laptop-qlc4gki0:52552:1ca5bd5f has been stopped in total 674.4199 ms
+2025-07-06 15:41:05.426 +07:00 [INF] Updated ReturnUrl to: https://dad6-118-68-123-101.ngrok-free.app/api/vnpay/return
+2025-07-06 15:41:06.702 +07:00 [WRN] The foreign key property 'Payment.AppointmentID1' was created in shadow state because a conflicting property with the simple name 'AppointmentID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-07-06 15:41:06.737 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-06 15:41:07.031 +07:00 [WRN] The foreign key property 'Payment.AppointmentID1' was created in shadow state because a conflicting property with the simple name 'AppointmentID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-07-06 15:41:07.040 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.

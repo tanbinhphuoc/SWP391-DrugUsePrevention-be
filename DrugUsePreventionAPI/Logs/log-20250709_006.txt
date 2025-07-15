@@ -1,0 +1,195 @@
+2025-07-09 10:06:16.402 +07:00 [ERR] Failed to get ngrok URL
+System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
+ ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
+ ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.GetStringAsyncCore(HttpRequestMessage request, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Program.<<Main>$>g__GetNgrokUrl|0_11() in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 367
+2025-07-09 10:06:16.450 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-09 10:06:16.602 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 10:06:17.185 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-09 10:06:17.662 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-09 10:06:18.296 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-07-09 10:06:18.298 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-09 10:06:18.301 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-09 10:06:18.337 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f successfully announced in 17.6912 ms
+2025-07-09 10:06:18.342 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-09 10:06:18.430 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f all the dispatchers started
+2025-07-09 10:13:42.770 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-09 10:14:10.070 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752030823, exp: 1752117223, iat: 1752030823, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 10:14:10.318 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Không có khóa học nào đã hoàn thành.
+   at CourseService.GetCompletedCoursesByUser(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 181
+   at CourseController.GetCompletedCourses(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\CourseController.cs:line 172
+   at lambda_method197(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-09 10:14:10.352 +07:00 [ERR] Error occurred: Không có khóa học nào đã hoàn thành., StackTrace:    at CourseService.GetCompletedCoursesByUser(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 181
+   at CourseController.GetCompletedCourses(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\CourseController.cs:line 172
+   at lambda_method197(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Không có khóa học nào đã hoàn thành.
+   at CourseService.GetCompletedCoursesByUser(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 181
+   at CourseController.GetCompletedCourses(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\CourseController.cs:line 172
+   at lambda_method197(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-09 10:14:19.927 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752030823, exp: 1752117223, iat: 1752030823, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 10:14:20.032 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Không có khóa học nào đang học.
+   at CourseService.GetUncompletedCoursesByUser(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 194
+   at CourseController.GetUncompletedCourses(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\CourseController.cs:line 195
+   at lambda_method207(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-09 10:14:20.062 +07:00 [ERR] Error occurred: Không có khóa học nào đang học., StackTrace:    at CourseService.GetUncompletedCoursesByUser(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 194
+   at CourseController.GetUncompletedCourses(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\CourseController.cs:line 195
+   at lambda_method207(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Không có khóa học nào đang học.
+   at CourseService.GetUncompletedCoursesByUser(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 194
+   at CourseController.GetUncompletedCourses(Int32 userId) in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Controllers\CourseController.cs:line 195
+   at lambda_method207(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-09 10:16:28.629 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752030823, exp: 1752117223, iat: 1752030823, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 10:16:28.668 +07:00 [INF] Retrieving all courses
+2025-07-09 10:16:28.753 +07:00 [INF] Retrieved 2 courses
+2025-07-09 10:16:41.229 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752030823, exp: 1752117223, iat: 1752030823, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-09 10:33:45.178 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-09 10:33:45.180 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f caught stopping signal...
+2025-07-09 10:33:45.183 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f caught stopped signal...
+2025-07-09 10:33:45.196 +07:00 [WRN] Server desktop-nggl106:18772:b126cb1f caught shutdown signal...
+2025-07-09 10:33:45.204 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f All dispatchers stopped
+2025-07-09 10:33:45.230 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f successfully reported itself as stopped in 17.8326 ms
+2025-07-09 10:33:45.233 +07:00 [INF] Server desktop-nggl106:18772:b126cb1f has been stopped in total 51.6745 ms
+2025-07-09 10:44:30.714 +07:00 [ERR] Failed to get ngrok URL
+System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
+ ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
+ ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.GetStringAsyncCore(HttpRequestMessage request, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Program.<<Main>$>g__GetNgrokUrl|0_11() in D:\hoctap\ki 5\SWP391\SWP391-DrugUsePrevention-be\DrugUsePreventionAPI\Program.cs:line 369
+2025-07-09 10:44:30.776 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-09 10:44:30.949 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-09 10:44:31.556 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-09 10:44:32.073 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-09 10:44:32.823 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: DESKTOP-NGGL106\MSSQLSERVER01@DrugUsePreventionDB_V1'
+2025-07-09 10:44:32.826 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-09 10:44:32.828 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-09 10:44:32.863 +07:00 [INF] Server desktop-nggl106:23180:ccd16b14 successfully announced in 16.9482 ms
+2025-07-09 10:44:32.869 +07:00 [INF] Server desktop-nggl106:23180:ccd16b14 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-09 10:44:32.980 +07:00 [INF] Server desktop-nggl106:23180:ccd16b14 all the dispatchers started
+2025-07-09 16:14:24.347 +07:00 [WRN] Failed to determine the https port for redirect.
