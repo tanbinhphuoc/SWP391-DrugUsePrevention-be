@@ -71,7 +71,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             if (!dto.CourseID.HasValue)
                 return (false, "Phải chọn Course khi tạo Assessment Output.", null);
 
-            // ❌ Không cho phép cùng CourseID đã có Assessment Output (bất kể loại)
+            // Không cho phép cùng CourseID đã có Assessment Output (bất kể loại)
             var exists = await _context.CourseAssessments
                 .Include(ca => ca.Assessment)
                 .AnyAsync(ca =>
