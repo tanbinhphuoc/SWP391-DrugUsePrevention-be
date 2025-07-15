@@ -5,6 +5,6 @@ namespace DrugUsePreventionAPI.Models.DTOs.User
     public class UpdateUserRoleDto
     {
         [Required]
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
     }
 }

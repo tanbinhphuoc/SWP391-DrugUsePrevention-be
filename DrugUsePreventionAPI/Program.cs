@@ -230,6 +230,7 @@ builder.Services.AddScoped<ICourseVideoService, CourseVideoService>();
     // Configure Authorization
     builder.Services.AddAuthorization(options =>
     {
+        options.AddPolicy("Member", policy => policy.RequireRole("Member"));
         options.AddPolicy("MemberOrGuest", policy => policy.RequireRole("Member", "Guest"));
         options.AddPolicy("Consultant", policy => policy.RequireRole("Consultant"));
         options.AddPolicy("Admin", policy =>

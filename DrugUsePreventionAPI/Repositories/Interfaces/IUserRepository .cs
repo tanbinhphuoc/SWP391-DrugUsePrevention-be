@@ -20,5 +20,6 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<int> GetUserCountByRoleAsync(string roleName);
         Task<int> GetNewUserCountAsync(DateTime startDate);
         Task<Dictionary<string, int>> GetActiveInactiveRatioAsync();
+        Task<User> GetByIdAsync(int id);
     }
 }

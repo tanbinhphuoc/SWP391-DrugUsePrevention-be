@@ -20,5 +20,9 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<int> GetNewUserCountAsync(DateTime startDate);
         Task<Dictionary<string, int>> GetActiveInactiveRatioAsync();
         Task<bool> ToggleUserStatusAsync(int id, string newStatus);
+        Task<UserDto> UpdateUserProfileAsync(int userId, UpdateUserProfileDto updateUserProfileDto);
+
+        Task<UserDto> UpdateUserPasswordAsync(int userId, UpdatePasswordDto updatePasswordDto);
+        Task<MemberProfileDto> GetMemberProfileAsync(int userId);
     }
 }

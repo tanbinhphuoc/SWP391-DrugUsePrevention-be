@@ -30,7 +30,6 @@ namespace DrugUsePreventionAPI.Controllers
             _courseRegistrationService = courseRegistrationService;
         }
 
-
         [HttpGet("return")]
         [HttpPost("return")]
         [AllowAnonymous]
@@ -65,7 +64,12 @@ namespace DrugUsePreventionAPI.Controllers
                     var courseRegistrationId = _vnpayHelper.ExtractCourseRegistrationIdFromTxnRef(vnpTxnRef);
                     var result = await _courseRegistrationService.ConfirmPaymentAsync(courseRegistrationId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
-                    string redirectUrl = $"http://localhost:5173/member-dashboard?tab=courses&vnp_ResponseCode={vnpayResponseCode}&courseId={courseRegistrationId}";// thay vào đây tính tiền Course
+                    // Nếu thanh toán thành công, redirect đến trang khóa học, nếu thất bại thì redirect với thông báo lỗi
+                    string redirectUrl = $"http://localhost:5173/member-dashboard?tab=courses&vnp_ResponseCode={vnpayResponseCode}&courseId={courseRegistrationId}";
+                    if (vnpayResponseCode != "00") // Nếu lỗi
+                    {
+                        redirectUrl = $"http://localhost:5173/member-dashboard?tab=courses&vnp_ResponseCode={vnpayResponseCode}&courseId={courseRegistrationId}";
+                    }
                     return Redirect(redirectUrl);
                 }
                 else
@@ -73,7 +77,10 @@ namespace DrugUsePreventionAPI.Controllers
                     var appointmentId = _vnpayHelper.ExtractAppointmentIdFromTxnRef(vnpTxnRef);
                     var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
-                    string redirectUrl = $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode={vnpayResponseCode}&appointmentId={appointmentId}";
+                    // Check response code for failure (e.g., 24)
+                    string redirectUrl = vnpayResponseCode == "00"
+                        ? $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode={vnpayResponseCode}&appointmentId={appointmentId}"
+                        : $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode=24&appointmentId={appointmentId}"; // Adjust for failure response code
                     return Redirect(redirectUrl);
                 }
             }
@@ -88,50 +95,7 @@ namespace DrugUsePreventionAPI.Controllers
                 return StatusCode(500, new { success = false, message = "An error occurred while processing the payment callback." });
             }
         }
+      
 
-
-        [HttpPost("ipn")]
-        [AllowAnonymous]
-        public async Task<IActionResult> IpnUrl()
-        {
-            var queryParams = Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString());
-            if (Request.HasFormContentType)
-            {
-                var formData = await Request.ReadFormAsync();
-                foreach (var kvp in formData)
-                    queryParams[kvp.Key] = kvp.Value.ToString();
-            }
-
-            Serilog.Log.Information("VNPay IPN received: {Params}", System.Text.Json.JsonSerializer.Serialize(queryParams));
-
-            if (!_vnpayHelper.VerifyCallback(queryParams))
-                return BadRequest(new { RspCode = "97", Message = "Invalid signature." });
-
-            if (!queryParams.TryGetValue("vnp_TxnRef", out var vnpTxnRef) || string.IsNullOrEmpty(vnpTxnRef))
-                return BadRequest(new { RspCode = "01", Message = "Transaction reference missing." });
-
-            var appointmentId = _vnpayHelper.ExtractAppointmentIdFromTxnRef(vnpTxnRef);
-
-            try
-            {
-                await _appointmentService.HandleIPNAsync(queryParams);
-                return Ok(new { RspCode = "00", Message = "Confirm success." });
-            }
-            catch (EntityNotFoundException)
-            {
-                Serilog.Log.Warning("IPN: Appointment or payment not found for transaction {TransactionId}", vnpTxnRef);
-                return BadRequest(new { RspCode = "01", Message = "Order not found." });
-            }
-            catch (BusinessRuleViolationException ex)
-            {
-                Serilog.Log.Warning("IPN: {Message}", ex.Message);
-                return BadRequest(new { RspCode = "97", Message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                Serilog.Log.Error(ex, "Error processing VNPay IPN callback for appointment {AppointmentId}", appointmentId);
-                return StatusCode(500, new { RspCode = "99", Message = "Unknown error." });
-            }
-        }
     }
 }

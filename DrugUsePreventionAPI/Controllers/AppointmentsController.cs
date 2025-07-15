@@ -112,6 +112,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
+
         [HttpPost("{appointmentId}/confirm-payment")]
         [Authorize(Roles = "Member,Guest")]
         public async Task<IActionResult> ConfirmPayment(int appointmentId, [FromQuery] string transactionId, [FromQuery] string vnpayResponseCode)
