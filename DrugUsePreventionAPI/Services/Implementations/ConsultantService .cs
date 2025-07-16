@@ -410,5 +410,16 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return stats;
         }
 
+        public async Task<ConsultantDto> GetConsultantProfileAsync(int userId)
+        {
+            var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
+            if (consultant == null)
+            {
+                throw new EntityNotFoundException("Consultant", userId);
+            }
+
+            return _mapper.Map<ConsultantDto>(consultant);
+        }
+
     }
 }

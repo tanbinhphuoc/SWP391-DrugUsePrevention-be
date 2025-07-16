@@ -180,9 +180,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<IEnumerable<CourseRegistrationDto>> GetUserRegistrationsAsync(int userId)
         {
-            var items = await _unitOfWork.CourseRegistrations.GetByUserIdAsync(userId);
+            var items = await _unitOfWork.CourseRegistrations.GetConfirmedAndPaidByUserIdAsync(userId);
             return _mapper.Map<IEnumerable<CourseRegistrationDto>>(items);
         }
+
     }
 
 }
