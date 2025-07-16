@@ -1,23 +1,19 @@
-2025-07-16 00:35:19.849 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
-2025-07-16 00:35:20.313 +07:00 [INF] Server laptop-qlc4gki0:18572:6d143661 caught stopping signal...
-2025-07-16 00:35:20.396 +07:00 [INF] Server laptop-qlc4gki0:18572:6d143661 caught stopped signal...
-2025-07-16 00:35:20.403 +07:00 [WRN] Server laptop-qlc4gki0:18572:6d143661 caught shutdown signal...
-2025-07-16 00:35:20.450 +07:00 [WRN] Server laptop-qlc4gki0:18572:6d143661 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
-2025-07-16 00:48:35.758 +07:00 [INF] Updated ReturnUrl to: https://33da38b8b9ee.ngrok-free.app/api/vnpay/return
-2025-07-16 00:48:37.356 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-16 00:49:16.066 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-16 00:49:19.382 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
-2025-07-16 00:49:23.517 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
-2025-07-16 00:49:23.525 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-16 00:49:23.531 +07:00 [INF] Using the following options for Hangfire Server:
+2025-07-16 03:50:26.100 +07:00 [INF] Updated ReturnUrl to: https://33da38b8b9ee.ngrok-free.app/api/vnpay/return
+2025-07-16 03:50:27.886 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-16 03:51:03.899 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-16 03:51:04.733 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-16 03:51:05.876 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-16 03:51:05.878 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-16 03:51:05.880 +07:00 [INF] Using the following options for Hangfire Server:
     Worker count: 20
     Listening queues: 'default'
     Shutdown timeout: 00:00:15
     Schedule polling interval: 00:00:15
-2025-07-16 00:49:23.699 +07:00 [INF] Server laptop-qlc4gki0:14328:551bbaaf successfully announced in 81.7143 ms
-2025-07-16 00:49:23.727 +07:00 [INF] Server laptop-qlc4gki0:14328:551bbaaf is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-16 00:49:23.829 +07:00 [INF] 1 servers were removed due to timeout
-2025-07-16 00:49:24.067 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 03:51:06.350 +07:00 [INF] Server laptop-qlc4gki0:14752:1899abcd successfully announced in 420.1164 ms
+2025-07-16 03:51:06.366 +07:00 [INF] Server laptop-qlc4gki0:14752:1899abcd is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-16 03:51:06.425 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-16 03:51:06.579 +07:00 [INF] Server laptop-qlc4gki0:14752:1899abcd all the dispatchers started
+2025-07-16 03:51:06.644 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -37,10 +33,9 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:c072173e-960c-4edd-899b-779256dbf87c
+ClientConnectionId:9b44cbfa-a41f-4c49-b86e-2b7d57b37f6e
 Error Number:8622,State:1,Class:16
-2025-07-16 00:49:24.160 +07:00 [INF] Server laptop-qlc4gki0:14328:551bbaaf all the dispatchers started
-2025-07-16 00:49:24.376 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 03:51:06.704 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -60,9 +55,9 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:7c07744b-a1f5-4b29-9502-38209842d190
+ClientConnectionId:eff5a588-104c-499d-8de1-d630ed0410f6
 Error Number:8622,State:1,Class:16
-2025-07-16 00:49:24.445 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 03:51:06.765 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -82,9 +77,9 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:7c07744b-a1f5-4b29-9502-38209842d190
+ClientConnectionId:eff5a588-104c-499d-8de1-d630ed0410f6
 Error Number:8622,State:1,Class:16
-2025-07-16 00:49:24.498 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 03:51:06.835 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -104,10 +99,58 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:7c07744b-a1f5-4b29-9502-38209842d190
+ClientConnectionId:eff5a588-104c-499d-8de1-d630ed0410f6
 Error Number:8622,State:1,Class:16
-2025-07-16 00:52:43.615 +07:00 [WRN] Failed to determine the https port for redirect.
-2025-07-16 00:55:22.596 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 5, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1752601967, exp: 1752688367, iat: 1752601967, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-16 00:55:23.298 +07:00 [INF] Retrieving member profile for user ID 5
-2025-07-16 00:55:23.913 +07:00 [INF] Retrieved member profile for user Tan
-2025-07-16 00:56:38.651 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 5, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1752601967, exp: 1752688367, iat: 1752601967, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:51:47.618 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-16 03:52:55.777 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:53:12.951 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:53:13.041 +07:00 [INF] Updating consultant profile for UserID=19 by Consultant
+2025-07-16 03:53:13.162 +07:00 [WRN] Email user@example.com already exists
+2025-07-16 03:53:13.886 +07:00 [WRN] Update profile failed for UserID=19: User with Email 'user@example.com' already exists.
+DrugUsePreventionAPI.Exceptions.DuplicateEntityException: User with Email 'user@example.com' already exists.
+   at DrugUsePreventionAPI.Services.Implementations.ConsultantService.UpdateConsultantProfileAsync(Int32 userId, UpdateConsultantDto updateConsultantDto, Boolean isAdmin) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\ConsultantService .cs:line 309
+   at DrugUsePreventionAPI.Controllers.ConsultantController.UpdateMyProfile(UpdateConsultantDto updateConsultantDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\ConsultantController.cs:line 144
+2025-07-16 03:53:20.903 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:53:20.973 +07:00 [INF] Updating consultant profile for UserID=19 by Consultant
+2025-07-16 03:53:21.242 +07:00 [WRN] New password does not meet requirements for UserID=19
+2025-07-16 03:53:21.342 +07:00 [ERR] Error updating consultant profile for UserID=19
+System.InvalidOperationException: New password must have at least 8 characters, including uppercase and numbers.
+   at DrugUsePreventionAPI.Services.Implementations.ConsultantService.UpdateConsultantProfileAsync(Int32 userId, UpdateConsultantDto updateConsultantDto, Boolean isAdmin) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\ConsultantService .cs:line 359
+   at DrugUsePreventionAPI.Controllers.ConsultantController.UpdateMyProfile(UpdateConsultantDto updateConsultantDto) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\ConsultantController.cs:line 144
+2025-07-16 03:53:49.752 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:53:49.784 +07:00 [INF] Updating consultant profile for UserID=19 by Consultant
+2025-07-16 03:53:49.829 +07:00 [INF] Consultant updated Password for UserID=19
+2025-07-16 03:54:16.728 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:54:16.760 +07:00 [INF] Updating consultant profile for UserID=19 by Consultant
+2025-07-16 03:54:16.784 +07:00 [INF] Consultant updated Password for UserID=19
+2025-07-16 03:55:26.447 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:55:26.482 +07:00 [INF] Updating consultant profile for UserID=19 by Consultant
+2025-07-16 03:55:26.516 +07:00 [INF] Consultant updated Password for UserID=19
+2025-07-16 03:56:24.626 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612709, exp: 1752699109, iat: 1752612709, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:57:00.158 +07:00 [INF] JWT Token validated successfully for user: ConsultantQ2, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 9, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: ConsultantQ2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: ConsutantQ2@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752612984, exp: 1752699384, iat: 1752612984, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 03:57:00.184 +07:00 [INF] Updating consultant profile for UserID=9 by Consultant
+2025-07-16 03:57:00.231 +07:00 [INF] Consultant updated Password for UserID=9
+2025-07-16 04:17:32.632 +07:00 [ERR] Failed to get ngrok URL
+System.AggregateException: One or more errors occurred. (No connection could be made because the target machine actively refused it. (localhost:4040))
+ ---> System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it. (localhost:4040)
+ ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.GetStringAsyncCore(HttpRequestMessage request, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Program.<<Main>$>g__GetNgrokUrl|0_11() in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Program.cs:line 375
+2025-07-16 04:17:33.004 +07:00 [WRN] Failed to get ngrok URL. Using default ReturnUrl: https://0cd1-14-161-45-48.ngrok-free.app/api/vnpay/return
+2025-07-16 04:17:34.979 +07:00 [INF] Start installing Hangfire SQL objects...

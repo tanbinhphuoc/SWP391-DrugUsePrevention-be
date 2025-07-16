@@ -1,0 +1,460 @@
+2025-07-16 01:35:51.366 +07:00 [INF] Updated ReturnUrl to: https://33da38b8b9ee.ngrok-free.app/api/vnpay/return
+2025-07-16 01:35:52.076 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-16 01:35:54.107 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-16 01:35:55.976 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-16 01:35:58.125 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-16 01:35:58.130 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-16 01:35:58.132 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-16 01:35:58.357 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 successfully announced in 148.777 ms
+2025-07-16 01:35:58.379 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-16 01:35:58.470 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-16 01:35:58.893 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 all the dispatchers started
+2025-07-16 01:35:59.093 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:ee0bdd94-5325-463a-bc67-c4dc1c274695
+Error Number:8622,State:1,Class:16
+2025-07-16 01:35:59.224 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:ee0bdd94-5325-463a-bc67-c4dc1c274695
+Error Number:8622,State:1,Class:16
+2025-07-16 01:35:59.264 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:ee0bdd94-5325-463a-bc67-c4dc1c274695
+Error Number:8622,State:1,Class:16
+2025-07-16 01:35:59.351 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:661c4449-9fc5-4d03-8009-2ac183768df8
+Error Number:8622,State:1,Class:16
+2025-07-16 01:38:30.394 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-16 01:38:30.450 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 caught stopping signal...
+2025-07-16 01:38:30.505 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 caught stopped signal...
+2025-07-16 01:38:30.551 +07:00 [WRN] Server laptop-qlc4gki0:22920:5ee88553 caught shutdown signal...
+2025-07-16 01:38:30.565 +07:00 [WRN] Server laptop-qlc4gki0:22920:5ee88553 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-16 01:38:30.615 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 successfully reported itself as stopped in 14.1324 ms
+2025-07-16 01:38:30.617 +07:00 [INF] Server laptop-qlc4gki0:22920:5ee88553 has been stopped in total 113.4203 ms
+2025-07-16 01:58:03.087 +07:00 [INF] Updated ReturnUrl to: https://33da38b8b9ee.ngrok-free.app/api/vnpay/return
+2025-07-16 01:58:03.948 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-16 01:58:05.628 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-16 01:58:06.762 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-16 01:58:08.307 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-16 01:58:08.316 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-16 01:58:08.318 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-16 01:58:08.623 +07:00 [INF] Server laptop-qlc4gki0:28408:12c21440 successfully announced in 262.4563 ms
+2025-07-16 01:58:08.638 +07:00 [INF] Server laptop-qlc4gki0:28408:12c21440 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-16 01:58:09.610 +07:00 [INF] Server laptop-qlc4gki0:28408:12c21440 all the dispatchers started
+2025-07-16 01:58:10.634 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:e5c9d7e4-e524-4063-a36c-ba5a48cb6c21
+Error Number:8622,State:1,Class:16
+2025-07-16 01:58:10.834 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:619546b6-f50b-46a7-a781-012c800912e4
+Error Number:8622,State:1,Class:16
+2025-07-16 01:58:10.870 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:619546b6-f50b-46a7-a781-012c800912e4
+Error Number:8622,State:1,Class:16
+2025-07-16 01:58:10.899 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:619546b6-f50b-46a7-a781-012c800912e4
+Error Number:8622,State:1,Class:16
+2025-07-16 01:58:53.361 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-16 01:58:53.710 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-16 01:58:55.148 +07:00 [WRN] JWT Challenge: null, null, User Authenticated: false, Roles: None, Claims: None
+2025-07-16 02:00:15.966 +07:00 [INF] JWT Token validated successfully for user: KKK, Roles: Consultant, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 19, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: KKK, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: userllll@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Consultant, nbf: 1752605994, exp: 1752692394, iat: 1752605994, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 02:00:16.517 +07:00 [INF] Retrieving appointments for consultant 6
+2025-07-16 02:00:16.622 +07:00 [INF] Retrieved 0 appointments for consultant 6
+2025-07-16 02:28:11.170 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 02:28:11.400 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 02:28:11.425 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 02:28:11.449 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 02:41:23.503 +07:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:21.6883315 and is in the Running state now
+2025-07-16 02:41:23.503 +07:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:21.2947433 and is in the Running state now
+2025-07-16 02:58:11.633 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:bd96e0fe-4301-419e-a353-db032874b572
+Error Number:8622,State:1,Class:16
+2025-07-16 02:58:11.789 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:bd96e0fe-4301-419e-a353-db032874b572
+Error Number:8622,State:1,Class:16
+2025-07-16 02:58:11.809 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:bd96e0fe-4301-419e-a353-db032874b572
+Error Number:8622,State:1,Class:16
+2025-07-16 02:58:11.830 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:bd96e0fe-4301-419e-a353-db032874b572
+Error Number:8622,State:1,Class:16
+2025-07-16 03:28:11.993 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 03:28:12.128 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 03:28:12.299 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16
+2025-07-16 03:28:12.312 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:a0396a19-f96e-48f6-83cf-79627ad458ab
+Error Number:8622,State:1,Class:16

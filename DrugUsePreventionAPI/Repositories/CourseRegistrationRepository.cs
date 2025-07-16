@@ -47,6 +47,20 @@ namespace DrugUsePreventionAPI.Repositories
         }
 
 
+        public async Task<IEnumerable<CourseRegistration>> GetConfirmedAndPaidByUserIdAsync(int userId)
+        {
+            return await _context.CourseRegistrations
+             .Where(cr => cr.UserID == userId
+                          && cr.Status == "CONFIRMED"
+                          && cr.PaymentStatus == "SUCCESS"
+                          && cr.Course.IsDeleted == false) 
+             .Include(cr => cr.Course)
+             .Include(cr => cr.User)
+             .ToListAsync();
+        }
+
+
+
     }
 
 }

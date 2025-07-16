@@ -1,23 +1,19 @@
-2025-07-16 00:35:19.849 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
-2025-07-16 00:35:20.313 +07:00 [INF] Server laptop-qlc4gki0:18572:6d143661 caught stopping signal...
-2025-07-16 00:35:20.396 +07:00 [INF] Server laptop-qlc4gki0:18572:6d143661 caught stopped signal...
-2025-07-16 00:35:20.403 +07:00 [WRN] Server laptop-qlc4gki0:18572:6d143661 caught shutdown signal...
-2025-07-16 00:35:20.450 +07:00 [WRN] Server laptop-qlc4gki0:18572:6d143661 stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
-2025-07-16 00:48:35.758 +07:00 [INF] Updated ReturnUrl to: https://33da38b8b9ee.ngrok-free.app/api/vnpay/return
-2025-07-16 00:48:37.356 +07:00 [INF] Start installing Hangfire SQL objects...
-2025-07-16 00:49:16.066 +07:00 [INF] Hangfire SQL objects installed.
-2025-07-16 00:49:19.382 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
-2025-07-16 00:49:23.517 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
-2025-07-16 00:49:23.525 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
-2025-07-16 00:49:23.531 +07:00 [INF] Using the following options for Hangfire Server:
+2025-07-16 04:20:05.284 +07:00 [INF] Updated ReturnUrl to: https://9d4eba7259af.ngrok-free.app/api/vnpay/return
+2025-07-16 04:20:05.767 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-16 04:20:30.510 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-16 04:20:31.292 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-16 04:20:36.390 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-16 04:20:36.391 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-16 04:20:36.393 +07:00 [INF] Using the following options for Hangfire Server:
     Worker count: 20
     Listening queues: 'default'
     Shutdown timeout: 00:00:15
     Schedule polling interval: 00:00:15
-2025-07-16 00:49:23.699 +07:00 [INF] Server laptop-qlc4gki0:14328:551bbaaf successfully announced in 81.7143 ms
-2025-07-16 00:49:23.727 +07:00 [INF] Server laptop-qlc4gki0:14328:551bbaaf is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
-2025-07-16 00:49:23.829 +07:00 [INF] 1 servers were removed due to timeout
-2025-07-16 00:49:24.067 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 04:20:36.462 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c successfully announced in 51.7714 ms
+2025-07-16 04:20:36.466 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-16 04:20:36.472 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c all the dispatchers started
+2025-07-16 04:20:36.479 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-16 04:20:36.874 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -37,10 +33,9 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:c072173e-960c-4edd-899b-779256dbf87c
+ClientConnectionId:3c9de11c-9e6b-44d9-8f8d-86a300aa277e
 Error Number:8622,State:1,Class:16
-2025-07-16 00:49:24.160 +07:00 [INF] Server laptop-qlc4gki0:14328:551bbaaf all the dispatchers started
-2025-07-16 00:49:24.376 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 04:20:36.972 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -60,9 +55,9 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:7c07744b-a1f5-4b29-9502-38209842d190
+ClientConnectionId:a194d520-b45b-411d-adcc-e5127850eebe
 Error Number:8622,State:1,Class:16
-2025-07-16 00:49:24.445 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 04:20:37.062 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -82,9 +77,9 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:7c07744b-a1f5-4b29-9502-38209842d190
+ClientConnectionId:a194d520-b45b-411d-adcc-e5127850eebe
 Error Number:8622,State:1,Class:16
-2025-07-16 00:49:24.498 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+2025-07-16 04:20:37.129 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
 Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -104,10 +99,15 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not pr
    at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
    at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
    at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
-ClientConnectionId:7c07744b-a1f5-4b29-9502-38209842d190
+ClientConnectionId:3c9de11c-9e6b-44d9-8f8d-86a300aa277e
 Error Number:8622,State:1,Class:16
-2025-07-16 00:52:43.615 +07:00 [WRN] Failed to determine the https port for redirect.
-2025-07-16 00:55:22.596 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 5, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1752601967, exp: 1752688367, iat: 1752601967, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
-2025-07-16 00:55:23.298 +07:00 [INF] Retrieving member profile for user ID 5
-2025-07-16 00:55:23.913 +07:00 [INF] Retrieved member profile for user Tan
-2025-07-16 00:56:38.651 +07:00 [INF] JWT Token validated successfully for user: Tan, Roles: Member, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 5, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Tan, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: tanphse180176@fpt.edu.vn, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Member, nbf: 1752601967, exp: 1752688367, iat: 1752601967, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-16 04:21:29.326 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-16 04:21:29.600 +07:00 [INF] Retrieving available consultants
+2025-07-16 04:21:29.797 +07:00 [INF] Retrieved 4 available consultants
+2025-07-16 04:36:13.701 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-16 04:36:13.756 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c caught stopping signal...
+2025-07-16 04:36:13.799 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c caught stopped signal...
+2025-07-16 04:36:13.801 +07:00 [WRN] Server laptop-qlc4gki0:28012:36865a7c caught shutdown signal...
+2025-07-16 04:36:13.834 +07:00 [WRN] Server laptop-qlc4gki0:28012:36865a7c stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-07-16 04:36:13.966 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c successfully reported itself as stopped in 100.4032 ms
+2025-07-16 04:36:13.969 +07:00 [INF] Server laptop-qlc4gki0:28012:36865a7c has been stopped in total 168.5569 ms
