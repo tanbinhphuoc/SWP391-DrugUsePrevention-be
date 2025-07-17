@@ -168,6 +168,36 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
+        [HttpGet("ConsultantGetProfile")]
+        [Authorize(Roles = "Consultant")]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    Log.Warning("No user ID claim found in token");
+                    return Unauthorized(new { success = false, message = "Unauthorized access. No user ID claim found." });
+                }
+
+                if (!int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
+                    return BadRequest(new { success = false, message = "Invalid user ID format." });
+                }
+
+                var consultantDto = await _consultantService.GetConsultantProfileAsync(userId);
+
+                return Ok(new { success = true, data = consultantDto });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error fetching consultant profile");
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred while retrieving the consultant profile." });
+            }
+        }
+
 
     }
 }

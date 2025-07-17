@@ -10,5 +10,4 @@
         public decimal? Amount { get; set; }
         public string PaymentStatus { get; set; }
     }
-
 }

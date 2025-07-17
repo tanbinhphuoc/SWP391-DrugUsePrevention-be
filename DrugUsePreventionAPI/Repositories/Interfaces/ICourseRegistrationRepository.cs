@@ -7,6 +7,8 @@
         Task<IEnumerable<CourseRegistration>> GetByUserIdAsync(int userId);
         Task<CourseRegistration?> GetLatestByUserAndCourseAsync(int userId, int courseId);
         Task<CourseRegistration?> GetByIdAsync(int courseRegistrationId);
+
+        Task<IEnumerable<CourseRegistration>> GetConfirmedAndPaidByUserIdAsync(int userId);
     }
 
 }

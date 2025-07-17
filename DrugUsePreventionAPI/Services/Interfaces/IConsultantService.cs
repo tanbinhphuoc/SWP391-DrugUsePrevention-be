@@ -14,5 +14,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<IEnumerable<ConsultantDto>> GetConsultantsBySpecialtyAsync(string specialty);
         Task<IEnumerable<ConsultantDto>> GetConsultantsByStatusAsync(string status);
         Task<Dictionary<string, object>> GetConsultantPerformanceStatsAsync(int consultantId);
+        Task<ConsultantDto> GetConsultantProfileAsync(int userId);
+
     }
 }
