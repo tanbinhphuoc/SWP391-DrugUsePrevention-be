@@ -144,6 +144,8 @@ builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
 builder.Services.AddScoped<IUserCourseProgressRepository, UserCourseProgressRepository>();
 builder.Services.AddScoped<ICourseVideoRepository, CourseVideoRepository>();
+builder.Services.AddScoped<IAssessmentStatisticsRepository, AssessmentStatisticsRepository>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register services
@@ -162,14 +164,16 @@ builder.Services.AddScoped<ScheduleGenerator>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserCourseProgressService, UserCourseProgressService>();
 builder.Services.AddScoped<ICourseVideoService, CourseVideoService>();
+builder.Services.AddScoped<IAssessmentStatisticsService, AssessmentStatisticsService>();
 
 
 
 
 
 
-    // Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)
-    builder.Services.AddScoped<VNPayHelper>();
+
+// Đăng ký VNPayHelper chuẩn DI (constructor sẽ nhận IOptions<VNPaySettings> và IHttpContextAccessor)
+builder.Services.AddScoped<VNPayHelper>();
 
     // Đăng ký Blog chuẩn DI
     builder.Services.AddScoped<IBlogRepository, BlogRepository>();
