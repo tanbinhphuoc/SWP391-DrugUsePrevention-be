@@ -1,4 +1,4 @@
-﻿using DrugUsePreventionAPI.Models.DTO.UserCourseProgress;
+﻿using DrugUsePreventionAPI.Models.DTO.UserCourseProgresses;
 using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using DrugUsePreventionAPI.Services.Interfaces;
@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
-    public class UserCourseProgressService : IUserCourseProgressService
+    public class UserCourseProgressesService : IUserCourseProgressesService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserCourseProgressService(IUnitOfWork unitOfWork)
+        public UserCourseProgressesService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> MarkCourseAsCompletedAsync(UpdateUserCourseProgressDto dto)
+        public async Task<bool> MarkCourseAsCompletedAsync(UpdateUserCourseProgressesDto dto)
         {
-            var progress = await _unitOfWork.UserCourseProgress.GetByUserAndCourseAsync(dto.UserID, dto.CourseID);
+            var progress = await _unitOfWork.UserCourseProgresses.GetByUserAndCourseAsync(dto.UserID, dto.CourseID);
             if (progress == null)
                 return false;
 

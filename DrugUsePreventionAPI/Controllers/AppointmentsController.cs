@@ -183,7 +183,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAppointmentAboutMember")]
-        [Authorize(Roles = "Member,Guest")]
+        [Authorize(Roles = "Member,Staff")]
         public async Task<IActionResult> GetMyAppointments()
         {
             try
@@ -253,7 +253,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAppointmentConsultant(ID)")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Staff,Manager")]
         public async Task<IActionResult> GetConsultantAppointmentsById(int consultantId)
         {
             try

@@ -64,7 +64,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpGet("user")]
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member,Staff")]
         public async Task<IActionResult> GetMyRegistrations()
         {
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);

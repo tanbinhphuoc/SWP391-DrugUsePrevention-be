@@ -12,8 +12,8 @@ namespace DrugUsePreventionAPI.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "ID",
-                table: "UserCourseProgresses",
-                newName: "UserCourseProgressID");
+                table: "UserCourseProgresseses",
+                newName: "UserCourseProgressesID");
 
             migrationBuilder.AddColumn<int>(
                 name: "CourseRegistrationID",
@@ -23,13 +23,13 @@ namespace DrugUsePreventionAPI.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserCourseProgresses_UserID",
-                table: "UserCourseProgresses",
+                name: "IX_UserCourseProgresseses_UserID",
+                table: "UserCourseProgresseses",
                 column: "UserID");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_UserCourseProgresses_Users_UserID",
-                table: "UserCourseProgresses",
+                name: "FK_UserCourseProgresseses_Users_UserID",
+                table: "UserCourseProgresseses",
                 column: "UserID",
                 principalTable: "Users",
                 principalColumn: "UserID",
@@ -40,20 +40,20 @@ namespace DrugUsePreventionAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_UserCourseProgresses_Users_UserID",
-                table: "UserCourseProgresses");
+                name: "FK_UserCourseProgresseses_Users_UserID",
+                table: "UserCourseProgresseses");
 
             migrationBuilder.DropIndex(
-                name: "IX_UserCourseProgresses_UserID",
-                table: "UserCourseProgresses");
+                name: "IX_UserCourseProgresseses_UserID",
+                table: "UserCourseProgresseses");
 
             migrationBuilder.DropColumn(
                 name: "CourseRegistrationID",
                 table: "CourseRegistrations");
 
             migrationBuilder.RenameColumn(
-                name: "UserCourseProgressID",
-                table: "UserCourseProgresses",
+                name: "UserCourseProgressesID",
+                table: "UserCourseProgresseses",
                 newName: "ID");
         }
     }

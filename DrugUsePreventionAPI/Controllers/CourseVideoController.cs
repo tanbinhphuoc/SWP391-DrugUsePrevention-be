@@ -1,6 +1,7 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> CreateCourseVideo([FromBody] CreateCourseVideoDto dto)
         {
             var createdVideo = await _service.CreateCourseVideoAsync(dto);
@@ -43,6 +45,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> UpdateVideo([FromBody] UpdateCourseVideoDto dto)
         {
             await _service.UpdateCourseVideoAsync(dto);
@@ -79,6 +82,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpDelete("Delete/{id}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> DeleteVideo(int id)
         {
             var success = await _service.DeleteCourseVideoAsync(id);

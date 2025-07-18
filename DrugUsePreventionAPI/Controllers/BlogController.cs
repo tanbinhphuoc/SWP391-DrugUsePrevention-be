@@ -1,12 +1,14 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.Blog;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class BlogController : ControllerBase
     {
         private readonly IBlogService _service;
@@ -16,16 +18,17 @@ namespace DrugUsePreventionAPI.Controllers
             _service = service;
         }
 
-        // GET: api/blog
-        [HttpGet("list")]
+
+        [HttpGet("ListOfBlog")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> GetBlogs()
         {
             var blogs = await _service.GetBlogsAsync();
             return Ok(blogs);
         }
 
-        // GET: api/blog/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id}GetBlogById")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> GetBlogById(int id)
         {
             var blog = await _service.GetBlogByIdAsync(id);
@@ -35,8 +38,8 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(blog);
         }
 
-        // POST: api/blog
-        [HttpPost]
+        [HttpPost("CreateBlog")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> CreateBlog([FromBody] BlogCreateDTO dto)
         {
             if (dto == null || string.IsNullOrWhiteSpace(dto.Title) || string.IsNullOrWhiteSpace(dto.Content))
@@ -60,7 +63,6 @@ namespace DrugUsePreventionAPI.Controllers
             }
             catch (Exception ex)
             {
-                // Ghi log exception chi tiết
                 return StatusCode(500, new
                 {
                     message = "Failed to save blog",
@@ -70,8 +72,8 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        // ✅ PUT: api/blog/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}UpdateBlog")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> UpdateBlog(int id, [FromBody] BlogUpdateDTO dto)
         {
             if (dto == null || id != dto.BlogID)
@@ -94,8 +96,9 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { message = "Blog updated successfully" });
         }
 
-        // ✅ DELETE: api/blog/5
-        [HttpDelete("{id}")]
+
+        [HttpDelete("{id}DeleteBlog")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteBlog(int id)
         {
             var deleted = await _service.DeleteBlogAsync(id);

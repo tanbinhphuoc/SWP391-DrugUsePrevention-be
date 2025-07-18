@@ -1,6 +1,7 @@
 ﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Models.DTOs.Admin;
+using DrugUsePreventionAPI.Models.DTOs.Consultant;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -153,5 +154,20 @@ namespace DrugUsePreventionAPI.Repositories
             Log.Information("Retrieved {Count} appointments", items.Count);
             return items;
         }
+
+        public async Task<IEnumerable<ConsultantInfo>> GetConsultantsForUserAppointmentsAsync(int userId)
+        {
+            return await _context.Appointments
+                .Where(a => a.UserID == userId && a.Consultant != null)
+                .GroupBy(a => a.ConsultantID)
+                .Select(g => new ConsultantInfo
+                {
+                    ConsultantId = g.Key,
+                    ConsultantName = g.First().Consultant.User.FullName,
+                    ConsultantEmail = g.First().Consultant.User.Email
+                })
+                .ToListAsync();
+        }
+
     }
 }

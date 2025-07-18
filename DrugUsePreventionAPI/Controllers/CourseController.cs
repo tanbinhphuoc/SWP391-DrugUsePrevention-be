@@ -19,7 +19,7 @@ public class CourseController : ControllerBase
         _courseService = courseService;
     }
 
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin,Manager,Staff")]
     [HttpPost("CreateCourse")]
     public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto createCourseDto)
     {
@@ -78,7 +78,7 @@ public class CourseController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin,Manager,Staff")]
     [HttpPut("UpdateCourse")]
     public async Task<IActionResult> UpdateCourse([FromQuery] int id, [FromBody] CreateCourseDto courseDto)
     {
@@ -120,7 +120,7 @@ public class CourseController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin,Manager,Staff")]
     [HttpDelete("DeleteCourse")]
     public async Task<IActionResult> DeleteCourse([FromQuery] int id)
     {

@@ -30,6 +30,18 @@ namespace DrugUsePreventionAPI.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Course>> GetCompletedCoursesByUser(int userId)
+        {
+            var completedCourseIds = await _context.UserCourseProgresses
+                .Where(p => p.UserID == userId && p.IsCompleted) 
+                .Select(p => p.CourseID)
+                .ToListAsync();
+
+            return await _context.Courses
+                .Where(c => completedCourseIds.Contains(c.CourseID) && !c.IsDeleted) 
+                .ToListAsync();
+        }
+
     }
 
 }
