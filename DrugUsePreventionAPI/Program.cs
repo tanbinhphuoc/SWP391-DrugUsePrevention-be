@@ -239,7 +239,8 @@ builder.Services.AddScoped<VNPayHelper>();
         options.AddPolicy("Member", policy => policy.RequireRole("Member"));
         options.AddPolicy("MemberOrGuest", policy => policy.RequireRole("Member", "Guest"));
         options.AddPolicy("Staff", policy => policy.RequireRole("Staff"));
-        options.AddPolicy("AdminOrManagerOrStaff", policy => policy.RequireRole("Admin", "Manager", "Staff"));
+        options.AddPolicy("Manager", policy => policy.RequireRole("Manager"));
+        options.AddPolicy("Admin,Manager,Staff", policy => policy.RequireRole("Admin", "Manager", "Staff"));
         options.AddPolicy("Consultant", policy => policy.RequireRole("Consultant"));
         options.AddPolicy("Admin", policy =>
         {
@@ -251,7 +252,6 @@ builder.Services.AddScoped<VNPayHelper>();
                 return roles.Contains("Admin", StringComparer.OrdinalIgnoreCase);
             });
         });
-        options.AddPolicy("AdminOrManager", policy => policy.RequireRole("Admin", "Manager"));
         options.AddPolicy("DefaultPolicy", policy => policy.RequireAuthenticatedUser());
         options.DefaultPolicy = options.GetPolicy("DefaultPolicy");
         options.InvokeHandlersAfterFailure = false;

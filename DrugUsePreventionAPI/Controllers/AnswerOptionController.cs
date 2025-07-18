@@ -18,7 +18,7 @@ namespace DrugUsePreventionAPI.Controllers
             _answerOptionService = answerOptionService;
         }
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpPost("CreateAnswerOption")]
         public async Task<IActionResult> CreateAnswerOption([FromBody] CreateAnswerOptionDto createAnswerOptionDto)
         {
@@ -28,7 +28,7 @@ namespace DrugUsePreventionAPI.Controllers
             return BadRequest(new { message = "Tạo AnswerOption Thất Bại." });
         }
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpGet("GetAllAnswerOption")]
         public async Task<ActionResult<List<AnswerOption>>> GetAllAnswerOption()
         {
@@ -36,7 +36,7 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { message = answerOption });
         }
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpGet("GetAnswerOptionByID")]
         public async Task<ActionResult<AnswerOption>> GetAnswerOptionById([FromQuery] int id)
         {
@@ -46,7 +46,7 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(answerOption);
         }
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpPut("UpdateAnswerOption")]
         public async Task<IActionResult> UpdateAnswerOption([FromQuery] int id, [FromBody] CreateAnswerOptionDto createAnswerOptionDto)
         {
@@ -56,7 +56,7 @@ namespace DrugUsePreventionAPI.Controllers
             return NotFound(new { message = "Cập Nhật AnswerOption Thất Bại" });
         }
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpDelete("DeleteAnswerOption")]
         public async Task<IActionResult> DeleteAnswerOption([FromQuery] int id)
         {
