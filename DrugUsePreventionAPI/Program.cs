@@ -241,7 +241,6 @@ builder.Services.AddScoped<VNPayHelper>();
         options.AddPolicy("Staff", policy => policy.RequireRole("Staff"));
         options.AddPolicy("Manager", policy => policy.RequireRole("Manager"));
         options.AddPolicy("Admin,Manager,Staff", policy => policy.RequireRole("Admin", "Manager", "Staff"));
-        options.AddPolicy("Admin,Manager,Staff", policy => policy.RequireRole("Admin", "Manager", "Staff"));
         options.AddPolicy("Consultant", policy => policy.RequireRole("Consultant"));
         options.AddPolicy("Admin", policy =>
         {
