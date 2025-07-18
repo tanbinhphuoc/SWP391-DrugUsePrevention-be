@@ -19,7 +19,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpPost("CreateQuestionForAssessment")]
         public async Task<IActionResult> CreateQuestionForAssessment([FromBody] CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
         {
@@ -47,7 +47,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPut("UpdateMultipleQuestions")]
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> UpdateMultipleQuestions([FromBody] List<CreateQuestionWithAnswersDto> questions)
         {
             try
@@ -61,7 +61,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpDelete("DeleteQuestionForAssessment")]
         public async Task<IActionResult> DeleteQuestionForAssessment([FromQuery] int id)
         {

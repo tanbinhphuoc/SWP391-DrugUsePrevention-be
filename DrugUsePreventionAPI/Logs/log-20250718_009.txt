@@ -1,0 +1,183 @@
+2025-07-18 16:25:32.630 +07:00 [INF] Updated ReturnUrl to: https://513adc658cc4.ngrok-free.app/api/vnpay/return
+2025-07-18 16:25:33.628 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-18 16:26:12.533 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-18 16:26:13.586 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-18 16:26:15.150 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-18 16:26:15.152 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-18 16:26:15.153 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-18 16:26:15.243 +07:00 [INF] Server laptop-qlc4gki0:32072:42fce9dd successfully announced in 63.3452 ms
+2025-07-18 16:26:15.250 +07:00 [INF] Server laptop-qlc4gki0:32072:42fce9dd is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-18 16:26:15.353 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-18 16:26:15.494 +07:00 [INF] Server laptop-qlc4gki0:32072:42fce9dd all the dispatchers started
+2025-07-18 16:26:15.575 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:d4430746-f316-4dbd-b577-0d9129ca50bf
+Error Number:8622,State:1,Class:16
+2025-07-18 16:26:15.674 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:ec8b125a-6091-4749-a026-bee380257688
+Error Number:8622,State:1,Class:16
+2025-07-18 16:26:15.690 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:ec8b125a-6091-4749-a026-bee380257688
+Error Number:8622,State:1,Class:16
+2025-07-18 16:26:15.702 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:ec8b125a-6091-4749-a026-bee380257688
+Error Number:8622,State:1,Class:16
+2025-07-18 16:26:38.731 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-18 16:27:03.398 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752830800, exp: 1752917200, iat: 1752830800, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:27:34.275 +07:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:29.4152108 and is in the Running state now
+2025-07-18 16:27:34.287 +07:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:30.5849126 and is in the Running state now
+2025-07-18 16:28:05.351 +07:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:21.0242328 and is in the Running state now
+2025-07-18 16:28:14.718 +07:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:25.4009427 and is in the Running state now
+2025-07-18 16:29:12.305 +07:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:20.6030052 and is in the Running state now
+2025-07-18 16:29:12.305 +07:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:17.1257812 and is in the Running state now
+2025-07-18 16:30:32.932 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752830800, exp: 1752917200, iat: 1752830800, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:31:03.761 +07:00 [ERR] Execution DelayedJobScheduler is in the Failed state now due to an exception, execution will be retried no more than in 00:00:04
+Microsoft.Data.SqlClient.SqlException (0x80131904): Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+ ---> System.ComponentModel.Win32Exception (258): The wait operation timed out.
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParserStateObject.ThrowExceptionAndWarning(Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at Microsoft.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at Microsoft.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Dapper.SqlMapper.ExecuteCommand(IDbConnection cnn, CommandDefinition& command, Action`2 paramReader) in /_/Dapper/SqlMapper.cs:line 2965
+   at Dapper.SqlMapper.ExecuteImpl(IDbConnection cnn, CommandDefinition& command) in /_/Dapper/SqlMapper.cs:line 656
+   at Dapper.SqlMapper.Execute(IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Nullable`1 commandTimeout, Nullable`1 commandType) in /_/Dapper/SqlMapper.cs:line 527
+   at Hangfire.SqlServer.SqlServerDistributedLock.Acquire(DbConnection connection, String resource, TimeSpan timeout) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerDistributedLock.cs:line 202
+   at Hangfire.SqlServer.SqlServerConnection.AcquireLock(String resource, TimeSpan timeout) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerConnection.cs:line 731
+   at Hangfire.SqlServer.SqlServerConnection.AcquireDistributedLock(String resource, TimeSpan timeout) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerConnection.cs:line 67
+   at Hangfire.Server.DelayedJobScheduler.UseConnectionDistributedLock[T](JobStorage storage, Func`2 action) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 409
+   at Hangfire.Server.DelayedJobScheduler.EnqueueNextScheduledJobs(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 165
+   at Hangfire.Server.DelayedJobScheduler.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 146
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+ClientConnectionId:d4430746-f316-4dbd-b577-0d9129ca50bf
+Error Number:-2,State:0,Class:11
+2025-07-18 16:31:23.304 +07:00 [INF] Execution DelayedJobScheduler recovered from the Failed state after 00:00:19.4537287 and is in the Running state now
+2025-07-18 16:32:03.288 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752830800, exp: 1752917200, iat: 1752830800, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:32:23.215 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752830800, exp: 1752917200, iat: 1752830800, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:32:35.505 +07:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:23.0385672 and is in the Running state now
+2025-07-18 16:32:35.505 +07:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:22.8887485 and is in the Running state now
+2025-07-18 16:32:44.328 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752831144, exp: 1752917544, iat: 1752831144, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:32:47.542 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752831144, exp: 1752917544, iat: 1752831144, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:32:59.232 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752831144, exp: 1752917544, iat: 1752831144, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:34:04.699 +07:00 [ERR] Execution DelayedJobScheduler is in the Failed state now due to an exception, execution will be retried no more than in 00:00:04
+Microsoft.Data.SqlClient.SqlException (0x80131904): Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+ ---> System.ComponentModel.Win32Exception (258): The wait operation timed out.
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParserStateObject.ThrowExceptionAndWarning(Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at Microsoft.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at Microsoft.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Dapper.SqlMapper.ExecuteCommand(IDbConnection cnn, CommandDefinition& command, Action`2 paramReader) in /_/Dapper/SqlMapper.cs:line 2965
+   at Dapper.SqlMapper.ExecuteImpl(IDbConnection cnn, CommandDefinition& command) in /_/Dapper/SqlMapper.cs:line 656
+   at Dapper.SqlMapper.Execute(IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Nullable`1 commandTimeout, Nullable`1 commandType) in /_/Dapper/SqlMapper.cs:line 527
+   at Hangfire.SqlServer.SqlServerDistributedLock.Acquire(DbConnection connection, String resource, TimeSpan timeout) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerDistributedLock.cs:line 202
+   at Hangfire.SqlServer.SqlServerConnection.AcquireLock(String resource, TimeSpan timeout) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerConnection.cs:line 731
+   at Hangfire.SqlServer.SqlServerConnection.AcquireDistributedLock(String resource, TimeSpan timeout) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerConnection.cs:line 67
+   at Hangfire.Server.DelayedJobScheduler.UseConnectionDistributedLock[T](JobStorage storage, Func`2 action) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 409
+   at Hangfire.Server.DelayedJobScheduler.EnqueueNextScheduledJobs(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 165
+   at Hangfire.Server.DelayedJobScheduler.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 146
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+ClientConnectionId:ba4d66c1-ee32-46ae-8d8f-d5ae8dac8d91
+Error Number:-2,State:0,Class:11
+2025-07-18 16:34:11.005 +07:00 [INF] JWT Token validated successfully for user: admin, Roles: Admin, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 2, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: admin, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: admin@example.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin, nbf: 1752831144, exp: 1752917544, iat: 1752831144, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:34:11.897 +07:00 [INF] User: admin, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Admin"]
+2025-07-18 16:34:11.946 +07:00 [INF] Retrieving all users
+2025-07-18 16:34:12.992 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:34:31.147 +07:00 [INF] Execution DelayedJobScheduler recovered from the Failed state after 00:00:26.3521279 and is in the Running state now
+2025-07-18 16:34:31.485 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752830800, exp: 1752917200, iat: 1752830800, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:34:31.534 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:34:31.539 +07:00 [INF] Retrieving all users
+2025-07-18 16:34:43.418 +07:00 [INF] Retrieved 19 users

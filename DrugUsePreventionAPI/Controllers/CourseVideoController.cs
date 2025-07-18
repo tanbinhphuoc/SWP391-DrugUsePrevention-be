@@ -19,7 +19,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> CreateCourseVideo([FromBody] CreateCourseVideoDto dto)
         {
             var createdVideo = await _service.CreateCourseVideoAsync(dto);
@@ -45,7 +45,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("Update")]
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> UpdateVideo([FromBody] UpdateCourseVideoDto dto)
         {
             await _service.UpdateCourseVideoAsync(dto);
@@ -82,7 +82,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpDelete("Delete/{id}")]
-        [Authorize(Roles = "AdminOrManagerOrStaff")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> DeleteVideo(int id)
         {
             var success = await _service.DeleteCourseVideoAsync(id);
