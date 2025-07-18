@@ -31,7 +31,7 @@ namespace DrugUsePreventionAPI.Controllers.Data.Extensions
                     new QuestionRepository(context),
                     new AnswerOptionRepository(context),
                     new CourseVideoRepository(context),
-                    new UserCourseProgressRepository(context)
+                    new UserCourseProgressesRepository(context)
                 );
 
                 // Seed roles if they don't exist

@@ -1,0 +1,448 @@
+2025-07-18 16:47:06.258 +07:00 [INF] Updated ReturnUrl to: https://513adc658cc4.ngrok-free.app/api/vnpay/return
+2025-07-18 16:47:07.511 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-18 16:47:39.100 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-18 16:47:40.531 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-18 16:47:42.512 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-18 16:47:42.514 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-18 16:47:42.516 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-18 16:47:42.653 +07:00 [INF] Server laptop-qlc4gki0:5508:4809fa27 successfully announced in 82.9654 ms
+2025-07-18 16:47:42.661 +07:00 [INF] Server laptop-qlc4gki0:5508:4809fa27 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-18 16:47:42.707 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-18 16:47:42.881 +07:00 [INF] Server laptop-qlc4gki0:5508:4809fa27 all the dispatchers started
+2025-07-18 16:47:43.065 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:7100d080-839e-419b-ac2a-3d4d97d2f640
+Error Number:8622,State:1,Class:16
+2025-07-18 16:47:43.126 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:5c2d5c9e-d117-4c0a-a94a-2ced6964fc87
+Error Number:8622,State:1,Class:16
+2025-07-18 16:47:43.137 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:5c2d5c9e-d117-4c0a-a94a-2ced6964fc87
+Error Number:8622,State:1,Class:16
+2025-07-18 16:47:43.151 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:5c2d5c9e-d117-4c0a-a94a-2ced6964fc87
+Error Number:8622,State:1,Class:16
+2025-07-18 16:47:57.807 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-18 16:47:58.079 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:47:58.325 +07:00 [INF] Retrieving all courses
+2025-07-18 16:47:58.741 +07:00 [INF] Retrieved 10 courses
+2025-07-18 16:47:58.908 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:47:58.937 +07:00 [INF] Retrieving all courses
+2025-07-18 16:47:58.959 +07:00 [INF] Retrieved 10 courses
+2025-07-18 16:48:01.026 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:48:01.470 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:48:01.497 +07:00 [INF] Retrieving all users
+2025-07-18 16:48:01.826 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:48:01.847 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:48:01.859 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:48:01.866 +07:00 [INF] Retrieving all users
+2025-07-18 16:48:01.888 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:48:10.309 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:48:22.068 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Không có khóa học nào đã hoàn thành.
+   at CourseService.GetCompletedCoursesByUser(Int32 userId) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 185
+   at CourseController.GetCompletedCourses(Int32 userId) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\CourseController.cs:line 184
+   at lambda_method308(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-18 16:48:25.795 +07:00 [ERR] Error occurred: Không có khóa học nào đã hoàn thành., StackTrace:    at CourseService.GetCompletedCoursesByUser(Int32 userId) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 185
+   at CourseController.GetCompletedCourses(Int32 userId) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\CourseController.cs:line 184
+   at lambda_method308(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+DrugUsePreventionAPI.Exceptions.BusinessRuleViolationException: Không có khóa học nào đã hoàn thành.
+   at CourseService.GetCompletedCoursesByUser(Int32 userId) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Services\Implementations\CourseService.cs:line 185
+   at CourseController.GetCompletedCourses(Int32 userId) in C:\SWP391\DrugUsePreventionAPI\DrugUsePreventionAPI\Controllers\CourseController.cs:line 184
+   at lambda_method308(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-18 16:48:34.235 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:48:34.273 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:48:34.280 +07:00 [INF] Retrieving all users
+2025-07-18 16:48:34.510 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:48:34.536 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:48:34.577 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:48:34.584 +07:00 [INF] Retrieving all users
+2025-07-18 16:48:34.598 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:49:05.854 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:05.956 +07:00 [INF] Retrieving all courses
+2025-07-18 16:49:05.978 +07:00 [INF] Retrieved 10 courses
+2025-07-18 16:49:05.991 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:05.997 +07:00 [INF] Retrieving all courses
+2025-07-18 16:49:06.005 +07:00 [INF] Retrieved 10 courses
+2025-07-18 16:49:19.765 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:19.813 +07:00 [INF] Soft deleting course with ID 1031
+2025-07-18 16:49:20.303 +07:00 [INF] Soft deleted course ấccsa
+2025-07-18 16:49:23.357 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:23.382 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:23.389 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:23.669 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:23.698 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:23.713 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:23.718 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:23.720 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:23.741 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:23.744 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:31.740 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:31.744 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:31.746 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:31.910 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:31.915 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:31.927 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:31.933 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:31.935 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:31.993 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:31.997 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:34.895 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:34.903 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:34.906 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:35.093 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:35.097 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:35.104 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:35.111 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:35.113 +07:00 [INF] Retrieving all appointments
+2025-07-18 16:49:35.366 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:35.368 +07:00 [INF] Retrieved 96 appointments
+2025-07-18 16:49:37.546 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:37.551 +07:00 [INF] Retrieving all courses
+2025-07-18 16:49:37.561 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:49:37.570 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:37.575 +07:00 [INF] Retrieving all courses
+2025-07-18 16:49:37.581 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:49:38.854 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:38.871 +07:00 [INF] Retrieving all courses
+2025-07-18 16:49:38.872 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:38.917 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:49:38.924 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:38.930 +07:00 [INF] Retrieving all courses
+2025-07-18 16:49:38.943 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:49:39.055 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:39.060 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:39.192 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:42.034 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:42.038 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:49:42.041 +07:00 [INF] Retrieving all users
+2025-07-18 16:49:49.685 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:49:53.161 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:53.167 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:49:53.172 +07:00 [INF] Retrieving all users
+2025-07-18 16:49:53.180 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:49:53.184 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:49:53.188 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:49:53.192 +07:00 [INF] Retrieving all users
+2025-07-18 16:49:53.197 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:51:43.955 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:51:44.100 +07:00 [INF] Retrieving all courses
+2025-07-18 16:51:44.232 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:51:44.264 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:51:44.273 +07:00 [INF] Retrieving all courses
+2025-07-18 16:51:44.289 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:51:45.655 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:51:45.681 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:51:45.689 +07:00 [INF] Retrieving all users
+2025-07-18 16:51:45.744 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:51:45.753 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:51:45.760 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:51:45.764 +07:00 [INF] Retrieving all users
+2025-07-18 16:51:45.774 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:52:12.774 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:12.785 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:12.796 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:12.805 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:12.809 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:12.822 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:14.033 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:14.070 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:14.073 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:14.377 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:14.384 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:14.388 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:14.405 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:14.428 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:14.437 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:14.495 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:25.688 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:25.695 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:25.713 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:25.718 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:25.722 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:25.729 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:29.116 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:41.164 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:41.169 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:41.171 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:41.257 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:41.260 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:41.268 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:41.273 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:41.287 +07:00 [INF] Retrieving all courses
+2025-07-18 16:52:41.305 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:52:41.344 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:42.145 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:42.151 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:52:42.156 +07:00 [INF] Retrieving all users
+2025-07-18 16:52:43.040 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:52:43.045 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:52:43.052 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:52:43.056 +07:00 [INF] Retrieving all users
+2025-07-18 16:52:43.082 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:54:35.106 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:35.119 +07:00 [INF] Retrieving all courses
+2025-07-18 16:54:35.133 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:54:35.139 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:35.143 +07:00 [INF] Retrieving all courses
+2025-07-18 16:54:35.150 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:54:36.909 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:36.915 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:36.933 +07:00 [INF] Retrieving all courses
+2025-07-18 16:54:36.946 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:54:36.964 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:36.967 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:36.967 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:36.992 +07:00 [INF] Retrieving all courses
+2025-07-18 16:54:37.007 +07:00 [INF] Retrieved 9 courses
+2025-07-18 16:54:37.273 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:48.738 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:48.744 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:54:48.749 +07:00 [INF] Retrieving all users
+2025-07-18 16:54:48.761 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:54:48.766 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:54:48.770 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:54:48.774 +07:00 [INF] Retrieving all users
+2025-07-18 16:54:48.779 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:55:35.429 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:55:35.446 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:55:35.453 +07:00 [INF] Retrieving all users
+2025-07-18 16:55:35.472 +07:00 [INF] Retrieved 19 users
+2025-07-18 16:55:35.482 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752828693, exp: 1752915093, iat: 1752828693, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 16:55:35.487 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 16:55:35.492 +07:00 [INF] Retrieving all users
+2025-07-18 16:55:35.498 +07:00 [INF] Retrieved 19 users
+2025-07-18 17:13:25.032 +07:00 [INF] Updated ReturnUrl to: https://c6dd7dd0e174.ngrok-free.app/api/vnpay/return
+2025-07-18 17:13:25.795 +07:00 [INF] Start installing Hangfire SQL objects...
+2025-07-18 17:13:36.459 +07:00 [INF] Hangfire SQL objects installed.
+2025-07-18 17:13:37.832 +07:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'CourseRegistration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-07-18 17:13:39.305 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: LAPTOP-QLC4GKI0\SQLEXPRESS@DrugUsePreventionDB_V4'
+2025-07-18 17:13:39.307 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:00.
+2025-07-18 17:13:39.309 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-07-18 17:13:39.431 +07:00 [INF] Server laptop-qlc4gki0:3164:afd681e3 successfully announced in 85.4683 ms
+2025-07-18 17:13:39.440 +07:00 [INF] Server laptop-qlc4gki0:3164:afd681e3 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-07-18 17:13:39.489 +07:00 [INF] 1 servers were removed due to timeout
+2025-07-18 17:13:39.615 +07:00 [INF] Server laptop-qlc4gki0:3164:afd681e3 all the dispatchers started
+2025-07-18 17:13:39.984 +07:00 [ERR] Error occurred while cleaning up the 'Job' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:8383e43c-0528-45bc-9d78-e610e9027b32
+Error Number:8622,State:1,Class:16
+2025-07-18 17:13:40.654 +07:00 [ERR] Error occurred while cleaning up the 'List' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:8383e43c-0528-45bc-9d78-e610e9027b32
+Error Number:8622,State:1,Class:16
+2025-07-18 17:13:41.528 +07:00 [ERR] Error occurred while cleaning up the 'Set' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:8383e43c-0528-45bc-9d78-e610e9027b32
+Error Number:8622,State:1,Class:16
+2025-07-18 17:13:48.667 +07:00 [ERR] Error occurred while cleaning up the 'Hash' table: Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Query processor could not produce a query plan because of the hints defined in this query. Resubmit the query without specifying any hints and without using SET FORCEPLAN.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Hangfire.SqlServer.ExpirationManager.ExecuteNonQuery(DbConnection connection, String commandText, Int32 numberOfRecordsInSinglePass, Action`1 additionalActions, CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 240
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass11_0.<CleanupTable>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 124
+   at Hangfire.SqlServer.ExpirationManager.<>c__DisplayClass12_0.<UseConnectionDistributedLock>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 146
+   at Hangfire.SqlServer.SqlServerStorage.<>c__DisplayClass39_0.<UseConnection>b__0(DbConnection connection) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 245
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection[T](DbConnection dedicatedConnection, Func`2 func) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 257
+   at Hangfire.SqlServer.SqlServerStorage.UseConnection(DbConnection dedicatedConnection, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\SqlServerStorage.cs:line 243
+   at Hangfire.SqlServer.ExpirationManager.UseConnectionDistributedLock(SqlServerStorage storage, Action`1 action) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 140
+   at Hangfire.SqlServer.ExpirationManager.CleanupTable(String query, String table, Int32 numberOfRecordsInSinglePass, CancellationToken cancellationToken, Action`1 additionalActions) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 118
+   at Hangfire.SqlServer.ExpirationManager.Execute(CancellationToken cancellationToken) in C:\projects\hangfire-525\src\Hangfire.SqlServer\ExpirationManager.cs:line 77
+ClientConnectionId:8383e43c-0528-45bc-9d78-e610e9027b32
+Error Number:8622,State:1,Class:16
+2025-07-18 17:16:41.331 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-07-18 17:17:13.409 +07:00 [INF] JWT Token validated successfully for user: Staff1, Roles: Staff, Claims: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 20, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Staff1, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: Staff@gmail.com, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff, nbf: 1752833803, exp: 1752920203, iat: 1752833803, iss: DrugUsePreventionAPI, aud: DrugUsePreventionClient
+2025-07-18 17:17:14.427 +07:00 [INF] User: Staff1, IsAuthenticated: true, Roles: ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role: Staff"]
+2025-07-18 17:17:14.458 +07:00 [INF] Retrieving all users
+2025-07-18 17:17:14.566 +07:00 [INF] Retrieved 19 users
+2025-07-18 17:21:23.707 +07:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-07-18 17:21:23.741 +07:00 [INF] Server laptop-qlc4gki0:3164:afd681e3 caught stopping signal...
+2025-07-18 17:21:23.887 +07:00 [INF] Server laptop-qlc4gki0:3164:afd681e3 caught stopped signal...
+2025-07-18 17:21:23.899 +07:00 [INF] Server laptop-qlc4gki0:3164:afd681e3 All dispatchers stopped
+2025-07-18 17:21:23.900 +07:00 [WRN] Server laptop-qlc4gki0:3164:afd681e3 caught shutdown signal...

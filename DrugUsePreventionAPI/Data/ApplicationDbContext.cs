@@ -27,7 +27,7 @@ namespace DrugUsePreventionAPI.Controllers.Data
         public DbSet<ProgramParticipation> ProgramParticipations { get; set; }
         public DbSet<SurveyResponse> SurveyResponses { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<UserCourseProgress> UserCourseProgresses { get; set; }
+        public DbSet<UserCourseProgresses> UserCourseProgresses { get; set; }
         public DbSet<CourseVideo> CourseVideos { get; set; }
 
 
@@ -48,6 +48,8 @@ namespace DrugUsePreventionAPI.Controllers.Data
             modelBuilder.Entity<ProgramParticipation>()
                 .HasKey(pp => new { pp.UserID, pp.ProgramID });
 
+            modelBuilder.Entity<UserCourseProgresses>()
+                .HasKey(u => u.UserCourseProgressesID);
             // Payment configuration
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)

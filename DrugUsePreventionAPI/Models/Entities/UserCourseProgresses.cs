@@ -1,8 +1,11 @@
-﻿namespace DrugUsePreventionAPI.Models.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DrugUsePreventionAPI.Models.Entities
 {
-    public class UserCourseProgress
+    public class UserCourseProgresses
     {
-        public int UserCourseProgressID { get; set; }
+        [Key]
+        public int UserCourseProgressesID { get; set; }
         public int UserID { get; set; }
         public int CourseID { get; set; }
         public bool IsCompleted { get; set; }

@@ -142,7 +142,7 @@ builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepo
 builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
-builder.Services.AddScoped<IUserCourseProgressRepository, UserCourseProgressRepository>();
+builder.Services.AddScoped<IUserCourseProgressesRepository, UserCourseProgressesRepository>();
 builder.Services.AddScoped<ICourseVideoRepository, CourseVideoRepository>();
 builder.Services.AddScoped<IAssessmentStatisticsRepository, AssessmentStatisticsRepository>();
 builder.Services.AddScoped<ICourseStatisticsRepository, CourseStatisticsRepository>();
@@ -163,7 +163,7 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAssessmentResultService, AssessmentResultService>();
 builder.Services.AddScoped<ScheduleGenerator>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IUserCourseProgressService, UserCourseProgressService>();
+builder.Services.AddScoped<IUserCourseProgressesService, UserCourseProgressesService>();
 builder.Services.AddScoped<ICourseVideoService, CourseVideoService>();
 builder.Services.AddScoped<IAssessmentStatisticsService, AssessmentStatisticsService>();
 builder.Services.AddScoped<ICourseStatisticsService, CourseStatisticsService>();
@@ -238,6 +238,9 @@ builder.Services.AddScoped<VNPayHelper>();
     {
         options.AddPolicy("Member", policy => policy.RequireRole("Member"));
         options.AddPolicy("MemberOrGuest", policy => policy.RequireRole("Member", "Guest"));
+        options.AddPolicy("Staff", policy => policy.RequireRole("Staff"));
+        options.AddPolicy("Manager", policy => policy.RequireRole("Manager"));
+        options.AddPolicy("Admin,Manager,Staff", policy => policy.RequireRole("Admin", "Manager", "Staff"));
         options.AddPolicy("Consultant", policy => policy.RequireRole("Consultant"));
         options.AddPolicy("Admin", policy =>
         {
@@ -249,7 +252,6 @@ builder.Services.AddScoped<VNPayHelper>();
                 return roles.Contains("Admin", StringComparer.OrdinalIgnoreCase);
             });
         });
-        options.AddPolicy("AdminOrManager", policy => policy.RequireRole("Admin", "Manager"));
         options.AddPolicy("DefaultPolicy", policy => policy.RequireAuthenticatedUser());
         options.DefaultPolicy = options.GetPolicy("DefaultPolicy");
         options.InvokeHandlersAfterFailure = false;

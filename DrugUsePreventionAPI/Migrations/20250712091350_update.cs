@@ -143,7 +143,7 @@ namespace DrugUsePreventionAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserCourseProgresses",
+                name: "UserCourseProgresseses",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -155,9 +155,9 @@ namespace DrugUsePreventionAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserCourseProgresses", x => x.ID);
+                    table.PrimaryKey("PK_UserCourseProgresseses", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_UserCourseProgresses_Courses_CourseID",
+                        name: "FK_UserCourseProgresseses_Courses_CourseID",
                         column: x => x.CourseID,
                         principalTable: "Courses",
                         principalColumn: "CourseID",
@@ -695,8 +695,8 @@ namespace DrugUsePreventionAPI.Migrations
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserCourseProgresses_CourseID",
-                table: "UserCourseProgresses",
+                name: "IX_UserCourseProgresseses_CourseID",
+                table: "UserCourseProgresseses",
                 column: "CourseID");
 
             migrationBuilder.CreateIndex(
@@ -742,7 +742,7 @@ namespace DrugUsePreventionAPI.Migrations
                 name: "SurveyResponses");
 
             migrationBuilder.DropTable(
-                name: "UserCourseProgresses");
+                name: "UserCourseProgresseses");
 
             migrationBuilder.DropTable(
                 name: "Questions");
