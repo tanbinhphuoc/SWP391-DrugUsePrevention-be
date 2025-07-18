@@ -31,6 +31,14 @@ namespace DrugUsePreventionAPI.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<AssessmentResult>> GetByUserIdAsync(int userId)
+        {
+            return await _context.AssessmentResults
+                .Include(r => r.Assessment)
+                .Where(r => r.UserID == userId)
+                .ToListAsync();
+        }
+
     }
 
 }

@@ -41,7 +41,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/{id}FindUserByID")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -51,7 +51,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetAllUsers()
         {
             Log.Information("User: {User}, IsAuthenticated: {IsAuth}, Roles: {Roles}",
@@ -61,7 +61,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/role/{roleName}GetUserByRole")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetUsersByRole(string roleName)
         {
             var users = await _userService.GetUsersByRoleAsync(roleName);
@@ -69,7 +69,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/status/{status}GetUserByStatus")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetUsersByStatus(string status)
         {
             var users = await _userService.GetUsersByStatusAsync(status);
@@ -77,7 +77,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/GetUsersByCreatedDateRange")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetUsersByCreatedDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             var users = await _userService.GetUsersByCreatedDateRangeAsync(startDate, endDate);
@@ -85,7 +85,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/SearchUsers(Name or Email)")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
         {
             var users = await _userService.SearchUsersAsync(searchTerm);
@@ -93,7 +93,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/GetUserCountByRole")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetUserCountByRole(string roleName)
         {
             var count = await _userService.GetUserCountByRoleAsync(roleName);
@@ -143,7 +143,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllAppointments")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetAllAppointments()
         {
             try
@@ -159,7 +159,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllConsultants")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetAllConsultants()
         {
             var consultants = await _consultantService.GetConsultantsByStatusAsync("Active");
@@ -174,7 +174,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("consultants/GetConsultantsByStatus")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetConsultantsByStatus(string status)
         {
             var consultants = await _consultantService.GetConsultantsByStatusAsync(status);
@@ -293,7 +293,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("appointments/{appointmentId}/UpdateAppointmentStatus")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromBody] string newStatus)
         {
             try
@@ -319,7 +319,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("users/GetAllUserStats")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetAllUserStats()
         {
             var roles = await _unitOfWork.Roles.GetAllAsync();

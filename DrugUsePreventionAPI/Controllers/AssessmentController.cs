@@ -11,6 +11,7 @@ namespace DrugUsePreventionAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AssessmentController : ControllerBase
     {
         private readonly IAssessmentService _assessmentService;
@@ -21,6 +22,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost("CreateInputAssessment")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> CreateInputAssessment([FromBody] CreateInputAssessmentDto dto)
         {
             var result = await _assessmentService.CreateInputAssessment(dto);
@@ -41,6 +43,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPost("CreateOutputAssessment")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> CreateOutputAssessment([FromBody] CreateOutputAssessmentDto dto)
         {
             var result = await _assessmentService.CreateOutputAssessment(dto);
@@ -60,7 +63,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPut("UpdateInputAssessment/{id}")]
         public async Task<IActionResult> UpdateInputAssessment(int id, [FromBody] CreateInputAssessmentDto dto)
         {
@@ -92,6 +95,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPut("UpdateOutputAssessment/{id}")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> UpdateOutputAssessment(int id, [FromBody] CreateOutputAssessmentDto dto)
         {
             var result = await _assessmentService.UpdateOutputAssessmentWithValidation(id, dto);
@@ -111,6 +115,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> DeleteAssessment(int id)
         {
             var success = await _assessmentService.DeleteAssessment(id);
@@ -121,6 +126,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetInputById/{id}")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetInputById(int id)
         {
             var dto = await _assessmentService.GetInputAssessmentById(id);
@@ -131,6 +137,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetOutputById/{id}")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetOutputById(int id)
         {
             var dto = await _assessmentService.GetOutputAssessmentById(id);
@@ -141,6 +148,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllInput")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetAllInputAssessments()
         {
             var result = await _assessmentService.GetAllAssessmentInput();
@@ -148,6 +156,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllOutput")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetAllOutputAssessments()
         {
             var result = await _assessmentService.GetAllAssessmentOutput();
@@ -155,6 +164,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetByAge/{age}")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetByAge(int age)
         {
             var assessments = await _assessmentService.GetAssessmentByAge(age);

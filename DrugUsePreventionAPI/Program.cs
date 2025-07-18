@@ -238,6 +238,8 @@ builder.Services.AddScoped<VNPayHelper>();
     {
         options.AddPolicy("Member", policy => policy.RequireRole("Member"));
         options.AddPolicy("MemberOrGuest", policy => policy.RequireRole("Member", "Guest"));
+        options.AddPolicy("Staff", policy => policy.RequireRole("Staff"));
+        options.AddPolicy("AdminOrManagerOrStaff", policy => policy.RequireRole("Admin", "Manager", "Staff"));
         options.AddPolicy("Consultant", policy => policy.RequireRole("Consultant"));
         options.AddPolicy("Admin", policy =>
         {

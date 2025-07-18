@@ -1,6 +1,7 @@
 ﻿using DrugUsePreventionAPI.Controllers.Data;
 using DrugUsePreventionAPI.Exceptions;
 using DrugUsePreventionAPI.Models.DTOs.Admin;
+using DrugUsePreventionAPI.Models.DTOs.Consultant;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -153,5 +154,7 @@ namespace DrugUsePreventionAPI.Repositories
             Log.Information("Retrieved {Count} appointments", items.Count);
             return items;
         }
+
+      
     }
 }

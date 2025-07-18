@@ -26,7 +26,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost("createConsultant(Admin)")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateConsultant([FromBody] CreateConsultantDto createConsultantDto)
         {
             try
@@ -51,7 +51,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("{id}GetConsultantByID")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetConsultant(int id)
         {
             var consultant = await _consultantService.GetConsultantByIdAsync(id);
@@ -62,7 +62,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("{id}UpdateConsultant")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateConsultant(int id, [FromBody] AdminUpdateConsultantDto updateConsultantDto)
         {
             try
@@ -90,7 +90,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpDelete("{id}DeleteConsultant")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> DeleteConsultant(int id)
         {
             try
@@ -198,6 +198,14 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
+        /*
+        [HttpGet("GetMemberProfileForConsultant")]
+        public async Task<IActionResult> GetMemberProfileForConsultant(int memberId)
+        {
+            var result = await _memberService.GetMemberProfileForConsultantAsync(memberId);
+            return Ok(result);
+        }
 
+        */
     }
 }
