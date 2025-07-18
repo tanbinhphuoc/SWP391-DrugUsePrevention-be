@@ -1,17 +1,20 @@
 ﻿using DrugUsePreventionAPI.Models.DTOs.AssessmentResultDto;
 using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugUsePreventionAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AssessmentResultsController : ControllerBase
     {
         private readonly IAssessmentResultService _assessmentResultService;
         public AssessmentResultsController(IAssessmentResultService assessmentResultService) { _assessmentResultService = assessmentResultService; }
 
         [HttpPost("create-input")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> CreateInputResult([FromBody] CreateInputAssessmentResultDto dto)
         {
             try
@@ -26,6 +29,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost("create-output")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> CreateOutputResult([FromBody] CreateOutputAssessmentResultDto dto)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DrugUsePreventionAPI.Exceptions;
+using DrugUsePreventionAPI.Models.DTOs.Consultant;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories;
@@ -323,5 +324,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             Log.Information("Toggled status for user {UserName} to {NewStatus}", user.UserName, newStatus);
             return true;
         }
+
+       
     }
 }
