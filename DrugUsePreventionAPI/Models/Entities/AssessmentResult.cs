@@ -22,6 +22,8 @@ namespace DrugUsePreventionAPI.Models.Entities
         public double Score { get; set; }
 
         public DateTime TakeTime { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; } = false;
+
 
         // Navigation properties
         public virtual User User { get; set; }

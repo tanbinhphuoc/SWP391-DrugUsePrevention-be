@@ -28,41 +28,19 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var course = await _unitOfWork.Courses.GetByIdAsync(dto.CourseID)
                 ?? throw new EntityNotFoundException("Course", dto.CourseID);
 
-            var existing = await _unitOfWork.CourseRegistrations
-                .GetLatestByUserAndCourseAsync(userId, dto.CourseID);
+            if (course.Status == "Closed")
+                throw new BusinessRuleViolationException("Khóa học này đã đóng.");
 
+            if (course.Status == "Pending")
+                throw new BusinessRuleViolationException("Khóa học này chưa mở đăng ký. Vui lòng chờ hoặc chọn khóa học khác.");
+
+            var existing = await _unitOfWork.CourseRegistrations.GetLatestByUserAndCourseAsync(userId, dto.CourseID);
+
+            // Nếu đã có bản ghi đăng ký
             if (existing != null)
             {
                 if (existing.PaymentStatus == "SUCCESS")
                     throw new BusinessRuleViolationException("Bạn đã đăng ký và thanh toán khóa học này.");
-
-                if (string.IsNullOrWhiteSpace(existing.PaymentStatus))
-                {
-                    var newReg = new CourseRegistration
-                    {
-                        UserID = userId,
-                        CourseID = dto.CourseID,
-                        RegistrationDate = DateTime.UtcNow,
-                        Status = "PENDING_PAYMENT",
-                        Amount = course.Price,
-                        PaymentStatus = "PENDING"
-                    };
-
-                    await _unitOfWork.CourseRegistrations.AddAsync(newReg);
-                    await _unitOfWork.SaveChangesAsync();
-
-                    // cập nhật TransactionID có chứa CourseRegistrationID
-                    newReg.TransactionID = $"COURSE-{newReg.CourseRegistrationID}-{Guid.NewGuid()}";
-                    await _unitOfWork.SaveChangesAsync();
-
-                    var newUrl = _vnPayHelper.CreatePaymentUrl(new Payment
-                    {
-                        TransactionID = newReg.TransactionID,
-                        Amount = newReg.Amount
-                    }, $"Payment for Course {course.CourseName}", clientIp, context);
-
-                    return (_mapper.Map<CourseRegistrationDto>(newReg), newUrl);
-                }
 
                 if (existing.PaymentStatus == "PENDING")
                 {
@@ -74,9 +52,28 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
                     return (_mapper.Map<CourseRegistrationDto>(existing), reusedUrl);
                 }
+
+                if (string.IsNullOrWhiteSpace(existing.PaymentStatus))
+                {
+                    existing.RegistrationDate = DateTime.UtcNow;
+                    existing.Status = "PENDING_PAYMENT";
+                    existing.Amount = course.Price;
+                    existing.PaymentStatus = "PENDING";
+                    existing.TransactionID = $"COURSE-{existing.CourseRegistrationID}-{Guid.NewGuid()}";
+
+                    await _unitOfWork.SaveChangesAsync();
+
+                    var newUrl = _vnPayHelper.CreatePaymentUrl(new Payment
+                    {
+                        TransactionID = existing.TransactionID,
+                        Amount = existing.Amount
+                    }, $"Payment for Course {course.CourseName}", clientIp, context);
+
+                    return (_mapper.Map<CourseRegistrationDto>(existing), newUrl);
+                }
             }
 
-            // Không có bản ghi nào → tạo mới
+            // Nếu chưa từng đăng ký
             var registration = new CourseRegistration
             {
                 UserID = userId,
@@ -101,6 +98,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             return (_mapper.Map<CourseRegistrationDto>(registration), paymentUrl);
         }
+
 
 
 
