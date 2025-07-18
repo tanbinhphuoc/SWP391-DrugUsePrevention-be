@@ -20,7 +20,7 @@ namespace DrugUsePreventionAPI.Repositories
         ISurveyRepository Surveys { get; }
         IQuestionRepository Questions { get; }
         IAnswerOptionRepository AnswerOptions { get; }
-        IUserCourseProgressRepository UserCourseProgress { get; }
+		IUserCourseProgressesRepository UserCourseProgresses { get; }
         ICourseVideoRepository CourseVideos { get; }
 
 

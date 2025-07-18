@@ -148,7 +148,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllInput")]
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff,Member")]
         public async Task<IActionResult> GetAllInputAssessments()
         {
             var result = await _assessmentService.GetAllAssessmentInput();
@@ -156,7 +156,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetAllOutput")]
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff,Member")]
         public async Task<IActionResult> GetAllOutputAssessments()
         {
             var result = await _assessmentService.GetAllAssessmentOutput();

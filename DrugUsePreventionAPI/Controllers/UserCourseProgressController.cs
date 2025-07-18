@@ -1,4 +1,4 @@
-﻿using DrugUsePreventionAPI.Models.DTO.UserCourseProgress;
+﻿using DrugUsePreventionAPI.Models.DTO.UserCourseProgresses;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,19 +7,19 @@ namespace DrugUsePreventionAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserCourseProgressController : ControllerBase
+    public class UserCourseProgressesController : ControllerBase
     {
-        private readonly IUserCourseProgressService _userCourseProgressService;
+        private readonly IUserCourseProgressesService _UserCourseProgressesService;
 
-        public UserCourseProgressController(IUserCourseProgressService service)
+        public UserCourseProgressesController(IUserCourseProgressesService service)
         {
-            _userCourseProgressService = service;
+            _UserCourseProgressesService = service;
         }
 
         [HttpPost("complete")]
-        public async Task<IActionResult> MarkAsCompleted([FromBody] UpdateUserCourseProgressDto dto)
+        public async Task<IActionResult> MarkAsCompleted([FromBody] UpdateUserCourseProgressesDto dto)
         {
-            var result = await _userCourseProgressService.MarkCourseAsCompletedAsync(dto);
+            var result = await _UserCourseProgressesService.MarkCourseAsCompletedAsync(dto);
             if (!result)
                 return NotFound(new { success = false, message = "User chưa đăng ký khóa học này." });
 

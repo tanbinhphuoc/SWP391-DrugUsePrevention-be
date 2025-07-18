@@ -1,4 +1,5 @@
-﻿using DrugUsePreventionAPI.Models.Entities;
+﻿using DrugUsePreventionAPI.Models.DTOs.Consultant;
+using DrugUsePreventionAPI.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,5 +23,11 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<int> GetNewUserCountAsync(DateTime startDate);
         Task<Dictionary<string, int>> GetActiveInactiveRatioAsync();
         Task<User> GetByIdAsync(int id);
+
+        Task<User> GetUserWithProfileAsync(int userId);
+        Task<IEnumerable<Course>> GetCoursesByUserIdAsync(int userId);
+        Task<IEnumerable<AssessmentResult>> GetAssessmentResultsByUserIdAsync(int userId);
+        Task<IEnumerable<Appointment>> GetAppointmentsByUserIdAsync(int userId);
+        Task<IEnumerable<ConsultantInfo>> GetConsultantsByUserIdAsync(int userId);
     }
 }

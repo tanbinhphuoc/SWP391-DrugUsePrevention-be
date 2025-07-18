@@ -14,7 +14,7 @@ namespace DrugUsePreventionAPI.Controllers
         public AssessmentResultsController(IAssessmentResultService assessmentResultService) { _assessmentResultService = assessmentResultService; }
 
         [HttpPost("create-input")]
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff,Member")]
         public async Task<IActionResult> CreateInputResult([FromBody] CreateInputAssessmentResultDto dto)
         {
             try
@@ -29,7 +29,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost("create-output")]
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff,Member")]
         public async Task<IActionResult> CreateOutputResult([FromBody] CreateOutputAssessmentResultDto dto)
         {
             try

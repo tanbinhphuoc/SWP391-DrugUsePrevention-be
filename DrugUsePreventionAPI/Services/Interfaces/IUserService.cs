@@ -27,6 +27,6 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<UserDto> UpdateUserPasswordAsync(int userId, UpdatePasswordDto updatePasswordDto);
         Task<MemberProfileDto> GetMemberProfileAsync(int userId);
 
-       // Task<MemberProfileForConsultantDto> GetMemberProfileForConsultantAsync(int memberId);
+        Task<MemberProfileForConsultantDto> GetMemberProfileForConsultantAsync(int userId);
     }
 }
