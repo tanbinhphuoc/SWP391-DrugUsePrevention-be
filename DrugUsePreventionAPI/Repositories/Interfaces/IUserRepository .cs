@@ -12,6 +12,7 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task<bool> UsernameExistsAsync(string username);
         Task<bool> EmailExistsAsync(string email);
         Task<IEnumerable<User>> GetAllWithRolesAsync();
+        Task<IEnumerable<User>> GetAllWithMemberAsync();
         Task<User> GetUserByIdWithConsultantAsync(int id);
         Task<IEnumerable<User>> GetUsersByRoleAsync(string roleName);
         Task<IEnumerable<User>> GetUsersByStatusAsync(string status);

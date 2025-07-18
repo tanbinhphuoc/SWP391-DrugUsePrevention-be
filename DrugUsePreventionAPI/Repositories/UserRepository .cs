@@ -50,6 +50,13 @@ namespace DrugUsePreventionAPI.Repositories
                 .Include(u => u.Role)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<User>> GetAllWithMemberAsync()
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+               .Where(u => u.Role.RoleName == "Member")
+                .ToListAsync();
+        }
 
         public async Task<User> GetUserByIdWithConsultantAsync(int id)
         {

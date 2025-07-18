@@ -33,6 +33,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return result;
         }
 
+        public async Task<IEnumerable<UserDto>> GetAllMemberAsync()
+        {
+            Log.Information("Retrieving all Member");
+            var users = await _unitOfWork.Users.GetAllWithMemberAsync();
+            var result = _mapper.Map<IEnumerable<UserDto>>(users);
+            Log.Information("Retrieved {Count} users", result.Count());
+            return result;
+        }
+
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
             Log.Information("Retrieving user with ID {UserId}", id);
