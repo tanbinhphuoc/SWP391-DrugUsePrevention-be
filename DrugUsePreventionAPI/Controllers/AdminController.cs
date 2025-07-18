@@ -60,6 +60,16 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(new { success = true, data = users });
         }
 
+        [HttpGet("GetAllMember")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
+        public async Task<IActionResult> GetMemberUsers()
+        {
+            Log.Information("User: {User}, IsAuthenticated: {IsAuth}, Roles: {Roles}",
+                User.Identity?.Name, User.Identity?.IsAuthenticated, User.FindAll(ClaimTypes.Role));
+            var users = await _userService.GetAllMemberAsync();
+            return Ok(new { success = true, data = users });
+        }
+
         [HttpGet("users/role/{roleName}GetUserByRole")]
         [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetUsersByRole(string roleName)

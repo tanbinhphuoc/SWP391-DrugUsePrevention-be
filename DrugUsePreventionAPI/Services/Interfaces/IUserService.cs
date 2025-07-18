@@ -8,6 +8,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
+        Task<IEnumerable<UserDto>> GetAllMemberAsync();
         Task<UserDto> GetUserByIdAsync(int id);
         Task<UserDto> CreateUserAsync(CreateUserDto createUserDto);
         Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
