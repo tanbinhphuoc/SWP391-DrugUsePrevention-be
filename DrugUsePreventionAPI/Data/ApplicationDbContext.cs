@@ -141,6 +141,7 @@ namespace DrugUsePreventionAPI.Controllers.Data
             // ConsultantSchedule index
             modelBuilder.Entity<ConsultantSchedule>()
                 .HasIndex(s => new { s.ConsultantID, s.Date, s.IsAvailable });
+ 
         }
     }
 }
