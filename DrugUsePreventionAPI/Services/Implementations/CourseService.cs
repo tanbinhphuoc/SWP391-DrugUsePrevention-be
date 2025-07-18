@@ -173,7 +173,7 @@ public class CourseService : ICourseService
     public async Task<List<Course>> GetCompletedCoursesByUser(int userId)
     {
         var progressList = await _unitOfWork
-            .UserCourseProgress
+            .UserCourseProgresses
             .FindAsync(p => p.UserID == userId && p.IsCompleted);
 
         var courseIds = progressList.Select(p => p.CourseID).ToList();
@@ -190,7 +190,7 @@ public class CourseService : ICourseService
 
     public async Task<List<Course>> GetUncompletedCoursesByUser(int userId)
     {
-        var progressList = await _unitOfWork.UserCourseProgress.FindAsync(p =>
+        var progressList = await _unitOfWork.UserCourseProgresses.FindAsync(p =>
             p.UserID == userId && !p.IsCompleted);
 
         var courseIds = progressList.Select(p => p.CourseID).ToList();

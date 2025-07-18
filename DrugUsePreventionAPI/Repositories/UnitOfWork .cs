@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Controllers.Data;
+using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ namespace DrugUsePreventionAPI.Repositories
         public ISurveyRepository Surveys { get; private set; }
         public IQuestionRepository Questions { get; private set; }
         public IAnswerOptionRepository AnswerOptions { get; private set; }
-        public IUserCourseProgressRepository UserCourseProgress { get; private set; }
+        public IUserCourseProgressesRepository UserCourseProgresses { get; private set; }
         public ICourseVideoRepository CourseVideos { get; private set; }
 
 
@@ -43,8 +44,8 @@ namespace DrugUsePreventionAPI.Repositories
             IQuestionRepository questionRepository,
             IAnswerOptionRepository answerOptionRepository,
             ICourseVideoRepository courseVideoRepository,
-            IUserCourseProgressRepository userCourseProgressRepository
-        )
+			IUserCourseProgressesRepository UserCourseProgressesesRepository
+		)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             Users = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
@@ -61,7 +62,7 @@ namespace DrugUsePreventionAPI.Repositories
             Surveys = surveyRepository ?? throw new ArgumentNullException(nameof(surveyRepository));
             Questions = questionRepository ?? throw new ArgumentNullException(nameof(questionRepository));
             AnswerOptions = answerOptionRepository ?? throw new ArgumentNullException(nameof(answerOptionRepository));
-            UserCourseProgress = userCourseProgressRepository ?? throw new ArgumentNullException(nameof(userCourseProgressRepository));
+			UserCourseProgresses = UserCourseProgressesesRepository ?? throw new ArgumentNullException(nameof(UserCourseProgressesRepository));
             CourseVideos = courseVideoRepository ?? throw new ArgumentNullException(nameof(courseVideoRepository));
 
         }

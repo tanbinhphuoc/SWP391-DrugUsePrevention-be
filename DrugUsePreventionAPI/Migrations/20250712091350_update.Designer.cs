@@ -741,7 +741,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgresses", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -765,7 +765,7 @@ namespace DrugUsePreventionAPI.Migrations
 
                     b.HasIndex("CourseID");
 
-                    b.ToTable("UserCourseProgresses");
+                    b.ToTable("UserCourseProgresseses");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AnswerOption", b =>
@@ -1037,7 +1037,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgresses", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
                         .WithMany()

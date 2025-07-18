@@ -1,5 +1,6 @@
-﻿using DrugUsePreventionAPI.Models.Entities;
-using DrugUsePreventionAPI.Models.DTOs.Admin;
+﻿using DrugUsePreventionAPI.Models.DTOs.Admin;
+using DrugUsePreventionAPI.Models.DTOs.Consultant;
+using DrugUsePreventionAPI.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,6 +17,6 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
         Task UpdateAppointmentSchedulesAsync(int appointmentId, List<int> scheduleIds);
         Task<AppointmentStatDto> GetAppointmentStatisticsAsync(DateTime? startDate, DateTime? endDate);
         Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
-        //Task<IEnumerable<Appointment>> GetByUserIdWithConsultantAsync(int userId);
+        Task<IEnumerable<ConsultantInfo>> GetConsultantsForUserAppointmentsAsync(int userId);
     }
 }

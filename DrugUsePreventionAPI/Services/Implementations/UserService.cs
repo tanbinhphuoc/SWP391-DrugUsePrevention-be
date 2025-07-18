@@ -4,6 +4,7 @@ using DrugUsePreventionAPI.Models.DTOs.Consultant;
 using DrugUsePreventionAPI.Models.DTOs.User;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories;
+using DrugUsePreventionAPI.Repositories.Interfaces;
 using DrugUsePreventionAPI.Services.Interfaces;
 using Serilog;
 using System;
@@ -17,11 +18,18 @@ namespace DrugUsePreventionAPI.Services.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IUserRepository _userRepository;
+        private readonly ICourseRepository _courseRepository;
+        private readonly IAssessmentResultRepository _assessmentResultRepository;
+        private readonly IAppointmentRepository _appointmentRepository;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository, ICourseRepository courseRepository, IAssessmentResultRepository assessmentResultRepository, IAppointmentRepository appointmentRepository)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _assessmentResultRepository = assessmentResultRepository ?? throw new ArgumentNullException(nameof(assessmentResultRepository));
+            _appointmentRepository = appointmentRepository ?? throw new ArgumentNullException(nameof(appointmentRepository));
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -334,6 +342,47 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return true;
         }
 
-       
+        public async Task<MemberProfileForConsultantDto> GetMemberProfileForConsultantAsync(int userId)
+        {
+            var user = await _userRepository.GetUserWithProfileAsync(userId);
+            if (user == null) throw new Exception("User không tồn tại");
+
+            int? age = user.DateOfBirth.HasValue ? DateTime.Now.Year - user.DateOfBirth.Value.Year : (int?)null;
+
+
+            var registeredCourses = await _userRepository.GetCoursesByUserIdAsync(userId);
+            var registeredCourseNames = registeredCourses.Select(c => c.CourseName).ToList();
+
+
+            var completedCourses = await _courseRepository.GetCompletedCoursesByUser(userId); // Lấy danh sách khóa học đã hoàn thành
+            var completedCourseNames = completedCourses.Select(c => c.CourseName).ToList();
+
+            // Get assessment results
+            var assessmentResults = await _userRepository.GetAssessmentResultsByUserIdAsync(userId);
+            var assessmentDtoList = assessmentResults.Select(r => new AssessmentResultInfo
+            {
+                Stage = r.Assessment.AssessmentStage,
+                Score = (int?)r.Score,
+                TakeTime = r.TakeTime
+            }).ToList();
+
+            // Get consultant history
+            var consultantList = await _appointmentRepository.GetConsultantsForUserAppointmentsAsync(userId);
+
+            return new MemberProfileForConsultantDto
+            {
+                FullName = user.FullName,
+                Age = age,
+                Email = user.Email,
+                Phone = user.Phone,
+                Address = user.Address,
+                RegisteredCourses = registeredCourseNames,
+                CompletedCourses = completedCourseNames,
+                AssessmentResults = assessmentDtoList,
+                PreviousConsultants = consultantList.ToList()
+            };
+        }
+
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Controllers.Data;
+using DrugUsePreventionAPI.Models.DTOs.Consultant;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -103,6 +104,14 @@ namespace DrugUsePreventionAPI.Repositories
                 .CountAsync(u => u.Role.RoleName == roleName);
         }
 
+        public async Task<User> GetUserWithProfileAsync(int userId)
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.CourseRegistrations)
+                .Include(u => u.Appointments)
+                .FirstOrDefaultAsync(u => u.UserID == userId);
+        }
         public async Task<int> GetNewUserCountAsync(DateTime startDate)
         {
             return await _context.Users
@@ -115,6 +124,44 @@ namespace DrugUsePreventionAPI.Repositories
                 .FirstOrDefaultAsync(u => u.UserID == id);
         }
 
+        public async Task<IEnumerable<Course>> GetCoursesByUserIdAsync(int userId)
+        {
+            return await _context.CourseRegistrations
+                .Where(cr => cr.UserID == userId)
+                .Include(cr => cr.Course)
+                .Select(cr => cr.Course)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<AssessmentResult>> GetAssessmentResultsByUserIdAsync(int userId)
+        {
+            return await _context.AssessmentResults
+                .Where(ar => ar.UserID == userId)
+                .Include(ar => ar.Assessment)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Appointment>> GetAppointmentsByUserIdAsync(int userId)
+        {
+            return await _context.Appointments
+                .Where(a => a.UserID == userId)
+                .Include(a => a.Consultant)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ConsultantInfo>> GetConsultantsByUserIdAsync(int userId)
+        {
+            return await _context.Appointments
+                .Where(a => a.UserID == userId && a.Consultant != null)
+                .GroupBy(a => a.ConsultantID)
+                .Select(g => new ConsultantInfo
+                {
+                    ConsultantId = g.Key,
+                    ConsultantName = g.First().Consultant.User.FullName,
+                    ConsultantEmail = g.First().Consultant.User.Email
+                })
+                .ToListAsync();
+        }
         public async Task<Dictionary<string, int>> GetActiveInactiveRatioAsync()
         {
             var activeCount = await _context.Users.CountAsync(u => u.Status == "Active");

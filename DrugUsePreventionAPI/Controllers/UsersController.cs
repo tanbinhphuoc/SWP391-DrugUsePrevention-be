@@ -181,6 +181,22 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
+
+        [HttpGet("GetMemberProfileWithFullOption")]
+        [Authorize(Roles = "Admin,Manager,Staff,Consultant")]
+        public async Task<IActionResult> GetMemberProfileForConsultantAsync(int userId)
+        {
+            try
+            {
+                var profile = await _userService.GetMemberProfileForConsultantAsync(userId);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
 

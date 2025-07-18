@@ -155,6 +155,19 @@ namespace DrugUsePreventionAPI.Repositories
             return items;
         }
 
-      
+        public async Task<IEnumerable<ConsultantInfo>> GetConsultantsForUserAppointmentsAsync(int userId)
+        {
+            return await _context.Appointments
+                .Where(a => a.UserID == userId && a.Consultant != null)
+                .GroupBy(a => a.ConsultantID)
+                .Select(g => new ConsultantInfo
+                {
+                    ConsultantId = g.Key,
+                    ConsultantName = g.First().Consultant.User.FullName,
+                    ConsultantEmail = g.First().Consultant.User.Email
+                })
+                .ToListAsync();
+        }
+
     }
 }

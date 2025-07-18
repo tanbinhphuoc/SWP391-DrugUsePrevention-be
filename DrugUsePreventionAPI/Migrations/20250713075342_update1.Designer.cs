@@ -744,13 +744,13 @@ namespace DrugUsePreventionAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgresses", b =>
                 {
-                    b.Property<int>("UserCourseProgressID")
+                    b.Property<int>("UserCourseProgressesID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserCourseProgressID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserCourseProgressesID"));
 
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
@@ -764,13 +764,13 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("UserCourseProgressID");
+                    b.HasKey("UserCourseProgressesID");
 
                     b.HasIndex("CourseID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserCourseProgresses");
+                    b.ToTable("UserCourseProgresseses");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.AnswerOption", b =>
@@ -1042,7 +1042,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgresses", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
                         .WithMany()
