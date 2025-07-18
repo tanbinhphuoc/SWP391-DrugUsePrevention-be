@@ -21,7 +21,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AdminOrManager")]
+        [Authorize(Policy = "AdminOrManager,Staff")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -29,7 +29,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("{id}GetAllUser")]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -39,7 +39,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("GetProfileMember")]
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member,Staff")]
         public async Task<ActionResult<MemberProfileDto>> GetMemberProfile()
         {
             try
@@ -123,7 +123,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPut("{id}/AdminUpdateProfileUser")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> UpdateMemberProfile(int id, [FromBody] UpdateUserProfileDto updateUserProfileDto)
         {
             try
@@ -163,7 +163,7 @@ namespace DrugUsePreventionAPI.Controllers
 
         // Admin cập nhật mật khẩu của user
         [HttpPut("{id}/AdminUpdatePassword")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> UpdateMemberPassword(int id, [FromBody] UpdatePasswordDto updatePasswordDto)
         {
             try

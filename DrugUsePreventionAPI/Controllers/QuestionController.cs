@@ -18,8 +18,8 @@ namespace DrugUsePreventionAPI.Controllers
             _questionService = questionForSurveyService;
         }
 
-        
-        [Authorize(Roles = "Admin,Manager")]
+
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         [HttpPost("CreateQuestionForAssessment")]
         public async Task<IActionResult> CreateQuestionForAssessment([FromBody] CreateQuestionForAssessmentDto createQuestionForAssessmentDto)
         {
@@ -47,6 +47,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPut("UpdateMultipleQuestions")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         public async Task<IActionResult> UpdateMultipleQuestions([FromBody] List<CreateQuestionWithAnswersDto> questions)
         {
             try
@@ -60,7 +61,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "AdminOrManagerOrStaff")]
         [HttpDelete("DeleteQuestionForAssessment")]
         public async Task<IActionResult> DeleteQuestionForAssessment([FromQuery] int id)
         {
