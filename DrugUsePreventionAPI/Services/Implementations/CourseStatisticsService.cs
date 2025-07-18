@@ -24,7 +24,31 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 HighSchoolTargetCount = await _repository.GetCoursesCountByTargetAsync("HocSinh"),
                 CollegeTargetCount = await _repository.GetCoursesCountByTargetAsync("SinhVien"),
                 ParentTargetCount = await _repository.GetCoursesCountByTargetAsync("PhuHuynh"),
-                CoursesWithNoEnrollment = await _repository.GetCoursesWithNoEnrollmentAsync()
+            };
+        }
+
+        public async Task<List<CourseUserStatisticsDto>> GetCourseUserStatisticsAsync()
+        {
+            return await _repository.GetCourseUserStatisticsAsync();
+        }
+
+        public async Task<List<CourseImpactDto>> GetCoursesWithHighestImpactAsync()
+        {
+            return await _repository.GetCoursesWithHighestImpactAsync();
+        }
+
+        public async Task<CourseRevenueStatisticsDto> GetRevenueStatisticsAsync()
+        {
+            return await _repository.GetRevenueStatisticsAsync();
+        }
+
+        public async Task<ChartDataDto> GetChartStatisticsAsync()
+        {
+            return new ChartDataDto
+            {
+                EnrollmentOverTime = await _repository.GetEnrollmentDistributionOverTimeAsync(),
+                CompletionTrend = await _repository.GetCompletionTrendAsync(),
+                TargetAudienceRatio = await _repository.GetTargetAudienceRatioAsync()
             };
         }
     }

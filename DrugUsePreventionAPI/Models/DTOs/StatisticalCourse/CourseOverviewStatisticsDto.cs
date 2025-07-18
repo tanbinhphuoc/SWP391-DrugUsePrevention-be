@@ -10,7 +10,6 @@
         public int HighSchoolTargetCount { get; set; }
         public int CollegeTargetCount { get; set; }
         public int ParentTargetCount { get; set; }
-        public List<string> CoursesWithNoEnrollment { get; set; }
     }
 
 }
