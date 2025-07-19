@@ -31,12 +31,24 @@ namespace DrugUsePreventionAPI.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<AssessmentResult?> GetAssessmentResultByUsersAsync(int userId, int assessmentId)
+        {
+            return await _context.AssessmentResults
+                .FirstOrDefaultAsync(r => r.UserID == userId && r.AssessmentID == assessmentId);
+        }
         public async Task<IEnumerable<AssessmentResult>> GetByUserIdAsync(int userId)
         {
             return await _context.AssessmentResults
                 .Include(r => r.Assessment)
                 .Where(r => r.UserID == userId)
                 .ToListAsync();
+        }
+
+        public async Task<int> GetAttemptCountByUserAsync(int userId, int assessmentId)
+        {
+            return await _context.AssessmentResults
+                                 .Where(r => r.UserID == userId && r.AssessmentID == assessmentId)
+                                 .CountAsync();
         }
 
     }

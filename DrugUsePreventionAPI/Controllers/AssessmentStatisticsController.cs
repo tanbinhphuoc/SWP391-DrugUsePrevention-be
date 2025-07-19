@@ -1,5 +1,6 @@
 ﻿using DrugUsePreventionAPI.Services.Implementations;
 using DrugUsePreventionAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("total")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetTotalAssessments()
         {
             try
@@ -34,6 +36,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("score-summary")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetAssessmentScoreSummary()
         {
             try
@@ -51,6 +54,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("high-risk")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetHighRiskPercentage([FromQuery] double threshold = 4.0)
         {
             if (threshold < 0 || threshold > 10)    
@@ -68,6 +72,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("by-type")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetAssessmentByType()
         {
             try
@@ -85,6 +90,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("by-age")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetScoreDistributionByAge()
         {
             try
@@ -102,6 +108,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpGet("score-changes")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> GetAssessmentScoreChanges()
         {
             var result = await _service.GetAssessmentScoreChangesAsync();

@@ -683,11 +683,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<IEnumerable<AppointmentDto>> GetConsultantAppointmentsAsync(int consultantId)
         {
             Log.Information("Retrieving appointments for consultant {ConsultantId}", consultantId);
+
             var appointments = await _unitOfWork.Appointments.GetByConsultantIdAsync(consultantId);
+
             var result = _mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+
             Log.Information("Retrieved {Count} appointments for consultant {ConsultantId}", result.Count(), consultantId);
             return result;
         }
+
 
         public async Task<IEnumerable<PaymentHistoryDto>> GetPaymentHistoryAsync(int userId, bool isAdmin, DateTime? startDate, DateTime? endDate)
         {

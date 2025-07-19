@@ -183,7 +183,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpGet("GetMemberProfileWithFullOption")]
-        [Authorize(Roles = "Admin,Manager,Staff,Consultant")]
+        [Authorize(Roles = "Admin,Manager,Staff,Consultant,Member")]
         public async Task<IActionResult> GetMemberProfileForConsultantAsync(int userId)
         {
             try
