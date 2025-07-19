@@ -21,6 +21,34 @@ namespace DrugUsePreventionAPI.Controllers
             var result = await _courseStatisticsService.GetCourseOverviewStatisticsAsync();
             return Ok(result);
         }
+
+        [HttpGet("users-per-course")]
+        public async Task<IActionResult> GetCourseUserStatistics()
+        {
+            var result = await _courseStatisticsService.GetCourseUserStatisticsAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("impact")]
+        public async Task<IActionResult> GetCoursesWithHighestImpact()
+        {
+            var result = await _courseStatisticsService.GetCoursesWithHighestImpactAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("revenue")]
+        public async Task<IActionResult> GetRevenueStatistics()
+        {
+            var result = await _courseStatisticsService.GetRevenueStatisticsAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("charts")]
+        public async Task<IActionResult> GetChartStatistics()
+        {
+            var result = await _courseStatisticsService.GetChartStatisticsAsync();
+            return Ok(result);
+        }
     }
 
 }
