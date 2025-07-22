@@ -1,9 +1,13 @@
-﻿using DrugUsePreventionAPI.Models.DTOs.Appointment;
+﻿using DrugUsePreventionAPI.Exceptions;
+using DrugUsePreventionAPI.Models.DTOs.Appointment;
 using DrugUsePreventionAPI.Services.Interfaces;
 using DrugUsePreventionAPI.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -39,6 +43,7 @@ namespace DrugUsePreventionAPI.Controllers
                 return StatusCode(500, new { success = false, message = "An error occurred while retrieving consultants." });
             }
         }
+
         [HttpGet("{consultantId}/ConsultantSchedules")]
         [AllowAnonymous]
         public async Task<IActionResult> GetConsultantSchedules(int consultantId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
@@ -58,6 +63,117 @@ namespace DrugUsePreventionAPI.Controllers
             {
                 Log.Error(ex, "Error retrieving schedules for ConsultantID={ConsultantId}", consultantId);
                 return StatusCode(500, new { success = false, message = "An error occurred while retrieving schedules." });
+            }
+        }
+
+        [HttpPost("BookFreeAppointment")]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> BookFreeAppointment([FromBody] BookAppointmentDto dto)
+        {
+            try
+            {
+                if (dto == null || dto.ConsultantId <= 0 || dto.ScheduleIds == null || !dto.ScheduleIds.Any())
+                {
+                    Log.Warning("Invalid free booking request: {Dto}", JsonSerializer.Serialize(dto));
+                    return BadRequest(new { success = false, message = "Invalid booking request." });
+                }
+
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    Log.Warning("No user ID claim found in token");
+                    return Unauthorized(new { success = false, message = "Unauthorized access." });
+                }
+
+                if (!int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
+                    return BadRequest(new { success = false, message = "Invalid user ID format." });
+                }
+
+                Log.Information("Booking free appointment for UserID={UserID} with ConsultantID={ConsultantId}", userId, dto.ConsultantId);
+
+                var appointment = await _appointmentService.BookFreeAppointmentAsync(dto, userId);
+                return Ok(new { success = true, data = appointment, message = "Free appointment booked successfully, awaiting confirmation." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.Warning(ex, "Free booking failed for UserID={UserID}: {Message}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value, ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error booking free appointment for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return StatusCode(500, new { success = false, message = "An error occurred while booking the free appointment." });
+            }
+        }
+
+        [HttpPost("{appointmentId}/ConfirmFreeAppointment")]
+        [Authorize(Roles = "Consultant,Staff")]
+        public async Task<IActionResult> ConfirmFreeAppointment(int appointmentId)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    Log.Warning("No user ID claim found in token");
+                    return Unauthorized(new { success = false, message = "Unauthorized access." });
+                }
+
+                if (!int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
+                    return BadRequest(new { success = false, message = "Invalid user ID format." });
+                }
+
+                var appointment = await _appointmentService.ConfirmFreeAppointmentAsync(appointmentId, userId);
+                return Ok(new { success = true, data = appointment, message = "Free appointment confirmed successfully." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.Warning(ex, "Confirmation failed for appointment {AppointmentId}: {Message}", appointmentId, ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error confirming free appointment {AppointmentId}", appointmentId);
+                return StatusCode(500, new { success = false, message = "An error occurred while confirming the free appointment." });
+            }
+        }
+
+        [HttpPost("{appointmentId}/CancelAppointment")]
+        [Authorize(Roles = "Member,Consultant,Staff")]
+        public async Task<IActionResult> CancelAppointment(int appointmentId)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    Log.Warning("No user ID claim found in token");
+                    return Unauthorized(new { success = false, message = "Unauthorized access." });
+                }
+
+                if (!int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
+                    return BadRequest(new { success = false, message = "Invalid user ID format." });
+                }
+
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+                await _appointmentService.CancelAppointmentAsync(appointmentId, userId, userRole);
+                return Ok(new { success = true, message = "Appointment canceled successfully." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.Warning(ex, "Cancellation failed for appointment {AppointmentId}: {Message}", appointmentId, ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error canceling appointment {AppointmentId}", appointmentId);
+                return StatusCode(500, new { success = false, message = "An error occurred while canceling the appointment." });
             }
         }
 
@@ -88,13 +204,12 @@ namespace DrugUsePreventionAPI.Controllers
 
                 Log.Information("Booking appointment for UserID={UserID} with ConsultantID={ConsultantId}", userId, dto.ConsultantId);
 
-                // Lấy IP client, ưu tiên X-Forwarded-For và kiểm tra định dạng
-                var clientIpAddress = clientIp?.Split(',')[0]; // Lấy IP đầu tiên từ X-Forwarded-For
+                var clientIpAddress = clientIp?.Split(',')[0];
                 if (string.IsNullOrEmpty(clientIpAddress))
                 {
                     clientIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
                 }
-                clientIpAddress = clientIpAddress ?? "127.0.0.1"; // Fallback an toàn
+                clientIpAddress = clientIpAddress ?? "127.0.0.1";
                 Log.Information("Using client IP from header: {ClientIpAddress}", clientIpAddress);
 
                 var (appointment, paymentUrl) = await _appointmentService.BookAppointmentAsync(dto, userId, clientIpAddress);
@@ -111,7 +226,6 @@ namespace DrugUsePreventionAPI.Controllers
                 return StatusCode(500, new { success = false, message = "An error occurred while booking the appointment." });
             }
         }
-
 
         [HttpPost("{appointmentId}/confirm-payment")]
         [Authorize(Roles = "Member,Guest")]
@@ -139,7 +253,6 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        // Thêm endpoint để xử lý callback từ VNPay
         [HttpPost("vnpay/return")]
         [AllowAnonymous]
         public async Task<IActionResult> HandleVnpayReturn()
@@ -161,7 +274,7 @@ namespace DrugUsePreventionAPI.Controllers
                 var appointmentIdStr = transactionParts.Last();
                 if (!int.TryParse(appointmentIdStr, out int appointmentId))
                 {
-                    Log.Warning("Invalid transactionId format: {Transa  ctionId}", queryParams["vnp_TxnRef"]);
+                    Log.Warning("Invalid transactionId format: {TransactionId}", queryParams["vnp_TxnRef"]);
                     return BadRequest(new { success = false, message = "Invalid transaction ID format." });
                 }
 
@@ -297,6 +410,5 @@ namespace DrugUsePreventionAPI.Controllers
                 return StatusCode(500, new { success = false, message = "An error occurred while retrieving payment history." });
             }
         }
-
     }
 }
