@@ -143,6 +143,35 @@ namespace DrugUsePreventionAPI.Controllers.Data
             // ConsultantSchedule index
             modelBuilder.Entity<ConsultantSchedule>()
                 .HasIndex(s => new { s.ConsultantID, s.Date, s.IsAvailable });
+
+            // Blog configuration (điều chỉnh theo schema mới)
+            modelBuilder.Entity<Blog>(entity =>
+            {
+                entity.HasKey(e => e.BlogID);
+                entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Content).IsRequired();
+                entity.Property(e => e.CreatedBy).IsRequired();
+                entity.Property(e => e.PublishDate).IsRequired();
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(10).HasDefaultValue("Active");
+                entity.Property(e => e.Thumbnail).IsRequired(false);
+                entity.Property(e => e.AuthorAvatar).IsRequired(false);
+
+                // Áp dụng ràng buộc CHECK cho Status
+                entity.HasCheckConstraint("CHK_Blogs_Status", "Status IN ('Active', 'Inactive')");
+
+                // Định nghĩa khóa ngoại cho CreatedBy
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(e => e.CreatedBy)
+                    .OnDelete(DeleteBehavior.Restrict) // Tránh xóa cascade nếu User bị xóa
+                    .HasConstraintName("FK_Blogs_Users_CreatedBy");
+
+                // Navigation property cho CreatedByUser
+                entity.HasOne(b => b.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(b => b.CreatedBy)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
  
         }
     }

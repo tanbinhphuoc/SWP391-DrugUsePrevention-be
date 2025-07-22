@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DrugUsePreventionAPI.Models.Entities
 {
@@ -15,20 +15,20 @@ namespace DrugUsePreventionAPI.Models.Entities
         public string Content { get; set; }
 
         [Required]
-        public int AuthorID { get; set; }
+        public int CreatedBy { get; set; }
 
         [Required]
         public DateTime PublishDate { get; set; }
 
         [Required]
         [MaxLength(10)]
-        public string Status { get; set; } = "PENDING";
+        public string Status { get; set; } = "Active";
 
         public string? Thumbnail { get; set; }
 
         public string? AuthorAvatar { get; set; }
 
         // Navigation properties
-        public virtual User Author { get; set; }
+        public virtual User CreatedByUser { get; set; }
     }
 }
