@@ -59,6 +59,15 @@ namespace DrugUsePreventionAPI.Repositories
              .ToListAsync();
         }
 
+        public async Task<int> CountByCourseIdAndStatusAsync(int courseId, IEnumerable<string> statuses)
+        {
+            return await _context.CourseRegistrations
+                .Where(r => r.CourseID == courseId && statuses.Contains(r.Status))
+                .CountAsync();
+        }
+
+
+
 
 
     }

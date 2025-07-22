@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Controllers.Data;
+using DrugUsePreventionAPI.Models.DTOs.Course;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,7 @@ namespace DrugUsePreventionAPI.Repositories
                 .Where(c => completedCourseIds.Contains(c.CourseID) && !c.IsDeleted) 
                 .ToListAsync();
         }
+
 
     }
 

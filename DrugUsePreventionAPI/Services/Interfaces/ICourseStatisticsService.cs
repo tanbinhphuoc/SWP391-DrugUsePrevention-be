@@ -8,7 +8,6 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<List<CourseUserStatisticsDto>> GetCourseUserStatisticsAsync();
         Task<List<CourseImpactDto>> GetCoursesWithHighestImpactAsync();
         Task<CourseRevenueStatisticsDto> GetRevenueStatisticsAsync();
-        Task<ChartDataDto> GetChartStatisticsAsync();
     }
 
 }

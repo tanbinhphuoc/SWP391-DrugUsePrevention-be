@@ -32,6 +32,7 @@ public class CourseService : ICourseService
             if (duplicateName.Any())
                 throw new BusinessRuleViolationException($"Tên khóa học '{courseDto.CourseName}' đã tồn tại.");
 
+
             var course = new Course
             {
                 CourseName = courseDto.CourseName,
