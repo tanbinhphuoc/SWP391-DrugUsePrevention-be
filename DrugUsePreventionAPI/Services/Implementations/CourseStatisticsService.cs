@@ -42,15 +42,6 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return await _repository.GetRevenueStatisticsAsync();
         }
 
-        public async Task<ChartDataDto> GetChartStatisticsAsync()
-        {
-            return new ChartDataDto
-            {
-                EnrollmentOverTime = await _repository.GetEnrollmentDistributionOverTimeAsync(),
-                CompletionTrend = await _repository.GetCompletionTrendAsync(),
-                TargetAudienceRatio = await _repository.GetTargetAudienceRatioAsync()
-            };
-        }
     }
 
 
