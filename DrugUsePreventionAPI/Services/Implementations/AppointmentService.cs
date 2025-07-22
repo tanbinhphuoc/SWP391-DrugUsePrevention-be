@@ -823,6 +823,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             await _unitOfWork.Appointments.AddAsync(appointment);
             await _unitOfWork.SaveChangesAsync();
 
+            var savedAppointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointment.AppointmentID);
             var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
             Log.Information("Free appointment {AppointmentId} created", appointment.AppointmentID);
             return appointmentDto;
