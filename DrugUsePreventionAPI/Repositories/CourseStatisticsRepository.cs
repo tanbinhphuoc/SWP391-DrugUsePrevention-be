@@ -171,9 +171,6 @@ namespace DrugUsePreventionAPI.Repositories
 
 
 
-
-
-
         public async Task<List<TimePointValueDto>> GetEnrollmentDistributionOverTimeAsync()
         {
             return await _context.CourseRegistrations

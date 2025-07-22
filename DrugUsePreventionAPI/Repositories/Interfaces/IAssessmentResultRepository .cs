@@ -6,5 +6,7 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces {
         Task<AssessmentResult?> GetLatestResultByUserAsync(int userId);
         Task<AssessmentResult> GetAssessmentResultByUserAsync(int userId, string assessmentStage);
         Task<IEnumerable<AssessmentResult>> GetByUserIdAsync(int userId);
+        Task<AssessmentResult?> GetAssessmentResultByUsersAsync(int userId, int assessmentId);
+        Task<int> GetAttemptCountByUserAsync(int userId, int assessmentId);
     }
 }

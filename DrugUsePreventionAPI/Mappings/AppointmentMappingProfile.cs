@@ -11,7 +11,8 @@ namespace DrugUsePreventionAPI.Mappings
         {
             CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dest => dest.ConsultantName, opt => opt.MapFrom(src => src.Consultant != null && src.Consultant.User != null ? src.Consultant.User.FullName : null))
-                .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : null));
+                .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : null))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.User != null ? src.User.UserID : 0));
 
             CreateMap<BookAppointmentDto, Appointment>();
 

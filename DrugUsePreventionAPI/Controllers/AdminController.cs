@@ -127,7 +127,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPut("users/{id}/SetStatusForUser")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> ToggleUserStatus(int id, [FromBody] string newStatus)
         {
             try

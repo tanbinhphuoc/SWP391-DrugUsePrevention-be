@@ -46,7 +46,7 @@ namespace DrugUsePreventionAPI.Controllers
         }
 
         [HttpPost("admin/create-user")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateUserByAdmin([FromBody] CreateUserByAdminDto dto)
         {
             try

@@ -65,10 +65,10 @@ namespace DrugUsePreventionAPI.Controllers
                     var result = await _courseRegistrationService.ConfirmPaymentAsync(courseRegistrationId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
                     // Nếu thanh toán thành công, redirect đến trang khóa học, nếu thất bại thì redirect với thông báo lỗi
-                    string redirectUrl = $"http://localhost:5173/member-dashboard?tab=courses&vnp_ResponseCode={vnpayResponseCode}&courseId={courseRegistrationId}";
+                    string redirectUrl = $"http://localhost:5173/UserCourses";
                     if (vnpayResponseCode != "00") // Nếu lỗi
                     {
-                        redirectUrl = $"http://localhost:5173/member-dashboard?tab=courses&vnp_ResponseCode={vnpayResponseCode}&courseId={courseRegistrationId}";
+                        redirectUrl = $"http://localhost:5173/UserCourses";
                     }
                     return Redirect(redirectUrl);
                 }
@@ -79,8 +79,8 @@ namespace DrugUsePreventionAPI.Controllers
 
                     // Check response code for failure (e.g., 24)
                     string redirectUrl = vnpayResponseCode == "00"
-                        ? $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode={vnpayResponseCode}&appointmentId={appointmentId}"
-                        : $"http://localhost:5173/member-dashboard?tab=appointments&vnp_ResponseCode=24&appointmentId={appointmentId}"; // Adjust for failure response code
+                        ? $"http://localhost:5173/UserAppointments"
+                        : $"http://localhost:5173/UserAppointments"; // Adjust for failure response code
                     return Redirect(redirectUrl);
                 }
             }
