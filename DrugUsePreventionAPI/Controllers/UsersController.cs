@@ -123,7 +123,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPut("{id}/AdminUpdateProfileUser")]
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff,Manager")]
         public async Task<IActionResult> UpdateMemberProfile(int id, [FromBody] UpdateUserProfileDto updateUserProfileDto)
         {
             try
