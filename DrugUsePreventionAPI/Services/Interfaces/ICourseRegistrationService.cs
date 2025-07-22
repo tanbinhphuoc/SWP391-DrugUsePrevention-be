@@ -7,6 +7,7 @@ namespace DrugUsePreventionAPI.Services.Interfaces
         Task<(CourseRegistrationDto registration, string paymentUrl)> RegisterCourseAsync(RegisterCourseDto dto, int userId, string clientIp, HttpContext context);
         Task<CourseRegistrationDto> ConfirmPaymentAsync(int courseRegistrationId, string transactionId, string responseCode, HttpContext context);
         Task<IEnumerable<CourseRegistrationDto>> GetUserRegistrationsAsync(int userId);
+
     }
 
 }

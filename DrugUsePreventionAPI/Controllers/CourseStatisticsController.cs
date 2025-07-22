@@ -43,12 +43,6 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("charts")]
-        public async Task<IActionResult> GetChartStatistics()
-        {
-            var result = await _courseStatisticsService.GetChartStatisticsAsync();
-            return Ok(result);
-        }
     }
 
 }
