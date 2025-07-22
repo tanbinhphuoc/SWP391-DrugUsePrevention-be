@@ -82,6 +82,7 @@ namespace DrugUsePreventionAPI.Repositories
         {
             return await _context.Consultants
                 .Include(c => c.User)
+                .Include(c => c.Certificate)
                 .Where(c => c.User.Status == status)
                 .ToListAsync();
         }
