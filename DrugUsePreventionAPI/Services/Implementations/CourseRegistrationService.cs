@@ -103,7 +103,6 @@
             // Xử lý đăng ký khóa học miễn phí (course.Price == 0)
             if (course.Price == 0)
             {
-                // ✅ XỬ LÝ KHÓA HỌC MIỄN PHÍ: Không cần tạo URL thanh toán
                 return (_mapper.Map<CourseRegistrationDto>(registration), null);
             }
 

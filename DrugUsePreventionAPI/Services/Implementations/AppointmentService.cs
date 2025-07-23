@@ -683,11 +683,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<IEnumerable<AppointmentDto>> GetConsultantAppointmentsAsync(int consultantId)
         {
             Log.Information("Retrieving appointments for consultant {ConsultantId}", consultantId);
+
             var appointments = await _unitOfWork.Appointments.GetByConsultantIdAsync(consultantId);
+
             var result = _mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+
             Log.Information("Retrieved {Count} appointments for consultant {ConsultantId}", result.Count(), consultantId);
             return result;
         }
+
 
         public async Task<IEnumerable<PaymentHistoryDto>> GetPaymentHistoryAsync(int userId, bool isAdmin, DateTime? startDate, DateTime? endDate)
         {
@@ -748,6 +752,241 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return result;
         }
 
+        public async Task<AppointmentDto> BookFreeAppointmentAsync(BookAppointmentDto bookDto, int userId)
+        {
+            Log.Information("Booking free appointment for user {UserId} with consultant {ConsultantId}", userId, bookDto.ConsultantId);
+
+            if (bookDto.ScheduleIds == null || !bookDto.ScheduleIds.Any())
+            {
+                Log.Warning("No schedule IDs provided for free appointment");
+                throw new BusinessRuleViolationException("At least one schedule ID is required.");
+            }
+            int durationHours = bookDto.ScheduleIds.Count;
+            if (durationHours < 1 || durationHours > 3)
+            {
+                Log.Warning("Invalid duration {DurationHours} hours for free appointment", durationHours);
+                throw new BusinessRuleViolationException("Duration must be between 1 and 3 hours.");
+            }
+
+            var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAsync(bookDto.ConsultantId);
+            if (consultant == null || consultant.User?.Status != "Active")
+            {
+                Log.Warning("Consultant {ConsultantId} not found or inactive", bookDto.ConsultantId);
+                throw new EntityNotFoundException("Consultant", bookDto.ConsultantId);
+            }
+
+            var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(bookDto.ScheduleIds);
+            if (schedules.Count != durationHours || schedules.Any(s => s.ConsultantID != bookDto.ConsultantId || !s.IsAvailable))
+            {
+                Log.Warning("Invalid or non-consecutive schedules for consultant {ConsultantId}", bookDto.ConsultantId);
+                throw new BusinessRuleViolationException("Selected schedules are invalid or not consecutive.");
+            }
+            var orderedSchedules = schedules.OrderBy(s => s.ScheduleID).ToList();
+            for (int i = 0; i < orderedSchedules.Count - 1; i++)
+            {
+                var current = orderedSchedules[i];
+                var next = orderedSchedules[i + 1];
+                if (current.Date != next.Date || current.EndTime != next.StartTime)
+                {
+                    Log.Warning("Schedules are not consecutive for consultant {ConsultantId}", bookDto.ConsultantId);
+                    throw new BusinessRuleViolationException("Schedules must be consecutive.");
+                }
+            }
+
+            var startDateTime = new DateTime(orderedSchedules[0].Date.Year, orderedSchedules[0].Date.Month, orderedSchedules[0].Date.Day,
+                                           orderedSchedules[0].StartTime.Hours, orderedSchedules[0].StartTime.Minutes, 0);
+            var endDateTime = new DateTime(orderedSchedules[durationHours - 1].Date.Year, orderedSchedules[durationHours - 1].Date.Month,
+                                          orderedSchedules[durationHours - 1].Date.Day, orderedSchedules[durationHours - 1].EndTime.Hours,
+                                          orderedSchedules[durationHours - 1].EndTime.Minutes, 0);
+
+            var isOverlapping = await _unitOfWork.Appointments.IsTimeSlotBookedAsync(bookDto.ConsultantId, startDateTime, endDateTime);
+            if (isOverlapping)
+            {
+                Log.Warning("Time slot is already booked for consultant {ConsultantId}", bookDto.ConsultantId);
+                throw new BusinessRuleViolationException("Selected time slot is already booked.");
+            }
+
+            var appointment = new Appointment
+            {
+                UserID = userId,
+                ConsultantID = bookDto.ConsultantId,
+                StartDateTime = startDateTime,
+                EndDateTime = endDateTime,
+                Price = 0, // Free appointment
+                Status = "PENDING",
+                Note = bookDto.Note,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                ScheduleIds = string.Join(",", bookDto.ScheduleIds)
+            };
+
+            await _unitOfWork.Appointments.AddAsync(appointment);
+            await _unitOfWork.SaveChangesAsync();
+
+            var savedAppointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointment.AppointmentID);
+            var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
+            Log.Information("Free appointment {AppointmentId} created", appointment.AppointmentID);
+            return appointmentDto;
+        }
+
+        public async Task<AppointmentDto> ConfirmFreeAppointmentAsync(int appointmentId, int confirmerId)
+        {
+            Log.Information("Confirming free appointment {AppointmentId} by UserID={ConfirmerId}", appointmentId, confirmerId);
+
+            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
+            if (appointment == null)
+            {
+                Log.Warning("Appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Appointment", appointmentId);
+            }
+
+            if (appointment.Status != "PENDING")
+            {
+                Log.Warning("Appointment {AppointmentId} is not in PENDING status", appointmentId);
+                throw new InvalidOperationException("Only PENDING appointments can be confirmed.");
+            }
+
+            var confirmer = await _unitOfWork.Users.GetByIdAsync(confirmerId);
+            if (confirmer == null)
+            {
+                Log.Warning("Confirmer UserID={ConfirmerId} not found", confirmerId);
+                throw new EntityNotFoundException("User", confirmerId);
+            }
+
+            var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(confirmerId);
+            var isStaff = confirmer.Role.RoleName == "Staff";
+            if (consultant == null && !isStaff)
+            {
+                Log.Warning("UserID={ConfirmerId} is neither a consultant nor staff", confirmerId);
+                throw new UnauthorizedAccessException("Only consultants or staff can confirm appointments.");
+            }
+
+            if (consultant != null && consultant.ConsultantID != appointment.ConsultantID)
+            {
+                Log.Warning("Consultant UserID={ConfirmerId} is not assigned to appointment {AppointmentId}", confirmerId, appointmentId);
+                throw new UnauthorizedAccessException("You can only confirm your own appointments.");
+            }
+
+            appointment.Status = "CONFIRMED";
+            appointment.UpdatedAt = DateTime.UtcNow;
+
+            var scheduleIds = appointment.ScheduleIds?.Split(',').Select(int.Parse).ToList() ?? new List<int>();
+            if (scheduleIds.Any())
+            {
+                var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(scheduleIds);
+                foreach (var schedule in schedules)
+                {
+                    schedule.IsAvailable = false;
+                    _unitOfWork.ConsultantSchedules.Update(schedule);
+                }
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var member = appointment.User;
+            if (member == null)
+            {
+                Log.Warning("Member not found for appointment {AppointmentId}", appointmentId);
+                throw new EntityNotFoundException("User", appointment.UserID);
+            }
+
+            var consultantEntity = appointment.Consultant;
+            if (consultantEntity == null || string.IsNullOrEmpty(consultantEntity.GoogleMeetLink))
+            {
+                Log.Warning("Consultant {ConsultantId} not found or no Google Meet link", appointment.ConsultantID);
+                throw new BusinessRuleViolationException("Consultant has no Google Meet link configured.");
+            }
+
+            var meetLink = consultantEntity.GoogleMeetLink;
+
+            var subjectMember = $"Free Appointment Confirmation - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+            var bodyMember = BuildMemberEmailBody(appointment, consultantEntity.User, meetLink);
+            await _emailService.SendEmailAsync(member.Email, subjectMember, bodyMember, true);
+
+            var subjectConsultant = $"New Free Appointment Notification - {appointment.StartDateTime:dd/MM/yyyy HH:mm}";
+            var bodyConsultant = BuildConsultantEmailBody(appointment, member, meetLink);
+            await _emailService.SendEmailAsync(consultantEntity.User.Email, subjectConsultant, bodyConsultant, true);
+
+            var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
+            Log.Information("Free appointment {AppointmentId} confirmed", appointmentId);
+            return appointmentDto;
+        }
+
+        public async Task CancelAppointmentAsync(int appointmentId, int userId, string userRole)
+        {
+            Log.Information("Canceling appointment {AppointmentId} by UserID={UserId} with role {UserRole}", appointmentId, userId, userRole);
+
+            var appointment = await _unitOfWork.Appointments.GetAppointmentWithDetailsAsync(appointmentId);
+            if (appointment == null)
+            {
+                Log.Warning("Appointment {AppointmentId} not found", appointmentId);
+                throw new EntityNotFoundException("Appointment", appointmentId);
+            }
+
+            if (appointment.Status == "CANCELED")
+            {
+                Log.Warning("Appointment {AppointmentId} is already canceled", appointmentId);
+                throw new InvalidOperationException("Appointment is already canceled.");
+            }
+
+            var isMember = userRole == "Member";
+            var isConsultant = userRole == "Consultant";
+            var isStaff = userRole == "Staff";
+
+            if (isMember && appointment.UserID != userId)
+            {
+                Log.Warning("UserID={UserId} is not authorized to cancel appointment {AppointmentId}", userId, appointmentId);
+                throw new UnauthorizedAccessException("You can only cancel your own appointments.");
+            }
+
+            if (isConsultant)
+            {
+                var Consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
+                if (Consultant == null || Consultant.ConsultantID != appointment.ConsultantID)
+                {
+                    Log.Warning("Consultant UserID={UserId} is not assigned to appointment {AppointmentId}", userId, appointmentId);
+                    throw new UnauthorizedAccessException("You can only cancel your own appointments.");
+                }
+            }
+
+            if (isMember && appointment.StartDateTime < DateTime.UtcNow.AddHours(1))
+            {
+                Log.Warning("Member attempted to cancel appointment {AppointmentId} less than 1 hour before start time", appointmentId);
+                throw new InvalidOperationException("Members cannot cancel appointments less than 1 hour before the start time.");
+            }
+
+            appointment.Status = "CANCELED";
+            appointment.CanceledByRole = userRole; // Lưu vai trò hủy
+            appointment.UpdatedAt = DateTime.UtcNow;
+
+            var scheduleIds = appointment.ScheduleIds?.Split(',').Select(int.Parse).ToList() ?? new List<int>();
+            if (scheduleIds.Any())
+            {
+                var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(scheduleIds);
+                foreach (var schedule in schedules)
+                {
+                    schedule.IsAvailable = isMember; // Mở lại khung giờ nếu Member hủy, giữ false nếu Consultant/Staff hủy
+                    _unitOfWork.ConsultantSchedules.Update(schedule);
+                }
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var member = appointment.User;
+            var consultant = appointment.Consultant;
+            var appointmentTime = appointment.StartDateTime;
+
+            var subjectMember = $"Appointment Canceled - {appointmentTime:dd/MM/yyyy HH:mm}";
+            var bodyMember = BuildCancellationEmailBody(appointment, member, consultant, appointmentTime);
+            await _emailService.SendEmailAsync(member.Email, subjectMember, bodyMember, true);
+
+            var subjectConsultant = $"Appointment Canceled - {appointmentTime:dd/MM/yyyy HH:mm}";
+            var bodyConsultant = BuildConsultantCancellationEmailBody(appointment, member, appointmentTime);
+            await _emailService.SendEmailAsync(consultant.User.Email, subjectConsultant, bodyConsultant, true);
+
+            Log.Information("Appointment {AppointmentId} canceled by UserID={UserId}", appointmentId, userId);
+        }
+
         public async Task UpdateAppointmentStatusAsync(int appointmentId, string newStatus)
         {
             Log.Information("Updating status for appointment {AppointmentId} to {NewStatus}", appointmentId, newStatus);
@@ -759,10 +998,10 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new EntityNotFoundException("Appointment", appointmentId);
             }
 
-            if (!new[] { "PENDING_PAYMENT", "CONFIRMED", "CANCELED" }.Contains(newStatus))
+            if (!new[] { "PENDING", "PENDING_PAYMENT", "CONFIRMED", "CANCELED" }.Contains(newStatus))
             {
                 Log.Warning("Invalid status {NewStatus} for appointment {AppointmentId}", newStatus, appointmentId);
-                throw new BusinessRuleViolationException("Invalid status. Allowed values: PENDING_PAYMENT, CONFIRMED, CANCELED.");
+                throw new BusinessRuleViolationException("Invalid status. Allowed values: PENDING, PENDING_PAYMENT, CONFIRMED, CANCELED.");
             }
 
             appointment.Status = newStatus;
