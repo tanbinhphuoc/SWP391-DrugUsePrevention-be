@@ -17,9 +17,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<AssessmentResultResponseDto> CreateInputAssessmentResult(CreateInputAssessmentResultDto dto)
         {
-            int score = 0;
-
             // Tính tổng điểm thực tế từ các câu trả lời người dùng chọn
+            int score = 0;
             foreach (var item in dto.AnswerOptionId)
             {
                 var answer = await _unitOfWork.AnswerOptions.GetByIdAsync(item);
@@ -30,7 +29,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                     score += answer.ScoreValue.Value;
             }
 
-            //  Tính tổng điểm tối đa của toàn bộ bài đánh giá
+            // Tính tổng điểm tối đa của toàn bộ bài đánh giá
             var questions = await _unitOfWork.Questions.FindAsync(q =>
                 q.AssessmentID == dto.AssessmentId && !q.IsDeleted);
 
@@ -42,37 +41,55 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 maxScore += answers.Max(a => a.ScoreValue ?? 0);
             }
 
-            //  Chuyển sang thang điểm 10
+            // Chuyển sang thang điểm 10
             int finalScore = maxScore == 0 ? 0 : (int)Math.Round((double)score / maxScore * 10);
 
-            //  Xóa kết quả cũ của User + Assessment + Stage
-            var oldResults = await _unitOfWork.AssessmentResults.FindAsync(r =>
-                r.UserID == dto.UserId &&
-                r.AssessmentID == dto.AssessmentId);
+            // Lấy số lần người dùng đã thực hiện bài đánh giá này từ repository
+            var attemptCount = await _unitOfWork.AssessmentResults.GetAttemptCountByUserAsync(dto.UserId, dto.AssessmentId);
 
-            if (oldResults.Any())
-                _unitOfWork.AssessmentResults.RemoveRange(oldResults);
+            // Kiểm tra xem đã có kết quả trước đó chưa
+            var existingResult = await _unitOfWork.AssessmentResults.GetAssessmentResultByUsersAsync(dto.UserId, dto.AssessmentId);
 
-            //  Tạo mới kết quả
-            var result = new AssessmentResult
+            if (existingResult != null)
             {
-                UserID = dto.UserId,
-                AssessmentID = dto.AssessmentId,
-                Score = finalScore,
-                TakeTime = DateTime.Now,
-                ResultName = $"Bạn đã hoàn thành bài đánh giá đầu vào với {finalScore} điểm!",
-                CourseID = null
-            };
+                // Nếu có kết quả trước đó, cập nhật lại điểm
+                existingResult.Score = finalScore;
+                existingResult.TakeTime = DateTime.Now;
+                existingResult.ResultName = $"Bạn đã hoàn thành bài đánh giá đầu vào lần thứ {attemptCount} với {finalScore} điểm!";
 
-            await _unitOfWork.AssessmentResults.AddAsync(result);
-            await _unitOfWork.SaveChangesAsync();
+                _unitOfWork.AssessmentResults.Update(existingResult);
+                await _unitOfWork.SaveChangesAsync();
 
-            return new AssessmentResultResponseDto
+                return new AssessmentResultResponseDto
+                {
+                    Message = existingResult.ResultName,
+                    Score = finalScore
+                };
+            }
+            else
             {
-                Message = result.ResultName,
-                Score = finalScore
-            };
+                // Nếu chưa có kết quả, tạo mới kết quả
+                var result = new AssessmentResult
+                {
+                    UserID = dto.UserId,
+                    AssessmentID = dto.AssessmentId,
+                    Score = finalScore,
+                    TakeTime = DateTime.Now,
+                    ResultName = $"Bạn đã hoàn thành bài đánh giá đầu vào lần thứ {attemptCount + 1} với {finalScore} điểm!", // Tăng số lần hoàn thành
+                    CourseID = null
+                };
+
+                await _unitOfWork.AssessmentResults.AddAsync(result);
+                await _unitOfWork.SaveChangesAsync();
+
+                return new AssessmentResultResponseDto
+                {
+                    Message = result.ResultName,
+                    Score = finalScore
+                };
+            }
         }
+
 
         public async Task<AssessmentResultResponseDto> CreateOutputAssessmentResult(CreateOutputAssessmentResultDto dto)
         {

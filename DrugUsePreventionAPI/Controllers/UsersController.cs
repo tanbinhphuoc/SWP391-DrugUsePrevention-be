@@ -123,7 +123,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpPut("{id}/AdminUpdateProfileUser")]
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff,Manager")]
         public async Task<IActionResult> UpdateMemberProfile(int id, [FromBody] UpdateUserProfileDto updateUserProfileDto)
         {
             try
@@ -183,7 +183,7 @@ namespace DrugUsePreventionAPI.Controllers
 
 
         [HttpGet("GetMemberProfileWithFullOption")]
-        [Authorize(Roles = "Admin,Manager,Staff,Consultant")]
+        [Authorize(Roles = "Admin,Manager,Staff,Consultant,Member")]
         public async Task<IActionResult> GetMemberProfileForConsultantAsync(int userId)
         {
             try
