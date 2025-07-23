@@ -13,6 +13,7 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string? ScheduleIds { get; set; } // New field to store scheduleIDs
+        public string? CanceledByRole { get; set; }
         public User? User { get; set; }
         public Consultant? Consultant { get; set; }
         public ICollection<Payment>? Payments { get; set; }

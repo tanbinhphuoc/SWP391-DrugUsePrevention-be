@@ -956,6 +956,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
 
             appointment.Status = "CANCELED";
+            appointment.CanceledByRole = userRole; // Lưu vai trò hủy
             appointment.UpdatedAt = DateTime.UtcNow;
 
             var scheduleIds = appointment.ScheduleIds?.Split(',').Select(int.Parse).ToList() ?? new List<int>();
@@ -964,7 +965,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 var schedules = await _unitOfWork.ConsultantSchedules.GetByIdsAsync(scheduleIds);
                 foreach (var schedule in schedules)
                 {
-                    schedule.IsAvailable = isMember; // Reopen slot if canceled by member, keep unavailable if canceled by consultant/staff
+                    schedule.IsAvailable = isMember; // Mở lại khung giờ nếu Member hủy, giữ false nếu Consultant/Staff hủy
                     _unitOfWork.ConsultantSchedules.Update(schedule);
                 }
             }
