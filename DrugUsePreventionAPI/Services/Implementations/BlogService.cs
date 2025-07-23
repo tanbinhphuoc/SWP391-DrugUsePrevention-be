@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DrugUsePreventionAPI.Services
+namespace DrugUsePreventionAPI.Services.Implementations
 {
     public class BlogService : IBlogService
     {
