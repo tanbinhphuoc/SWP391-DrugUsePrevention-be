@@ -2,7 +2,7 @@
 
 namespace DrugUsePreventionAPI.Models.Entities
 {
-    public class UserCourseProgresses
+    public class UserCourseProgress
     {
         [Key]
         public int UserCourseProgressesID { get; set; }
