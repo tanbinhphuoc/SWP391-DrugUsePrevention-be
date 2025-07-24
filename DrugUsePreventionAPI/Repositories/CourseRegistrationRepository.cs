@@ -47,16 +47,22 @@ namespace DrugUsePreventionAPI.Repositories
         }
 
 
-        public async Task<IEnumerable<CourseRegistration>> GetConfirmedAndPaidByUserIdAsync(int userId)
+        public async Task<IEnumerable<CourseRegistration>> GetConfirmedByUserIdAsync(int userId)
         {
             return await _context.CourseRegistrations
-             .Where(cr => cr.UserID == userId
-                          && cr.Status == "CONFIRMED"
-                          && cr.PaymentStatus == "SUCCESS"
-                          && cr.Course.IsDeleted == false) 
-             .Include(cr => cr.Course)
-             .Include(cr => cr.User)
-             .ToListAsync();
+             .Where(cr =>
+            cr.UserID == userId &&
+            cr.PaymentStatus == "SUCCESS" &&
+            cr.Course.IsDeleted == false &&
+            (
+                cr.Status == "FREE" ||
+                cr.Status == "CONFIRMED"
+            )
+        )
+        .Include(cr => cr.Course)
+        .Include(cr => cr.User)
+        .ToListAsync();
+
         }
 
         public async Task<int> CountByCourseIdAndStatusAsync(int courseId, IEnumerable<string> statuses)
@@ -65,10 +71,6 @@ namespace DrugUsePreventionAPI.Repositories
                 .Where(r => r.CourseID == courseId && statuses.Contains(r.Status))
                 .CountAsync();
         }
-
-
-
-
 
     }
 

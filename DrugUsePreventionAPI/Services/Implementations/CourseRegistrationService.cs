@@ -195,7 +195,7 @@
 
                 public async Task<IEnumerable<CourseRegistrationDto>> GetUserRegistrationsAsync(int userId)
                 {
-                    var items = await _unitOfWork.CourseRegistrations.GetConfirmedAndPaidByUserIdAsync(userId);
+                    var items = await _unitOfWork.CourseRegistrations.GetConfirmedByUserIdAsync(userId);
                     return _mapper.Map<IEnumerable<CourseRegistrationDto>>(items);
                 }
 
