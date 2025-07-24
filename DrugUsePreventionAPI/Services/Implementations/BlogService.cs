@@ -2,7 +2,6 @@ using DrugUsePreventionAPI.Models.DTOs.Blog;
 using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using DrugUsePreventionAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,38 +18,47 @@ namespace DrugUsePreventionAPI.Services.Implementations
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        // ✅ Lấy tất cả blog, không lọc theo status
         public async Task<IEnumerable<BlogResponseDTO>> GetBlogsAsync()
         {
-            var blogs = await _repository.GetActiveBlogsAsync();
-            return blogs.Select(b => new BlogResponseDTO
-            {
-                BlogID = b.BlogID,
-                Title = b.Title,
-                Content = b.Content,
-                CreatedBy = b.CreatedBy,
-                PublishDate = b.PublishDate,
-                Status = b.Status,
-                Thumbnail = b.Thumbnail,
-                AuthorAvatar = b.AuthorAvatar
-            });
+            var blogs = await _repository.GetAllAsync();
+            return blogs.Select(MapToDTO);
         }
 
+        // ✅ MỚI THÊM: Lọc theo trạng thái
+        public async Task<IEnumerable<BlogResponseDTO>> GetBlogsByStatusAsync(string status)
+        {
+            IEnumerable<Blog> blogs;
+
+            if (string.Equals(status, "All", StringComparison.OrdinalIgnoreCase))
+            {
+                blogs = await _repository.GetAllAsync();
+            }
+            else if (string.Equals(status, "Active", StringComparison.OrdinalIgnoreCase))
+            {
+                blogs = await _repository.GetActiveBlogsAsync();
+            }
+            else if (string.Equals(status, "Inactive", StringComparison.OrdinalIgnoreCase))
+            {
+                var allBlogs = await _repository.GetAllAsync();
+                blogs = allBlogs.Where(b => b.Status == "Inactive");
+            }
+            else
+            {
+                throw new ArgumentException("Status must be 'Active', 'Inactive', or 'All'");
+            }
+
+            return blogs.Select(MapToDTO);
+        }
+
+        // ✅ Lấy blog theo ID
         public async Task<BlogResponseDTO> GetBlogByIdAsync(int id)
         {
-            var blog = await _repository.GetByIdWithActiveStatusAsync(id);
-            return blog != null ? new BlogResponseDTO
-            {
-                BlogID = blog.BlogID,
-                Title = blog.Title,
-                Content = blog.Content,
-                CreatedBy = blog.CreatedBy,
-                PublishDate = blog.PublishDate,
-                Status = blog.Status,
-                Thumbnail = blog.Thumbnail,
-                AuthorAvatar = blog.AuthorAvatar
-            } : null;
+            var blog = await _repository.GetByIdAsync(id);
+            return blog != null ? MapToDTO(blog) : null;
         }
 
+        // ✅ Thêm blog mới
         public async Task AddBlogAsync(Blog blog)
         {
             if (blog == null)
@@ -65,6 +73,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             await _repository.AddAsync(blog);
         }
 
+        // ✅ Cập nhật blog
         public async Task<bool> UpdateBlogAsync(int id, Blog blog)
         {
             if (blog == null)
@@ -80,7 +89,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new ArgumentException("Status must be 'Active' or 'Inactive'.", nameof(blog));
 
             var existingBlog = await _repository.GetByIdAsync(id);
-            if (existingBlog == null || existingBlog.Status != "Active")
+            if (existingBlog == null)
                 return false;
 
             existingBlog.Title = blog.Title;
@@ -95,14 +104,31 @@ namespace DrugUsePreventionAPI.Services.Implementations
             return true;
         }
 
+        // ✅ Xóa mềm blog
         public async Task<bool> DeleteBlogAsync(int id)
         {
-            var blog = await _repository.GetByIdWithActiveStatusAsync(id);
+            var blog = await _repository.GetByIdAsync(id);
             if (blog == null)
                 return false;
 
             await _repository.SoftDeleteAsync(blog);
             return true;
+        }
+
+        // ✅ Hàm chuyển đổi Entity → DTO
+        private BlogResponseDTO MapToDTO(Blog b)
+        {
+            return new BlogResponseDTO
+            {
+                BlogID = b.BlogID,
+                Title = b.Title,
+                Content = b.Content,
+                CreatedBy = b.CreatedBy,
+                PublishDate = b.PublishDate,
+                Status = b.Status,
+                Thumbnail = b.Thumbnail,
+                AuthorAvatar = b.AuthorAvatar
+            };
         }
     }
 }
