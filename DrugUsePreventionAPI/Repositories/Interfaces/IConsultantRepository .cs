@@ -7,6 +7,7 @@ namespace DrugUsePreventionAPI.Repositories.Interfaces
     public interface IConsultantRepository : IGenericRepository<Consultant>
     {
         Task<IEnumerable<Consultant>> GetAvailableConsultantsAsync();
+        Task<IEnumerable<Consultant>> GetAllConsultantsAsync();
         Task<Consultant> GetConsultantWithUserAsync(int id);
         Task<Consultant> GetConsultantWithUserAndCertificateAsync(int id);
         Task<bool> HasConfirmedAppointmentsAsync(int id);
