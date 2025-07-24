@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 
 namespace DrugUsePreventionAPI.Repositories.Interfaces
 {
-    public interface IUserCourseProgressesRepository : IGenericRepository<UserCourseProgresses>
+    public interface IUserCourseProgressesRepository : IGenericRepository<UserCourseProgress>
     {
-        Task<List<UserCourseProgresses>> GetProgressByUserIdAsync(int userId);
-        Task<List<UserCourseProgresses>> GetCompletedCoursesByUserAsync(int userId);
-        Task<UserCourseProgresses> GetByUserAndCourseAsync(int userId, int courseId);
-
+        Task<List<UserCourseProgress>> GetProgressByUserIdAsync(int userId);
+        Task<List<UserCourseProgress>> GetCompletedCoursesByUserAsync(int userId);
+        Task<UserCourseProgress> GetByUserAndCourseAsync(int userId, int courseId);
     }
 }

@@ -17,15 +17,19 @@ namespace DrugUsePreventionAPI.Mappings
             CreateMap<BookAppointmentDto, Appointment>();
 
             CreateMap<Consultant, ConsultantDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "N/A"))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User != null ? src.User.Email : "N/A"))
-                .ForMember(dest => dest.Specialty, opt => opt.MapFrom(src => src.Specialty))
-                .ForMember(dest => dest.Degree, opt => opt.MapFrom(src => src.Degree))
-                .ForMember(dest => dest.HourlyRate, opt => opt.MapFrom(src => src.HourlyRate))
-                .ForMember(dest => dest.CertificateName, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.CertificateName : "N/A"))
-                .ForMember(dest => dest.DateAcquired, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.DateAcquired : (DateTime?)null))
-                .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
-                .ForMember(dest => dest.GoogleMeetLink, opt => opt.MapFrom(src => src.GoogleMeetLink));
+                 .ForMember(dest => dest.ConsultantID, opt => opt.MapFrom(src => src.ConsultantID))
+                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : ""))
+                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : ""))
+                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User != null ? src.User.Email : ""))
+                 .ForMember(dest => dest.Degree, opt => opt.MapFrom(src => src.Degree))
+                 .ForMember(dest => dest.HourlyRate, opt => opt.MapFrom(src => src.HourlyRate))
+                 .ForMember(dest => dest.Specialty, opt => opt.MapFrom(src => src.Specialty))
+                 .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
+                 .ForMember(dest => dest.CertificateName, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.CertificateName : ""))
+                 .ForMember(dest => dest.DateAcquired, opt => opt.MapFrom(src => src.Certificate != null ? src.Certificate.DateAcquired : (DateTime?)null))
+                 .ForMember(dest => dest.GoogleMeetLink, opt => opt.MapFrom(src => src.GoogleMeetLink))
+                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.User != null ? src.User.Status : "Inactive"))
+                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
 
             CreateMap<ConsultantSchedule, ConsultantScheduleDto>();
 

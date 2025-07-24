@@ -24,8 +24,9 @@ namespace DrugUsePreventionAPI.Mappings
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
 
-            // Ánh xạ cho Consultant tự cập nhật (không bao gồm UserName)
+            // Ánh xạ cho Consultant tự cập nhật 
             CreateMap<UpdateConsultantDto, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Active"))

@@ -34,19 +34,20 @@ namespace DrugUsePreventionAPI.Controllers
                 var consultant = await _consultantService.CreateConsultantAsync(createConsultantDto);
                 return CreatedAtAction(nameof(GetConsultant), new { id = consultant.ConsultantID }, new
                 {
+                    success = true, 
                     message = "Consultant created successfully.",
-                    consultant = consultant
+                    data = new { consultantID = consultant.ConsultantID, consultant } 
                 });
             }
             catch (InvalidOperationException ex)
             {
                 Serilog.Log.Error(ex, "Failed to create consultant: {Message}", ex.Message);
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { success = false, message = ex.Message });
             }
             catch (Exception ex)
             {
                 Serilog.Log.Error(ex, "Unexpected error occurred while creating the consultant: {Message}", ex.Message);
-                return StatusCode(500, new { message = "An unexpected error occurred while creating the consultant." });
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred while creating the consultant." });
             }
         }
 
@@ -61,30 +62,37 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(consultant);
         }
 
-        [HttpPut("{id}UpdateConsultant")]
+        [HttpPatch("{id}")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateConsultant(int id, [FromBody] AdminUpdateConsultantDto updateConsultantDto)
         {
             try
             {
                 var consultant = await _consultantService.UpdateConsultantAsync(id, updateConsultantDto);
-                if (consultant == null)
-                    return NotFound(new { message = "Consultant not found." });
-
                 return Ok(new
                 {
                     message = "Consultant updated successfully.",
-                    consultant = consultant
+                    consultant
                 });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Serilog.Log.Warning(ex, "Consultant with ID {ConsultantId} not found", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (DuplicateEntityException ex)
+            {
+                Serilog.Log.Warning(ex, "Duplicate entity: {Message}", ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
             catch (InvalidOperationException ex)
             {
-                Serilog.Log.Error(ex, "Failed to update consultant: {Message}", ex.Message);
+                Serilog.Log.Error(ex, "Invalid operation: {Message}", ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                Serilog.Log.Error(ex, "Unexpected error occurred while updating the consultant: {Message}", ex.Message);
+                Serilog.Log.Error(ex, "Unexpected error occurred while updating consultant: {Message}", ex.Message);
                 return StatusCode(500, new { message = "An unexpected error occurred while updating the consultant." });
             }
         }
@@ -122,13 +130,13 @@ namespace DrugUsePreventionAPI.Controllers
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null)
                 {
-                    Log.Warning("No user ID claim found in token");
+                    Serilog.Log.Warning("No user ID claim found in token");
                     return Unauthorized(new { success = false, message = "Unauthorized access. No user ID claim found." });
                 }
 
                 if (!int.TryParse(userIdClaim.Value, out int userId))
                 {
-                    Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
+                    Serilog.Log.Warning("Invalid user ID format: {UserIdClaim}", userIdClaim.Value);
                     return BadRequest(new { success = false, message = "Invalid user ID format." });
                 }
 
@@ -136,8 +144,15 @@ namespace DrugUsePreventionAPI.Controllers
                 var consultant = await _unitOfWork.Consultants.GetByUserIdAsync(userId);
                 if (consultant == null)
                 {
-                    Log.Warning("UserID={UserID} is not a consultant", userId);
+                    Serilog.Log.Warning("UserID={UserID} is not a consultant", userId);
                     return NotFound(new { success = false, message = "User is not a consultant." });
+                }
+
+                // Prevent updating userName by Consultant
+                if (updateConsultantDto.UserName != null)
+                {
+                    Serilog.Log.Warning("Consultant with UserID={UserID} attempted to update userName", userId);
+                    return BadRequest(new { success = false, message = "Consultants are not allowed to update username." });
                 }
 
                 // Update consultant profile
@@ -148,22 +163,22 @@ namespace DrugUsePreventionAPI.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                Log.Warning(ex, "Update profile failed for UserID={UserID}: {Message}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value, ex.Message);
+                Serilog.Log.Warning(ex, "Update profile failed for UserID={UserID}: {Message}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value, ex.Message);
                 return NotFound(new { success = false, message = ex.Message });
             }
             catch (DuplicateEntityException ex)
             {
-                Log.Warning(ex, "Update profile failed for UserID={UserID}: {Message}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value, ex.Message);
+                Serilog.Log.Warning(ex, "Update profile failed for UserID={UserID}: {Message}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value, ex.Message);
                 return BadRequest(new { success = false, message = ex.Message });
             }
             catch (UnauthorizedAccessException ex)
             {
-                Log.Warning(ex, "Unauthorized access for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                Serilog.Log.Warning(ex, "Unauthorized access for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 return Unauthorized(new { success = false, message = ex.Message });
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error updating consultant profile for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                Serilog.Log.Error(ex, "Error updating consultant profile for UserID={UserID}", User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 return StatusCode(500, new { success = false, message = "An unexpected error occurred while updating the consultant profile." });
             }
         }

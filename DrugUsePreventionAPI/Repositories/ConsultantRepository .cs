@@ -19,8 +19,16 @@ namespace DrugUsePreventionAPI.Repositories
             return await _context.Consultants
                 .AsNoTracking()
                 .Include(c => c.User)
+                .Include(c => c.Certificate)
                 .Where(c => c.User.Status == "Active" &&
                            _context.ConsultantSchedules.Any(s => s.ConsultantID == c.ConsultantID && s.IsAvailable))
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Consultant>> GetAllConsultantsAsync()
+        {
+            return await _context.Consultants
+                .Include(c => c.User)
+                .Include(c => c.Certificate)
                 .ToListAsync();
         }
         public override async Task<Consultant> GetByIdAsync(int id)
