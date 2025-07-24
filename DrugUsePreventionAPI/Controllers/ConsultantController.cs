@@ -61,30 +61,37 @@ namespace DrugUsePreventionAPI.Controllers
             return Ok(consultant);
         }
 
-        [HttpPut("{id}UpdateConsultant")]
+        [HttpPatch("{id}")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateConsultant(int id, [FromBody] AdminUpdateConsultantDto updateConsultantDto)
         {
             try
             {
                 var consultant = await _consultantService.UpdateConsultantAsync(id, updateConsultantDto);
-                if (consultant == null)
-                    return NotFound(new { message = "Consultant not found." });
-
                 return Ok(new
                 {
                     message = "Consultant updated successfully.",
-                    consultant = consultant
+                    consultant
                 });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Serilog.Log.Warning(ex, "Consultant with ID {ConsultantId} not found", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (DuplicateEntityException ex)
+            {
+                Serilog.Log.Warning(ex, "Duplicate entity: {Message}", ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
             catch (InvalidOperationException ex)
             {
-                Serilog.Log.Error(ex, "Failed to update consultant: {Message}", ex.Message);
+                Serilog.Log.Error(ex, "Invalid operation: {Message}", ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                Serilog.Log.Error(ex, "Unexpected error occurred while updating the consultant: {Message}", ex.Message);
+                Serilog.Log.Error(ex, "Unexpected error occurred while updating consultant: {Message}", ex.Message);
                 return StatusCode(500, new { message = "An unexpected error occurred while updating the consultant." });
             }
         }
