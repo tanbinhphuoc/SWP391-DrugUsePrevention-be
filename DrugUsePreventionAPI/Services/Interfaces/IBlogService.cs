@@ -7,7 +7,8 @@ namespace DrugUsePreventionAPI.Services.Interfaces
 {
     public interface IBlogService
     {
-        Task<IEnumerable<BlogResponseDTO>> GetBlogsAsync();
+        Task<IEnumerable<BlogResponseDTO>> GetBlogsAsync(); // Mặc định: Active
+        Task<IEnumerable<BlogResponseDTO>> GetBlogsByStatusAsync(string status);
         Task<BlogResponseDTO> GetBlogByIdAsync(int id);
         Task AddBlogAsync(Blog blog);
         Task<bool> UpdateBlogAsync(int id, Blog blog);
