@@ -20,6 +20,7 @@ namespace DrugUsePreventionAPI.Migrations
                     AssessmentName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssessmentType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    AssessmentStage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -143,28 +144,6 @@ namespace DrugUsePreventionAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserCourseProgresseses",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    CourseID = table.Column<int>(type: "int", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
-                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserCourseProgresseses", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_UserCourseProgresseses_Courses_CourseID",
-                        column: x => x.CourseID,
-                        principalTable: "Courses",
-                        principalColumn: "CourseID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -204,7 +183,8 @@ namespace DrugUsePreventionAPI.Migrations
                     CourseID = table.Column<int>(type: "int", nullable: true),
                     ResultName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Score = table.Column<double>(type: "float", nullable: false),
-                    TakeTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    TakeTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,21 +216,28 @@ namespace DrugUsePreventionAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorID = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, defaultValue: "Active"),
                     Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthorAvatar = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AuthorAvatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Blogs", x => x.BlogID);
+                    table.CheckConstraint("CHK_Blogs_Status", "Status IN ('Active', 'Inactive')");
                     table.ForeignKey(
-                        name: "FK_Blogs_Users_AuthorID",
-                        column: x => x.AuthorID,
+                        name: "FK_Blogs_Users_CreatedBy",
+                        column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Blogs_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -289,13 +276,19 @@ namespace DrugUsePreventionAPI.Migrations
                 name: "CourseRegistrations",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    CourseRegistrationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CourseID = table.Column<int>(type: "int", nullable: false),
-                    RegisterTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TransactionID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseRegistrations", x => new { x.UserID, x.CourseID });
+                    table.PrimaryKey("PK_CourseRegistrations", x => x.CourseRegistrationID);
                     table.ForeignKey(
                         name: "FK_CourseRegistrations_Courses_CourseID",
                         column: x => x.CourseID,
@@ -358,6 +351,34 @@ namespace DrugUsePreventionAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserCourseProgresses",
+                columns: table => new
+                {
+                    UserCourseProgressID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    CourseID = table.Column<int>(type: "int", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCourseProgresses", x => x.UserCourseProgressID);
+                    table.ForeignKey(
+                        name: "FK_UserCourseProgresses_Courses_CourseID",
+                        column: x => x.CourseID,
+                        principalTable: "Courses",
+                        principalColumn: "CourseID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCourseProgresses_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Appointments",
                 columns: table => new
                 {
@@ -372,7 +393,8 @@ namespace DrugUsePreventionAPI.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ScheduleIds = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ScheduleIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CanceledByRole = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -599,9 +621,14 @@ namespace DrugUsePreventionAPI.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Blogs_AuthorID",
+                name: "IX_Blogs_CreatedBy",
                 table: "Blogs",
-                column: "AuthorID");
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blogs_UserID",
+                table: "Blogs",
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ConsultantAppointmentEvaluations_AppointmentID",
@@ -638,6 +665,11 @@ namespace DrugUsePreventionAPI.Migrations
                 name: "IX_CourseRegistrations_CourseID",
                 table: "CourseRegistrations",
                 column: "CourseID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_UserID",
+                table: "CourseRegistrations",
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CourseVideos_CourseID",
@@ -695,9 +727,14 @@ namespace DrugUsePreventionAPI.Migrations
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserCourseProgresseses_CourseID",
-                table: "UserCourseProgresseses",
+                name: "IX_UserCourseProgresses_CourseID",
+                table: "UserCourseProgresses",
                 column: "CourseID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCourseProgresses_UserID",
+                table: "UserCourseProgresses",
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleID",
@@ -742,7 +779,7 @@ namespace DrugUsePreventionAPI.Migrations
                 name: "SurveyResponses");
 
             migrationBuilder.DropTable(
-                name: "UserCourseProgresseses");
+                name: "UserCourseProgresses");
 
             migrationBuilder.DropTable(
                 name: "Questions");

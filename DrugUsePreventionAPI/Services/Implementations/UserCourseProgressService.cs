@@ -1,4 +1,5 @@
 ﻿using DrugUsePreventionAPI.Models.DTO.UserCourseProgresses;
+using DrugUsePreventionAPI.Models.Entities;
 using DrugUsePreventionAPI.Repositories;
 using DrugUsePreventionAPI.Repositories.Interfaces;
 using DrugUsePreventionAPI.Services.Interfaces;
@@ -27,6 +28,22 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
             await _unitOfWork.SaveChangesAsync();
             return true;
+        }
+        public async Task EnsureUserCourseProgressExistsAsync(int userId, int courseId)
+        {
+            var existingProgress = await _unitOfWork.UserCourseProgresses.GetByUserAndCourseAsync(userId, courseId);
+            if (existingProgress == null)
+            {
+                var progress = new UserCourseProgress
+                {
+                    UserID = userId,
+                    CourseID = courseId,
+                    IsCompleted = false,
+                    CompletedAt = null
+                };
+                await _unitOfWork.UserCourseProgresses.AddAsync(progress);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

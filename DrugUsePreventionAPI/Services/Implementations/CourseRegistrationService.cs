@@ -35,8 +35,7 @@
                 throw new BusinessRuleViolationException("Khóa học này chưa mở đăng ký. Vui lòng chờ hoặc chọn khóa học khác.");
 
             // Kiểm tra số lượng đã đăng ký thành công so với Capacity
-            var currentCount = await _unitOfWork.CourseRegistrations.CountByCourseIdAndStatusAsync(dto.CourseID,new[] { "FREE", "CONFIRMED" });
-
+            var currentCount = await _unitOfWork.CourseRegistrations.CountByCourseIdAndStatusAsync(dto.CourseID, new[] { "FREE", "CONFIRMED" });
             if (currentCount >= course.Capacity)
                 throw new BusinessRuleViolationException("Khóa học đã đầy, vui lòng chọn khóa học khác.");
 
@@ -68,7 +67,12 @@
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    // Xử lý cho khóa học miễn phí
+                    // Đồng bộ UserCourseProgresses
+                    if (existing.PaymentStatus == "SUCCESS" || existing.Status == "FREE")
+                    {
+                        await EnsureUserCourseProgressExistsAsync(userId, course.CourseID);
+                    }
+
                     if (course.Price == 0)
                     {
                         return (_mapper.Map<CourseRegistrationDto>(existing), null);
@@ -100,9 +104,10 @@
             registration.TransactionID = $"COURSE-{registration.CourseRegistrationID}-{Guid.NewGuid()}";
             await _unitOfWork.SaveChangesAsync();
 
-            // Xử lý đăng ký khóa học miễn phí (course.Price == 0)
+            //Đồng bộ UserCourseProgresses cho khóa học miễn phí
             if (course.Price == 0)
             {
+                await EnsureUserCourseProgressExistsAsync(userId, course.CourseID);
                 return (_mapper.Map<CourseRegistrationDto>(registration), null);
             }
 
@@ -116,67 +121,83 @@
         }
 
 
-
-
-
         public async Task<CourseRegistrationDto> ConfirmPaymentAsync(int courseRegistrationId, string transactionId, string responseCode, HttpContext context)
+        {
+            Log.Information("Confirming payment for CourseRegistrationID: {CourseRegistrationId} with TransactionID: {TransactionId}", courseRegistrationId, transactionId);
+
+            var reg = await _unitOfWork.CourseRegistrations.GetByIdAsync(courseRegistrationId);
+            if (reg == null)
+            {
+                Log.Warning("Course registration not found with ID: {CourseRegistrationId}", courseRegistrationId);
+                throw new EntityNotFoundException("CourseRegistration", courseRegistrationId);
+            }
+
+            if (reg.TransactionID != transactionId)
+            {
+                Log.Error("TransactionID mismatch for {TransactionId}. Expected: {ExpectedTransactionId}", transactionId, reg.TransactionID);
+                throw new BusinessRuleViolationException("TransactionID does not match the CourseRegistration record.");
+            }
+
+            var callbackParams = context.Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString());
+            if (!_vnPayHelper.VerifyCallback(callbackParams))
+            {
+                Log.Warning("Invalid VNPay callback for TransactionID: {TransactionId}", transactionId);
+                throw new BusinessRuleViolationException("Invalid VNPay callback.");
+            }
+
+            if (responseCode != "00")
+            {
+                // Thanh toán thất bại
+                reg.PaymentStatus = "FAILED";
+                reg.Status = "CANCELED";
+                Log.Warning("Payment failed for TransactionID: {TransactionId} - ResponseCode: {ResponseCode}", transactionId, responseCode);
+
+                var course = await _unitOfWork.Courses.GetByIdAsync(reg.CourseID);
+                var user = await _unitOfWork.Users.GetByIdAsync(reg.UserID);
+                var subjectUser = $"Payment Failed for Course Registration - {course.CourseName}";
+                var bodyUser = BuildCourseRegistrationEmailBody(reg, user.FullName, course.CourseName, "FAILED", "Your payment was not successful. Please try again.");
+                await _emailService.SendEmailAsync(user.Email, subjectUser, bodyUser, true);
+            }
+            else
+            {
+                // Thanh toán thành công
+                reg.PaymentStatus = "SUCCESS";
+                reg.Status = "CONFIRMED";
+                Log.Information("Payment successful for TransactionID: {TransactionId}. CourseRegistrationID: {CourseRegistrationId}", transactionId, courseRegistrationId);
+
+                // Đồng bộ UserCourseProgresses
+                await EnsureUserCourseProgressExistsAsync(reg.UserID, reg.CourseID);
+
+                var course = await _unitOfWork.Courses.GetByIdAsync(reg.CourseID);
+                var user = await _unitOfWork.Users.GetByIdAsync(reg.UserID);
+                var subjectUser = $"Course Registration Successful - {course.CourseName}";
+                var bodyUser = BuildCourseRegistrationEmailBody(reg, user.FullName, course.CourseName, "CONFIRMED", "Your registration and payment were successful.");
+                await _emailService.SendEmailAsync(user.Email, subjectUser, bodyUser, true);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+            return _mapper.Map<CourseRegistrationDto>(reg);
+        }
+
+        private async Task EnsureUserCourseProgressExistsAsync(int userId, int courseId)
+        {
+            // Hàm đồng bộ UserCourseProgresses
+            var existingProgress = await _unitOfWork.UserCourseProgresses.GetByUserAndCourseAsync(userId, courseId);
+            if (existingProgress == null)
+            {
+                var newProgress = new UserCourseProgress
                 {
-                    Log.Information("Confirming payment for CourseRegistrationID: {CourseRegistrationId} with TransactionID: {TransactionId}", courseRegistrationId, transactionId);
+                    UserID = userId,
+                    CourseID = courseId,
+                    IsCompleted = false,
+                    CompletedAt = null
+                };
+                await _unitOfWork.UserCourseProgresses.AddAsync(newProgress);
+                await _unitOfWork.SaveChangesAsync();
+            }
+        }
 
-                    var reg = await _unitOfWork.CourseRegistrations.GetByIdAsync(courseRegistrationId);
-                    if (reg == null)
-                    {
-                        Log.Warning("Course registration not found with ID: {CourseRegistrationId}", courseRegistrationId);
-                        throw new EntityNotFoundException("CourseRegistration", courseRegistrationId);
-                    }
-
-                    if (reg.TransactionID != transactionId)
-                    {
-                        Log.Error("TransactionID mismatch for {TransactionId}. Expected: {ExpectedTransactionId}", transactionId, reg.TransactionID);
-                        throw new BusinessRuleViolationException("TransactionID does not match the CourseRegistration record.");
-                    }
-
-                    var callbackParams = context.Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString());
-                    if (!_vnPayHelper.VerifyCallback(callbackParams))
-                    {
-                        Log.Warning("Invalid VNPay callback for TransactionID: {TransactionId}", transactionId);
-                        throw new BusinessRuleViolationException("Invalid VNPay callback.");
-                    }
-
-                    if (responseCode != "00")
-                    {
-                        // Thanh toán thất bại
-                        reg.PaymentStatus = "FAILED";
-                        reg.Status = "CANCELED";
-                        Log.Warning("Payment failed for TransactionID: {TransactionId} - ResponseCode: {ResponseCode}", transactionId, responseCode);
-
-                        // Gửi email thông báo cho người dùng về việc thanh toán thất bại
-                        var course = await _unitOfWork.Courses.GetByIdAsync(reg.CourseID);
-                        var user = await _unitOfWork.Users.GetByIdAsync(reg.UserID);
-                        var subjectUser = $"Payment Failed for Course Registration - {course.CourseName}";
-                        var bodyUser = BuildCourseRegistrationEmailBody(reg, user.FullName, course.CourseName, "FAILED", "Your payment was not successful. Please try again.");
-                        await _emailService.SendEmailAsync(user.Email, subjectUser, bodyUser, true);
-                    }
-                    else
-                    {
-                        // Thanh toán thành công
-                        reg.PaymentStatus = "SUCCESS";
-                        reg.Status = "CONFIRMED";
-                        Log.Information("Payment successful for TransactionID: {TransactionId}. CourseRegistrationID: {CourseRegistrationId}", transactionId, courseRegistrationId);
-
-                        // Gửi email thông báo cho người dùng về việc thanh toán thành công
-                        var course = await _unitOfWork.Courses.GetByIdAsync(reg.CourseID);
-                        var user = await _unitOfWork.Users.GetByIdAsync(reg.UserID);
-                        var subjectUser = $"Course Registration Successful - {course.CourseName}";
-                        var bodyUser = BuildCourseRegistrationEmailBody(reg, user.FullName, course.CourseName, "CONFIRMED", "Your registration and payment were successful.");
-                        await _emailService.SendEmailAsync(user.Email, subjectUser, bodyUser, true);
-                    }
-
-                    await _unitOfWork.SaveChangesAsync();
-                    return _mapper.Map<CourseRegistrationDto>(reg);
-                }
-
-                private string BuildCourseRegistrationEmailBody(CourseRegistration reg, string userName, string courseName, string paymentStatus, string additionalMessage)
+        private string BuildCourseRegistrationEmailBody(CourseRegistration reg, string userName, string courseName, string paymentStatus, string additionalMessage)
                 {
                     return $@"
             <div style='font-family:Arial,sans-serif;'>

@@ -6,5 +6,6 @@ namespace DrugUsePreventionAPI.Services.Interfaces
     public interface IUserCourseProgressesService
     {
         Task<bool> MarkCourseAsCompletedAsync(UpdateUserCourseProgressesDto dto);
+        Task EnsureUserCourseProgressExistsAsync(int userId, int courseId);
     }
 }

@@ -49,7 +49,7 @@ namespace DrugUsePreventionAPI.Controllers.Data
                 .HasKey(pp => new { pp.UserID, pp.ProgramID });
 
             modelBuilder.Entity<UserCourseProgress>()
-                .HasKey(u => u.UserCourseProgressesID);
+                .HasKey(u => u.UserCourseProgressID);
             // Payment configuration
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
