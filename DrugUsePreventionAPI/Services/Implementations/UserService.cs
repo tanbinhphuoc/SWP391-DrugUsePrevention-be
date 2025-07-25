@@ -170,7 +170,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new EntityNotFoundException("User", userId);
             }
 
+            // Ngăn cập nhật UserName
+            if (updateUserProfileDto.UserName != null && updateUserProfileDto.UserName != user.UserName)
+            {
+                throw new BusinessRuleViolationException("UserName cannot be updated.");
+            }
+
             // Cập nhật các trường thông tin người dùng
+            if (updateUserProfileDto.Email != null)
+                user.Email = updateUserProfileDto.Email;
             if (updateUserProfileDto.FullName != null)
                 user.FullName = updateUserProfileDto.FullName;
             if (updateUserProfileDto.Phone != null)
@@ -179,8 +187,18 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 user.Address = updateUserProfileDto.Address;
             if (updateUserProfileDto.DateOfBirth.HasValue)
                 user.DateOfBirth = updateUserProfileDto.DateOfBirth;
-            if (updateUserProfileDto.Email != null)
-                user.Email = updateUserProfileDto.Email;
+
+            // Xử lý cập nhật Password
+            if (updateUserProfileDto.Password != null)
+            {
+                if (updateUserProfileDto.Password.Length < 8 ||
+                    !updateUserProfileDto.Password.Any(char.IsUpper) ||
+                    !updateUserProfileDto.Password.Any(char.IsDigit))
+                {
+                    throw new BusinessRuleViolationException("New password must have at least 8 characters, including uppercase and numbers.");
+                }
+                user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserProfileDto.Password);
+            }
 
             // Cập nhật thời gian sửa đổi và lưu vào cơ sở dữ liệu
             user.UpdatedAt = DateTime.UtcNow;
