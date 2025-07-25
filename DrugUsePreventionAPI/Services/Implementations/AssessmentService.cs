@@ -86,7 +86,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 AssessmentName = dto.AssessmentName,
                 Description = dto.Description,
                 AssessmentType = dto.AssessmentType,
-                IsDeleted = false
+                IsDeleted = false,
+                AssessmentStage = "Output"
             };
 
             await _unitOfWork.Assessments.AddAsync(assessment);

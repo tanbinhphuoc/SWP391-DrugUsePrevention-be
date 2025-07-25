@@ -321,16 +321,26 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new EntityNotFoundException("User", userId);
             }
 
-            // Lấy kết quả assessment stage "Input" nếu người dùng đã làm assessment
+            // Lấy latest Input result
             var latestInputResult = await _unitOfWork.AssessmentResults.GetAssessmentResultByUserAsync(userId, "Input");
+
+            // Lấy latest Output result (thêm dòng này)
+            var latestOutputResult = await _unitOfWork.AssessmentResults.GetAssessmentResultByUserAsync(userId, "Output");
 
             var result = _mapper.Map<MemberProfileDto>(user);
 
-            // Nếu đã làm assessment, thì cập nhật stage "Input"
-            if (latestInputResult != null)
+            // Ưu tiên set stage: Nếu có Output, set "Output" (không ghi đè Input). Nếu không, set "Input" nếu có.
+            if (latestOutputResult != null)
             {
-                result.AssessmentStage = "Input"; // Chỉ hiển thị "Input" nếu người dùng đã thực hiện assessment ở stage này
+                result.AssessmentStage = "Output";
             }
+            else if (latestInputResult != null)
+            {
+                result.AssessmentStage = "Input";
+            }
+            // Nếu muốn hiển thị cả hai (thêm fields mới vào DTO nếu cần), ví dụ:
+            // result.InputStageCompleted = latestInputResult != null ? "Input" : null;
+            // result.OutputStageCompleted = latestOutputResult != null ? "Output" : null;
 
             Log.Information("Retrieved member profile for user {UserName}", user.UserName);
             return result;
