@@ -131,6 +131,9 @@ namespace DrugUsePreventionAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentID"));
 
+                    b.Property<string>("CanceledByRole")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ConsultantID")
                         .HasColumnType("int");
 
@@ -222,20 +225,22 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<string>("AuthorAvatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AuthorID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(10)")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Thumbnail")
                         .HasColumnType("nvarchar(max)");
@@ -245,11 +250,19 @@ namespace DrugUsePreventionAPI.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("BlogID");
 
-                    b.HasIndex("AuthorID");
+                    b.HasIndex("CreatedBy");
 
-                    b.ToTable("Blogs");
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Blogs", t =>
+                        {
+                            t.HasCheckConstraint("CHK_Blogs_Status", "Status IN ('Active', 'Inactive')");
+                        });
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Certificate", b =>
@@ -767,13 +780,13 @@ namespace DrugUsePreventionAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgresses", b =>
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
                 {
-                    b.Property<int>("UserCourseProgressesID")
+                    b.Property<int>("UserCourseProgressID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserCourseProgressesID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserCourseProgressID"));
 
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
@@ -787,13 +800,13 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("UserCourseProgressesID");
+                    b.HasKey("UserCourseProgressID");
 
                     b.HasIndex("CourseID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserCourseProgresseses");
+                    b.ToTable("UserCourseProgresses");
                 });
 
             modelBuilder.Entity("CourseRegistration", b =>
@@ -872,13 +885,18 @@ namespace DrugUsePreventionAPI.Migrations
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Blog", b =>
                 {
-                    b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "Author")
-                        .WithMany("Blogs")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Blogs_Users_CreatedBy");
 
-                    b.Navigation("Author");
+                    b.HasOne("DrugUsePreventionAPI.Models.Entities.User", null)
+                        .WithMany("Blogs")
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("CreatedByUser");
                 });
 
             modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.Consultant", b =>
@@ -1065,7 +1083,7 @@ namespace DrugUsePreventionAPI.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgresses", b =>
+            modelBuilder.Entity("DrugUsePreventionAPI.Models.Entities.UserCourseProgress", b =>
                 {
                     b.HasOne("DrugUsePreventionAPI.Models.Entities.Course", "Course")
                         .WithMany()
