@@ -3,14 +3,18 @@
     public class ConsultantDto
     {
         public int ConsultantID { get; set; }
+        public int UserId { get; set; }
+        public string? UserName { get; set; } 
         public string? FullName { get; set; }
         public string? Email { get; set; }
-        public string? Specialty { get; set; }
         public string? Degree { get; set; }
-        public decimal HourlyRate { get; set; }
-        public string? CertificateName { get; set; }
-        public DateTime? DateAcquired { get; set; }
+        public decimal? HourlyRate { get; set; }
+        public string? Specialty { get; set; }
         public string? Experience { get; set; }
+        public string? CertificateName { get; set; }
+        public DateTime? DateAcquired { get; set; } 
         public string? GoogleMeetLink { get; set; }
+        public string? Status { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

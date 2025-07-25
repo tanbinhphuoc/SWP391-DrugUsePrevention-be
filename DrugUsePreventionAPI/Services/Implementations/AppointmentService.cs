@@ -43,7 +43,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
         public async Task<IEnumerable<ConsultantDto>> GetAvailableConsultantsAsync()
         {
             Log.Information("Retrieving available consultants");
-            var consultants = await _unitOfWork.Consultants.GetAvailableConsultantsAsync();
+            var consultants = await _unitOfWork.Consultants.GetAllConsultantsAsync();
             var result = _mapper.Map<IEnumerable<ConsultantDto>>(consultants);
             Log.Information("Retrieved {Count} available consultants", result.Count());
             return result;

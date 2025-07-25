@@ -170,7 +170,15 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new EntityNotFoundException("User", userId);
             }
 
+            // Ngăn cập nhật UserName
+            if (updateUserProfileDto.UserName != null && updateUserProfileDto.UserName != user.UserName)
+            {
+                throw new BusinessRuleViolationException("UserName cannot be updated.");
+            }
+
             // Cập nhật các trường thông tin người dùng
+            if (updateUserProfileDto.Email != null)
+                user.Email = updateUserProfileDto.Email;
             if (updateUserProfileDto.FullName != null)
                 user.FullName = updateUserProfileDto.FullName;
             if (updateUserProfileDto.Phone != null)
@@ -179,8 +187,18 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 user.Address = updateUserProfileDto.Address;
             if (updateUserProfileDto.DateOfBirth.HasValue)
                 user.DateOfBirth = updateUserProfileDto.DateOfBirth;
-            if (updateUserProfileDto.Email != null)
-                user.Email = updateUserProfileDto.Email;
+
+            // Xử lý cập nhật Password
+            if (updateUserProfileDto.Password != null)
+            {
+                if (updateUserProfileDto.Password.Length < 8 ||
+                    !updateUserProfileDto.Password.Any(char.IsUpper) ||
+                    !updateUserProfileDto.Password.Any(char.IsDigit))
+                {
+                    throw new BusinessRuleViolationException("New password must have at least 8 characters, including uppercase and numbers.");
+                }
+                user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserProfileDto.Password);
+            }
 
             // Cập nhật thời gian sửa đổi và lưu vào cơ sở dữ liệu
             user.UpdatedAt = DateTime.UtcNow;
@@ -303,16 +321,26 @@ namespace DrugUsePreventionAPI.Services.Implementations
                 throw new EntityNotFoundException("User", userId);
             }
 
-            // Lấy kết quả assessment stage "Input" nếu người dùng đã làm assessment
+            // Lấy latest Input result
             var latestInputResult = await _unitOfWork.AssessmentResults.GetAssessmentResultByUserAsync(userId, "Input");
+
+            // Lấy latest Output result (thêm dòng này)
+            var latestOutputResult = await _unitOfWork.AssessmentResults.GetAssessmentResultByUserAsync(userId, "Output");
 
             var result = _mapper.Map<MemberProfileDto>(user);
 
-            // Nếu đã làm assessment, thì cập nhật stage "Input"
-            if (latestInputResult != null)
+            // Ưu tiên set stage: Nếu có Output, set "Output" (không ghi đè Input). Nếu không, set "Input" nếu có.
+            if (latestOutputResult != null)
             {
-                result.AssessmentStage = "Input"; // Chỉ hiển thị "Input" nếu người dùng đã thực hiện assessment ở stage này
+                result.AssessmentStage = "Output";
             }
+            else if (latestInputResult != null)
+            {
+                result.AssessmentStage = "Input";
+            }
+            // Nếu muốn hiển thị cả hai (thêm fields mới vào DTO nếu cần), ví dụ:
+            // result.InputStageCompleted = latestInputResult != null ? "Input" : null;
+            // result.OutputStageCompleted = latestOutputResult != null ? "Output" : null;
 
             Log.Information("Retrieved member profile for user {UserName}", user.UserName);
             return result;

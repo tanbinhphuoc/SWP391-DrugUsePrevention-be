@@ -109,99 +109,110 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task<ConsultantDto> UpdateConsultantAsync(int id, AdminUpdateConsultantDto updateConsultantDto)
         {
-            Log.Information("Admin updating consultant with ID {ConsultantId}", id);
-            var consultant = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(id);
+            Serilog.Log.Information("Admin updating consultant with ID {ConsultantId}", id);
+
+            var consultant = await _unitOfWork.Consultants
+                .GetConsultantWithUserAndCertificateAsync(id);
+
             if (consultant == null)
             {
-                Log.Warning("Consultant with ID {ConsultantId} not found", id);
+                Serilog.Log.Warning("Consultant with ID {ConsultantId} not found", id);
                 throw new EntityNotFoundException("Consultant", id);
             }
 
-            // Check if username and email are unique (existing logic)
-            if (!string.IsNullOrEmpty(updateConsultantDto.UserName) && updateConsultantDto.UserName != consultant.User.UserName)
+            // Check for unique constraints only if fields are provided and different
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.UserName) &&
+                updateConsultantDto.UserName != consultant.User.UserName)
             {
                 if (await _unitOfWork.Users.UsernameExistsAsync(updateConsultantDto.UserName))
                 {
-                    Log.Warning("Username {UserName} already exists", updateConsultantDto.UserName);
+                    Serilog.Log.Warning("Username {UserName} already exists", updateConsultantDto.UserName);
                     throw new DuplicateEntityException("User", "Username", updateConsultantDto.UserName);
                 }
-                Log.Information("Admin updated UserName for ConsultantID={ConsultantId} from {OldUserName} to {NewUserName}", id, consultant.User.UserName, updateConsultantDto.UserName);
+                consultant.User.UserName = updateConsultantDto.UserName;
             }
 
-            if (!string.IsNullOrEmpty(updateConsultantDto.Email) && updateConsultantDto.Email != consultant.User.Email)
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.Email) &&
+                updateConsultantDto.Email != consultant.User.Email)
             {
                 if (await _unitOfWork.Users.EmailExistsAsync(updateConsultantDto.Email))
                 {
-                    Log.Warning("Email {Email} already exists", updateConsultantDto.Email);
+                    Serilog.Log.Warning("Email {Email} already exists", updateConsultantDto.Email);
                     throw new DuplicateEntityException("User", "Email", updateConsultantDto.Email);
                 }
+                consultant.User.Email = updateConsultantDto.Email;
             }
 
-            // Handle Certificate Update (avoid tracking multiple instances of the same Certificate)
-            if (!string.IsNullOrEmpty(updateConsultantDto.CertificateName))
+            // Handle Certificate Update with AsNoTracking to avoid tracking conflicts
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.CertificateName))
             {
-                // Find certificate without tracking
-                var certificate = await _unitOfWork.Certificates
-                    .FirstOrDefaultAsync(c => c.CertificateName == updateConsultantDto.CertificateName);
+                var certificate = await _unitOfWork.Certificates.FirstOrDefaultAsync(
+                    c => c.CertificateName == updateConsultantDto.CertificateName,
+                    asNoTracking: true);
 
                 if (certificate == null)
                 {
-                    // Create new certificate if not found
                     certificate = new Certificate
                     {
                         CertificateName = updateConsultantDto.CertificateName,
                         DateAcquired = updateConsultantDto.DateAcquired ?? DateTime.UtcNow
                     };
                     await _unitOfWork.Certificates.AddAsync(certificate);
+                    await _unitOfWork.SaveChangesAsync(); // Save to generate CertificateID
                 }
-                else if (updateConsultantDto.DateAcquired.HasValue)
-                {
-                    // Avoid reattaching the same certificate, handle tracked entity explicitly
-                    var trackedCertificate = _unitOfWork.GetContext().ChangeTracker.Entries<Certificate>()
-                        .FirstOrDefault(e => e.Entity.CertificateID == certificate.CertificateID)?.Entity;
-
-                    if (trackedCertificate != null)
-                    {
-                        _unitOfWork.GetContext().Entry(trackedCertificate).State = EntityState.Detached; // Detach tracked instance
-                    }
-
-                    // Update the DateAcquired for the certificate
-                    certificate.DateAcquired = updateConsultantDto.DateAcquired.Value;
-                }
-
-                // Assign the certificate ID to the consultant
                 consultant.CertificateID = certificate.CertificateID;
             }
 
-            // Map updates to user and consultant
-            _mapper.Map(updateConsultantDto, consultant.User);
-            _mapper.Map(updateConsultantDto, consultant);
+            // Update only provided fields
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.FullName))
+                consultant.User.FullName = updateConsultantDto.FullName;
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.Degree))
+                consultant.Degree = updateConsultantDto.Degree;
+            if (updateConsultantDto.HourlyRate.HasValue)
+                consultant.HourlyRate = updateConsultantDto.HourlyRate.Value;
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.Specialty))
+                consultant.Specialty = updateConsultantDto.Specialty;
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.Experience))
+                consultant.Experience = updateConsultantDto.Experience;
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.GoogleMeetLink))
+                consultant.GoogleMeetLink = updateConsultantDto.GoogleMeetLink;
 
             // Handle password change
-            if (!string.IsNullOrEmpty(updateConsultantDto.Password))
+            if (!string.IsNullOrWhiteSpace(updateConsultantDto.Password))
             {
                 if (updateConsultantDto.Password.Length < 8 ||
                     !updateConsultantDto.Password.Any(char.IsUpper) ||
                     !updateConsultantDto.Password.Any(char.IsDigit))
                 {
-                    Log.Warning("Password does not meet requirements for ConsultantID={ConsultantId}", id);
+                    Serilog.Log.Warning("Password does not meet requirements for ConsultantID={ConsultantId}", id);
                     throw new InvalidOperationException("Password must have at least 8 characters, including uppercase and numbers.");
                 }
-                Log.Information("Admin updated Password for ConsultantID={ConsultantId}", id);
+                Serilog.Log.Information("Updating Password for ConsultantID={ConsultantId}", id);
                 consultant.User.Password = BCrypt.Net.BCrypt.HashPassword(updateConsultantDto.Password);
             }
 
+            // Update timestamps
             consultant.UpdatedAt = DateTime.UtcNow;
             consultant.User.UpdatedAt = DateTime.UtcNow;
 
             _unitOfWork.Consultants.Update(consultant);
             await _unitOfWork.SaveChangesAsync();
 
-            // Reload consultant to ensure latest data
-            var result = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(id);
-            return _mapper.Map<ConsultantDto>(result);
-        }
+            // Reload consultant with all related data
+            var updatedConsultant = await _unitOfWork.Consultants
+                .GetConsultantWithUserAndCertificateAsync(id);
+            var consultantDto = _mapper.Map<ConsultantDto>(updatedConsultant);
 
+            // Explicitly set additional fields
+            consultantDto.UserName = updatedConsultant.User?.UserName ?? "";
+            consultantDto.FullName = updatedConsultant.User?.FullName ?? "";
+            consultantDto.Email = updatedConsultant.User?.Email ?? "";
+            consultantDto.CertificateName = updatedConsultant.Certificate?.CertificateName ?? "";
+            consultantDto.DateAcquired = updatedConsultant.Certificate?.DateAcquired;
+            consultantDto.Status = updatedConsultant.User?.Status ?? "Inactive";
+
+            return consultantDto;
+        }
 
         public async Task<bool> DeleteConsultantAsync(int id)
         {
@@ -278,25 +289,25 @@ namespace DrugUsePreventionAPI.Services.Implementations
         */
         public async Task<ConsultantDto> UpdateConsultantProfileAsync(int userId, UpdateConsultantDto updateConsultantDto, bool isAdmin = false)
         {
-            Log.Information("Updating consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
+            Serilog.Log.Information("Updating consultant profile for UserID={UserId} by {Role}", userId, isAdmin ? "Admin" : "Consultant");
 
             var consultant = await _unitOfWork.Consultants.GetByUserIdTrackedAsync(userId);
             if (consultant == null)
             {
-                Log.Warning("Consultant with UserID {UserId} not found", userId);
+                Serilog.Log.Warning("Consultant with UserID {UserId} not found", userId);
                 throw new EntityNotFoundException("Consultant", userId);
             }
 
             var user = await _unitOfWork.Users.GetByIdAsync(userId);
             if (user == null)
             {
-                Log.Warning("User with UserID {UserId} not found", userId);
+                Serilog.Log.Warning("User with UserID {UserId} not found", userId);
                 throw new EntityNotFoundException("User", userId);
             }
 
             if (!isAdmin && user.UserID != userId)
             {
-                Log.Warning("Unauthorized access to update consultant profile for UserID={UserId}", userId);
+                Serilog.Log.Warning("Unauthorized access to update consultant profile for UserID={UserId}", userId);
                 throw new UnauthorizedAccessException("You can only update your own profile.");
             }
 
@@ -305,72 +316,92 @@ namespace DrugUsePreventionAPI.Services.Implementations
             {
                 if (await _unitOfWork.Users.EmailExistsAsync(updateConsultantDto.Email))
                 {
-                    Log.Warning("Email {Email} already exists", updateConsultantDto.Email);
+                    Serilog.Log.Warning("Email {Email} already exists", updateConsultantDto.Email);
                     throw new DuplicateEntityException("User", "Email", updateConsultantDto.Email);
                 }
             }
 
-            // Handle Certificate Update (Replace the CertificateName without creating a new one)
+            // Handle Certificate Update
             if (!string.IsNullOrEmpty(updateConsultantDto.CertificateName))
             {
-                var certificate = await _unitOfWork.Certificates
-                    .FirstOrDefaultAsync(c => c.CertificateID == consultant.CertificateID);
-
-                if (certificate != null)
+                if (consultant.Certificate == null)
                 {
-                    // Update the existing certificate with the new CertificateName
-                    certificate.CertificateName = updateConsultantDto.CertificateName;
-
-                    if (updateConsultantDto.DateAcquired.HasValue)
+                    // Tạo mới Certificate nếu chưa có
+                    var newCertificate = new Certificate
                     {
-                        certificate.DateAcquired = updateConsultantDto.DateAcquired.Value;
-                    }
-
-                    _unitOfWork.Certificates.Update(certificate);
-                    await _unitOfWork.SaveChangesAsync(); // Save the updated certificate
+                        CertificateName = updateConsultantDto.CertificateName,
+                        DateAcquired = updateConsultantDto.DateAcquired ?? DateTime.UtcNow
+                    };
+                    await _unitOfWork.Certificates.AddAsync(newCertificate);
+                    await _unitOfWork.SaveChangesAsync();
+                    consultant.CertificateID = newCertificate.CertificateID;
+                    consultant.Certificate = newCertificate; // Liên kết trực tiếp
                 }
                 else
                 {
-                    // Handle the case where the certificate doesn't exist
-                    if (!consultant.CertificateID.HasValue)
+                    // Cập nhật Certificate hiện có
+                    var existingCertificate = consultant.Certificate;
+                    existingCertificate.CertificateName = updateConsultantDto.CertificateName;
+                    if (updateConsultantDto.DateAcquired.HasValue)
                     {
-                        Log.Warning("Consultant with UserID {UserId} has no associated certificate.", userId);
-                        throw new EntityNotFoundException("Certificate", "No certificate found for the consultant.");
+                        existingCertificate.DateAcquired = updateConsultantDto.DateAcquired.Value;
                     }
-
-                    Log.Warning("Certificate with ID {CertificateID} not found for ConsultantID={UserId}", consultant.CertificateID, userId);
-                    throw new EntityNotFoundException("Certificate", consultant.CertificateID.Value); // Ensure we pass a non-nullable int
+                    // Không cần gọi Update, EF sẽ tự theo dõi thay đổi
                 }
             }
 
+            // Update only provided fields for User
+            if (!string.IsNullOrEmpty(updateConsultantDto.Email))
+                user.Email = updateConsultantDto.Email;
+            if (!string.IsNullOrEmpty(updateConsultantDto.FullName))
+                user.FullName = updateConsultantDto.FullName;
 
-            // Map updates to user and consultant
-            _mapper.Map(updateConsultantDto, user);
-            _mapper.Map(updateConsultantDto, consultant);
+            // Update only provided fields for Consultant
+            if (!string.IsNullOrEmpty(updateConsultantDto.Degree))
+                consultant.Degree = updateConsultantDto.Degree;
+            if (updateConsultantDto.HourlyRate.HasValue)
+                consultant.HourlyRate = updateConsultantDto.HourlyRate.Value;
+            if (!string.IsNullOrEmpty(updateConsultantDto.Specialty))
+                consultant.Specialty = updateConsultantDto.Specialty;
+            if (!string.IsNullOrEmpty(updateConsultantDto.Experience))
+                consultant.Experience = updateConsultantDto.Experience;
+            if (!string.IsNullOrEmpty(updateConsultantDto.GoogleMeetLink))
+                consultant.GoogleMeetLink = updateConsultantDto.GoogleMeetLink;
 
-            // Directly update the password (no old password check)
+            // Handle password change
             if (!string.IsNullOrEmpty(updateConsultantDto.Password))
             {
                 if (updateConsultantDto.Password.Length < 8 ||
                     !updateConsultantDto.Password.Any(char.IsUpper) ||
                     !updateConsultantDto.Password.Any(char.IsDigit))
                 {
-                    Log.Warning("New password does not meet requirements for UserID={UserId}", userId);
+                    Serilog.Log.Warning("New password does not meet requirements for UserID={UserId}", userId);
                     throw new InvalidOperationException("New password must have at least 8 characters, including uppercase and numbers.");
                 }
-
-                Log.Information("Consultant updated Password for UserID={UserId}", userId);
+                Serilog.Log.Information("Consultant updated Password for UserID={UserId}", userId);
                 user.Password = BCrypt.Net.BCrypt.HashPassword(updateConsultantDto.Password);
             }
 
+            // Update timestamps
             user.UpdatedAt = DateTime.UtcNow;
             consultant.UpdatedAt = DateTime.UtcNow;
 
             _unitOfWork.Consultants.Update(consultant);
-            await _unitOfWork.SaveChangesAsync(); // Save changes for the Consultant
+            await _unitOfWork.SaveChangesAsync();
 
-            var result = await _unitOfWork.Consultants.GetConsultantWithUserAndCertificateAsync(userId);
-            return _mapper.Map<ConsultantDto>(result);
+            // Reload consultant with all related data
+            var updatedConsultant = await _unitOfWork.Consultants.GetByUserIdTrackedAsync(userId);
+            var consultantDto = _mapper.Map<ConsultantDto>(updatedConsultant);
+
+            // Explicitly set additional fields
+            consultantDto.UserName = updatedConsultant.User?.UserName ?? "";
+            consultantDto.FullName = updatedConsultant.User?.FullName ?? "";
+            consultantDto.Email = updatedConsultant.User?.Email ?? "";
+            consultantDto.CertificateName = updatedConsultant.Certificate?.CertificateName ?? "";
+            consultantDto.DateAcquired = updatedConsultant.Certificate?.DateAcquired;
+            consultantDto.Status = updatedConsultant.User?.Status ?? "Inactive";
+
+            return consultantDto;
         }
 
         public async Task<IEnumerable<ConsultantDto>> GetConsultantsBySpecialtyAsync(string specialty)
