@@ -19,11 +19,12 @@ namespace DrugUsePreventionAPI.Controllers
             _service = service;
         }
 
+        // ✅ Lấy blog theo status: All, Active, Inactive
         [HttpGet("ListOfBlog")]
         [Authorize(Roles = "Staff")]
-        public async Task<IActionResult> GetBlogs()
+        public async Task<IActionResult> GetBlogs([FromQuery] string status = "All")
         {
-            var blogs = await _service.GetBlogsAsync();
+            var blogs = await _service.GetBlogsByStatusAsync(status);
             return Ok(blogs);
         }
 
@@ -33,7 +34,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var blog = await _service.GetBlogByIdAsync(id);
             if (blog == null)
-                return NotFound(new { message = $"Blog with id {id} not found or is inactive" });
+                return NotFound(new { message = $"Blog with id {id} not found." });
 
             return Ok(blog);
         }
@@ -48,7 +49,6 @@ namespace DrugUsePreventionAPI.Controllers
             if (dto.Status != "Active" && dto.Status != "Inactive")
                 return BadRequest(new { message = "Status must be 'Active' or 'Inactive'" });
 
-            // Lấy UserID từ token JWT
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!int.TryParse(userIdClaim, out int userId))
                 return Unauthorized(new { message = "Invalid user ID in token" });
@@ -90,7 +90,6 @@ namespace DrugUsePreventionAPI.Controllers
             if (dto.Status != "Active" && dto.Status != "Inactive")
                 return BadRequest(new { message = "Status must be 'Active' or 'Inactive'" });
 
-            // Lấy UserID từ token JWT
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!int.TryParse(userIdClaim, out int userId))
                 return Unauthorized(new { message = "Invalid user ID in token" });
@@ -109,7 +108,7 @@ namespace DrugUsePreventionAPI.Controllers
 
             var updated = await _service.UpdateBlogAsync(id, blog);
             if (!updated)
-                return NotFound(new { message = $"Blog with id {id} not found or is inactive" });
+                return NotFound(new { message = $"Blog with id {id} not found." });
 
             return Ok(new { message = "Blog updated successfully" });
         }
@@ -120,7 +119,7 @@ namespace DrugUsePreventionAPI.Controllers
         {
             var deleted = await _service.DeleteBlogAsync(id);
             if (!deleted)
-                return NotFound(new { message = $"Blog with id {id} not found or is already inactive" });
+                return NotFound(new { message = $"Blog with id {id} not found." });
 
             return Ok(new { message = "Blog marked as inactive successfully" });
         }
