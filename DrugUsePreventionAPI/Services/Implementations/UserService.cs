@@ -382,6 +382,7 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var registeredCourseNames = registeredCourses.Select(c => c.CourseName).ToList();
 
 
+
             var completedCourses = await _courseRepository.GetCompletedCoursesByUser(userId); // Lấy danh sách khóa học đã hoàn thành
             var completedCourseNames = completedCourses.Select(c => c.CourseName).ToList();
 
@@ -389,6 +390,8 @@ namespace DrugUsePreventionAPI.Services.Implementations
             var assessmentResults = await _userRepository.GetAssessmentResultsByUserIdAsync(userId);
             var assessmentDtoList = assessmentResults.Select(r => new AssessmentResultInfo
             {
+                CourseName = r.Course?.CourseName,
+                AssessmentType = r.Assessment.AssessmentType,
                 Stage = r.Assessment.AssessmentStage,
                 Score = (int?)r.Score,
                 TakeTime = r.TakeTime
