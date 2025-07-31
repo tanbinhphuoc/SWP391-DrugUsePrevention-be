@@ -136,8 +136,9 @@ namespace DrugUsePreventionAPI.Repositories
         public async Task<IEnumerable<AssessmentResult>> GetAssessmentResultsByUserIdAsync(int userId)
         {
             return await _context.AssessmentResults
-                .Where(ar => ar.UserID == userId)
+                .Where(ar => ar.UserID == userId && !ar.IsDeleted)
                 .Include(ar => ar.Assessment)
+                .Include(ar => ar.Course)
                 .ToListAsync();
         }
 

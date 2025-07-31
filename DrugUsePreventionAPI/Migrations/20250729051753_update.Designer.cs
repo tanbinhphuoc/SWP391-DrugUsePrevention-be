@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugUsePreventionAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250725132826_update")]
+    [Migration("20250729051753_update")]
     partial class update
     {
         /// <inheritdoc />

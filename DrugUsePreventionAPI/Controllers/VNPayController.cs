@@ -64,11 +64,14 @@ namespace DrugUsePreventionAPI.Controllers
                     var courseRegistrationId = _vnpayHelper.ExtractCourseRegistrationIdFromTxnRef(vnpTxnRef);
                     var result = await _courseRegistrationService.ConfirmPaymentAsync(courseRegistrationId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
-                    // Nếu thanh toán thành công, redirect đến trang khóa học, nếu thất bại thì redirect với thông báo lỗi
-                    string redirectUrl = $"http://localhost:5173/UserCourses";
-                    if (vnpayResponseCode != "00") // Nếu lỗi
+                    string redirectUrl = "http://localhost:5173/UserCourses";
+                    if (vnpayResponseCode == "00")
                     {
-                        redirectUrl = $"http://localhost:5173/UserCourses";
+                        redirectUrl += "?status=success";
+                    }
+                    else
+                    {
+                        redirectUrl += $"?status=error&code={vnpayResponseCode}";
                     }
                     return Redirect(redirectUrl);
                 }
@@ -77,10 +80,15 @@ namespace DrugUsePreventionAPI.Controllers
                     var appointmentId = _vnpayHelper.ExtractAppointmentIdFromTxnRef(vnpTxnRef);
                     var appointment = await _appointmentService.ConfirmPaymentAsync(appointmentId, vnpTxnRef, vnpayResponseCode, HttpContext);
 
-                    // Check response code for failure (e.g., 24)
-                    string redirectUrl = vnpayResponseCode == "00"
-                        ? $"http://localhost:5173/UserAppointments"
-                        : $"http://localhost:5173/UserAppointments"; // Adjust for failure response code
+                    string redirectUrl = "http://localhost:5173/UserAppointments";
+                    if (vnpayResponseCode == "00")
+                    {
+                        redirectUrl += "?status=success";
+                    }
+                    else
+                    {
+                        redirectUrl += $"?status=error&code={vnpayResponseCode}";
+                    }
                     return Redirect(redirectUrl);
                 }
             }
