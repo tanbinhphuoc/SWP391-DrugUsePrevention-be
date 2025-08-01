@@ -48,12 +48,12 @@ namespace DrugUsePreventionAPI.Controllers
 
         [HttpPut("UpdateMultipleQuestions")]
         [Authorize(Roles = "Admin,Manager,Staff")]
-        public async Task<IActionResult> UpdateMultipleQuestions([FromBody] List<CreateQuestionWithAnswersDto> questions)
+        public async Task<IActionResult> UpdateMultipleQuestions([FromBody] List<UpdateQuestionWithAnswersInputDto> questions)
         {
             try
             {
-                var result = await _questionService.UpdateMultipleQuestionsWithAnswers(questions);
-                return Ok(new { success = result, message = "Cập nhật câu hỏi thành công." });
+                await _questionService.UpdateMultipleInputQuestionsWithAnswersAsync(questions);
+                return Ok(new { success = true, message = "Cập nhật câu hỏi thành công." });
             }
             catch (Exception ex)
             {
@@ -61,6 +61,7 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
+        
         [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpDelete("DeleteQuestionForAssessment")]
         public async Task<IActionResult> DeleteQuestionForAssessment([FromQuery] int id)

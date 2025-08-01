@@ -5,6 +5,7 @@ using DrugUsePreventionAPI.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using DrugUsePreventionAPI.Controllers.Data;
+using SendGrid.Helpers.Errors.Model;
 
 namespace DrugUsePreventionAPI.Services.Implementations
 {
@@ -41,83 +42,101 @@ namespace DrugUsePreventionAPI.Services.Implementations
             }
         }
 
-        public async Task<bool> UpdateMultipleQuestionsWithAnswers(List<CreateQuestionWithAnswersDto> updatedQuestions)
+        public async Task UpdateQuestionWithAnswersAsync(UpdateQuestionWithAnswersInputDto inputDto)
         {
-            if (updatedQuestions == null || !updatedQuestions.Any())
-                throw new Exception("Danh sách câu hỏi không được để trống.");
+            var question = await _context.Questions
+                .Include(q => q.AnswerOptions)
+                .FirstOrDefaultAsync(q => q.QuestionID == inputDto.QuestionId && !q.IsDeleted);
 
-            int assessmentId = updatedQuestions.First().AssessmentID;
-
-            // Lấy các câu hỏi hiện tại để xóa và cập nhật lại
-            var existingQuestions = await _unitOfWork.Questions.FindAsync(q =>
-                q.AssessmentID == assessmentId && !q.IsDeleted);
-
-            foreach (var q in existingQuestions)
+            if (question == null)
             {
-                q.IsDeleted = true;
-                _unitOfWork.Questions.Update(q);
+                throw new NotFoundException("Question not found.");
+            }
 
-                foreach (var a in q.AnswerOptions)
+            question.QuestionText = inputDto.QuestionText;
+            question.AssessmentID = inputDto.AssessmentId;
+            question.QuestionType = inputDto.QuestionType;
+
+            foreach (var answerDto in inputDto.Answers)
+            {
+                if (answerDto.AnswerId.HasValue)
                 {
-                    a.IsDeleted = true;
-                    _unitOfWork.AnswerOptions.Update(a);
+                    // Update existing answer
+                    var existing = question.AnswerOptions.FirstOrDefault(a => a.OptionID == answerDto.AnswerId.Value && !a.IsDeleted);
+                    if (existing != null)
+                    {
+                        existing.OptionText = answerDto.OptionText;
+                        existing.ScoreValue = answerDto.ScoreValue;
+                    }
                 }
-            }
-
-            int totalScore = 0;
-            var questionTexts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var questionDto in updatedQuestions)
-            {
-                // Trùng nội dung câu hỏi
-                if (!questionTexts.Add(questionDto.QuestionText.Trim()))
-                    throw new Exception("Không được có câu hỏi trùng nhau.");
-
-                if (questionDto.Answers == null || !questionDto.Answers.Any())
-                    throw new Exception("Mỗi câu hỏi phải có ít nhất một đáp án.");
-
-                var validScores = questionDto.Answers.Select(a => a.ScoreValue).ToList();
-
-                if (validScores.Any(score => score < 0 || score > 10))
-                    throw new Exception("Điểm của mỗi đáp án phải nằm trong khoảng từ 0 đến 10.");
-
-                if (validScores.Count(s => s > 0) != 1)
-                    throw new Exception("Mỗi câu hỏi chỉ được phép có duy nhất một đáp án có điểm lớn hơn 0.");
-
-                totalScore += validScores.Max();
-            }
-
-            if (totalScore != 10)
-                throw new Exception($"Tổng điểm tối đa của toàn bài phải đúng bằng 10. Hiện tại: {totalScore}");
-
-            // Lưu câu hỏi mới
-            foreach (var questionDto in updatedQuestions)
-            {
-                var question = new Question
+                else
                 {
-                    AssessmentID = questionDto.AssessmentID,
-                    QuestionText = questionDto.QuestionText,
-                    QuestionType = questionDto.QuestionType
-                };
-
-                await _unitOfWork.Questions.AddAsync(question);
-                await _unitOfWork.SaveChangesAsync(); // để có QuestionID
-
-                foreach (var answerDto in questionDto.Answers)
-                {
-                    var answer = new AnswerOption
+                    // Add new answer
+                    question.AnswerOptions.Add(new AnswerOption
                     {
                         QuestionID = question.QuestionID,
                         OptionText = answerDto.OptionText,
                         ScoreValue = answerDto.ScoreValue
-                    };
-                    await _unitOfWork.AnswerOptions.AddAsync(answer);
+                    });
                 }
             }
 
-            await _unitOfWork.SaveChangesAsync();
-            return true;
+            await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateMultipleInputQuestionsWithAnswersAsync(List<UpdateQuestionWithAnswersInputDto> inputDtos)
+        {
+            foreach (var dto in inputDtos)
+            {
+                await UpdateQuestionWithAnswersAsync(dto);
+            }
+        }
+
+        public async Task UpdateQuestionWithAnswersOutputAsync(UpdateQuestionWithAnswersOutputDto dto)
+        {
+            var question = await _context.Questions
+                .Include(q => q.AnswerOptions)
+                .FirstOrDefaultAsync(q => q.QuestionID == dto.QuestionId && q.AssessmentID == dto.AssessmentId && !q.IsDeleted);
+
+            if (question == null)
+                throw new Exception("Câu hỏi không tồn tại.");
+
+            question.QuestionText = dto.QuestionText;
+            question.QuestionType = dto.QuestionType;
+
+            foreach (var answerDto in dto.Answers)
+            {
+                if (answerDto.AnswerId.HasValue)
+                {
+                    var existingAnswer = question.AnswerOptions.FirstOrDefault(a => a.OptionID == answerDto.AnswerId.Value && !a.IsDeleted);
+                    if (existingAnswer != null)
+                    {
+                        existingAnswer.OptionText = answerDto.OptionText;
+                        existingAnswer.ScoreValue = answerDto.ScoreValue;
+                    }
+                }
+                else
+                {
+                    question.AnswerOptions.Add(new AnswerOption
+                    {
+                        OptionText = answerDto.OptionText,
+                        ScoreValue = answerDto.ScoreValue,
+                        QuestionID = question.QuestionID
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateMultipleOutputQuestionsWithAnswersAsync(List<UpdateQuestionWithAnswersOutputDto> dtos)
+        {
+            foreach (var dto in dtos)
+            {
+                await UpdateQuestionWithAnswersOutputAsync(dto);
+            }
+        }
+
 
 
         public async Task<List<Question>> GetAllQuestionForAssessment()
