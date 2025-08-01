@@ -86,11 +86,70 @@ namespace DrugUsePreventionAPI.Services.Implementations
 
         public async Task UpdateMultipleInputQuestionsWithAnswersAsync(List<UpdateQuestionWithAnswersInputDto> inputDtos)
         {
+            if (inputDtos == null || !inputDtos.Any())
+                throw new Exception("Danh sách câu hỏi không được để trống");
+
+            int assessmentId = inputDtos.First().AssessmentId;
+
+            // 1. Lấy câu hỏi hiện tại để kiểm tra tổng điểm
+            var existingQuestions = await _context.Questions
+                .Include(q => q.AnswerOptions)
+                .Where(q => q.AssessmentID == assessmentId && !q.IsDeleted)
+                .ToListAsync();
+
+            var questionMap = existingQuestions.ToDictionary(q => q.QuestionID, q => q);
+            var existingQuestionTexts = existingQuestions
+                .Where(q => !inputDtos.Select(i => i.QuestionId).Contains(q.QuestionID)) // loại trừ những câu đang update
+                .Select(q => q.QuestionText.Trim().ToLower())
+                .ToHashSet();
+
+            // 2. Tính tổng điểm
+            int existingMaxScore = 0;
+
+            foreach (var q in existingQuestions)
+            {
+                if (!inputDtos.Any(dto => dto.QuestionId == q.QuestionID)) // không tính điểm các câu sắp update
+                {
+                    var answers = q.AnswerOptions.Where(a => !a.IsDeleted);
+                    existingMaxScore += answers.Max(a => a.ScoreValue ?? 0);
+                }
+            }
+
+            int newMaxScore = 0;
+
+            foreach (var dto in inputDtos)
+            {
+                // Kiểm tra trùng nội dung câu hỏi
+                if (existingQuestionTexts.Contains(dto.QuestionText.Trim().ToLower()))
+                    throw new Exception($"Câu hỏi '{dto.QuestionText}' đã tồn tại trong bài đánh giá.");
+
+                existingQuestionTexts.Add(dto.QuestionText.Trim().ToLower());
+
+                if (dto.Answers == null || !dto.Answers.Any())
+                    throw new Exception("Mỗi câu hỏi phải có ít nhất một đáp án");
+
+                var scoreValues = dto.Answers.Select(a => a.ScoreValue).ToList();
+
+                if (scoreValues.Any(score => score < 0 || score > 10))
+                    throw new Exception("Điểm của mỗi đáp án phải nằm trong khoảng từ 0 đến 10");
+
+                if (scoreValues.Count(v => v > 0) > 1)
+                    throw new Exception($"Chỉ được phép có 1 đáp án có điểm lớn hơn 0 trong câu hỏi '{dto.QuestionText}'");
+
+                newMaxScore += scoreValues.Max();
+            }
+
+            int totalScore = existingMaxScore + newMaxScore;
+            if (totalScore != 10)
+                throw new Exception($"Tổng điểm tối đa của toàn bài phải đúng bằng 10. Hiện tại: {totalScore}");
+
+            // 3. Tiến hành cập nhật
             foreach (var dto in inputDtos)
             {
                 await UpdateQuestionWithAnswersAsync(dto);
             }
         }
+
 
         public async Task UpdateQuestionWithAnswersOutputAsync(UpdateQuestionWithAnswersOutputDto dto)
         {

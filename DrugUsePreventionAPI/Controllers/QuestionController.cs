@@ -61,7 +61,21 @@ namespace DrugUsePreventionAPI.Controllers
             }
         }
 
-        
+        [HttpPut("update-multiple-output")]
+        public async Task<IActionResult> UpdateMultipleOutputQuestionsWithAnswers([FromBody] List<UpdateQuestionWithAnswersOutputDto> dtos)
+        {
+            try
+            {
+                await _questionService.UpdateMultipleOutputQuestionsWithAnswersAsync(dtos);
+                return Ok(new { message = "Cập nhật danh sách câu hỏi Output thành công." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
         [Authorize(Roles = "Admin,Manager,Staff")]
         [HttpDelete("DeleteQuestionForAssessment")]
         public async Task<IActionResult> DeleteQuestionForAssessment([FromQuery] int id)
